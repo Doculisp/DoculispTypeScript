@@ -22,15 +22,30 @@ describe('document', () => {
         test('should parse a simple text of "hello"', () => {
             const result = asSuccess(parse('hello', 'C:/my_document.md'));
     
-            expect(result.value).toContainEqual({ location: { line: 0, char: 0, document: 'C:/my_document.md' }, text: 'hello', type: 'text'});
+            expect(result.value).toContainEqual({ location: { line: 1, char: 1, document: 'C:/my_document.md' }, text: 'hello', type: 'text'});
             expect(result.value.length).toBe(1);
         });
 
         test('should parse text of "blow fish"', () => {
             const result = asSuccess(parse('blow fish', 'C:/my_document.md'));
     
-            expect(result.value).toContainEqual({ location: { line: 0, char: 0, document: 'C:/my_document.md' }, text: 'blow fish', type: 'text'});
+            expect(result.value).toContainEqual({ location: { line: 1, char: 1, document: 'C:/my_document.md' }, text: 'blow fish', type: 'text'});
             expect(result.value.length).toBe(1);
         });
+
+//         test('should not parse html comments', () => {
+//             const md = `
+// <!-- This is a comment -->
+// hello bro
+// `.trim();
+
+//             const result = asSuccess(parse(md, 'C:/readme.md'));
+
+//             expect(result.value).toContain({ location: { line: } });
+//         });
+
+        // describe('containing doculisp', () => {
+
+        // });
     });
 });

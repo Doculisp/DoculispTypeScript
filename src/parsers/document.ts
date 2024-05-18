@@ -8,7 +8,7 @@ function documentParse(): Valid<DocumentParser> {
             return ok([]);
         }
 
-        return ok([{ location: { line: 0, char: 0, document: 'C:/my_document.md' }, text: value, type: 'text'}]);
+        return ok([{ location: { line: 1, char: 1, document: 'C:/my_document.md' }, text: value, type: 'text'}]);
     }
 
     return parse;
