@@ -1,0 +1,43 @@
+{
+  "projectName": "TS-Kata",
+  "projectOwner": "jason-kerney",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "./docs/contrib.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "edf-re",
+      "name": "EDF Renewables",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13739273?v=4",
+      "profile": "https://github.com/edf-re",
+      "contributions": [
+        "financial"
+      ]
+    },
+    {
+      "login": "jmg5219",
+      "name": "Jai Gokhale",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41212356?v=4",
+      "profile": "https://github.com/jmg5219",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "cmstead",
+      "name": "Chris Stead",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4184510?v=4",
+      "profile": "http://www.chrisstead.net/",
+      "contributions": [
+        "tool"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": false
+}

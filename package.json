@@ -1,0 +1,44 @@
+{
+  "name": "Doculisp",
+  "version": "1.0.0",
+  "description": "A scripting language to build markdown documents",
+  "main": "index.js",
+  "scripts": {
+    "precompile": "rimraf app/**/*.js test/**/*.js",
+    "compile": "tsc",
+    "test": "jest tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jason-kerney/TS-Kata.git"
+  },
+  "keywords": [
+    "markdown",
+    "scripting",
+    "language"
+  ],
+  "author": "Jason-Kerney",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jason-kerney/TS-Kata/issues"
+  },
+  "homepage": "https://github.com/jason-kerney/TS-Kata#readme",
+  "devDependencies": {
+    "@types/jest": "^29.2.6",
+    "@types/node": "^16.11.7",
+    "all-contributors-cli": "^6.24.0",
+    "booklisp": "^2.0.0",
+    "jest": "^29.3.1",
+    "nyc": "^15.1.0",
+    "rimraf": "~3.0.2",
+    "source-map-support": "^0.5.20",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^3.11.0",
+    "approvals": "^7.1.0",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "glob": "^10.3.15"
+  }
+}
