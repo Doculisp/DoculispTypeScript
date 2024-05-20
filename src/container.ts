@@ -1,10 +1,5 @@
 import { IContainer, IDependencyContainer, IDependencyManager, IDictionary, IRegisterable, ITestableContainer, Valid } from "./types.containers";
 import { globSync } from 'glob';
-import path from 'node:path';
-
-function testReport(value: any) {
-    console.log('==========\n', value, '\n==========');
-}
 
 function findModules(container: IContainer) {
     let moduleNames = (

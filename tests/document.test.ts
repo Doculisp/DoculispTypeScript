@@ -2,9 +2,9 @@ import { container } from "../src/container";
 import { ITestableContainer } from "../src/types.containers";
 import { DocumentParser } from "../src/types.document";
 import { asSuccess } from "../src/types.general";
-import {verify, verifyAsJson} from "approvals/lib/Providers/Jest/JestApprovals";
-import {configure} from "approvals/lib/config";
-import {JestReporter} from "approvals/lib/Providers/Jest/JestReporter";
+import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
+import { configure } from "approvals/lib/config";
+import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
 
 describe('document', () => {
     let environment: ITestableContainer = undefined as any;
