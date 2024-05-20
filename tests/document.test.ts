@@ -45,6 +45,11 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
+        test('should parse text of " blow fish "', () => {
+            const result = asSuccess(parse(' blow fish ', 'C:/my_document.md'));
+            verifyAsJson(result);
+        });
+
 //         test('should not parse html comments', () => {
 //             const md = `
 // <!-- This is a comment -->

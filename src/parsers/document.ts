@@ -10,7 +10,7 @@ type ParseResult = {
 }
 
 const startsWithWhiteSpace = /^\s/;
-// const startsWithWord = /.?/;
+const startsWithWord = /^\w([\w\s]*\w)*/;
 
 function constructResult(current: string, rest: string, line: number, char: number): ParseResult {
     let r = 0 < current.length ? current : undefined;
@@ -23,7 +23,22 @@ function constructResult(current: string, rest: string, line: number, char: numb
 }
 
 function isWord(value: string, line: number, char: number): ParseResult {
-    return constructResult(value, "", line, char);
+    let current = "";
+
+    while(0 < value.length) {
+        let match = value.match(startsWithWord);
+        if(match) {
+            let v = match[0];
+            current += v;
+            value = value.slice(v.length);
+            char += v.length;
+            continue;
+        }
+
+        return constructResult(current, value, line, char);
+    }
+
+    return constructResult(current, value, line, char);
 }
 
 function isWhiteSpace(value: string, line: number, char: number): ParseResult {
@@ -65,13 +80,13 @@ function documentParse(): Valid<DocumentParser> {
             v = isWord(value, line, char);
             if(v.result) {
                 value = v.rest;
-                line = v.line;
-                char = v.char;
                 current[current.length] = {
                     location: { line, char, document: path },
                     text: v.result,
                     type: "text",
                 };
+                line = v.line;
+                char = v.char;
             }
         }
 
