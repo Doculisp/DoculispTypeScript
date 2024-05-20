@@ -24,25 +24,6 @@ function constructResult(current: string, rest: string, line: number, char: numb
     };
 }
 
-function isWord(value: string, line: number, char: number): ParseResult {
-    let current = "";
-
-    while(0 < value.length) {
-        let match = value.match(startsWithWord);
-        if(match) {
-            let v = match[0];
-            current += v;
-            value = value.slice(v.length);
-            char += v.length;
-            continue;
-        }
-
-        return constructResult(current, value, line, char);
-    }
-
-    return constructResult(current, value, line, char);
-}
-
 function is(expression: RegExp): ParseFunction {
     return function isThing(value: string, line: number, char: number): ParseResult {
         let current = "";
@@ -64,6 +45,7 @@ function is(expression: RegExp): ParseFunction {
     };
 }
 
+const isWord = is(startsWithWord);
 const isWhiteSpace = is(startsWithWhiteSpace);
 
 function documentParse(): Valid<DocumentParser> {
