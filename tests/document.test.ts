@@ -37,9 +37,11 @@ describe('document', () => {
 
         test('should parse text of "blow fish"', () => {
             const result = asSuccess(parse('blow fish', 'C:/my_document.md'));
-    
-            expect(result.value).toContainEqual({ location: { line: 1, char: 1, document: 'C:/my_document.md' }, text: 'blow fish', type: 'text'});
-            expect(result.value.length).toBe(1);
+            verifyAsJson(result);
+        });
+
+        test('should parse text of " blow fish"', () => {
+            const result = asSuccess(parse(' blow fish', 'C:/my_document.md'));
             verifyAsJson(result);
         });
 
