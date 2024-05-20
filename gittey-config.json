@@ -26,7 +26,7 @@
         {
             "name": "push",
             "command": "gittey test && git push",
-            "description": "performs a git push"
+            "description": "performs a git push if tests are passing"
         },
         {
             "name": "check",
@@ -41,7 +41,7 @@
         {
             "name": "build",
             "command": "npm run compile",
-            "description": "runs test, commits code, compiles output"
+            "description": "builds output directory"
         }
     ],
     "collaborators": []

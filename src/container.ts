@@ -8,7 +8,7 @@ function testReport(value: any) {
 
 function findModules(container: IContainer) {
     let moduleNames = (
-        globSync('./dist/src/**/*.js')
+        globSync('./dist/**/*.js')
         .map(p => {
             return p.replace('dist', '.').replace('\\src', '').replace('.js', '').replaceAll('\\', '/');
         })

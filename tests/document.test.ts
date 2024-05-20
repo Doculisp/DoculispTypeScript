@@ -2,10 +2,19 @@ import { container } from "../src/container";
 import { ITestableContainer } from "../src/types.containers";
 import { DocumentParser } from "../src/types.document";
 import { asSuccess } from "../src/types.general";
+import {verify, verifyAsJson} from "approvals/lib/Providers/Jest/JestApprovals";
+import {configure} from "approvals/lib/config";
+import {JestReporter} from "approvals/lib/Providers/Jest/JestReporter";
 
 describe('document', () => {
     let environment: ITestableContainer = undefined as any;
     let parse: DocumentParser = undefined as any;
+
+    beforeAll(() => {
+        configure({
+            reporters: [new JestReporter(), "BeyondCompare"],
+        });
+    });
 
     beforeEach(() => {
         environment = container.buildTestable();
@@ -31,6 +40,7 @@ describe('document', () => {
     
             expect(result.value).toContainEqual({ location: { line: 1, char: 1, document: 'C:/my_document.md' }, text: 'blow fish', type: 'text'});
             expect(result.value.length).toBe(1);
+            verifyAsJson(result);
         });
 
 //         test('should not parse html comments', () => {
