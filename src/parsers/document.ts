@@ -11,7 +11,7 @@ type ParseResult = {
 
 type ParseFunction = (value: string, line: number, char: number) => ParseResult;
 
-const startsWithWhiteSpace = /^\s/;
+const startsWithWhiteSpace = /^\s+/;
 const startsWithWord = /^\w([\w\s]*\w)*/;
 
 function constructResult(current: string, rest: string, line: number, char: number): ParseResult {
