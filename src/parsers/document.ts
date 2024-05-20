@@ -1,6 +1,6 @@
 import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser } from "../types.document";
-import { Result, ok } from "../types.general";
+import { Result, fail, ok } from "../types.general";
 
 type ParseResult = {
     result: string | undefined;
@@ -45,10 +45,12 @@ function isWhiteSpace(value: string, line: number, char: number): ParseResult {
     let current = "";
 
     while(0 < value.length) {
-        if(value.match(startsWithWhiteSpace)) {
-            current += value.charAt(0);
-            value = value.slice(1);
-            char++;
+        let match = value.match(startsWithWhiteSpace);
+        if(match) {
+            let v = match[0];
+            current += v;
+            value = value.slice(v.length);
+            char += v.length;
             continue;
         }
 
@@ -87,7 +89,10 @@ function documentParse(): Valid<DocumentParser> {
                 };
                 line = v.line;
                 char = v.char;
+                continue;
             }
+
+            return fail(`unknown value "${value}"`);
         }
 
         return ok(current);

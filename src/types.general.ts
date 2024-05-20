@@ -28,7 +28,7 @@ export function asSuccess<T>(value: Result<T>): ISuccess<T> {
         return value;
     }
 
-    throw new Error(`Expected success but got: ${value}`);
+    throw new Error(`Expected success but got: ${JSON.stringify(value)}`);
 }
 
 export function fail(message: string) : Result<any> {

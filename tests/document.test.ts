@@ -58,11 +58,7 @@ describe('document', () => {
 
 //             const result = asSuccess(parse(md, 'C:/readme.md'));
 
-//             expect(result.value).toContain({ location: { line: } });
+//             verifyAsJson(result);
 //         });
-
-        // describe('containing doculisp', () => {
-
-        // });
     });
 });
