@@ -86,3 +86,4 @@ tests/cases/user/prettier/prettier
 .eslintcache
 *v8.log
 dist
+*.recived.*
