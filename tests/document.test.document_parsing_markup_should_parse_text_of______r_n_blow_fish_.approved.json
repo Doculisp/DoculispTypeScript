@@ -1,0 +1,14 @@
+{
+  "value": [
+    {
+      "location": {
+        "line": 2,
+        "char": 2,
+        "document": "C:/my_document.md"
+      },
+      "text": "blow fish",
+      "type": "text"
+    }
+  ],
+  "success": true
+}
