@@ -12,7 +12,7 @@ type ParseResult = {
     start: Point | undefined;
 }
 
-type ParseFunction = (value: string, line: number, char: number) => ParseResult;
+// type ParseFunction = (value: string, line: number, char: number) => ParseResult;
 
 const startsWithWhiteSpace = /^\s/;
 const startsWithWord = /^\w([\w\s]*\w)*/;
@@ -28,33 +28,51 @@ function constructResult(current: string, start: Point | undefined, rest: string
     };
 }
 
-function is(expression: RegExp): ParseFunction {
-    return function isThing(value: string, line: number, char: number): ParseResult {
-        let current = "";
-        let start: Point | undefined;
-    
-        while(0 < value.length) {
-            let match = value.match(expression);
-            if(match) {
-                if(!start) {
-                    start = { line, char};
-                }
-                let v = match[0];
-                current += v;
-                value = value.slice(v.length);
-                char += v.length;
-                continue;
+function isWord(value: string, line: number, char: number): ParseResult {
+    let current = "";
+    let start: Point | undefined;
+
+    while(0 < value.length) {
+        let match = value.match(startsWithWord);
+        if(match) {
+            if(!start) {
+                start = { line, char};
             }
-    
-            return constructResult(current, start, value, line, char);
+            let v = match[0];
+            current += v;
+            value = value.slice(v.length);
+            char += v.length;
+            continue;
         }
-    
+
         return constructResult(current, start, value, line, char);
-    };
+    }
+
+    return constructResult(current, start, value, line, char);
 }
 
-const isWord = is(startsWithWord);
-const isWhiteSpace = is(startsWithWhiteSpace);
+function isWhiteSpace(value: string, line: number, char: number): ParseResult {
+    let current = "";
+    let start: Point | undefined;
+
+    while(0 < value.length) {
+        let match = value.match(startsWithWhiteSpace);
+        if(match) {
+            if(!start) {
+                start = { line, char};
+            }
+            let v = match[0];
+            current += v;
+            value = value.slice(v.length);
+            char += v.length;
+            continue;
+        }
+
+        return constructResult(current, start, value, line, char);
+    }
+
+    return constructResult(current, start, value, line, char);
+}
 
 function documentParse(): Valid<DocumentParser> {
     function parse(value: string, path: string): Result<DocumentMap> {
