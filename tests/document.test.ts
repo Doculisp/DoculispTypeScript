@@ -62,5 +62,17 @@ describe('document', () => {
 
             verifyAsJson(result);
         });
+
+        test('should not parse html but preserve new line counts comments', () => {
+            const md = `<!--
+This is a comment
+-->
+                 \t\thello bro
+                 `;
+
+            const result = asSuccess(parse(md, 'C:/readme.md'));
+
+            verifyAsJson(result);
+        });
     });
 });

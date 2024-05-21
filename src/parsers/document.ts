@@ -17,7 +17,7 @@ type ParseResult = {
 const startsWithWhiteSpace = /^\s/;
 const startsWithRn = /^\r\n/;
 const startsWithR = /^\r/;
-const startsWithN = /^\r/;
+const startsWithN = /^\n/;
 const startsWithOpenComment = /^<!--/;
 const startsWithCloseComment = /^-->/;
 
@@ -39,6 +39,9 @@ function isWhiteSpace(value: string, line: number, char: number): ParseResult {
 
     function addLine(expression: RegExp) : void {
         let v: string = (value.match(expression) as any)[0];
+            if(!start) {
+                start = { line, char };
+            }
             current += v;
             value = value.slice(v.length);
             char = 1;
@@ -46,32 +49,26 @@ function isWhiteSpace(value: string, line: number, char: number): ParseResult {
     }
 
     while(0 < value.length) {
-        hasWhiteSpace = startsWithRn.test(value);
-        if(!start && hasWhiteSpace){
+        if(/^\S/.test(value)) {
             return constructResult(current, start, value, line, char);
-        } else if(hasWhiteSpace) {
+        }
+
+        hasWhiteSpace = startsWithRn.test(value);
+        if(hasWhiteSpace) {
             addLine(startsWithRn);
             continue;
         }
         
         hasWhiteSpace = startsWithR.test(value);
-        if(!start && hasWhiteSpace){
-            return constructResult(current, start, value, line, char);
-        } else if(hasWhiteSpace) {
+        if(hasWhiteSpace) {
             addLine(startsWithR);
             continue;
         }
         
         hasWhiteSpace = startsWithN.test(value);
-        if(!start && hasWhiteSpace){
-            return constructResult(current, start, value, line, char);
-        } else if(hasWhiteSpace) {
+        if(hasWhiteSpace) {
             addLine(startsWithN);
             continue;
-        }
-
-        if(/^\S/.test(value)) {
-            return constructResult(current, start, value, line, char);
         }
 
         if(!start) {
