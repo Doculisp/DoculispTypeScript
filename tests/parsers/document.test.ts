@@ -148,4 +148,22 @@ let b = a;
             verifyAsJson(result);
         });
     });
+
+    describe('parsing Doculisp', () => {
+        test('should parse a doculisp block at top of file', () => {
+            const md = '<!-- (dl (# header)) -->';
+
+            const result = parse(md, '_main.md');
+
+            verifyAsJson(result);
+        });
+        
+        test('should parse a doculisp block in the middle of file', () => {
+        const md = '# Title\r\nsome text about title\r\n<!--\r\nSome lisp: (dl (# two)) -->\r\nMickey Mouse Hotline.';
+
+            const result = parse(md, '_main.md');
+
+            verifyAsJson(result);
+        });
+    });
 });

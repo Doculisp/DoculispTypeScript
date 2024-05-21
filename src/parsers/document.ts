@@ -22,11 +22,14 @@ const startsWithOpenComment = /^<!--/;
 const startsWithCloseComment = /^-->/;
 const startsWithInlineMarker = /^`/;
 const startsWithMultilineMarker = /^```/;
+const startsWithDocuLisp = /^\(dl/;
+const startsWithOpenLisp = /^\(/;
+const startsWithCloseLisp = /^\)/;
 
 function documentParse(): Valid<DocumentParser> {
     function parse(value: string, path: string): Result<DocumentMap> {
 
-        function constructTextResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
+        function constructResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
             let r = !!start ? current : "";
             return {
                 result: r,
@@ -55,7 +58,7 @@ function documentParse(): Valid<DocumentParser> {
         
             while(0 < value.length) {
                 if(/^\S/.test(value)) {
-                    return constructTextResult(current, start, value, line, char);
+                    return constructResult(current, start, value, line, char);
                 }
         
                 hasWhiteSpace = startsWithRn.test(value);
@@ -84,11 +87,77 @@ function documentParse(): Valid<DocumentParser> {
                 char++;
             }
         
-            return constructTextResult(current, start, value, line, char);
+            return constructResult(current, start, value, line, char);
+        }
+
+        function isDoculisp(value: string, line: number, char: number): Result<ParseResult> {
+            let start: Point | undefined;
+            let current = "";
+            let depth = 0;
+        
+            while(0 < value.length) {
+                if(startsWithDocuLisp.test(value)) {
+                    if(!start) {
+                        start = { line, char };
+                    } else {
+                        return fail(`Doculisp Block at { line: ${start.line}, char: ${start.char}} contains an embedded doculisp block at { line: ${line}, char: ${char}}.`, path);
+                    }
+
+                    let v: string = (value.match(startsWithDocuLisp) as any)[0];
+                    char += v.length;
+                    value = value.slice(v.length);
+                    depth++;
+                    continue;
+                }
+
+                if(startsWithOpenLisp.test(value)) {
+                    let v: string = (value.match(startsWithOpenLisp) as any)[0];
+                    current += v;
+                    char + v.length;
+                    value = value.slice(v.length);
+                    depth++;
+                    continue;
+                }
+
+                const closes = startsWithCloseLisp.test(value);
+                if(1 < depth && closes) {
+                    let v: string = (value.match(startsWithCloseLisp) as any)[0];
+                    current += v;
+                    char += v.length;
+                    value = value.slice(v.length);
+                    depth--;
+                    continue;
+                } else if (closes) {
+                    let v: string = (value.match(startsWithCloseLisp) as any)[0];
+                    char += v.length;
+                    value = value.slice(v.length);
+                    depth--;
+                    return ok(constructResult(current.trim(), start, value, line, char));
+                }
+
+                if(startsWithWhiteSpace.test(value)) {
+                    let whiteSpace = isWhiteSpace(value, line, char);
+                    if(start) {
+                        current += whiteSpace.result;
+                    }
+
+                    line = whiteSpace.line;
+                    char = whiteSpace.char;
+                    value = whiteSpace.rest;
+                    continue;
+                }
+
+                current += value.charAt(0);
+                value = value.slice(1);
+            }
+
+            start = start as any as Point;
+            return fail(`Doculisp block at { line: ${start.line}, char: ${start.char} } is not closed.`, path);
         }
         
-        function isComment(value: string, line: number, char: number): Result<ParseResult> {
+        function isComment(value: string, line: number, char: number): Result<ParseResult[]> {
             let start: Point | undefined;
+            let results: ParseResult[] = [];
         
             while(0 < value.length) {
                 const hasStart = !!start;
@@ -108,7 +177,19 @@ function documentParse(): Valid<DocumentParser> {
                     let v: string = (value.match(startsWithCloseComment) as any)[0];
                     value = value.slice(v.length);
                     char += v.length;
-                    return ok(constructTextResult("", start, value, line, char));
+                    results[results.length] = constructResult("", undefined, value, line, char)
+                    return ok(results);
+                }
+
+                if(startsWithDocuLisp.test(value)) {
+                    let doculisp = isDoculisp(value, line, char);
+                    if(doculisp.success) {
+                        results[results.length] = doculisp.value;
+                        value = doculisp.value.rest;
+                        continue;
+                    } else {
+                        return fail(doculisp.message, path);
+                    }
                 }
         
                 let hasWhiteSpace = startsWithWhiteSpace.test(value);
@@ -121,7 +202,8 @@ function documentParse(): Valid<DocumentParser> {
                 }
         
                 if(!hasStart){
-                    return ok(constructTextResult("", start, value, line, char));
+                    results[results.length] = constructResult("", undefined, value, line, char)
+                    return ok(results);
                 } else {
                     value = value.slice(1);
                     char++;
@@ -129,7 +211,8 @@ function documentParse(): Valid<DocumentParser> {
             }
         
             if(!start){
-                return ok(constructTextResult("", start, value, line, char));
+                results[results.length] = constructResult("", undefined, value, line, char)
+                return ok(results);
             } else {
                 return fail(`Open HTML Comment at { line: ${start.line}, char: ${start.char} } but does not close.`, path);
             }
@@ -151,7 +234,7 @@ function documentParse(): Valid<DocumentParser> {
                     char += inline.length;
         
                     if(start) {
-                        return ok(constructTextResult(current, start, value, line, char));
+                        return ok(constructResult(current, start, value, line, char));
                     } else {
                         start = { line: l, char: c };
                         continue;
@@ -170,7 +253,7 @@ function documentParse(): Valid<DocumentParser> {
                 }
         
                 if(!start) {
-                    return ok(constructTextResult("", start, value, line, char));
+                    return ok(constructResult("", start, value, line, char));
                 }
         
                 current += value.at(0);
@@ -181,7 +264,7 @@ function documentParse(): Valid<DocumentParser> {
             if(start) {
                 return fail(`Inline code block at { line: ${start.line}, char: ${start.char} } does not close`, path);
             }
-            return ok(constructTextResult(current, start, value, line, char));
+            return ok(constructResult(current, start, value, line, char));
         }
         
         function isMultiline(value: string, line: number, char: number): Result<ParseResult> {
@@ -200,7 +283,7 @@ function documentParse(): Valid<DocumentParser> {
                     char += inline.length;
         
                     if(start) {
-                        return ok(constructTextResult(current, start, value, line, char));
+                        return ok(constructResult(current, start, value, line, char));
                     } else {
                         start = { line: l, char: c };
                         continue;
@@ -216,7 +299,7 @@ function documentParse(): Valid<DocumentParser> {
                 }
         
                 if(!start) {
-                    return ok(constructTextResult("", start, value, line, char));
+                    return ok(constructResult("", start, value, line, char));
                 }
         
                 current += value.at(0);
@@ -228,7 +311,7 @@ function documentParse(): Valid<DocumentParser> {
                 return fail(`Multiline code block at { line: ${start.line}, char: ${start.char} } does not close`, path);
             }
         
-            return ok(constructTextResult(current, start, value, line, char));
+            return ok(constructResult(current, start, value, line, char));
         }
         
         function isWord(value: string, line: number, char: number): Result<ParseResult> {
@@ -238,7 +321,7 @@ function documentParse(): Valid<DocumentParser> {
             while(0 < value.length) {
                 let hasWhiteSpace = startsWithWhiteSpace.test(value);
                 if(!start && hasWhiteSpace) {
-                    return ok(constructTextResult(current, start, value, line, char));
+                    return ok(constructResult(current, start, value, line, char));
                 } else if (hasWhiteSpace) {
                     const whiteSpace = isWhiteSpace(value, line, char);
                     current += whiteSpace.result;
@@ -249,7 +332,7 @@ function documentParse(): Valid<DocumentParser> {
                 }
         
                 if(startsWithOpenComment.test(value)) {
-                    return ok(constructTextResult(current.trim(), start, value, line, char));
+                    return ok(constructResult(current.trim(), start, value, line, char));
                 }
         
                 if(startsWithMultilineMarker.test(value)) {
@@ -293,7 +376,7 @@ function documentParse(): Valid<DocumentParser> {
                 char++;
             }
         
-            return ok(constructTextResult(current.trim(), start, value, line, char));
+            return ok(constructResult(current.trim(), start, value, line, char));
         }
 
         if(0 === value.length) {
@@ -316,12 +399,21 @@ function documentParse(): Valid<DocumentParser> {
             if(startsWithOpenComment.test(value)) {
                 let comment = isComment(value, line, char);
                 if(comment.success) {
-                    v = comment.value;
-                    if(v.start) {
-                        value = v.rest;
-                        line = v.line;
-                        char = v.char;
-                    }
+                    comment.value.forEach(element => {
+                        if(element.start) {
+                            current[current.length] = {
+                                location: { line: element.start.line, char: element.start.char, documentPath: path },
+                                text: element.result,
+                                type: "lisp",
+                            };
+                        }
+                        if(element.rest.length < value.length) {
+                            value = element.rest;
+                            char = element.char;
+                            line = element.line;
+                        }
+                    });
+                    continue;
                 } else {
                     return fail(comment.message, path);
                 }
