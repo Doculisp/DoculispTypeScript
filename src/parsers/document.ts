@@ -23,278 +23,279 @@ const startsWithCloseComment = /^-->/;
 const startsWithInlineMarker = /^`/;
 const startsWithMultilineMarker = /^```/;
 
-function constructTextResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
-    let r = !!start ? current : "";
-    return {
-        result: r,
-        rest: rest,
-        line: line,
-        char: char,
-        start: start,
-    };
-}
+function documentParse(): Valid<DocumentParser> {
+    function parse(value: string, path: string): Result<DocumentMap> {
 
-function isWhiteSpace(value: string, line: number, char: number): ParseResult {
-    let current = "";
-    let start: Point | undefined;
-    let hasWhiteSpace: boolean = false;
-
-    function addLine(expression: RegExp) : void {
-        let v: string = (value.match(expression) as any)[0];
-            if(!start) {
-                start = { line, char };
+        function constructTextResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
+            let r = !!start ? current : "";
+            return {
+                result: r,
+                rest: rest,
+                line: line,
+                char: char,
+                start: start,
+            };
+        }
+        
+        function isWhiteSpace(value: string, line: number, char: number): ParseResult {
+            let current = "";
+            let start: Point | undefined;
+            let hasWhiteSpace: boolean = false;
+        
+            function addLine(expression: RegExp) : void {
+                let v: string = (value.match(expression) as any)[0];
+                    if(!start) {
+                        start = { line, char };
+                    }
+                    current += v;
+                    value = value.slice(v.length);
+                    char = 1;
+                    line++;
             }
-            current += v;
-            value = value.slice(v.length);
-            char = 1;
-            line++;
-    }
-
-    while(0 < value.length) {
-        if(/^\S/.test(value)) {
+        
+            while(0 < value.length) {
+                if(/^\S/.test(value)) {
+                    return constructTextResult(current, start, value, line, char);
+                }
+        
+                hasWhiteSpace = startsWithRn.test(value);
+                if(hasWhiteSpace) {
+                    addLine(startsWithRn);
+                    continue;
+                }
+                
+                hasWhiteSpace = startsWithR.test(value);
+                if(hasWhiteSpace) {
+                    addLine(startsWithR);
+                    continue;
+                }
+                
+                hasWhiteSpace = startsWithN.test(value);
+                if(hasWhiteSpace) {
+                    addLine(startsWithN);
+                    continue;
+                }
+        
+                if(!start) {
+                    start = { line, char };
+                }
+                current += value.charAt(0);
+                value = value.slice(1);
+                char++;
+            }
+        
             return constructTextResult(current, start, value, line, char);
         }
-
-        hasWhiteSpace = startsWithRn.test(value);
-        if(hasWhiteSpace) {
-            addLine(startsWithRn);
-            continue;
+        
+        function isComment(value: string, line: number, char: number): Result<ParseResult> {
+            let start: Point | undefined;
+        
+            while(0 < value.length) {
+                const hasStart = !!start;
+                let hasOpenComment = startsWithOpenComment.test(value);
+                if(hasOpenComment) {
+                    let v: string = (value.match(startsWithOpenComment) as any)[0];
+                    if (!hasStart){
+                        start = { line, char };
+                    }
+                    value = value.slice(v.length);
+                    char += v.length;
+                    continue;
+                }
+        
+                let hasCloseComment = startsWithCloseComment.test(value);
+                if(hasStart && hasCloseComment) {
+                    let v: string = (value.match(startsWithCloseComment) as any)[0];
+                    value = value.slice(v.length);
+                    char += v.length;
+                    return ok(constructTextResult("", start, value, line, char));
+                }
+        
+                let hasWhiteSpace = startsWithWhiteSpace.test(value);
+                if(hasWhiteSpace) {
+                    let whiteSpace = isWhiteSpace(value, line, char);
+                    value = whiteSpace.rest;
+                    line = whiteSpace.line;
+                    char = whiteSpace.char;
+                    continue;
+                }
+        
+                if(!hasStart){
+                    return ok(constructTextResult("", start, value, line, char));
+                } else {
+                    value = value.slice(1);
+                    char++;
+                }
+            }
+        
+            if(!start){
+                return ok(constructTextResult("", start, value, line, char));
+            } else {
+                return fail(`Open HTML Comment at { line: ${line}, char: ${char} } but no close`, path);
+            }
         }
         
-        hasWhiteSpace = startsWithR.test(value);
-        if(hasWhiteSpace) {
-            addLine(startsWithR);
-            continue;
-        }
+        function isInline(value: string, line: number, char: number): Result<ParseResult> {
+            let current = "";
+            let start: Point | undefined;
         
-        hasWhiteSpace = startsWithN.test(value);
-        if(hasWhiteSpace) {
-            addLine(startsWithN);
-            continue;
-        }
-
-        if(!start) {
-            start = { line, char };
-        }
-        current += value.charAt(0);
-        value = value.slice(1);
-        char++;
-    }
-
-    return constructTextResult(current, start, value, line, char);
-}
-
-function isComment(value: string, line: number, char: number): Result<ParseResult> {
-    let start: Point | undefined;
-
-    while(0 < value.length) {
-        const hasStart = !!start;
-        let hasOpenComment = startsWithOpenComment.test(value);
-        if(hasOpenComment) {
-            let v: string = (value.match(startsWithOpenComment) as any)[0];
-            if (!hasStart){
-                start = { line, char };
+            while(0 < value.length) {
+                let inLineMarkerFound = startsWithInlineMarker.test(value);
+                if(inLineMarkerFound) {
+                    const inline: string = (value.match(startsWithInlineMarker) as any)[0];
+                    
+                    current += inline;
+                    value = value.slice(inline.length);
+                    let l = line;
+                    let c = char;
+                    char += inline.length;
+        
+                    if(start) {
+                        return ok(constructTextResult(current, start, value, line, char));
+                    } else {
+                        start = { line: l, char: c };
+                        continue;
+                    }
+                }
+        
+                if(startsWithWhiteSpace.test(value)) {
+                    let whiteSpace = isWhiteSpace(value, line, char);
+                    if(start && line != whiteSpace.line) {
+                        return fail(`Inline code block at { line: ${line}, char: ${char} } contains a new line before closing.`, path);
+                    }
+                    current += whiteSpace.result;
+                    value = whiteSpace.rest;
+                    char = whiteSpace.char;
+                    continue;
+                }
+        
+                if(!start) {
+                    return ok(constructTextResult("", start, value, line, char));
+                }
+        
+                current += value.at(0);
+                value = value.slice(1);
+                char = char++;
             }
-            value = value.slice(v.length);
-            char += v.length;
-            continue;
-        }
-
-        let hasCloseComment = startsWithCloseComment.test(value);
-        if(hasStart && hasCloseComment) {
-            let v: string = (value.match(startsWithCloseComment) as any)[0];
-            value = value.slice(v.length);
-            char += v.length;
-            return ok(constructTextResult("", start, value, line, char));
-        }
-
-        let hasWhiteSpace = startsWithWhiteSpace.test(value);
-        if(hasWhiteSpace) {
-            let whiteSpace = isWhiteSpace(value, line, char);
-            value = whiteSpace.rest;
-            line = whiteSpace.line;
-            char = whiteSpace.char;
-            continue;
-        }
-
-        if(!hasStart){
-            return ok(constructTextResult("", start, value, line, char));
-        } else {
-            value = value.slice(1);
-            char++;
-        }
-    }
-
-    if(!start){
-        return ok(constructTextResult("", start, value, line, char));
-    } else {
-        return fail(`Open HTML Comment at { line: ${line}, char: ${char} } but no close`);
-    }
-}
-
-function isInline(value: string, line: number, char: number): Result<ParseResult> {
-    let current = "";
-    let start: Point | undefined;
-
-    while(0 < value.length) {
-        let inLineMarkerFound = startsWithInlineMarker.test(value);
-        if(inLineMarkerFound) {
-            const inline: string = (value.match(startsWithInlineMarker) as any)[0];
-            
-            current += inline;
-            value = value.slice(inline.length);
-            let l = line;
-            let c = char;
-            char += inline.length;
-
+        
             if(start) {
-                return ok(constructTextResult(current, start, value, line, char));
-            } else {
-                start = { line: l, char: c };
-                continue;
+                return fail(`Inline code block at { line: ${line}, char: ${char} } does not close`, path);
             }
-        }
-
-        if(startsWithWhiteSpace.test(value)) {
-            let whiteSpace = isWhiteSpace(value, line, char);
-            if(start && line != whiteSpace.line) {
-                return fail(`Inline code block at { line: ${line}, char: ${char} } contains a new line before closing.`);
-            }
-            current += whiteSpace.result;
-            value = whiteSpace.rest;
-            char = whiteSpace.char;
-            continue;
-        }
-
-        if(!start) {
-            return ok(constructTextResult("", start, value, line, char));
-        }
-
-        current += value.at(0);
-        value = value.slice(1);
-        char = char++;
-    }
-
-    if(start) {
-        return fail(`Inline code block at { line: ${line}, char: ${char} } does not close`);
-    }
-    return ok(constructTextResult(current, start, value, line, char));
-}
-
-function isMultiline(value: string, line: number, char: number): Result<ParseResult> {
-    let current = "";
-    let start: Point | undefined;
-
-    while(0 < value.length) {
-        let inLineMarkerFound = startsWithMultilineMarker.test(value);
-        if(inLineMarkerFound) {
-            const inline: string = (value.match(startsWithMultilineMarker) as any)[0];
-            
-            current += inline;
-            value = value.slice(inline.length);
-            let l = line;
-            let c = char;
-            char += inline.length;
-
-            if(start) {
-                return ok(constructTextResult(current, start, value, line, char));
-            } else {
-                start = { line: l, char: c };
-                continue;
-            }
-        }
-
-        if(startsWithWhiteSpace.test(value)) {
-            let whiteSpace = isWhiteSpace(value, line, char);
-            current += whiteSpace.result;
-            value = whiteSpace.rest;
-            char = whiteSpace.char;
-            continue;
-        }
-
-        if(!start) {
-            return ok(constructTextResult("", start, value, line, char));
-        }
-
-        current += value.at(0);
-        value = value.slice(1);
-        char = char++;
-    }
-
-    if(start) {
-        return fail(`Multiline code block at { line: ${line}, char: ${char} } does not close`);
-    }
-
-    return ok(constructTextResult(current, start, value, line, char));
-}
-
-function isWord(value: string, line: number, char: number): Result<ParseResult> {
-    let current = "";
-    let start: Point | undefined;
-
-    while(0 < value.length) {
-        let hasWhiteSpace = startsWithWhiteSpace.test(value);
-        if(!start && hasWhiteSpace) {
             return ok(constructTextResult(current, start, value, line, char));
-        } else if (hasWhiteSpace) {
-            const whiteSpace = isWhiteSpace(value, line, char);
-            current += whiteSpace.result;
-            value = whiteSpace.rest;
-            line = whiteSpace.line;
-            char = whiteSpace.char;
-            continue;
         }
-
-        if(startsWithOpenComment.test(value)) {
+        
+        function isMultiline(value: string, line: number, char: number): Result<ParseResult> {
+            let current = "";
+            let start: Point | undefined;
+        
+            while(0 < value.length) {
+                let inLineMarkerFound = startsWithMultilineMarker.test(value);
+                if(inLineMarkerFound) {
+                    const inline: string = (value.match(startsWithMultilineMarker) as any)[0];
+                    
+                    current += inline;
+                    value = value.slice(inline.length);
+                    let l = line;
+                    let c = char;
+                    char += inline.length;
+        
+                    if(start) {
+                        return ok(constructTextResult(current, start, value, line, char));
+                    } else {
+                        start = { line: l, char: c };
+                        continue;
+                    }
+                }
+        
+                if(startsWithWhiteSpace.test(value)) {
+                    let whiteSpace = isWhiteSpace(value, line, char);
+                    current += whiteSpace.result;
+                    value = whiteSpace.rest;
+                    char = whiteSpace.char;
+                    continue;
+                }
+        
+                if(!start) {
+                    return ok(constructTextResult("", start, value, line, char));
+                }
+        
+                current += value.at(0);
+                value = value.slice(1);
+                char = char++;
+            }
+        
+            if(start) {
+                return fail(`Multiline code block at { line: ${line}, char: ${char} } does not close`, path);
+            }
+        
+            return ok(constructTextResult(current, start, value, line, char));
+        }
+        
+        function isWord(value: string, line: number, char: number): Result<ParseResult> {
+            let current = "";
+            let start: Point | undefined;
+        
+            while(0 < value.length) {
+                let hasWhiteSpace = startsWithWhiteSpace.test(value);
+                if(!start && hasWhiteSpace) {
+                    return ok(constructTextResult(current, start, value, line, char));
+                } else if (hasWhiteSpace) {
+                    const whiteSpace = isWhiteSpace(value, line, char);
+                    current += whiteSpace.result;
+                    value = whiteSpace.rest;
+                    line = whiteSpace.line;
+                    char = whiteSpace.char;
+                    continue;
+                }
+        
+                if(startsWithOpenComment.test(value)) {
+                    return ok(constructTextResult(current.trim(), start, value, line, char));
+                }
+        
+                if(startsWithMultilineMarker.test(value)) {
+                    let multiline = isMultiline(value, line, char);
+                    if(multiline.success) {
+                        let v = multiline.value;
+                        current += v.result;
+                        value = v.rest;
+                        line = v.line;
+                        char = v.char;
+                        if(!start) {
+                            start = v.start;
+                        }
+                    } else {
+                        return fail(multiline.message, path);
+                    }
+                }
+        
+                if(startsWithInlineMarker.test(value)) {
+                    let inline = isInline(value, line, char);
+                    if(inline.success) {
+                        let v = inline.value;
+                        current += v.result;
+                        value = v.rest;
+                        line = v.line;
+                        char = v.char;
+                        if(!start) {
+                            start = v.start;
+                        }
+                        continue;
+                    } else {
+                        return fail(inline.message, path);
+                    }
+                }
+        
+                if(!start) {
+                    start = { line, char };
+                }
+                current += value.charAt(0);
+                value = value.slice(1);
+                char++;
+            }
+        
             return ok(constructTextResult(current.trim(), start, value, line, char));
         }
 
-        if(startsWithMultilineMarker.test(value)) {
-            let multiline = isMultiline(value, line, char);
-            if(multiline.success) {
-                let v = multiline.value;
-                current += v.result;
-                value = v.rest;
-                line = v.line;
-                char = v.char;
-                if(!start) {
-                    start = v.start;
-                }
-            } else {
-                return fail(multiline.message);
-            }
-        }
-
-        if(startsWithInlineMarker.test(value)) {
-            let inline = isInline(value, line, char);
-            if(inline.success) {
-                let v = inline.value;
-                current += v.result;
-                value = v.rest;
-                line = v.line;
-                char = v.char;
-                if(!start) {
-                    start = v.start;
-                }
-                continue;
-            } else {
-                return fail(inline.message);
-            }
-        }
-
-        if(!start) {
-            start = { line, char };
-        }
-        current += value.charAt(0);
-        value = value.slice(1);
-        char++;
-    }
-
-    return ok(constructTextResult(current.trim(), start, value, line, char));
-}
-
-function documentParse(): Valid<DocumentParser> {
-    function parse(value: string, path: string): Result<DocumentMap> {
         if(0 === value.length) {
             return ok([]);
         }
@@ -322,7 +323,7 @@ function documentParse(): Valid<DocumentParser> {
                         char = v.char;
                     }
                 } else {
-                    return fail(comment.message);
+                    return fail(comment.message, path);
                 }
                 continue;
             }
@@ -333,7 +334,7 @@ function documentParse(): Valid<DocumentParser> {
                 if(v.start) {
                     value = v.rest;
                     current[current.length] = {
-                        location: { line, char, document: path },
+                        location: { line, char, documentPath: path },
                         text: v.result,
                         type: "text",
                     };
@@ -342,10 +343,10 @@ function documentParse(): Valid<DocumentParser> {
                     continue;
                 }
             } else {
-                return fail(word.message);
+                return fail(word.message, path);
             }
 
-            return fail(`unknown value "${value}"`);
+            return fail(`unknown value "${value}"`, path);
         }
 
         return ok(current);

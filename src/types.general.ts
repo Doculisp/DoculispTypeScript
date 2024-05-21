@@ -1,7 +1,7 @@
 export interface ILocation {
     line: number;
     char: number;
-    document: string;
+    documentPath: string;
 };
 
 export interface ISuccess<T> {
@@ -11,6 +11,7 @@ export interface ISuccess<T> {
 
 export interface IFail {
     message: string;
+    documentPath: string;
     success: false;
 };
 
@@ -23,9 +24,10 @@ export function ok<T>(value: T) : Result<T> {
     };
 };
 
-export function fail(message: string) : Result<any> {
+export function fail(message: string, documentPath: string) : Result<any> {
     return {
         message,
-        success: false
+        documentPath,
+        success: false,
     };
 };

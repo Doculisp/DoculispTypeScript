@@ -4,7 +4,7 @@
       "location": {
         "line": 1,
         "char": 1,
-        "document": "C:/markdown/multiline.md"
+        "documentPath": "C:/markdown/multiline.md"
       },
       "text": "An example of an markdown document with html comments:\n```markdown\n# A document\n\n<!-- this need\na summary\n-->\n\n## Sub section title\n```",
       "type": "text"
