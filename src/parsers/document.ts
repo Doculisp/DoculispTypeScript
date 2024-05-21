@@ -2,11 +2,14 @@ import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser } from "../types.document";
 import { Result, fail, ok } from "../types.general";
 
+type Point = { line: number; char: number; }
+
 type ParseResult = {
-    result: string | undefined;
+    result: string;
     rest: string;
     line: number;
     char: number;
+    start: Point | undefined;
 }
 
 type ParseFunction = (value: string, line: number, char: number) => ParseResult;
@@ -14,23 +17,28 @@ type ParseFunction = (value: string, line: number, char: number) => ParseResult;
 const startsWithWhiteSpace = /^\s+/;
 const startsWithWord = /^\w([\w\s]*\w)*/;
 
-function constructResult(current: string, rest: string, line: number, char: number): ParseResult {
-    let r = 0 < current.length ? current : undefined;
+function constructResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
+    let r = !!start ? current : "";
     return {
         result: r,
         rest: rest,
         line: line,
         char: char,
+        start: start,
     };
 }
 
 function is(expression: RegExp): ParseFunction {
     return function isThing(value: string, line: number, char: number): ParseResult {
         let current = "";
+        let start: Point | undefined;
     
         while(0 < value.length) {
             let match = value.match(expression);
             if(match) {
+                if(!start) {
+                    start = { line, char};
+                }
                 let v = match[0];
                 current += v;
                 value = value.slice(v.length);
@@ -38,10 +46,10 @@ function is(expression: RegExp): ParseFunction {
                 continue;
             }
     
-            return constructResult(current, value, line, char);
+            return constructResult(current, start, value, line, char);
         }
     
-        return constructResult(current, value, line, char);
+        return constructResult(current, start, value, line, char);
     };
 }
 
@@ -60,7 +68,7 @@ function documentParse(): Valid<DocumentParser> {
 
         while (0 < value.length) {
             let v = isWhiteSpace(value, line, char);
-            if(v.result) {
+            if(v.start) {
                 value = v.rest;
                 line = v.line;
                 char = v.char;
@@ -68,7 +76,7 @@ function documentParse(): Valid<DocumentParser> {
             }
 
             v = isWord(value, line, char);
-            if(v.result) {
+            if(v.start) {
                 value = v.rest;
                 current[current.length] = {
                     location: { line, char, document: path },
