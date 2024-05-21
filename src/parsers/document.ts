@@ -15,8 +15,9 @@ type ParseResult = {
 // type ParseFunction = (value: string, line: number, char: number) => ParseResult;
 
 const startsWithWhiteSpace = /^\s/;
-const startsWithWord = /^\w([\w\s]*\w)*/;
-
+const startsWithRn = /^\r\n/;
+const startsWithR = /^\r/;
+const startsWithN = /^\r/;
 function constructResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
     let r = !!start ? current : "";
     return {
@@ -31,44 +32,111 @@ function constructResult(current: string, start: Point | undefined, rest: string
 function isWord(value: string, line: number, char: number): ParseResult {
     let current = "";
     let start: Point | undefined;
+    let hasWhiteSpace: boolean = false;
+
+    function addLine(expression: RegExp) : void {
+        let v: string = (value.match(expression) as any)[0];
+            current += v;
+            value = value.slice(v.length);
+            char = 0;
+            line++;
+    }
 
     while(0 < value.length) {
-        let match = value.match(startsWithWord);
-        if(match) {
-            if(!start) {
-                start = { line, char};
-            }
-            let v = match[0];
+        hasWhiteSpace = startsWithRn.test(value);
+        if(!start && hasWhiteSpace){
+            return constructResult(current, start, value, line, char);
+        } else if(hasWhiteSpace) {
+            addLine(startsWithRn);
+            continue;
+        }
+        
+        hasWhiteSpace = startsWithR.test(value);
+        if(!start && hasWhiteSpace){
+            return constructResult(current, start, value, line, char);
+        } else if(hasWhiteSpace) {
+            addLine(startsWithR);
+            continue;
+        }
+        
+        hasWhiteSpace = startsWithN.test(value);
+        if(!start && hasWhiteSpace){
+            return constructResult(current, start, value, line, char);
+        } else if(hasWhiteSpace) {
+            addLine(startsWithN);
+            continue;
+        }
+
+        hasWhiteSpace = startsWithWhiteSpace.test(value);
+        if(!start && hasWhiteSpace) {
+            return constructResult(current, start, value, line, char);
+        } else if (hasWhiteSpace) {
+            let v: string = (value.match(startsWithWhiteSpace) as any)[0];
             current += v;
             value = value.slice(v.length);
             char += v.length;
             continue;
         }
 
-        return constructResult(current, start, value, line, char);
+        if(!start) {
+            start = { line, char };
+        }
+        current += value.charAt(0);
+        value = value.slice(1);
+        char++;
     }
 
-    return constructResult(current, start, value, line, char);
+    return constructResult(current.trim(), start, value, line, char);
 }
 
 function isWhiteSpace(value: string, line: number, char: number): ParseResult {
     let current = "";
     let start: Point | undefined;
+    let hasWhiteSpace: boolean = false;
 
-    while(0 < value.length) {
-        let match = value.match(startsWithWhiteSpace);
-        if(match) {
-            if(!start) {
-                start = { line, char};
-            }
-            let v = match[0];
+    function addLine(expression: RegExp) : void {
+        let v: string = (value.match(expression) as any)[0];
             current += v;
             value = value.slice(v.length);
-            char += v.length;
+            char = 1;
+            line++;
+    }
+
+    while(0 < value.length) {
+        hasWhiteSpace = startsWithRn.test(value);
+        if(!start && hasWhiteSpace){
+            return constructResult(current, start, value, line, char);
+        } else if(hasWhiteSpace) {
+            addLine(startsWithRn);
+            continue;
+        }
+        
+        hasWhiteSpace = startsWithR.test(value);
+        if(!start && hasWhiteSpace){
+            return constructResult(current, start, value, line, char);
+        } else if(hasWhiteSpace) {
+            addLine(startsWithR);
+            continue;
+        }
+        
+        hasWhiteSpace = startsWithN.test(value);
+        if(!start && hasWhiteSpace){
+            return constructResult(current, start, value, line, char);
+        } else if(hasWhiteSpace) {
+            addLine(startsWithN);
             continue;
         }
 
-        return constructResult(current, start, value, line, char);
+        if(/^\S/.test(value)) {
+            return constructResult(current, start, value, line, char);
+        }
+
+        if(!start) {
+            start = { line, char };
+        }
+        current += value.charAt(0);
+        value = value.slice(1);
+        char++;
     }
 
     return constructResult(current, start, value, line, char);
