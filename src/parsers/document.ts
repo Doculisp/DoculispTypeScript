@@ -32,49 +32,17 @@ function constructResult(current: string, start: Point | undefined, rest: string
 function isWord(value: string, line: number, char: number): ParseResult {
     let current = "";
     let start: Point | undefined;
-    let hasWhiteSpace: boolean = false;
-
-    function addLine(expression: RegExp) : void {
-        let v: string = (value.match(expression) as any)[0];
-            current += v;
-            value = value.slice(v.length);
-            char = 0;
-            line++;
-    }
 
     while(0 < value.length) {
-        hasWhiteSpace = startsWithRn.test(value);
-        if(!start && hasWhiteSpace){
-            return constructResult(current, start, value, line, char);
-        } else if(hasWhiteSpace) {
-            addLine(startsWithRn);
-            continue;
-        }
-        
-        hasWhiteSpace = startsWithR.test(value);
-        if(!start && hasWhiteSpace){
-            return constructResult(current, start, value, line, char);
-        } else if(hasWhiteSpace) {
-            addLine(startsWithR);
-            continue;
-        }
-        
-        hasWhiteSpace = startsWithN.test(value);
-        if(!start && hasWhiteSpace){
-            return constructResult(current, start, value, line, char);
-        } else if(hasWhiteSpace) {
-            addLine(startsWithN);
-            continue;
-        }
-
-        hasWhiteSpace = startsWithWhiteSpace.test(value);
+        let hasWhiteSpace = startsWithWhiteSpace.test(value);
         if(!start && hasWhiteSpace) {
             return constructResult(current, start, value, line, char);
         } else if (hasWhiteSpace) {
-            let v: string = (value.match(startsWithWhiteSpace) as any)[0];
-            current += v;
-            value = value.slice(v.length);
-            char += v.length;
+            const whiteSpace = isWhiteSpace(value, line, char);
+            current += whiteSpace.result;
+            value = whiteSpace.rest;
+            line = whiteSpace.line;
+            char = whiteSpace.char;
             continue;
         }
 
