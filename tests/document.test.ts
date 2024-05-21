@@ -110,5 +110,42 @@ a summary
 
             verifyAsJson(result);
         });
+
+        test('should fail to parse if html comment is not closed', () => {
+            let md = `<!--
+Hello
+World
+Boom
+`;
+            const result = parse(md, 'C:/examples/bad.md');
+
+            verifyAsJson(result);
+        });
+
+        test('should fail if inline code block does not close', () => {
+            let md = '`let b = 7';
+
+            const result = parse(md, 'C:/bad/noCloseInline.md');
+
+            verifyAsJson(result);
+        });
+
+        test('should fail to parse an inline code block with a line break', () => {
+            let md = `\`let a = 0;
+let b = a;
+\``;
+
+            const result = parse(md, 'C:/examples/badInline.md');
+
+            verifyAsJson(result);
+        });
+
+        test('should fail to parse a multiline code block that does not close', () => {
+            let md = '```\nlet a = "hello;\nlet b = "world"\nconsole.log(a + " " + b);\n';
+
+            const result = parse(md, 'C:/bad/examples/multiline.md');
+
+            verifyAsJson(result);
+        });
     });
 });

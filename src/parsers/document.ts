@@ -131,7 +131,7 @@ function documentParse(): Valid<DocumentParser> {
             if(!start){
                 return ok(constructTextResult("", start, value, line, char));
             } else {
-                return fail(`Open HTML Comment at { line: ${line}, char: ${char} } but no close`, path);
+                return fail(`Open HTML Comment at { line: ${start.line}, char: ${start.char} } but does not close.`, path);
             }
         }
         
@@ -161,7 +161,7 @@ function documentParse(): Valid<DocumentParser> {
                 if(startsWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(start && line != whiteSpace.line) {
-                        return fail(`Inline code block at { line: ${line}, char: ${char} } contains a new line before closing.`, path);
+                        return fail(`Inline code block at { line: ${start.line}, char: ${start.char} } contains a new line before closing.`, path);
                     }
                     current += whiteSpace.result;
                     value = whiteSpace.rest;
@@ -179,7 +179,7 @@ function documentParse(): Valid<DocumentParser> {
             }
         
             if(start) {
-                return fail(`Inline code block at { line: ${line}, char: ${char} } does not close`, path);
+                return fail(`Inline code block at { line: ${start.line}, char: ${start.char} } does not close`, path);
             }
             return ok(constructTextResult(current, start, value, line, char));
         }
@@ -225,7 +225,7 @@ function documentParse(): Valid<DocumentParser> {
             }
         
             if(start) {
-                return fail(`Multiline code block at { line: ${line}, char: ${char} } does not close`, path);
+                return fail(`Multiline code block at { line: ${start.line}, char: ${start.char} } does not close`, path);
             }
         
             return ok(constructTextResult(current, start, value, line, char));
