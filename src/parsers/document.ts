@@ -20,7 +20,8 @@ const startsWithR = /^\r/;
 const startsWithN = /^\n/;
 const startsWithOpenComment = /^<!--/;
 const startsWithCloseComment = /^-->/;
-const startsWithInLineMarker = /^`/;
+const startsWithInlineMarker = /^`/;
+const startsWithMultilineMarker = /^```/;
 
 function constructTextResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
     let r = !!start ? current : "";
@@ -136,9 +137,9 @@ function isInline(value: string, line: number, char: number): Result<ParseResult
     let start: Point | undefined;
 
     while(0 < value.length) {
-        let inLineMarkerFound = startsWithInLineMarker.test(value);
+        let inLineMarkerFound = startsWithInlineMarker.test(value);
         if(inLineMarkerFound) {
-            const inline: string = (value.match(startsWithInLineMarker) as any)[0];
+            const inline: string = (value.match(startsWithInlineMarker) as any)[0];
             
             current += inline;
             value = value.slice(inline.length);
@@ -180,6 +181,53 @@ function isInline(value: string, line: number, char: number): Result<ParseResult
     return ok(constructTextResult(current, start, value, line, char));
 }
 
+function isMultiline(value: string, line: number, char: number): Result<ParseResult> {
+    let current = "";
+    let start: Point | undefined;
+
+    while(0 < value.length) {
+        let inLineMarkerFound = startsWithMultilineMarker.test(value);
+        if(inLineMarkerFound) {
+            const inline: string = (value.match(startsWithMultilineMarker) as any)[0];
+            
+            current += inline;
+            value = value.slice(inline.length);
+            let l = line;
+            let c = char;
+            char += inline.length;
+
+            if(start) {
+                return ok(constructTextResult(current, start, value, line, char));
+            } else {
+                start = { line: l, char: c };
+                continue;
+            }
+        }
+
+        if(startsWithWhiteSpace.test(value)) {
+            let whiteSpace = isWhiteSpace(value, line, char);
+            current += whiteSpace.result;
+            value = whiteSpace.rest;
+            char = whiteSpace.char;
+            continue;
+        }
+
+        if(!start) {
+            return ok(constructTextResult("", start, value, line, char));
+        }
+
+        current += value.at(0);
+        value = value.slice(1);
+        char = char++;
+    }
+
+    if(start) {
+        return fail(`Multiline code block at { line: ${line}, char: ${char} } does not close`);
+    }
+
+    return ok(constructTextResult(current, start, value, line, char));
+}
+
 function isWord(value: string, line: number, char: number): Result<ParseResult> {
     let current = "";
     let start: Point | undefined;
@@ -201,7 +249,23 @@ function isWord(value: string, line: number, char: number): Result<ParseResult> 
             return ok(constructTextResult(current.trim(), start, value, line, char));
         }
 
-        if(startsWithInLineMarker.test(value)) {
+        if(startsWithMultilineMarker.test(value)) {
+            let multiline = isMultiline(value, line, char);
+            if(multiline.success) {
+                let v = multiline.value;
+                current += v.result;
+                value = v.rest;
+                line = v.line;
+                char = v.char;
+                if(!start) {
+                    start = v.start;
+                }
+            } else {
+                return fail(multiline.message);
+            }
+        }
+
+        if(startsWithInlineMarker.test(value)) {
             let inline = isInline(value, line, char);
             if(inline.success) {
                 let v = inline.value;

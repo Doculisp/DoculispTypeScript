@@ -95,5 +95,22 @@ world`;
 
             verifyAsJson(result);
         });
+
+        test('should parse html comments inside a multiline code block', () => {
+            const md = `An example of an markdown document with html comments:
+\`\`\`markdown
+# A document
+
+<!-- this need
+a summary
+-->
+
+## Sub section title
+\`\`\`
+`;
+            const result = parse(md, 'C:/markdown/multiline.md');
+
+            verifyAsJson(result);
+        });
     });
 });
