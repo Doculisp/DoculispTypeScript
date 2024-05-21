@@ -87,5 +87,13 @@ world`;
 
             verifyAsJson(result);
         });
+
+        test('should parse html comments inside an inline code block', () => {
+            const md = '`<!-- an example html comment -->`';
+
+            const result = parse(md, 'C:/html/inline.md');
+
+            verifyAsJson(result);
+        });
     });
 });

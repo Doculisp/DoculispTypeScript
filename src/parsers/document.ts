@@ -20,8 +20,9 @@ const startsWithR = /^\r/;
 const startsWithN = /^\n/;
 const startsWithOpenComment = /^<!--/;
 const startsWithCloseComment = /^-->/;
+const startsWithInLineMarker = /^`/;
 
-function constructResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
+function constructTextResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
     let r = !!start ? current : "";
     return {
         result: r,
@@ -50,7 +51,7 @@ function isWhiteSpace(value: string, line: number, char: number): ParseResult {
 
     while(0 < value.length) {
         if(/^\S/.test(value)) {
-            return constructResult(current, start, value, line, char);
+            return constructTextResult(current, start, value, line, char);
         }
 
         hasWhiteSpace = startsWithRn.test(value);
@@ -79,7 +80,7 @@ function isWhiteSpace(value: string, line: number, char: number): ParseResult {
         char++;
     }
 
-    return constructResult(current, start, value, line, char);
+    return constructTextResult(current, start, value, line, char);
 }
 
 function isComment(value: string, line: number, char: number): Result<ParseResult> {
@@ -103,7 +104,7 @@ function isComment(value: string, line: number, char: number): Result<ParseResul
             let v: string = (value.match(startsWithCloseComment) as any)[0];
             value = value.slice(v.length);
             char += v.length;
-            return ok(constructResult("", start, value, line, char));
+            return ok(constructTextResult("", start, value, line, char));
         }
 
         let hasWhiteSpace = startsWithWhiteSpace.test(value);
@@ -116,7 +117,7 @@ function isComment(value: string, line: number, char: number): Result<ParseResul
         }
 
         if(!hasStart){
-            return ok(constructResult("", start, value, line, char));
+            return ok(constructTextResult("", start, value, line, char));
         } else {
             value = value.slice(1);
             char++;
@@ -124,20 +125,69 @@ function isComment(value: string, line: number, char: number): Result<ParseResul
     }
 
     if(!start){
-        return ok(constructResult("", start, value, line, char));
+        return ok(constructTextResult("", start, value, line, char));
     } else {
         return fail(`Open HTML Comment at { line: ${line}, char: ${char} } but no close`);
     }
 }
 
-function isWord(value: string, line: number, char: number): ParseResult {
+function isInline(value: string, line: number, char: number): Result<ParseResult> {
+    let current = "";
+    let start: Point | undefined;
+
+    while(0 < value.length) {
+        let inLineMarkerFound = startsWithInLineMarker.test(value);
+        if(inLineMarkerFound) {
+            const inline: string = (value.match(startsWithInLineMarker) as any)[0];
+            
+            current += inline;
+            value = value.slice(inline.length);
+            let l = line;
+            let c = char;
+            char += inline.length;
+
+            if(start) {
+                return ok(constructTextResult(current, start, value, line, char));
+            } else {
+                start = { line: l, char: c };
+                continue;
+            }
+        }
+
+        if(startsWithWhiteSpace.test(value)) {
+            let whiteSpace = isWhiteSpace(value, line, char);
+            if(start && line != whiteSpace.line) {
+                return fail(`Inline code block at { line: ${line}, char: ${char} } contains a new line before closing.`);
+            }
+            current += whiteSpace.result;
+            value = whiteSpace.rest;
+            char = whiteSpace.char;
+            continue;
+        }
+
+        if(!start) {
+            return ok(constructTextResult("", start, value, line, char));
+        }
+
+        current += value.at(0);
+        value = value.slice(1);
+        char = char++;
+    }
+
+    if(start) {
+        return fail(`Inline code block at { line: ${line}, char: ${char} } does not close`);
+    }
+    return ok(constructTextResult(current, start, value, line, char));
+}
+
+function isWord(value: string, line: number, char: number): Result<ParseResult> {
     let current = "";
     let start: Point | undefined;
 
     while(0 < value.length) {
         let hasWhiteSpace = startsWithWhiteSpace.test(value);
         if(!start && hasWhiteSpace) {
-            return constructResult(current, start, value, line, char);
+            return ok(constructTextResult(current, start, value, line, char));
         } else if (hasWhiteSpace) {
             const whiteSpace = isWhiteSpace(value, line, char);
             current += whiteSpace.result;
@@ -148,7 +198,24 @@ function isWord(value: string, line: number, char: number): ParseResult {
         }
 
         if(startsWithOpenComment.test(value)) {
-            return constructResult(current.trim(), start, value, line, char);
+            return ok(constructTextResult(current.trim(), start, value, line, char));
+        }
+
+        if(startsWithInLineMarker.test(value)) {
+            let inline = isInline(value, line, char);
+            if(inline.success) {
+                let v = inline.value;
+                current += v.result;
+                value = v.rest;
+                line = v.line;
+                char = v.char;
+                if(!start) {
+                    start = v.start;
+                }
+                continue;
+            } else {
+                return fail(inline.message);
+            }
         }
 
         if(!start) {
@@ -159,7 +226,7 @@ function isWord(value: string, line: number, char: number): ParseResult {
         char++;
     }
 
-    return constructResult(current.trim(), start, value, line, char);
+    return ok(constructTextResult(current.trim(), start, value, line, char));
 }
 
 function documentParse(): Valid<DocumentParser> {
@@ -196,17 +263,22 @@ function documentParse(): Valid<DocumentParser> {
                 continue;
             }
 
-            v = isWord(value, line, char);
-            if(v.start) {
-                value = v.rest;
-                current[current.length] = {
-                    location: { line, char, document: path },
-                    text: v.result,
-                    type: "text",
-                };
-                line = v.line;
-                char = v.char;
-                continue;
+            let word = isWord(value, line, char);
+            if(word.success){
+                v = word.value;
+                if(v.start) {
+                    value = v.rest;
+                    current[current.length] = {
+                        location: { line, char, document: path },
+                        text: v.result,
+                        type: "text",
+                    };
+                    line = v.line;
+                    char = v.char;
+                    continue;
+                }
+            } else {
+                return fail(word.message);
             }
 
             return fail(`unknown value "${value}"`);

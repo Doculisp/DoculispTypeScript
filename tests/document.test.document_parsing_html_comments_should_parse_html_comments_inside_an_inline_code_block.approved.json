@@ -1,0 +1,14 @@
+{
+  "value": [
+    {
+      "location": {
+        "line": 1,
+        "char": 1,
+        "document": "C:/html/inline.md"
+      },
+      "text": "`<!-- an example html comment -->`",
+      "type": "text"
+    }
+  ],
+  "success": true
+}
