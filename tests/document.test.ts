@@ -77,12 +77,15 @@ This is a comment
             verifyAsJson(result);
         });
 
-        // test('should parse html comment if it is part of an inline code block', () => {
-        //     const md = '`<!-- an example of a html comment-->`'
+        test('should not parse html comments in the middle of text.', () => {
+            const md = `hello
+<!-- need stuff here -->
 
-        //     const result = parse(md, 'C:/html/example.md');
+world`;
 
-        //     verifyAsJson(result);
-        // });
+            const result = parse(md, 'C:/comments/helloWorld.md');
+
+            verifyAsJson(result);
+        });
     });
 });

@@ -147,6 +147,10 @@ function isWord(value: string, line: number, char: number): ParseResult {
             continue;
         }
 
+        if(startsWithOpenComment.test(value)) {
+            return constructResult(current.trim(), start, value, line, char);
+        }
+
         if(!start) {
             start = { line, char };
         }

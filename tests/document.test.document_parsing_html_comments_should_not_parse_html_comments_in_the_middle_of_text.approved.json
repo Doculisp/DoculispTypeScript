@@ -1,0 +1,23 @@
+{
+  "value": [
+    {
+      "location": {
+        "line": 1,
+        "char": 1,
+        "document": "C:/comments/helloWorld.md"
+      },
+      "text": "hello",
+      "type": "text"
+    },
+    {
+      "location": {
+        "line": 4,
+        "char": 1,
+        "document": "C:/comments/helloWorld.md"
+      },
+      "text": "world",
+      "type": "text"
+    }
+  ],
+  "success": true
+}
