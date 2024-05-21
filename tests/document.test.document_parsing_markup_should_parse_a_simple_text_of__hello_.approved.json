@@ -1,0 +1,14 @@
+{
+  "value": [
+    {
+      "location": {
+        "line": 1,
+        "char": 1,
+        "document": "C:/my_document.md"
+      },
+      "text": "hello",
+      "type": "text"
+    }
+  ],
+  "success": true
+}

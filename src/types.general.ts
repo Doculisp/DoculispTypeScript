@@ -23,25 +23,9 @@ export function ok<T>(value: T) : Result<T> {
     };
 };
 
-export function asSuccess<T>(value: Result<T>): ISuccess<T> {
-    if(value.success) {
-        return value;
-    }
-
-    throw new Error(`Expected success but got: ${JSON.stringify(value)}`);
-}
-
 export function fail(message: string) : Result<any> {
     return {
         message,
         success: false
     };
 };
-
-export function asFailure(value: Result<any>): IFail {
-    if (value.success) {
-        throw new Error(`Expected failure but got: ${value}`);
-    }
-
-    return value;
-}
