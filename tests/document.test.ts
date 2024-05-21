@@ -54,7 +54,9 @@ describe('document', () => {
             const result = asSuccess(parse('   \r\n blow fish', 'C:/my_document.md'));
             verifyAsJson(result);
         });
+    });
 
+    describe('parsing html comments', () => {
         test('should not parse html comments', () => {
             const md = `<!-- This is a comment -->hello bro`.trim();
 
@@ -74,5 +76,13 @@ This is a comment
 
             verifyAsJson(result);
         });
+
+        // test('should parse html comment if it is part of an inline code block', () => {
+        //     const md = '`<!-- an example of a html comment-->`'
+
+        //     const result = parse(md, 'C:/html/example.md');
+
+        //     verifyAsJson(result);
+        // });
     });
 });
