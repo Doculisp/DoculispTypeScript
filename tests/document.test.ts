@@ -55,15 +55,12 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-//         test('should not parse html comments', () => {
-//             const md = `
-// <!-- This is a comment -->
-// hello bro
-// `.trim();
+        test('should not parse html comments', () => {
+            const md = `<!-- This is a comment -->hello bro`.trim();
 
-//             const result = asSuccess(parse(md, 'C:/readme.md'));
+            const result = asSuccess(parse(md, 'C:/readme.md'));
 
-//             verifyAsJson(result);
-//         });
+            verifyAsJson(result);
+        });
     });
 });

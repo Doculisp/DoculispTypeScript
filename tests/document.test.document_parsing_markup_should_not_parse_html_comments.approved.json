@@ -1,0 +1,14 @@
+{
+  "value": [
+    {
+      "location": {
+        "line": 1,
+        "char": 27,
+        "document": "C:/readme.md"
+      },
+      "text": "hello bro",
+      "type": "text"
+    }
+  ],
+  "success": true
+}
