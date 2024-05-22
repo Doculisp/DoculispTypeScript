@@ -5,8 +5,7 @@
       {
         "location": {
           "line": 1,
-          "char": 1,
-          "documentPath": "C:/html/inline.md"
+          "char": 1
         },
         "text": "`<!-- an example html comment -->`",
         "type": "text"

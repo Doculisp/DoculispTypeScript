@@ -399,7 +399,7 @@ function documentParse(): Valid<DocumentParser> {
                 let v = lisp.value;
                 if(v.start){
                     current[current.length] = {
-                        location: { line: v.start.line, char: v.start.char, documentPath },
+                        location: { line: v.start.line, char: v.start.char },
                         text: v.result,
                         type: 'lisp'
                     };
@@ -427,7 +427,7 @@ function documentParse(): Valid<DocumentParser> {
                     comment.value.forEach(element => {
                         if(element.start) {
                             current[current.length] = {
-                                location: { line: element.start.line, char: element.start.char, documentPath: documentPath },
+                                location: { line: element.start.line, char: element.start.char },
                                 text: element.result,
                                 type: "lisp",
                             };
@@ -451,7 +451,7 @@ function documentParse(): Valid<DocumentParser> {
                 if(v.start) {
                     value = v.rest;
                     current[current.length] = {
-                        location: { line, char, documentPath: documentPath },
+                        location: { line, char },
                         text: v.result,
                         type: "text",
                     };

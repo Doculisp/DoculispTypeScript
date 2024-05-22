@@ -5,8 +5,7 @@
       {
         "location": {
           "line": 1,
-          "char": 1,
-          "documentPath": "C:/comments/helloWorld.md"
+          "char": 1
         },
         "text": "hello",
         "type": "text"
@@ -14,8 +13,7 @@
       {
         "location": {
           "line": 4,
-          "char": 5,
-          "documentPath": "C:/comments/helloWorld.md"
+          "char": 5
         },
         "text": "world",
         "type": "text"

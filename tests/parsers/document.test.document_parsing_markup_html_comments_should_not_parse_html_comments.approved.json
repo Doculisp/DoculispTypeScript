@@ -5,8 +5,7 @@
       {
         "location": {
           "line": 1,
-          "char": 27,
-          "documentPath": "C:/readme.md"
+          "char": 27
         },
         "text": "hello bro",
         "type": "text"

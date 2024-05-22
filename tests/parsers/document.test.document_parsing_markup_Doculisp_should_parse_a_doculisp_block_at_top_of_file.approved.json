@@ -5,8 +5,7 @@
       {
         "location": {
           "line": 1,
-          "char": 6,
-          "documentPath": "_main.md"
+          "char": 6
         },
         "text": "(# header)",
         "type": "lisp"

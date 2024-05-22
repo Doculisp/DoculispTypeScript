@@ -5,8 +5,7 @@
       {
         "location": {
           "line": 1,
-          "char": 1,
-          "documentPath": "C:/main.dlisp"
+          "char": 1
         },
         "text": "(section-meta\n    (title Doculisp)\n    (external\n        (Section ./structure.md)\n        (Section ./doculisp.md)\n        (Section ./section-meta.md)\n        (Section ./content.md)\n        (Section ./headings.md)\n        (Section ./comment.md)\n        (Section ./keywords.md)\n    )\n)\n\n(content (toc numbered-labeled))",
         "type": "lisp"

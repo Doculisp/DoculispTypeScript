@@ -1,7 +1,6 @@
 export interface ILocation {
     line: number;
     char: number;
-    documentPath: string;
 };
 
 export interface ISuccess<T> {

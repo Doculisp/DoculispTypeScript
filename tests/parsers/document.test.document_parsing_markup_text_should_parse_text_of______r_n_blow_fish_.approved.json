@@ -5,8 +5,7 @@
       {
         "location": {
           "line": 2,
-          "char": 2,
-          "documentPath": "C:/my_document.md"
+          "char": 2
         },
         "text": "blow fish",
         "type": "text"
