@@ -1,5 +1,5 @@
 import { IRegisterable, Valid } from "../types.containers";
-import { DocumentMap, DocumentParser } from "../types.document";
+import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { Result, fail, ok } from "../types.general";
 import * as path from 'node:path';
 
@@ -29,6 +29,10 @@ const startsWithCloseLisp = /^\)/;
 
 function documentParse(): Valid<DocumentParser> {
     function parse(value: string, documentPath: string): Result<DocumentMap> {
+        const parseResults: DocumentMap = {
+            documentPath,
+            parts: [],
+        };
 
         function constructResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
             let r = !!start ? current : "";
@@ -381,12 +385,12 @@ function documentParse(): Valid<DocumentParser> {
         }
 
         if(0 === value.length) {
-            return ok([]);
+            return ok(parseResults);
         }
 
         let line = 1;
         let char = 1;
-        let current: DocumentMap = [];
+        let current: DocumentPart[] = [];
 
         let ext = path.extname(documentPath);
         if(ext === '.dlisp') {
@@ -462,7 +466,8 @@ function documentParse(): Valid<DocumentParser> {
             return fail(`unknown value "${value}"`, documentPath);
         }
 
-        return ok(current);
+        parseResults.parts = current;
+        return ok(parseResults);
     }
 
     return parse;

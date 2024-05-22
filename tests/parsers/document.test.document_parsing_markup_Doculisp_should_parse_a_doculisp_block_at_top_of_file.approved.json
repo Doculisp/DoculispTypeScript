@@ -1,14 +1,17 @@
 {
-  "value": [
-    {
-      "location": {
-        "line": 1,
-        "char": 6,
-        "documentPath": "_main.md"
-      },
-      "text": "(# header)",
-      "type": "lisp"
-    }
-  ],
+  "value": {
+    "documentPath": "_main.md",
+    "parts": [
+      {
+        "location": {
+          "line": 1,
+          "char": 6,
+          "documentPath": "_main.md"
+        },
+        "text": "(# header)",
+        "type": "lisp"
+      }
+    ]
+  },
   "success": true
 }

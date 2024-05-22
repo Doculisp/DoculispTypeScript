@@ -14,6 +14,9 @@ export interface ILispBlock {
 
 export type DocumentPart = IText | ILispBlock;
 
-export type DocumentMap = DocumentPart[];
+export type DocumentMap = {
+    parts: DocumentPart[];
+    documentPath: string;
+};
 
 export type DocumentParser = (text: string, path: string) => Result<DocumentMap>;

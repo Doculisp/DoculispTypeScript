@@ -1,14 +1,17 @@
 {
-  "value": [
-    {
-      "location": {
-        "line": 1,
-        "char": 27,
-        "documentPath": "C:/readme.md"
-      },
-      "text": "hello bro",
-      "type": "text"
-    }
-  ],
+  "value": {
+    "documentPath": "C:/readme.md",
+    "parts": [
+      {
+        "location": {
+          "line": 1,
+          "char": 27,
+          "documentPath": "C:/readme.md"
+        },
+        "text": "hello bro",
+        "type": "text"
+      }
+    ]
+  },
   "success": true
 }

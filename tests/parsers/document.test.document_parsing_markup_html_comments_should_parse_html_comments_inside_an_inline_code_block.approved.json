@@ -1,14 +1,17 @@
 {
-  "value": [
-    {
-      "location": {
-        "line": 1,
-        "char": 1,
-        "documentPath": "C:/html/inline.md"
-      },
-      "text": "`<!-- an example html comment -->`",
-      "type": "text"
-    }
-  ],
+  "value": {
+    "documentPath": "C:/html/inline.md",
+    "parts": [
+      {
+        "location": {
+          "line": 1,
+          "char": 1,
+          "documentPath": "C:/html/inline.md"
+        },
+        "text": "`<!-- an example html comment -->`",
+        "type": "text"
+      }
+    ]
+  },
   "success": true
 }

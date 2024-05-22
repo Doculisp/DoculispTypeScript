@@ -1,23 +1,26 @@
 {
-  "value": [
-    {
-      "location": {
-        "line": 1,
-        "char": 1,
-        "documentPath": "C:/comments/helloWorld.md"
+  "value": {
+    "documentPath": "C:/comments/helloWorld.md",
+    "parts": [
+      {
+        "location": {
+          "line": 1,
+          "char": 1,
+          "documentPath": "C:/comments/helloWorld.md"
+        },
+        "text": "hello",
+        "type": "text"
       },
-      "text": "hello",
-      "type": "text"
-    },
-    {
-      "location": {
-        "line": 4,
-        "char": 5,
-        "documentPath": "C:/comments/helloWorld.md"
-      },
-      "text": "world",
-      "type": "text"
-    }
-  ],
+      {
+        "location": {
+          "line": 4,
+          "char": 5,
+          "documentPath": "C:/comments/helloWorld.md"
+        },
+        "text": "world",
+        "type": "text"
+      }
+    ]
+  },
   "success": true
 }

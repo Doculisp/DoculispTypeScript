@@ -1,14 +1,17 @@
 {
-  "value": [
-    {
-      "location": {
-        "line": 2,
-        "char": 2,
-        "documentPath": "C:/my_document.md"
-      },
-      "text": "blow fish",
-      "type": "text"
-    }
-  ],
+  "value": {
+    "documentPath": "C:/my_document.md",
+    "parts": [
+      {
+        "location": {
+          "line": 2,
+          "char": 2,
+          "documentPath": "C:/my_document.md"
+        },
+        "text": "blow fish",
+        "type": "text"
+      }
+    ]
+  },
   "success": true
 }

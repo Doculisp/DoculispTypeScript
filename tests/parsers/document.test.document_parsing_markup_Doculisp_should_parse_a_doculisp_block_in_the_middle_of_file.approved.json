@@ -1,32 +1,35 @@
 {
-  "value": [
-    {
-      "location": {
-        "line": 1,
-        "char": 1,
-        "documentPath": "_main.md"
+  "value": {
+    "documentPath": "_main.md",
+    "parts": [
+      {
+        "location": {
+          "line": 1,
+          "char": 1,
+          "documentPath": "_main.md"
+        },
+        "text": "# Title\r\nsome text about title",
+        "type": "text"
       },
-      "text": "# Title\r\nsome text about title",
-      "type": "text"
-    },
-    {
-      "location": {
-        "line": 4,
-        "char": 12,
-        "documentPath": "_main.md"
+      {
+        "location": {
+          "line": 4,
+          "char": 12,
+          "documentPath": "_main.md"
+        },
+        "text": "(# two)",
+        "type": "lisp"
       },
-      "text": "(# two)",
-      "type": "lisp"
-    },
-    {
-      "location": {
-        "line": 5,
-        "char": 1,
-        "documentPath": "_main.md"
-      },
-      "text": "Mickey Mouse Hotline.",
-      "type": "text"
-    }
-  ],
+      {
+        "location": {
+          "line": 5,
+          "char": 1,
+          "documentPath": "_main.md"
+        },
+        "text": "Mickey Mouse Hotline.",
+        "type": "text"
+      }
+    ]
+  },
   "success": true
 }
