@@ -4,7 +4,7 @@
   "description": "A scripting language to build markdown documents",
   "main": "index.js",
   "scripts": {
-    "precompile": "rimraf app/**/*.js test/**/*.js",
+    "precompile": "rimraf src/**/*.js test/**/*.js dist/**/*",
     "compile": "tsc",
     "test": "jest tests"
   },
