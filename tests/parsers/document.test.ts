@@ -53,7 +53,8 @@ describe('document', () => {
                 const result = parse('   \r\n blow fish', 'C:/my_document.md');
                 verifyAsJson(result);
             });
-    });
+        });
+
         describe('html comments', () => {
             test('should not parse html comments', () => {
                 const md = `<!-- This is a comment -->hello bro`.trim();
@@ -165,6 +166,31 @@ describe('document', () => {
     
                 verifyAsJson(result);
             });
+        });
+    });
+
+    describe('parsing .dlisp files', () => {
+        test('should handle a correctly formatted file', () => {
+            let dlisp = `
+(section-meta
+    (title Doculisp)
+    (external
+        (Section ./structure.md)
+        (Section ./doculisp.md)
+        (Section ./section-meta.md)
+        (Section ./content.md)
+        (Section ./headings.md)
+        (Section ./comment.md)
+        (Section ./keywords.md)
+    )
+)
+
+(content (toc numbered-labeled))
+`;
+
+            let result = parse(dlisp, 'C:/main.dlisp');
+
+            verifyAsJson(result);
         });
     });
 });
