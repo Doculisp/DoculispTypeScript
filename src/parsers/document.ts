@@ -153,6 +153,7 @@ function documentParse(): Valid<DocumentParser> {
 
                 current += value.charAt(0);
                 value = value.slice(1);
+                char++;
             }
 
             start = start as any as Point;
@@ -402,9 +403,15 @@ function documentParse(): Valid<DocumentParser> {
                         text: v.result,
                         type: 'lisp'
                     };
-                }
+                    
+                    value = '';
 
-                value = '';
+                    if(0 < v.rest.trim().length) {
+                        let whiteSpace = isWhiteSpace(v.rest, v.line, v.char);
+
+                        return fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: ${whiteSpace.line}, char: ${whiteSpace.char} }.`, documentPath);
+                    }
+                }
             }
             else {
                 return fail(lisp.message, documentPath);

@@ -215,5 +215,50 @@ describe('document', () => {
 
             verifyAsJson(result);
         });
+
+        test('should handle a file with parentheses that do not close', () => {
+            let dlisp = `
+(section-meta
+    (title Doculisp)
+    (external
+        (Section ./structure.md)
+        (Section ./doculisp.md
+        (Section ./section-meta.md)
+        (Section ./content.md)
+        (Section ./headings.md)
+        (Section ./comment.md)
+        (Section ./keywords.md)
+    )
+)
+
+(content (toc numbered-labeled))
+`;
+
+            let result = parse(dlisp, 'C:/main.dlisp');
+
+            verifyAsJson(result);
+        });
+
+        test('should handle a file with to many parenthesis', () => {
+            let dlisp = `
+(section-meta
+    (title Doculisp)
+    (external
+        (Section ./structure.md)
+        (Section ./doculisp.md)
+        (Section ./section-meta.md)
+        (Section ./content.md)
+        (Section ./headings.md)
+        (Section ./comment.md)
+        (Section ./keywords.md)
+    )
+)
+
+(content (toc numbered-labeled)) )`;
+
+            let result = parse(dlisp, 'C:/main.dlisp');
+
+            verifyAsJson(result);
+        });
     });
 });
