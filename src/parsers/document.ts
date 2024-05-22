@@ -450,7 +450,6 @@ function documentParse(): Valid<DocumentParser> {
                 } else {
                     return fail(comment.message, documentPath);
                 }
-                continue;
             }
 
             let word = isWord(value, line, char);
