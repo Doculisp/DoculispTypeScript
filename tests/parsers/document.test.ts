@@ -192,5 +192,28 @@ describe('document', () => {
 
             verifyAsJson(result);
         });
+
+        test('should fail to parse a file that contains a dl atom', () => {
+            let dlisp = `(dl
+(section-meta
+    (title Doculisp)
+    (external
+        (Section ./structure.md)
+        (Section ./doculisp.md)
+        (Section ./section-meta.md)
+        (Section ./content.md)
+        (Section ./headings.md)
+        (Section ./comment.md)
+        (Section ./keywords.md)
+    )
+)
+
+(content (toc numbered-labeled)))
+`;
+
+            let result = parse(dlisp, 'C:/bad/extraDl.dlisp');
+
+            verifyAsJson(result);
+        });
     });
 });

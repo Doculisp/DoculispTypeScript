@@ -95,17 +95,16 @@ function documentParse(): Valid<DocumentParser> {
             return constructResult(current, start, value, line, char);
         }
 
-        function isDoculisp(value: string, line: number, char: number): Result<ParseResult> {
-            let start: Point | undefined;
+        function isDoculisp(value: string, line: number, char: number, start?: Point | undefined): Result<ParseResult> {
             let current = "";
-            let depth = 0;
+            let depth = !!start ? 1 : 0;
         
             while(0 < value.length) {
                 if(startsWithDocuLisp.test(value)) {
                     if(!start) {
                         start = { line, char };
                     } else {
-                        return fail(`Doculisp Block at { line: ${start.line}, char: ${start.char}} contains an embedded doculisp block at { line: ${line}, char: ${char}}.`, documentPath);
+                        return fail(`Doculisp Block at { line: ${start.line}, char: ${start.char}} contains an embedded doculisp block at { line: ${line}, char: ${char} }.`, documentPath);
                     }
 
                     let v: string = (value.match(startsWithDocuLisp) as any)[0];
@@ -394,7 +393,7 @@ function documentParse(): Valid<DocumentParser> {
 
         let ext = path.extname(documentPath);
         if(ext === '.dlisp') {
-            let lisp = isDoculisp(`(dl ${value})`, line, char);
+            let lisp = isDoculisp(`${value})`, line, 1, { line: 1, char: 1 });
             if(lisp.success) {
                 let v = lisp.value;
                 if(v.start){
