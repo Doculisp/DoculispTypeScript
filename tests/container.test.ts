@@ -6,7 +6,7 @@ function getRandomNumber(max?: number, min?: number) {
     return Math.floor(Math.random() * (max ?? 100) + (min ?? 1));
 }
 
-describe.skip('the registry', () => {
+describe('the registry', () => {
     let testable: ITestableContainer = null as any;
     const environment: ITestableContainer = registry as ITestableContainer;
 
