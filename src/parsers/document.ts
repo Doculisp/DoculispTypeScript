@@ -29,10 +29,12 @@ const startsWithCloseLisp = /^\)/;
 
 function documentParse(): Valid<DocumentParser> {
     function parse(value: string, documentPath: string): Result<DocumentMap> {
-        const parseResults: DocumentMap = {
-            documentPath,
-            parts: [],
-        };
+        function constructDocumentMap(parts: DocumentPart[]) : DocumentMap {
+            return {
+                documentPath,
+                parts,
+            };
+        }
 
         function constructResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
             let r = !!start ? current : "";
@@ -385,7 +387,7 @@ function documentParse(): Valid<DocumentParser> {
         }
 
         if(0 === value.length) {
-            return ok(parseResults);
+            return ok(constructDocumentMap([]));
         }
 
         let line = 1;
@@ -472,8 +474,7 @@ function documentParse(): Valid<DocumentParser> {
             return fail(`unknown value "${value}"`, documentPath);
         }
 
-        parseResults.parts = current;
-        return ok(parseResults);
+        return ok(constructDocumentMap(current));
     }
 
     return parse;

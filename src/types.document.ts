@@ -1,22 +1,22 @@
 import { ILocation, Result } from "./types.general";
 
 export interface IText {
-    text: string;
-    location: ILocation;
-    type: 'text';
+    readonly text: string;
+    readonly location: ILocation;
+    readonly type: 'text';
 };
 
 export interface ILispBlock {
-    text: string;
-    location: ILocation;
-    type: 'lisp';
+    readonly text: string;
+    readonly location: ILocation;
+    readonly type: 'lisp';
 };
 
 export type DocumentPart = IText | ILispBlock;
 
 export type DocumentMap = {
-    parts: DocumentPart[];
-    documentPath: string;
+    readonly parts: DocumentPart[];
+    readonly documentPath: string;
 };
 
 export type DocumentParser = (text: string, path: string) => Result<DocumentMap>;

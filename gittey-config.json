@@ -40,7 +40,7 @@
         },
         {
             "name": "build",
-            "command": "npm run compile",
+            "command": "npx rimrafx ./dist ; npm run compile",
             "description": "builds output directory"
         }
     ],
