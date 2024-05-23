@@ -16,8 +16,14 @@ export type CloseParenthesis = {
     readonly type: 'close parenthesis';
 };
 
-export type Value = {
+export type Atom = {
     readonly value: string;
     readonly location: ILocation;
-    readonly type: 'value';
-}
+    readonly type: 'atom';
+};
+
+export type Parameter = {
+    readonly value: string;
+    readonly location: ILocation;
+    readonly type: 'parameter';
+};
