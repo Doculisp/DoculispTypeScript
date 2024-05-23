@@ -1,5 +1,5 @@
 import { IRegisterable } from "../types.containers";
-import { DocumentMap } from "../types.document";
+import { DocumentMap, ILispBlock } from "../types.document";
 import { Result, fail } from "../types.general";
 import { Token, TokenizedDocument } from "../types.tokens";
 
@@ -14,6 +14,25 @@ function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> 
         tokens[tokens.length] = token;
     }
 
+    function toTokens(block: ILispBlock): Token[] {
+        let start = block.location;
+        return [
+            {
+                type: 'token - open parenthesis',
+                location: start,
+            },
+            {
+                type: 'token - atom',
+                value: '*',
+                location: { line: start.line, char: start.char + 1 },
+            },
+            {
+                type: 'token - close parenthesis',
+                location: { line: start.line, char: start.char + 2 },
+            }
+        ];
+    }
+
     documentMap.value.parts.forEach(part => {
         if(part.type === 'text') {
             addToken({
@@ -22,19 +41,7 @@ function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> 
                 location: part.location,
             });
         } else {
-            addToken({
-                type: 'token - open parenthesis',
-                location: part.location,
-            });
-            addToken({
-                type: 'token - atom',
-                value: '*',
-                location: { line: part.location.line, char: part.location.char + 1 },
-            });
-            addToken({
-                type: 'token - close parenthesis',
-                location: { line: part.location.line, char: part.location.char + 2 },
-            });
+            toTokens(part).forEach(addToken);
         }
 
     });
