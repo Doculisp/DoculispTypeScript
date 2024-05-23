@@ -1,0 +1,5 @@
+{
+  "message": "This document did not parse",
+  "documentPath": "X:/non-exist.dlisp",
+  "success": false
+}
