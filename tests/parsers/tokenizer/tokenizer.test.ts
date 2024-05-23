@@ -44,4 +44,27 @@ describe('tokenizer', () => {
 
         verifyAsJson(result);
     });
+
+    test('should tokenize text as text', () => {
+        const parseResult: Result<DocumentMap> = {
+            success: true,
+            value: {
+                documentPath: 'myText.md',
+                parts: [
+                    {
+                        type: 'text',
+                        text: 'hello my text',
+                        location: {
+                            line: 5,
+                            char: 23
+                        },
+                    }
+                ],
+            },
+        };
+
+        const result = tokenizer(parseResult);
+
+        verifyAsJson(result);
+    });
 });
