@@ -10,14 +10,33 @@ function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> 
     
     const tokens: Token[] = [];
 
+    function addToken(token: Token) {
+        tokens[tokens.length] = token;
+    }
+
     documentMap.value.parts.forEach(part => {
         if(part.type === 'text') {
-            tokens[tokens.length] = {
+            addToken({
                 type: 'token - text',
                 text: part.text,
                 location: part.location,
-            };
+            });
+        } else {
+            addToken({
+                type: 'token - open parenthesis',
+                location: part.location,
+            });
+            addToken({
+                type: 'token - atom',
+                value: '*',
+                location: { line: part.location.line, char: part.location.char + 1 },
+            });
+            addToken({
+                type: 'token - close parenthesis',
+                location: { line: part.location.line, char: part.location.char + 2 },
+            });
         }
+
     });
 
     return {

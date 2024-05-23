@@ -9,7 +9,7 @@ export type TextToken = {
 
 export type OpenParenthesisToken = {
     readonly location: ILocation;
-    readonly type: 'open parenthesis';
+    readonly type: 'token - open parenthesis';
 };
 
 export type CloseParenthesisToken = {

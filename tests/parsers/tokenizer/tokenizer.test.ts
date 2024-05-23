@@ -67,4 +67,26 @@ describe('tokenizer', () => {
 
         verifyAsJson(result);
     });
+
+    describe('handling Doculisp', () => {
+        test('should tokenize an empty comment', () => {
+            let parseResult: Result<DocumentMap> = {
+                success: true,
+                value: {
+                    documentPath: 'D:/comments/simple.md',
+                    parts: [
+                        {
+                            type: 'lisp',
+                            text: '(*)',
+                            location: { line: 2, char: 1 },
+                        },
+                    ],
+                },
+            };
+            
+            let result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
+    });
 });
