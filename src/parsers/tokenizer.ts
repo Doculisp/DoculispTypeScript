@@ -7,7 +7,13 @@ function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> 
     if(!documentMap.success) {
         return fail(documentMap.message, documentMap.documentPath);
     }
-    return fail('Not yet implemented', documentMap.value.documentPath);
+    return {
+        success: true,
+        value: {
+            documentPath: documentMap.value.documentPath,
+            tokens: [],
+        },
+    };
 }
 
 const tokenizer: IRegisterable = {

@@ -30,4 +30,18 @@ describe('tokenizer', () => {
 
         verifyAsJson(result);
     });
+
+    test('should return empty if given an empty parse result', () => {
+        const parseResult: Result<DocumentMap> = {
+            success: true,
+            value: {
+                documentPath: 'c:/empty/readme.md',
+                parts: [],
+            },
+        };
+
+        const result = tokenizer(parseResult);
+
+        verifyAsJson(result);
+    });
 });
