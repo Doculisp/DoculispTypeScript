@@ -138,7 +138,7 @@ class Container implements ITestableContainer {
         let dependencies: Valid<any>[] = 
             moduleBuilder.dependencies?.map((name) => this._build(name, modules)) ?? [];
 
-        let result: Valid<T> = moduleBuilder.builder(dependencies);
+        let result: Valid<T> = moduleBuilder.builder.apply(moduleBuilder.builder, dependencies);
 
         if(moduleBuilder.singleton) {
             if(replaced) {

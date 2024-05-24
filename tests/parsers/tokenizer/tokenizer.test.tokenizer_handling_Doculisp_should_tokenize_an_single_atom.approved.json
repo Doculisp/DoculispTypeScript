@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "value": {
+    "documentPath": "S:/imple/atom.md",
+    "tokens": [
+      {
+        "type": "token - open parenthesis",
+        "location": {
+          "line": 4,
+          "char": 2
+        }
+      },
+      {
+        "type": "token - atom",
+        "value": "atom",
+        "location": {
+          "line": 4,
+          "char": 3
+        }
+      },
+      {
+        "type": "token - close parenthesis",
+        "location": {
+          "line": 4,
+          "char": 4
+        }
+      }
+    ]
+  }
+}

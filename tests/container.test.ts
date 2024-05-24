@@ -109,7 +109,7 @@ describe('the registry', () => {
             testable.register(registerable);
             let result = testable.build('testRegister');
     
-            expect(fn).toHaveBeenCalledWith([]);
+            expect(fn).toHaveBeenCalledWith();
             expect(result).toBe(expected);
         });
     
@@ -146,8 +146,8 @@ describe('the registry', () => {
     
             let orangeResult = testable.build('orange');
     
-            expect(fnBlue).toHaveBeenCalledWith([]);
-            expect(fnOrange).toHaveBeenCalledWith([blueValue]);
+            expect(fnBlue).toHaveBeenCalledWith();
+            expect(fnOrange).toHaveBeenCalledWith(blueValue);
     
             expect(orangeResult).toBe(orangeValue);
         });
@@ -310,7 +310,7 @@ describe('the registry', () => {
 
             let result = testable.build('neon');
 
-            expect(fn).toHaveBeenCalledWith([]);
+            expect(fn).toHaveBeenCalledWith();
             expect(result).toBe('blue');
         });
 
@@ -326,7 +326,7 @@ describe('the registry', () => {
 
             let result = testable.build('dog');
 
-            expect(fn).toHaveBeenCalledWith([]);
+            expect(fn).toHaveBeenCalledWith();
             expect(result).toBe(65);
             expect(() => { testable.build('neon'); }).toThrow('No module called "neon" registered');
         });
@@ -361,10 +361,10 @@ describe('the registry', () => {
 
             let result = testable.build('green');
 
-            expect(redFn).toHaveBeenCalledWith([]);
-            expect(hueFn).toHaveBeenCalledWith([]);
-            expect(blueFn).toHaveBeenCalledWith([redValue, hueValue]);
-            expect(greenFn).toHaveBeenCalledWith([blueValue]);
+            expect(redFn).toHaveBeenCalledWith();
+            expect(hueFn).toHaveBeenCalledWith();
+            expect(blueFn).toHaveBeenCalledWith(redValue, hueValue);
+            expect(greenFn).toHaveBeenCalledWith(blueValue);
 
             expect(result).toBe(greenValue);
         });
