@@ -4,6 +4,7 @@ import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
 import { ITestableContainer } from "../../../src/types.containers";
 import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
 import { DocumentParser } from "../../../src/types.document";
+import { order } from "../../tools";
 
 describe('document', () => {
     let environment: ITestableContainer = undefined as any;
@@ -25,33 +26,33 @@ describe('document', () => {
             test('should successfully parse an empty string', () => {
                 const result = parse('', 'C:/my_document.md')
         
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
         
             test('should parse a simple text of "hello"', () => {
                 const result = parse('hello', 'C:/my_document.md')
         
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
     
             test('should parse text of "blow fish"', () => {
                 const result = parse('blow fish', 'C:/my_document.md')
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
     
             test('should parse text of " blow fish"', () => {
                 const result = parse(' blow fish', 'C:/my_document.md')
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
     
             test('should parse text of " blow fish "', () => {
                 const result = parse(' blow fish ', 'C:/my_document.md')
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
     
             test('should parse text of "   \\r\\n blow fish"', () => {
                 const result = parse('   \r\n blow fish', 'C:/my_document.md');
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
         });
 
@@ -61,7 +62,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/readme.md')
     
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
     
             test('should not parse html but preserve new line counts comments', () => {
@@ -73,7 +74,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/readme.md')
     
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
     
             test('should not parse html comments in the middle of text.', () => {
@@ -84,7 +85,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/comments/helloWorld.md');
     
-                verifyAsJson(result);
+                verifyAsJson(order(result));
             });
     
             test('should parse html comments inside an inline code block', () => {

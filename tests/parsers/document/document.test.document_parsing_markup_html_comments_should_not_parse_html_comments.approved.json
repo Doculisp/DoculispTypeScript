@@ -1,16 +1,16 @@
 {
+  "success": true,
   "value": {
     "documentPath": "C:/readme.md",
     "parts": [
       {
         "location": {
-          "line": 1,
-          "char": 27
+          "char": 27,
+          "line": 1
         },
         "text": "hello bro",
         "type": "text"
       }
     ]
-  },
-  "success": true
+  }
 }

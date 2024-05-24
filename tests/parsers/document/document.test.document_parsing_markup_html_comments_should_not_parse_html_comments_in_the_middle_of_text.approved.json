@@ -1,24 +1,24 @@
 {
+  "success": true,
   "value": {
     "documentPath": "C:/comments/helloWorld.md",
     "parts": [
       {
         "location": {
-          "line": 1,
-          "char": 1
+          "char": 1,
+          "line": 1
         },
         "text": "hello",
         "type": "text"
       },
       {
         "location": {
-          "line": 4,
-          "char": 5
+          "char": 5,
+          "line": 4
         },
         "text": "world",
         "type": "text"
       }
     ]
-  },
-  "success": true
+  }
 }

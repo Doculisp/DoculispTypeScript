@@ -1,16 +1,16 @@
 {
+  "success": true,
   "value": {
     "documentPath": "C:/my_document.md",
     "parts": [
       {
         "location": {
-          "line": 2,
-          "char": 2
+          "char": 2,
+          "line": 2
         },
         "text": "blow fish",
         "type": "text"
       }
     ]
-  },
-  "success": true
+  }
 }
