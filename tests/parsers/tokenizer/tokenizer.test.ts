@@ -4,7 +4,7 @@ import { configure } from "approvals/lib/config";
 import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
 import { ITestableContainer } from "../../../src/types.containers";
 import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
-import { TokenFunction, TokenizedDocument } from '../../../src/types.tokens';
+import { TokenFunction } from '../../../src/types.tokens';
 import { ILocation, Result, fail } from "../../../src/types.general";
 import { DocumentMap } from "../../../src/types.document";
 
@@ -91,43 +91,21 @@ describe('tokenizer', () => {
         
         test('should tokenize an single atom', () => {
             const start: ILocation = { line: 4, char: 2 };
-            // let parseResult: Result<DocumentMap> = {
-            //     success: true,
-            //     value: {
-            //         documentPath: 'D:/comments/simple.md',
-            //         parts: [
-            //             {
-            //                 type: 'lisp',
-            //                 text: '(atom)',
-            //                 location: { line: 2, char: 1 },
-            //             },
-            //         ],
-            //     },
-            // };
-            
-            // let result = tokenizer(parseResult);
-
-            let result: Result<TokenizedDocument> = {
+            let parseResult: Result<DocumentMap> = {
                 success: true,
                 value: {
-                    documentPath: 'S:/imple/atom.md',
-                    tokens: [
+                    documentPath: 'D:/comments/simple.md',
+                    parts: [
                         {
-                            type: 'token - open parenthesis',
+                            type: 'lisp',
+                            text: '(atom)',
                             location: start,
-                        },
-                        {
-                            type: 'token - atom',
-                            value: 'atom',
-                            location: { line: start.line, char: start.char + 1 },
-                        },
-                        {
-                            type: 'token - close parenthesis',
-                            location: { line: start.line, char: start.char + 2 }
                         },
                     ],
                 },
-            }
+            };
+            
+            const result = tokenizer(parseResult);
 
             verifyAsJson(result);
         });

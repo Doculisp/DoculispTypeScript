@@ -1,14 +1,13 @@
 {
-  "success": true,
   "value": {
-    "documentPath": "S:/imple/atom.md",
+    "documentPath": "D:/comments/simple.md",
     "tokens": [
       {
-        "type": "token - open parenthesis",
         "location": {
           "line": 4,
           "char": 2
-        }
+        },
+        "type": "token - open parenthesis"
       },
       {
         "type": "token - atom",
@@ -22,9 +21,10 @@
         "type": "token - close parenthesis",
         "location": {
           "line": 4,
-          "char": 4
+          "char": 7
         }
       }
     ]
-  }
+  },
+  "success": true
 }
