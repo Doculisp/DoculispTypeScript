@@ -1,7 +1,4 @@
 export interface IMarkupSearches {
-    readonly startWithRn: RegExp;
-    readonly startWithR: RegExp;
-    readonly startWithN: RegExp;
     readonly startWithOpenComment: RegExp;
     readonly startWithCloseComment: RegExp;
     readonly startWithInlineMarker: RegExp;
@@ -11,6 +8,9 @@ export interface IMarkupSearches {
 
 export interface IWhiteSpaceSearches {
     readonly startWithWhiteSpace: RegExp;
+    readonly startWithRn: RegExp;
+    readonly startWithR: RegExp;
+    readonly startWithN: RegExp;
 };
 
 export interface ILispSearches extends IWhiteSpaceSearches {

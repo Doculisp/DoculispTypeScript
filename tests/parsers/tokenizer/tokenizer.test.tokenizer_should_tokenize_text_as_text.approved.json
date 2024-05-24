@@ -1,5 +1,4 @@
 {
-  "success": true,
   "value": {
     "documentPath": "myText.md",
     "tokens": [
@@ -12,5 +11,6 @@
         }
       }
     ]
-  }
+  },
+  "success": true
 }
