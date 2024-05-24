@@ -1,20 +1,20 @@
 export interface IMarkupSearches {
-    readonly startsWithRn: RegExp;
-    readonly startsWithR: RegExp;
-    readonly startsWithN: RegExp;
-    readonly startsWithOpenComment: RegExp;
-    readonly startsWithCloseComment: RegExp;
-    readonly startsWithInlineMarker: RegExp;
-    readonly startsWithMultilineMarker: RegExp;
-    readonly startsWithDocuLisp: RegExp;
+    readonly startWithRn: RegExp;
+    readonly startWithR: RegExp;
+    readonly startWithN: RegExp;
+    readonly startWithOpenComment: RegExp;
+    readonly startWithCloseComment: RegExp;
+    readonly startWithInlineMarker: RegExp;
+    readonly startWithMultilineMarker: RegExp;
+    readonly startWithDocuLisp: RegExp;
 };
 
 export interface IWhiteSpaceSearches {
-    readonly startsWithWhiteSpace: RegExp;
+    readonly startWithWhiteSpace: RegExp;
 };
 
 export interface ILispSearches extends IWhiteSpaceSearches {
-    readonly startsWithOpenLisp: RegExp;
+    readonly startWithOpenLisp: RegExp;
     readonly startsWithCloseLisp: RegExp;
 };
 

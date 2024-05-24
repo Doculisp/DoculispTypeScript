@@ -57,21 +57,21 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     return constructResult(current, start, value, line, char);
                 }
         
-                hasWhiteSpace = doesIt.startsWithRn.test(value);
+                hasWhiteSpace = doesIt.startWithRn.test(value);
                 if(hasWhiteSpace) {
-                    addLine(doesIt.startsWithRn);
+                    addLine(doesIt.startWithRn);
                     continue;
                 }
                 
-                hasWhiteSpace = doesIt.startsWithR.test(value);
+                hasWhiteSpace = doesIt.startWithR.test(value);
                 if(hasWhiteSpace) {
-                    addLine(doesIt.startsWithR);
+                    addLine(doesIt.startWithR);
                     continue;
                 }
                 
-                hasWhiteSpace = doesIt.startsWithN.test(value);
+                hasWhiteSpace = doesIt.startWithN.test(value);
                 if(hasWhiteSpace) {
-                    addLine(doesIt.startsWithN);
+                    addLine(doesIt.startWithN);
                     continue;
                 }
         
@@ -91,22 +91,22 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             let depth = !!start ? 1 : 0;
         
             while(0 < value.length) {
-                if(doesIt.startsWithDocuLisp.test(value)) {
+                if(doesIt.startWithDocuLisp.test(value)) {
                     if(!start) {
                         start = { line, char };
                     } else {
                         return fail(`Doculisp Block at { line: ${start.line}, char: ${start.char}} contains an embedded doculisp block at { line: ${line}, char: ${char} }.`, documentPath);
                     }
 
-                    let v: string = (value.match(doesIt.startsWithDocuLisp) as any)[0];
+                    let v: string = (value.match(doesIt.startWithDocuLisp) as any)[0];
                     char += v.length;
                     value = value.slice(v.length);
                     depth++;
                     continue;
                 }
 
-                if(doesIt.startsWithOpenLisp.test(value)) {
-                    let v: string = (value.match(doesIt.startsWithOpenLisp) as any)[0];
+                if(doesIt.startWithOpenLisp.test(value)) {
+                    let v: string = (value.match(doesIt.startWithOpenLisp) as any)[0];
                     current += v;
                     char + v.length;
                     value = value.slice(v.length);
@@ -130,7 +130,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     return ok(constructResult(current.trim(), start, value, line, char));
                 }
 
-                if(doesIt.startsWithWhiteSpace.test(value)) {
+                if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(start) {
                         current += whiteSpace.result;
@@ -157,9 +157,9 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
         
             while(0 < value.length) {
                 const hasStart = !!start;
-                let hasOpenComment = doesIt.startsWithOpenComment.test(value);
+                let hasOpenComment = doesIt.startWithOpenComment.test(value);
                 if(hasOpenComment) {
-                    let v: string = (value.match(doesIt.startsWithOpenComment) as any)[0];
+                    let v: string = (value.match(doesIt.startWithOpenComment) as any)[0];
                     if (!hasStart){
                         start = { line, char };
                     }
@@ -168,16 +168,16 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     continue;
                 }
         
-                let hasCloseComment = doesIt.startsWithCloseComment.test(value);
+                let hasCloseComment = doesIt.startWithCloseComment.test(value);
                 if(hasStart && hasCloseComment) {
-                    let v: string = (value.match(doesIt.startsWithCloseComment) as any)[0];
+                    let v: string = (value.match(doesIt.startWithCloseComment) as any)[0];
                     value = value.slice(v.length);
                     char += v.length;
                     results[results.length] = constructResult("", undefined, value, line, char)
                     return ok(results);
                 }
 
-                if(doesIt.startsWithDocuLisp.test(value)) {
+                if(doesIt.startWithDocuLisp.test(value)) {
                     let doculisp = isDoculisp(value, line, char);
                     if(doculisp.success) {
                         results[results.length] = doculisp.value;
@@ -188,7 +188,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     }
                 }
         
-                let hasWhiteSpace = doesIt.startsWithWhiteSpace.test(value);
+                let hasWhiteSpace = doesIt.startWithWhiteSpace.test(value);
                 if(hasWhiteSpace) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     value = whiteSpace.rest;
@@ -219,9 +219,9 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             let start: Point | undefined;
         
             while(0 < value.length) {
-                let inLineMarkerFound = doesIt.startsWithInlineMarker.test(value);
+                let inLineMarkerFound = doesIt.startWithInlineMarker.test(value);
                 if(inLineMarkerFound) {
-                    const inline: string = (value.match(doesIt.startsWithInlineMarker) as any)[0];
+                    const inline: string = (value.match(doesIt.startWithInlineMarker) as any)[0];
                     
                     current += inline;
                     value = value.slice(inline.length);
@@ -237,7 +237,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     }
                 }
         
-                if(doesIt.startsWithWhiteSpace.test(value)) {
+                if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(start && line != whiteSpace.line) {
                         return fail(`Inline code block at { line: ${start.line}, char: ${start.char} } contains a new line before closing.`, documentPath);
@@ -268,9 +268,9 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             let start: Point | undefined;
         
             while(0 < value.length) {
-                let inLineMarkerFound = doesIt.startsWithMultilineMarker.test(value);
+                let inLineMarkerFound = doesIt.startWithMultilineMarker.test(value);
                 if(inLineMarkerFound) {
-                    const inline: string = (value.match(doesIt.startsWithMultilineMarker) as any)[0];
+                    const inline: string = (value.match(doesIt.startWithMultilineMarker) as any)[0];
                     
                     current += inline;
                     value = value.slice(inline.length);
@@ -286,7 +286,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     }
                 }
         
-                if(doesIt.startsWithWhiteSpace.test(value)) {
+                if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     current += whiteSpace.result;
                     value = whiteSpace.rest;
@@ -315,7 +315,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             let start: Point | undefined;
         
             while(0 < value.length) {
-                let hasWhiteSpace = doesIt.startsWithWhiteSpace.test(value);
+                let hasWhiteSpace = doesIt.startWithWhiteSpace.test(value);
                 if(!start && hasWhiteSpace) {
                     return ok(constructResult(current, start, value, line, char));
                 } else if (hasWhiteSpace) {
@@ -327,11 +327,11 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     continue;
                 }
         
-                if(doesIt.startsWithOpenComment.test(value)) {
+                if(doesIt.startWithOpenComment.test(value)) {
                     return ok(constructResult(current.trim(), start, value, line, char));
                 }
         
-                if(doesIt.startsWithMultilineMarker.test(value)) {
+                if(doesIt.startWithMultilineMarker.test(value)) {
                     let multiline = isMultiline(value, line, char);
                     if(multiline.success) {
                         let v = multiline.value;
@@ -347,7 +347,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     }
                 }
         
-                if(doesIt.startsWithInlineMarker.test(value)) {
+                if(doesIt.startWithInlineMarker.test(value)) {
                     let inline = isInline(value, line, char);
                     if(inline.success) {
                         let v = inline.value;
@@ -418,7 +418,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 continue;
             }
 
-            if(doesIt.startsWithOpenComment.test(value)) {
+            if(doesIt.startWithOpenComment.test(value)) {
                 let comment = isComment(value, line, char);
                 if(comment.success) {
                     comment.value.forEach(element => {

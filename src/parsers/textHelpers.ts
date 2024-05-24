@@ -2,16 +2,16 @@ import { IRegisterable } from "../types.containers";
 import { IDocumentSearches, ILispSearches, Searcher } from "../types.textHelpers";
 
 const documentSearches: IDocumentSearches = {
-    startsWithWhiteSpace: /^\s/,
-    startsWithRn: /^\r\n/,
-    startsWithR: /^\r/,
-    startsWithN: /^\n/,
-    startsWithOpenComment: /^<!--/,
-    startsWithCloseComment: /^-->/,
-    startsWithInlineMarker: /^`/,
-    startsWithMultilineMarker: /^```/,
-    startsWithDocuLisp: /^\(dl/,
-    startsWithOpenLisp: /^\(/,
+    startWithWhiteSpace: /^\s/,
+    startWithRn: /^\r\n/,
+    startWithR: /^\r/,
+    startWithN: /^\n/,
+    startWithOpenComment: /^<!--/,
+    startWithCloseComment: /^-->/,
+    startWithInlineMarker: /^`/,
+    startWithMultilineMarker: /^```/,
+    startWithDocuLisp: /^\(dl/,
+    startWithOpenLisp: /^\(/,
     startsWithCloseLisp: /^\)/,
 }
 
