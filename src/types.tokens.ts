@@ -34,6 +34,6 @@ export type Token = TextToken | OpenParenthesisToken | CloseParenthesisToken | A
 export type TokenizedDocument = {
     readonly tokens: Token[];
     readonly documentPath: string;
-}
+};
 
-export type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocument>
+export type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocument>;
