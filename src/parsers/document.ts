@@ -1,20 +1,10 @@
 import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
-import { Result, fail, ok } from "../types.general";
+import { ILocation, Result, fail, ok } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
+import { ParseResult } from "../types.internal";
 
-type Point = { line: number; char: number; }
-
-type ParseResult = {
-    result: string;
-    rest: string;
-    line: number;
-    char: number;
-    start: Point | undefined;
-}
-
-// type ParseFunction = (value: string, line: number, char: number) => ParseResult;
 
 function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
     function parse(value: string, documentPath: string): Result<DocumentMap> {
@@ -25,7 +15,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             };
         }
 
-        function constructResult(current: string, start: Point | undefined, rest: string, line: number, char: number): ParseResult {
+        function constructResult(current: string, start: ILocation | undefined, rest: string, line: number, char: number): ParseResult {
             let r = !!start ? current : "";
             return {
                 result: r,
@@ -38,7 +28,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
         
         function isWhiteSpace(value: string, line: number, char: number): ParseResult {
             let current = "";
-            let start: Point | undefined;
+            let start: ILocation | undefined;
             let hasWhiteSpace: boolean = false;
         
             function addLine(expression: RegExp) : void {
@@ -86,7 +76,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return constructResult(current, start, value, line, char);
         }
 
-        function isDoculisp(value: string, line: number, char: number, start?: Point | undefined): Result<ParseResult> {
+        function isDoculisp(value: string, line: number, char: number, start?: ILocation | undefined): Result<ParseResult> {
             let current = "";
             let depth = !!start ? 1 : 0;
         
@@ -147,12 +137,12 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 char++;
             }
 
-            start = start as any as Point;
+            start = start as any as ILocation;
             return fail(`Doculisp block at { line: ${start.line}, char: ${start.char} } is not closed.`, documentPath);
         }
         
         function isComment(value: string, line: number, char: number): Result<ParseResult[]> {
-            let start: Point | undefined;
+            let start: ILocation | undefined;
             let results: ParseResult[] = [];
         
             while(0 < value.length) {
@@ -216,7 +206,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
         
         function isInline(value: string, line: number, char: number): Result<ParseResult> {
             let current = "";
-            let start: Point | undefined;
+            let start: ILocation | undefined;
         
             while(0 < value.length) {
                 let inLineMarkerFound = doesIt.startWithInlineMarker.test(value);
@@ -265,7 +255,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
         
         function isMultiline(value: string, line: number, char: number): Result<ParseResult> {
             let current = "";
-            let start: Point | undefined;
+            let start: ILocation | undefined;
         
             while(0 < value.length) {
                 let inLineMarkerFound = doesIt.startWithMultilineMarker.test(value);
@@ -312,7 +302,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
         
         function isWord(value: string, line: number, char: number): Result<ParseResult> {
             let current = "";
-            let start: Point | undefined;
+            let start: ILocation | undefined;
         
             while(0 < value.length) {
                 let hasWhiteSpace = doesIt.startWithWhiteSpace.test(value);

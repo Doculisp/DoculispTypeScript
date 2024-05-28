@@ -1,6 +1,7 @@
 import { IRegisterable } from "../types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
 import { Result, fail, ok } from "../types.general";
+import { ParseResult } from "../types.internal";
 import { ILispSearches, Searcher } from "../types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
 
@@ -27,6 +28,75 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches) : TokenFunction {
+    function tokenizeWhiteSpace(value: string, line: number, char: number): ParseResult {
+        if(doesIt.startWithWindowsNewline.test(value)) {
+            const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
+            value = value.slice(newLine.length);
+            let start = { line, char };
+            line++;
+            char = 0;
+            return {
+                result: newLine,
+                rest: value,
+                char,
+                line,
+                start,
+            };
+        }
+
+        if(doesIt.startWithLinuxNewline.test(value)) {
+            const newLine = (value.match(doesIt.startWithLinuxNewline) as any)[0] as string;
+            value = value.slice(newLine.length);
+            let start = { line, char };
+            line++;
+            char = 0;
+            return {
+                result: newLine,
+                rest: value,
+                char,
+                line,
+                start,
+            };
+        }
+
+        if(doesIt.startWithMacsNewline.test(value)) {
+            const newLine = (value.match(doesIt.startWithMacsNewline) as any)[0] as string;
+            value = value.slice(newLine.length);
+            let start = { line, char };
+            line++;
+            char = 0;
+            return {
+                result: newLine,
+                rest: value,
+                char,
+                line,
+                start,
+            };
+        }
+
+        if(doesIt.startWithWhiteSpace.test(value)) {
+            const space = (value.match(doesIt.startWithWhiteSpace) as any)[0] as string;
+            value = value.slice(space.length);
+            let start = { line, char };
+            char += space.length;
+            return {
+                result: space,
+                rest: value,
+                line,
+                char,
+                start,
+            }
+        }
+
+        return {
+            result: "",
+            rest: value,
+            line,
+            char,
+            start: undefined,
+        };
+    }
+
     return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
         if(!documentMap.success) {
             return fail(documentMap.message, documentMap.documentPath);
@@ -67,27 +137,11 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                     continue;
                 }
 
-                if(doesIt.startWithWindowsNewline.test(value)) {
-                    const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
-                    value = value.slice(newLine.length);
-                    line++;
-                    char = 0;
-                    continue;
-                }
-
-                if(doesIt.startWithLinuxNewline.test(value)) {
-                    const newLine = value.match(doesIt.startWithLinuxNewline) as any as string;
-                    value = value.slice(newLine.length);
-                    line++;
-                    char = 0;
-                    continue;
-                }
-
-                if(doesIt.startWithMacsNewline.test(value)) {
-                    const newLine = value.match(doesIt.startWithMacsNewline) as any as string;
-                    value = value.slice(newLine.length);
-                    line++;
-                    char = 0;
+                if(doesIt.startWithWhiteSpace.test(value)) {
+                    let result = tokenizeWhiteSpace(value, line, char);
+                    value = result.rest;
+                    char = result.char;
+                    line = result.line;
                     continue;
                 }
 
