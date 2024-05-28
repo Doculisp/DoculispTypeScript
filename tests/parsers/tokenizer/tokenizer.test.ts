@@ -151,5 +151,47 @@ describe('tokenizer', () => {
 
             verifyAsJson(result);
         });
+        
+        test('should tokenize an single atom containing only numbers', () => {
+            const start: ILocation = { line: 4, char: 2 };
+            let parseResult: Result<DocumentMap> = {
+                success: true,
+                value: {
+                    documentPath: 'D:/comments/simple.md',
+                    parts: [
+                        {
+                            type: 'lisp',
+                            text: '(123987)',
+                            location: start,
+                        },
+                    ],
+                },
+            };
+            
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
+        
+        test('should tokenize an single atom with hyphen and underscore', () => {
+            const start: ILocation = { line: 4, char: 2 };
+            let parseResult: Result<DocumentMap> = {
+                success: true,
+                value: {
+                    documentPath: 'D:/comments/simple.md',
+                    parts: [
+                        {
+                            type: 'lisp',
+                            text: '(atom-start_end)',
+                            location: start,
+                        },
+                    ],
+                },
+            };
+            
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
     });
 });

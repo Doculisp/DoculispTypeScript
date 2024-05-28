@@ -110,7 +110,7 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             let line = block.location.line;
             let char = block.location.char;
             let results = getTokenBuilder();
-            let doesItStartWithWord = /[\w\*]+/;
+            let doesItStartWithWord = /[\w\*\-]+/;
 
             while(0 < value.length) {
                 if(doesIt.startWithOpenLisp.test(value)) {
