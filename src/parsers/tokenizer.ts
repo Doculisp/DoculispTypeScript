@@ -28,7 +28,7 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches) : TokenFunction {
-    function tokenizeWhiteSpace(value: string, line: number, char: number): ParseResult<string> {
+    function tokenizeWhiteSpace(value: string, line: number, char: number): ParseResult<string> | false {
         if(doesIt.startWithWindowsNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             value = value.slice(newLine.length);
@@ -80,12 +80,67 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             }
         }
 
-        return {
-            result: "",
-            rest: value,
-            line,
-            char,
-        };
+        return false;
+    }
+
+    function tokenizeParenthesis(value: string, line: number, char: number): ParseResult<Token> | false {
+        if(doesIt.startWithOpenLisp.test(value)) {
+            let open: Token = {
+                location: { line, char },
+                type: 'token - open parenthesis',
+            };
+
+            char++;
+
+            return {
+                result: open,
+                line,
+                char,
+                rest: value.slice(1),
+            };
+        }
+
+        if(doesIt.startsWithCloseLisp.test(value)) {
+            let close: Token = {
+                type: 'token - close parenthesis',
+                location: { line, char },
+            };
+
+            char++;
+            
+            return {
+                result: close,
+                line,
+                char,
+                rest: value.slice(1),
+            };
+        }
+
+        return false;
+    }
+
+    function tokenizeAtom(value: string, line: number, char: number): ParseResult<Token> | false {
+        let doesItStartWithWord = /[\w\*\-]+/;
+        if(doesItStartWithWord.test(value)) {
+            let atomValue: string = (value.match(doesItStartWithWord) as any)[0];
+
+            let atom: Token = {
+                type: 'token - atom',
+                value: atomValue,
+                location: { line, char },
+            };
+
+            char += atomValue.length;
+
+            return {
+                result: atom,
+                line,
+                char,
+                rest: value.slice(atomValue.length),
+            };
+        }
+
+        return false;
     }
 
     return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
@@ -101,53 +156,36 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             let line = block.location.line;
             let char = block.location.char;
             let results = getTokenBuilder();
-            let doesItStartWithWord = /[\w\*\-]+/;
 
+            function tryTokenize<T>(tokenizer: (value: string, line: number, char: number) => ParseResult<T> | false, handler: (result: T) => void): (value: string, line: number, char: number) => boolean {
+                return function tryIt(target: string, currentLine: number, currentChar: number): boolean {
+                    const token = tokenizer(target, currentLine, currentChar);
+                    if(token) {
+                        line = token.line;
+                        char = token.char;
+                        value = token.rest;
+                        handler(token.result);
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+
+            const tryLisp = tryTokenize(tokenizeParenthesis, (result: Token) => results.addToken(result));
+            const tryWhiteSpace = tryTokenize(tokenizeWhiteSpace, () => {});
+            const tryAtom = tryTokenize(tokenizeAtom, (result: Token) => results.addToken(result));
+            
             while(0 < value.length) {
-                if(doesIt.startWithOpenLisp.test(value)) {
-                    let open: Token = {
-                        location: { line, char },
-                        type: 'token - open parenthesis',
-                    };
-
-                    results.addToken(open);
-                    char++;
-                    value = value.slice(1);
+                if(tryLisp(value, line, char)) {
                     continue;
                 }
 
-                if(doesIt.startsWithCloseLisp.test(value)) {
-                    let close: Token = {
-                        type: 'token - close parenthesis',
-                        location: { line, char },
-                    };
-
-                    results.addToken(close);
-                    char++;
-                    value = value.slice(1);
+                if(tryWhiteSpace(value, line, char)) {
                     continue;
                 }
 
-                if(doesIt.startWithWhiteSpace.test(value)) {
-                    let result = tokenizeWhiteSpace(value, line, char);
-                    value = result.rest;
-                    char = result.char;
-                    line = result.line;
-                    continue;
-                }
-
-                if(doesItStartWithWord.test(value)) {
-                    let atomValue: string = (value.match(doesItStartWithWord) as any)[0];
-
-                    let atom: Token = {
-                        type: 'token - atom',
-                        value: atomValue,
-                        location: { line, char },
-                    };
-
-                    results.addToken(atom);
-                    char += atomValue.length;
-                    value = value.slice(atomValue.length);
+                if(tryAtom(value, line, char)) {
                     continue;
                 }
 
