@@ -1,19 +1,17 @@
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
-import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
-import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
 import { ITestableContainer } from "../../../src/types.containers";
 import { DocumentParser } from "../../../src/types.document";
-import { order } from "../../tools";
+import { getVerifier } from "../../tools";
+import { Options } from "approvals/lib/Core/Options";
 
 describe('document', () => {
     let environment: ITestableContainer = undefined as any;
     let parse: DocumentParser = undefined as any;
+    let verifyAsJson: (data: any, options?: Options) => void;
 
     beforeAll(() => {
-        configure({
-            reporters: [new JestReporter(), 'vscode'],
-        });
+        verifyAsJson = getVerifier(configure);
     });
 
     beforeEach(() => {
@@ -26,33 +24,33 @@ describe('document', () => {
             test('should successfully parse an empty string', () => {
                 const result = parse('', 'C:/my_document.md')
         
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
         
             test('should parse a simple text of "hello"', () => {
                 const result = parse('hello', 'C:/my_document.md')
         
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should parse text of "blow fish"', () => {
                 const result = parse('blow fish', 'C:/my_document.md')
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should parse text of " blow fish"', () => {
                 const result = parse(' blow fish', 'C:/my_document.md')
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should parse text of " blow fish "', () => {
                 const result = parse(' blow fish ', 'C:/my_document.md')
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should parse text of "   \\r\\n blow fish"', () => {
                 const result = parse('   \r\n blow fish', 'C:/my_document.md');
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
         });
 
@@ -62,7 +60,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/readme.md')
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should not parse html but preserve new line counts comments', () => {
@@ -74,7 +72,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/readme.md')
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should not parse html comments in the middle of text.', () => {
@@ -85,7 +83,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/comments/helloWorld.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should parse html comments inside an inline code block', () => {
@@ -93,7 +91,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/html/inline.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should parse html comments inside a multiline code block', () => {
@@ -110,7 +108,7 @@ describe('document', () => {
     `;
                 const result = parse(md, 'C:/markdown/multiline.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should fail to parse if html comment is not closed', () => {
@@ -121,7 +119,7 @@ describe('document', () => {
     `;
                 const result = parse(md, 'C:/examples/bad.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should fail if inline code block does not close', () => {
@@ -129,7 +127,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/bad/noCloseInline.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should fail to parse an inline code block with a line break', () => {
@@ -139,7 +137,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/examples/badInline.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
     
             test('should fail to parse a multiline code block that does not close', () => {
@@ -147,7 +145,7 @@ describe('document', () => {
     
                 const result = parse(md, 'C:/bad/examples/multiline.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
         });
     
@@ -157,7 +155,7 @@ describe('document', () => {
     
                 const result = parse(md, '_main.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
             
             test('should parse a doculisp block in the middle of file', () => {
@@ -165,7 +163,7 @@ describe('document', () => {
     
                 const result = parse(md, '_main.md');
     
-                verifyAsJson(order(result));
+                verifyAsJson(result);
             });
         });
     });
@@ -191,7 +189,7 @@ describe('document', () => {
 
             let result = parse(dlisp, 'C:/main.dlisp');
 
-            verifyAsJson(order(result));
+            verifyAsJson(result);
         });
 
         test('should fail to parse a file that contains a dl atom', () => {
@@ -214,7 +212,7 @@ describe('document', () => {
 
             let result = parse(dlisp, 'C:/bad/extraDl.dlisp');
 
-            verifyAsJson(order(result));
+            verifyAsJson(result);
         });
 
         test('should handle a file with parentheses that do not close', () => {
@@ -237,7 +235,7 @@ describe('document', () => {
 
             let result = parse(dlisp, 'C:/main.dlisp');
 
-            verifyAsJson(order(result));
+            verifyAsJson(result);
         });
 
         test('should handle a file with to many parenthesis', () => {
@@ -259,7 +257,7 @@ describe('document', () => {
 
             let result = parse(dlisp, 'C:/main.dlisp');
 
-            verifyAsJson(order(result));
+            verifyAsJson(result);
         });
     });
 });
