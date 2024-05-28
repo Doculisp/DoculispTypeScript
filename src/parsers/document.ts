@@ -5,6 +5,11 @@ import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
 import { ParseResult } from "../types.internal";
 
+type DocumentParse = {
+    value: string;
+    start: ILocation;
+};
+
 
 function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
     function parse(value: string, documentPath: string): Result<DocumentMap> {
@@ -15,18 +20,17 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             };
         }
 
-        function constructResult(current: string, start: ILocation | undefined, rest: string, line: number, char: number): ParseResult {
-            let r = !!start ? current : "";
+        function constructResult(current: string, start: ILocation | undefined, rest: string, line: number, char: number): ParseResult<DocumentParse | undefined> {
+            let r: DocumentParse | undefined = !!start ? { value: current, start } : undefined;
             return {
                 result: r,
                 rest: rest,
                 line: line,
                 char: char,
-                start: start,
             };
         }
         
-        function isWhiteSpace(value: string, line: number, char: number): ParseResult {
+        function isWhiteSpace(value: string, line: number, char: number): ParseResult<DocumentParse | undefined> {
             let current = "";
             let start: ILocation | undefined;
             let hasWhiteSpace: boolean = false;
@@ -76,7 +80,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return constructResult(current, start, value, line, char);
         }
 
-        function isDoculisp(value: string, line: number, char: number, start?: ILocation | undefined): Result<ParseResult> {
+        function isDoculisp(value: string, line: number, char: number, start?: ILocation | undefined): Result<ParseResult<DocumentParse | undefined>> {
             let current = "";
             let depth = !!start ? 1 : 0;
         
@@ -123,7 +127,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(start) {
-                        current += whiteSpace.result;
+                        current += whiteSpace.result?.value;
                     }
 
                     line = whiteSpace.line;
@@ -141,9 +145,9 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return fail(`Doculisp block at { line: ${start.line}, char: ${start.char} } is not closed.`, documentPath);
         }
         
-        function isComment(value: string, line: number, char: number): Result<ParseResult[]> {
+        function isComment(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>[]> {
             let start: ILocation | undefined;
-            let results: ParseResult[] = [];
+            let results: ParseResult<DocumentParse | undefined>[] = [];
         
             while(0 < value.length) {
                 const hasStart = !!start;
@@ -204,7 +208,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             }
         }
         
-        function isInline(value: string, line: number, char: number): Result<ParseResult> {
+        function isInline(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>> {
             let current = "";
             let start: ILocation | undefined;
         
@@ -232,7 +236,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     if(start && line != whiteSpace.line) {
                         return fail(`Inline code block at { line: ${start.line}, char: ${start.char} } contains a new line before closing.`, documentPath);
                     }
-                    current += whiteSpace.result;
+                    current += whiteSpace.result?.value;
                     value = whiteSpace.rest;
                     char = whiteSpace.char;
                     continue;
@@ -253,7 +257,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return ok(constructResult(current, start, value, line, char));
         }
         
-        function isMultiline(value: string, line: number, char: number): Result<ParseResult> {
+        function isMultiline(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>> {
             let current = "";
             let start: ILocation | undefined;
         
@@ -278,7 +282,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
         
                 if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
-                    current += whiteSpace.result;
+                    current += whiteSpace.result?.value;
                     value = whiteSpace.rest;
                     char = whiteSpace.char;
                     continue;
@@ -300,7 +304,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return ok(constructResult(current, start, value, line, char));
         }
         
-        function isWord(value: string, line: number, char: number): Result<ParseResult> {
+        function isWord(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>> {
             let current = "";
             let start: ILocation | undefined;
         
@@ -310,7 +314,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     return ok(constructResult(current, start, value, line, char));
                 } else if (hasWhiteSpace) {
                     const whiteSpace = isWhiteSpace(value, line, char);
-                    current += whiteSpace.result;
+                    current += whiteSpace.result?.value;
                     value = whiteSpace.rest;
                     line = whiteSpace.line;
                     char = whiteSpace.char;
@@ -325,12 +329,12 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     let multiline = isMultiline(value, line, char);
                     if(multiline.success) {
                         let v = multiline.value;
-                        current += v.result;
+                        current += v.result?.value;
                         value = v.rest;
                         line = v.line;
                         char = v.char;
                         if(!start) {
-                            start = v.start;
+                            start = v.result?.start;
                         }
                     } else {
                         return fail(multiline.message, documentPath);
@@ -341,12 +345,12 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     let inline = isInline(value, line, char);
                     if(inline.success) {
                         let v = inline.value;
-                        current += v.result;
+                        current += v.result?.value;
                         value = v.rest;
                         line = v.line;
                         char = v.char;
                         if(!start) {
-                            start = v.start;
+                            start = v.result?.start;
                         }
                         continue;
                     } else {
@@ -378,10 +382,10 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             let lisp = isDoculisp(`${value})`, line, 1, { line: 1, char: 1 });
             if(lisp.success) {
                 let v = lisp.value;
-                if(v.start){
+                if(v.result?.start){
                     current[current.length] = {
-                        location: { line: v.start.line, char: v.start.char },
-                        text: v.result,
+                        location: { line: v.result.start.line, char: v.result.start.char },
+                        text: v.result.value,
                         type: 'lisp'
                     };
                     
@@ -401,7 +405,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
 
         while (0 < value.length) {
             let v = isWhiteSpace(value, line, char);
-            if(v.start) {
+            if(v.result?.start) {
                 value = v.rest;
                 line = v.line;
                 char = v.char;
@@ -412,10 +416,10 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 let comment = isComment(value, line, char);
                 if(comment.success) {
                     comment.value.forEach(element => {
-                        if(element.start) {
+                        if(element.result?.start) {
                             current[current.length] = {
-                                location: { line: element.start.line, char: element.start.char },
-                                text: element.result,
+                                location: { line: element.result.start.line, char: element.result.start.char },
+                                text: element.result.value,
                                 type: "lisp",
                             };
                         }
@@ -434,11 +438,11 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             let word = isWord(value, line, char);
             if(word.success){
                 v = word.value;
-                if(v.start) {
+                if(v.result?.start) {
                     value = v.rest;
                     current[current.length] = {
                         location: { line, char },
-                        text: v.result,
+                        text: v.result.value,
                         type: "text",
                     };
                     line = v.line;

@@ -1,12 +1,12 @@
 
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
-import { ITestableContainer } from "../../../src/types.containers";
+import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
+import { ITestableContainer } from "../../../src/types.containers";
 import { TokenFunction } from '../../../src/types.tokens';
 import { ILocation, Result, fail } from "../../../src/types.general";
 import { DocumentMap } from "../../../src/types.document";
-import { getVerifier } from "../../tools";
 
 describe('tokenizer', () => {
     let environment: ITestableContainer = undefined as any;
@@ -14,7 +14,7 @@ describe('tokenizer', () => {
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
 
     beforeAll(() => {
-        verifyAsJson = getVerifier(configure)
+        verifyAsJson = getVerifier(configure);
     });
 
     beforeEach(() => {

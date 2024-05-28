@@ -1,9 +1,6 @@
-import { ILocation } from "./types.general";
-
-export type ParseResult = {
-    result: string;
+export type ParseResult<T> = {
+    result: T;
     rest: string;
     line: number;
     char: number;
-    start: ILocation | undefined;
 }

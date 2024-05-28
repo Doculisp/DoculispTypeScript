@@ -28,11 +28,10 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches) : TokenFunction {
-    function tokenizeWhiteSpace(value: string, line: number, char: number): ParseResult {
+    function tokenizeWhiteSpace(value: string, line: number, char: number): ParseResult<string> {
         if(doesIt.startWithWindowsNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             value = value.slice(newLine.length);
-            let start = { line, char };
             line++;
             char = 0;
             return {
@@ -40,14 +39,12 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                 rest: value,
                 char,
                 line,
-                start,
             };
         }
 
         if(doesIt.startWithLinuxNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithLinuxNewline) as any)[0] as string;
             value = value.slice(newLine.length);
-            let start = { line, char };
             line++;
             char = 0;
             return {
@@ -55,14 +52,12 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                 rest: value,
                 char,
                 line,
-                start,
             };
         }
 
         if(doesIt.startWithMacsNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithMacsNewline) as any)[0] as string;
             value = value.slice(newLine.length);
-            let start = { line, char };
             line++;
             char = 0;
             return {
@@ -70,21 +65,18 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                 rest: value,
                 char,
                 line,
-                start,
             };
         }
 
         if(doesIt.startWithWhiteSpace.test(value)) {
             const space = (value.match(doesIt.startWithWhiteSpace) as any)[0] as string;
             value = value.slice(space.length);
-            let start = { line, char };
             char += space.length;
             return {
                 result: space,
                 rest: value,
                 line,
                 char,
-                start,
             }
         }
 
@@ -93,7 +85,6 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             rest: value,
             line,
             char,
-            start: undefined,
         };
     }
 
