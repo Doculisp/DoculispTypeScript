@@ -1,8 +1,8 @@
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
 import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
-import { ITestableContainer } from "../../../src/types.containers";
 import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
+import { ITestableContainer } from "../../../src/types.containers";
 import { DocumentParser } from "../../../src/types.document";
 import { order } from "../../tools";
 

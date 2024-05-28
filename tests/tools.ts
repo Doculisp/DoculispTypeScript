@@ -1,3 +1,9 @@
+import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
+import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
+import { Config } from "approvals/lib/config";
+import { Options } from "approvals/lib/Core/Options";
+
+
 export function order<T>(thing: T): T {
     if(!thing) { return thing; }
 
@@ -24,4 +30,14 @@ export function order<T>(thing: T): T {
     keys.forEach(key => ret[key] = order(a[key]));
 
     return ret;
+}
+
+export function getVerifier(configure: (overrideOptions?: Partial<Config> | undefined) => Config): ((data: any, options?: Options) => void) {
+    configure({
+        reporters: [new JestReporter()],
+    });
+
+    return function(data: any, options?: Options): void {
+        verifyAsJson(order(data), options);
+    };
 }

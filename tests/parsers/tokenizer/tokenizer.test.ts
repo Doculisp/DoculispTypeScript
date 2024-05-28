@@ -1,22 +1,20 @@
 
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
-import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
 import { ITestableContainer } from "../../../src/types.containers";
-import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
+import { Options } from "approvals/lib/Core/Options";
 import { TokenFunction } from '../../../src/types.tokens';
 import { ILocation, Result, fail } from "../../../src/types.general";
 import { DocumentMap } from "../../../src/types.document";
-import { order } from "../../tools";
+import { getVerifier, order } from "../../tools";
 
 describe('tokenizer', () => {
     let environment: ITestableContainer = undefined as any;
     let tokenizer: TokenFunction = undefined as any;
+    let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
 
     beforeAll(() => {
-        configure({
-            reporters: [new JestReporter(), 'vscode'],
-        });
+        verifyAsJson = getVerifier(configure)
     });
 
     beforeEach(() => {
