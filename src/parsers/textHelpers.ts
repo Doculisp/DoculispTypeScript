@@ -3,9 +3,9 @@ import { IDocumentSearches, ILispSearches, Searcher } from "../types.textHelpers
 
 const documentSearches: IDocumentSearches = {
     startWithWhiteSpace: /^\s/,
-    startWithRn: /^\r\n/,
-    startWithR: /^\r/,
-    startWithN: /^\n/,
+    startWithWindowsNewline: /^\r\n/,
+    startWithMacsNewline: /^\r/,
+    startWithLinuxNewline: /^\n/,
     startWithOpenComment: /^<!--/,
     startWithCloseComment: /^-->/,
     startWithInlineMarker: /^`/,

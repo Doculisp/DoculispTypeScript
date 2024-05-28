@@ -40,7 +40,7 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             let line = block.location.line;
             let char = block.location.char;
             let results = getTokenBuilder();
-            let doesItStartWithWord = /[\w\*]+/
+            let doesItStartWithWord = /[\w\*]+/;
 
             while(0 < value.length) {
                 if(doesIt.startWithOpenLisp.test(value)) {
@@ -67,6 +67,30 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                     continue;
                 }
 
+                if(doesIt.startWithWindowsNewline.test(value)) {
+                    const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
+                    value = value.slice(newLine.length);
+                    line++;
+                    char = 0;
+                    continue;
+                }
+
+                if(doesIt.startWithLinuxNewline.test(value)) {
+                    const newLine = value.match(doesIt.startWithLinuxNewline) as any as string;
+                    value = value.slice(newLine.length);
+                    line++;
+                    char = 0;
+                    continue;
+                }
+
+                if(doesIt.startWithMacsNewline.test(value)) {
+                    const newLine = value.match(doesIt.startWithMacsNewline) as any as string;
+                    value = value.slice(newLine.length);
+                    line++;
+                    char = 0;
+                    continue;
+                }
+
                 if(doesItStartWithWord.test(value)) {
                     let atomValue: string = (value.match(doesItStartWithWord) as any)[0];
 
@@ -83,6 +107,7 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                 }
 
                 value = value.slice(1);
+                char++;
             }
 
             return ok(results.getTokens());

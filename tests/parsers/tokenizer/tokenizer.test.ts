@@ -109,5 +109,47 @@ describe('tokenizer', () => {
 
             verifyAsJson(result);
         });
+        
+        test('should tokenize an single atom with space after atom', () => {
+            const start: ILocation = { line: 4, char: 2 };
+            let parseResult: Result<DocumentMap> = {
+                success: true,
+                value: {
+                    documentPath: 'D:/comments/simple.md',
+                    parts: [
+                        {
+                            type: 'lisp',
+                            text: '(atom )',
+                            location: start,
+                        },
+                    ],
+                },
+            };
+            
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
+        
+        test('should tokenize an single atom with new line after atom', () => {
+            const start: ILocation = { line: 4, char: 2 };
+            let parseResult: Result<DocumentMap> = {
+                success: true,
+                value: {
+                    documentPath: 'D:/comments/simple.md',
+                    parts: [
+                        {
+                            type: 'lisp',
+                            text: '(atom\r\n)',
+                            location: start,
+                        },
+                    ],
+                },
+            };
+            
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
     });
 });

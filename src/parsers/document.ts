@@ -57,21 +57,21 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                     return constructResult(current, start, value, line, char);
                 }
         
-                hasWhiteSpace = doesIt.startWithRn.test(value);
+                hasWhiteSpace = doesIt.startWithWindowsNewline.test(value);
                 if(hasWhiteSpace) {
-                    addLine(doesIt.startWithRn);
+                    addLine(doesIt.startWithWindowsNewline);
                     continue;
                 }
                 
-                hasWhiteSpace = doesIt.startWithR.test(value);
+                hasWhiteSpace = doesIt.startWithMacsNewline.test(value);
                 if(hasWhiteSpace) {
-                    addLine(doesIt.startWithR);
+                    addLine(doesIt.startWithMacsNewline);
                     continue;
                 }
                 
-                hasWhiteSpace = doesIt.startWithN.test(value);
+                hasWhiteSpace = doesIt.startWithLinuxNewline.test(value);
                 if(hasWhiteSpace) {
-                    addLine(doesIt.startWithN);
+                    addLine(doesIt.startWithLinuxNewline);
                     continue;
                 }
         

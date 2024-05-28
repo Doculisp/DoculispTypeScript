@@ -8,9 +8,9 @@ export interface IMarkupSearches {
 
 export interface IWhiteSpaceSearches {
     readonly startWithWhiteSpace: RegExp;
-    readonly startWithRn: RegExp;
-    readonly startWithR: RegExp;
-    readonly startWithN: RegExp;
+    readonly startWithWindowsNewline: RegExp;
+    readonly startWithMacsNewline: RegExp;
+    readonly startWithLinuxNewline: RegExp;
 };
 
 export interface ILispSearches extends IWhiteSpaceSearches {
