@@ -7,6 +7,7 @@ import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
 import { TokenFunction } from '../../../src/types.tokens';
 import { ILocation, Result, fail } from "../../../src/types.general";
 import { DocumentMap } from "../../../src/types.document";
+import { order } from "../../tools";
 
 describe('tokenizer', () => {
     let environment: ITestableContainer = undefined as any;
@@ -28,7 +29,7 @@ describe('tokenizer', () => {
 
         const result = tokenizer(parseResult);
 
-        verifyAsJson(result);
+        verifyAsJson(order(result));
     });
 
     test('should return empty if given an empty parse result', () => {
@@ -42,7 +43,7 @@ describe('tokenizer', () => {
 
         const result = tokenizer(parseResult);
 
-        verifyAsJson(result);
+        verifyAsJson(order(result));
     });
 
     test('should tokenize text as text', () => {
@@ -65,7 +66,7 @@ describe('tokenizer', () => {
 
         const result = tokenizer(parseResult);
 
-        verifyAsJson(result);
+        verifyAsJson(order(result));
     });
 
     describe('handling Doculisp', () => {
@@ -86,7 +87,7 @@ describe('tokenizer', () => {
             
             let result = tokenizer(parseResult);
 
-            verifyAsJson(result);
+            verifyAsJson(order(result));
         });
         
         test('should tokenize an single atom', () => {
@@ -107,7 +108,7 @@ describe('tokenizer', () => {
             
             const result = tokenizer(parseResult);
 
-            verifyAsJson(result);
+            verifyAsJson(order(result));
         });
         
         test('should tokenize an single atom with space after atom', () => {
@@ -128,7 +129,7 @@ describe('tokenizer', () => {
             
             const result = tokenizer(parseResult);
 
-            verifyAsJson(result);
+            verifyAsJson(order(result));
         });
         
         test('should tokenize an single atom with new line after atom', () => {
@@ -149,7 +150,7 @@ describe('tokenizer', () => {
             
             const result = tokenizer(parseResult);
 
-            verifyAsJson(result);
+            verifyAsJson(order(result));
         });
         
         test('should tokenize an single atom containing only numbers', () => {
@@ -170,7 +171,7 @@ describe('tokenizer', () => {
             
             const result = tokenizer(parseResult);
 
-            verifyAsJson(result);
+            verifyAsJson(order(result));
         });
         
         test('should tokenize an single atom with hyphen and underscore', () => {
@@ -191,7 +192,7 @@ describe('tokenizer', () => {
             
             const result = tokenizer(parseResult);
 
-            verifyAsJson(result);
+            verifyAsJson(order(result));
         });
     });
 });

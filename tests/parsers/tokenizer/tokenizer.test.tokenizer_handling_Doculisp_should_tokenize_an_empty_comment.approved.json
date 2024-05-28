@@ -1,30 +1,30 @@
 {
+  "success": true,
   "value": {
     "documentPath": "D:/comments/simple.md",
     "tokens": [
       {
         "location": {
-          "line": 2,
-          "char": 1
+          "char": 1,
+          "line": 2
         },
         "type": "token - open parenthesis"
       },
       {
-        "type": "token - atom",
-        "value": "*",
         "location": {
-          "line": 2,
-          "char": 2
-        }
+          "char": 2,
+          "line": 2
+        },
+        "type": "token - atom",
+        "value": "*"
       },
       {
-        "type": "token - close parenthesis",
         "location": {
-          "line": 2,
-          "char": 3
-        }
+          "char": 3,
+          "line": 2
+        },
+        "type": "token - close parenthesis"
       }
     ]
-  },
-  "success": true
+  }
 }

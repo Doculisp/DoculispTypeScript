@@ -1,16 +1,16 @@
 {
+  "success": true,
   "value": {
     "documentPath": "myText.md",
     "tokens": [
       {
-        "type": "token - text",
-        "text": "hello my text",
         "location": {
-          "line": 5,
-          "char": 23
-        }
+          "char": 23,
+          "line": 5
+        },
+        "text": "hello my text",
+        "type": "token - text"
       }
     ]
-  },
-  "success": true
+  }
 }
