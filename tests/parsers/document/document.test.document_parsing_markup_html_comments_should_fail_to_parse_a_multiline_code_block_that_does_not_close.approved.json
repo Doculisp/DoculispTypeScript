@@ -1,5 +1,5 @@
 {
-  "message": "Multiline code block at { line: 1, char: 1 } does not close",
   "documentPath": "C:/bad/examples/multiline.md",
+  "message": "Multiline code block at { line: 1, char: 1 } does not close",
   "success": false
 }

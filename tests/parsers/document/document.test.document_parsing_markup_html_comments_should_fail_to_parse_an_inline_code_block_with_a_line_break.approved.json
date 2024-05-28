@@ -1,5 +1,5 @@
 {
-  "message": "Inline code block at { line: 1, char: 1 } contains a new line before closing.",
   "documentPath": "C:/examples/badInline.md",
+  "message": "Inline code block at { line: 1, char: 1 } contains a new line before closing.",
   "success": false
 }

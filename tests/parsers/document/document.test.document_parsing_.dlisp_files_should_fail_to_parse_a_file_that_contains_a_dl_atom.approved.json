@@ -1,5 +1,5 @@
 {
-  "message": "Doculisp Block at { line: 1, char: 1} contains an embedded doculisp block at { line: 1, char: 1 }.",
   "documentPath": "C:/bad/extraDl.dlisp",
+  "message": "Doculisp Block at { line: 1, char: 1} contains an embedded doculisp block at { line: 1, char: 1 }.",
   "success": false
 }

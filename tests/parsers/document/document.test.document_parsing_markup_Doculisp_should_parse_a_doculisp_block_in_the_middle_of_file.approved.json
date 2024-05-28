@@ -1,32 +1,32 @@
 {
+  "success": true,
   "value": {
     "documentPath": "_main.md",
     "parts": [
       {
         "location": {
-          "line": 1,
-          "char": 1
+          "char": 1,
+          "line": 1
         },
         "text": "# Title\r\nsome text about title",
         "type": "text"
       },
       {
         "location": {
-          "line": 4,
-          "char": 12
+          "char": 12,
+          "line": 4
         },
         "text": "(# two)",
         "type": "lisp"
       },
       {
         "location": {
-          "line": 5,
-          "char": 1
+          "char": 1,
+          "line": 5
         },
         "text": "Mickey Mouse Hotline.",
         "type": "text"
       }
     ]
-  },
-  "success": true
+  }
 }

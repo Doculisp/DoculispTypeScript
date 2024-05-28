@@ -1,16 +1,16 @@
 {
+  "success": true,
   "value": {
     "documentPath": "C:/html/inline.md",
     "parts": [
       {
         "location": {
-          "line": 1,
-          "char": 1
+          "char": 1,
+          "line": 1
         },
         "text": "`<!-- an example html comment -->`",
         "type": "text"
       }
     ]
-  },
-  "success": true
+  }
 }

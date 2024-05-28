@@ -1,16 +1,16 @@
 {
+  "success": true,
   "value": {
     "documentPath": "_main.md",
     "parts": [
       {
         "location": {
-          "line": 1,
-          "char": 6
+          "char": 6,
+          "line": 1
         },
         "text": "(# header)",
         "type": "lisp"
       }
     ]
-  },
-  "success": true
+  }
 }
