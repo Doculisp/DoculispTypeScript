@@ -28,18 +28,18 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>) : TokenFunction {
-    function tokenizeWhiteSpace(value: string, line: number, char: number): DiscardResult | false {
+    function tokenizeWhiteSpace(value: string, line: number, char: number): Result<DiscardResult | false> {
         if(doesIt.startWithWindowsNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             value = value.slice(newLine.length);
             line++;
             char = 0;
-            return {
+            return ok({
                 rest: value,
                 char,
                 line,
                 type: 'discard',
-            };
+            });
         }
 
         if(doesIt.startWithLinuxNewline.test(value)) {
@@ -47,12 +47,12 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
             value = value.slice(newLine.length);
             line++;
             char = 0;
-            return {
+            return ok({
                 rest: value,
                 char,
                 line,
                 type: 'discard',
-            };
+            });
         }
 
         if(doesIt.startWithMacsNewline.test(value)) {
@@ -60,30 +60,30 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
             value = value.slice(newLine.length);
             line++;
             char = 0;
-            return {
+            return ok({
                 rest: value,
                 char,
                 line,
                 type: 'discard',
-            };
+            });
         }
 
         if(doesIt.startWithWhiteSpace.test(value)) {
             const space = (value.match(doesIt.startWithWhiteSpace) as any)[0] as string;
             value = value.slice(space.length);
             char += space.length;
-            return {
+            return ok({
                 rest: value,
                 line,
                 char,
                 type: 'discard',
-            }
+            });
         }
 
-        return false;
+        return ok(false);
     }
 
-    function tokenizeParenthesis(value: string, line: number, char: number): ParseResult<Token> | false {
+    function tokenizeParenthesis(value: string, line: number, char: number): Result<ParseResult<Token> | false> {
         if(doesIt.startWithOpenLisp.test(value)) {
             let open: Token = {
                 location: { line, char },
@@ -92,13 +92,13 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
 
             char++;
 
-            return {
+            return ok({
                 result: open,
                 line,
                 char,
                 rest: value.slice(1),
                 type: "parse result",
-            };
+            });
         }
 
         if(doesIt.startsWithCloseLisp.test(value)) {
@@ -109,19 +109,19 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
 
             char++;
             
-            return {
+            return ok({
                 result: close,
                 line,
                 char,
                 rest: value.slice(1),
                 type: "parse result",
-            };
+            });
         }
 
-        return false;
+        return ok(false);
     }
 
-    function tokenizeAtom(value: string, line: number, char: number): ParseResult<Token> | false {
+    function tokenizeAtom(value: string, line: number, char: number): Result<ParseResult<Token> | false> {
         let doesItStartWithWord = /[\w\*\-]+/;
         if(doesItStartWithWord.test(value)) {
             let atomValue: string = (value.match(doesItStartWithWord) as any)[0];
@@ -134,16 +134,16 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
 
             char += atomValue.length;
 
-            return {
+            return ok({
                 result: atom,
                 line,
                 char,
                 rest: value.slice(atomValue.length),
                 type: "parse result",
-            };
+            });
         }
 
-        return false;
+        return ok(false);
     }
 
     const totalTokens = getTokenBuilder();
@@ -157,7 +157,7 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
         const documentPath = documentMap.value.documentPath;
         
         function toTokens(block: ILispBlock): Result<Token[]> {
-            return ok(parser.parse(block.text, block.location.line, block.location.char));
+            return parser.parse(block.text, block.location.line, block.location.char);
         }
 
         let parts = documentMap.value.parts;
