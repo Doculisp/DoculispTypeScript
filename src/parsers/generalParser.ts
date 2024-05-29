@@ -1,10 +1,10 @@
 import { IRegisterable } from "../types.containers";
 import { Result, fail, ok } from "../types.general";
-import { DiscardResult, HandleValue, IParser } from "../types.internal";
+import { HandleValue, IParser, StepParseResult } from "../types.internal";
 
-function mapFirst<From, To>(collection: From[], mapper: (value: From) => Result<NonNullable<To> | DiscardResult | false>): Result<NonNullable<To> | DiscardResult | false> {
+function mapFirst<T>(collection: HandleValue<T>[], mapper: (value: HandleValue<T>) => StepParseResult<T>): StepParseResult<T> {
     for (let index = 0; index < collection.length; index++) {
-        const element = collection[index] as any as From;
+        const element = collection[index] as any as HandleValue<T>;
         const result = mapper(element);
         if(result.success && result.value) {
             return result;
@@ -43,6 +43,9 @@ class Parser<T> implements IParser<T> {
 
                 if(parseResult.type === 'parse result'){
                     results[results.length] = parseResult.result;
+                }
+                if(parseResult.type === 'parse group result') {
+                    parseResult.result.forEach(t =>{ results[results.length] = t; });
                 }
             }
         }

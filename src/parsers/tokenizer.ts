@@ -1,7 +1,7 @@
 import { IRegisterable } from "../types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
 import { Result, fail, ok } from "../types.general";
-import { CreateParser, DiscardResult, ParseResult } from "../types.internal";
+import { CreateParser, StepParseResult } from "../types.internal";
 import { ILispSearches, Searcher } from "../types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
 
@@ -28,7 +28,7 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>) : TokenFunction {
-    function tokenizeWhiteSpace(value: string, line: number, char: number): Result<DiscardResult | false> {
+    function tokenizeWhiteSpace(value: string, line: number, char: number): StepParseResult<Token> {
         if(doesIt.startWithWindowsNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             value = value.slice(newLine.length);
@@ -83,7 +83,7 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
         return ok(false);
     }
 
-    function tokenizeParenthesis(value: string, line: number, char: number): Result<ParseResult<Token> | false> {
+    function tokenizeParenthesis(value: string, line: number, char: number): StepParseResult<Token> {
         if(doesIt.startWithOpenLisp.test(value)) {
             let open: Token = {
                 location: { line, char },
@@ -121,7 +121,7 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
         return ok(false);
     }
 
-    function tokenizeAtom(value: string, line: number, char: number): Result<ParseResult<Token> | false> {
+    function tokenizeAtom(value: string, line: number, char: number): StepParseResult<Token> {
         let doesItStartWithWord = /[\w\*\-]+/;
         if(doesItStartWithWord.test(value)) {
             let atomValue: string = (value.match(doesItStartWithWord) as any)[0];

@@ -3,7 +3,7 @@ import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { ILocation, Result, fail, ok } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
-import { ParseResult } from "../types.internal";
+import { SubParseResult } from "../types.internal";
 
 type DocumentParse = {
     value: string;
@@ -20,7 +20,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             };
         }
 
-        function constructResult(current: string, start: ILocation | undefined, rest: string, line: number, char: number): ParseResult<DocumentParse | undefined> {
+        function constructResult(current: string, start: ILocation | undefined, rest: string, line: number, char: number): SubParseResult<DocumentParse | undefined> {
             let r: DocumentParse | undefined = !!start ? { value: current, start } : undefined;
             return {
                 result: r,
@@ -31,7 +31,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             };
         }
         
-        function isWhiteSpace(value: string, line: number, char: number): ParseResult<DocumentParse | undefined> {
+        function isWhiteSpace(value: string, line: number, char: number): SubParseResult<DocumentParse | undefined> {
             let current = "";
             let start: ILocation | undefined;
             let hasWhiteSpace: boolean = false;
@@ -81,7 +81,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return constructResult(current, start, value, line, char);
         }
 
-        function isDoculisp(value: string, line: number, char: number, start?: ILocation | undefined): Result<ParseResult<DocumentParse | undefined>> {
+        function isDoculisp(value: string, line: number, char: number, start?: ILocation | undefined): Result<SubParseResult<DocumentParse | undefined>> {
             let current = "";
             let depth = !!start ? 1 : 0;
         
@@ -146,9 +146,9 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return fail(`Doculisp block at { line: ${start.line}, char: ${start.char} } is not closed.`, documentPath);
         }
         
-        function isComment(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>[]> {
+        function isComment(value: string, line: number, char: number): Result<SubParseResult<DocumentParse | undefined>[]> {
             let start: ILocation | undefined;
-            let results: ParseResult<DocumentParse | undefined>[] = [];
+            let results: SubParseResult<DocumentParse | undefined>[] = [];
         
             while(0 < value.length) {
                 const hasStart = !!start;
@@ -209,7 +209,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             }
         }
         
-        function isInline(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>> {
+        function isInline(value: string, line: number, char: number): Result<SubParseResult<DocumentParse | undefined>> {
             let current = "";
             let start: ILocation | undefined;
         
@@ -258,7 +258,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return ok(constructResult(current, start, value, line, char));
         }
         
-        function isMultiline(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>> {
+        function isMultiline(value: string, line: number, char: number): Result<SubParseResult<DocumentParse | undefined>> {
             let current = "";
             let start: ILocation | undefined;
         
@@ -305,7 +305,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             return ok(constructResult(current, start, value, line, char));
         }
         
-        function isWord(value: string, line: number, char: number): Result<ParseResult<DocumentParse | undefined>> {
+        function isWord(value: string, line: number, char: number): Result<SubParseResult<DocumentParse | undefined>> {
             let current = "";
             let start: ILocation | undefined;
         
