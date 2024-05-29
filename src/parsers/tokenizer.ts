@@ -1,7 +1,7 @@
 import { IRegisterable } from "../types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
 import { Result, fail, ok } from "../types.general";
-import { ParseResult } from "../types.internal";
+import { CreateParser, DiscardResult, ParseResult } from "../types.internal";
 import { ILispSearches, Searcher } from "../types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
 
@@ -27,18 +27,18 @@ function getTokenBuilder() {
     };
 }
 
-function buildTokenize(doesIt: ILispSearches) : TokenFunction {
-    function tokenizeWhiteSpace(value: string, line: number, char: number): ParseResult<string> | false {
+function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>) : TokenFunction {
+    function tokenizeWhiteSpace(value: string, line: number, char: number): DiscardResult | false {
         if(doesIt.startWithWindowsNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             value = value.slice(newLine.length);
             line++;
             char = 0;
             return {
-                result: newLine,
                 rest: value,
                 char,
                 line,
+                type: 'discard',
             };
         }
 
@@ -48,10 +48,10 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             line++;
             char = 0;
             return {
-                result: newLine,
                 rest: value,
                 char,
                 line,
+                type: 'discard',
             };
         }
 
@@ -61,10 +61,10 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             line++;
             char = 0;
             return {
-                result: newLine,
                 rest: value,
                 char,
                 line,
+                type: 'discard',
             };
         }
 
@@ -73,10 +73,10 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
             value = value.slice(space.length);
             char += space.length;
             return {
-                result: space,
                 rest: value,
                 line,
                 char,
+                type: 'discard',
             }
         }
 
@@ -97,6 +97,7 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                 line,
                 char,
                 rest: value.slice(1),
+                type: "parse result",
             };
         }
 
@@ -113,6 +114,7 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                 line,
                 char,
                 rest: value.slice(1),
+                type: "parse result",
             };
         }
 
@@ -137,11 +139,15 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
                 line,
                 char,
                 rest: value.slice(atomValue.length),
+                type: "parse result",
             };
         }
 
         return false;
     }
+
+    const totalTokens = getTokenBuilder();
+    const parser = createParser(tokenizeWhiteSpace, tokenizeParenthesis, tokenizeAtom);
 
     return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
         if(!documentMap.success) {
@@ -149,51 +155,9 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
         }
         
         const documentPath = documentMap.value.documentPath;
-        const totalTokens = getTokenBuilder();
-
+        
         function toTokens(block: ILispBlock): Result<Token[]> {
-            let value = block.text;
-            let line = block.location.line;
-            let char = block.location.char;
-            let results = getTokenBuilder();
-
-            function tryTokenize<T>(tokenizer: (value: string, line: number, char: number) => ParseResult<T> | false, handler: (result: T) => void): (value: string, line: number, char: number) => boolean {
-                return function tryIt(target: string, currentLine: number, currentChar: number): boolean {
-                    const token = tokenizer(target, currentLine, currentChar);
-                    if(token) {
-                        line = token.line;
-                        char = token.char;
-                        value = token.rest;
-                        handler(token.result);
-                        return true;
-                    }
-
-                    return false;
-                }
-            }
-
-            const tryLisp = tryTokenize(tokenizeParenthesis, (result: Token) => results.addToken(result));
-            const tryWhiteSpace = tryTokenize(tokenizeWhiteSpace, () => {});
-            const tryAtom = tryTokenize(tokenizeAtom, (result: Token) => results.addToken(result));
-            
-            while(0 < value.length) {
-                if(tryLisp(value, line, char)) {
-                    continue;
-                }
-
-                if(tryWhiteSpace(value, line, char)) {
-                    continue;
-                }
-
-                if(tryAtom(value, line, char)) {
-                    continue;
-                }
-
-                value = value.slice(1);
-                char++;
-            }
-
-            return ok(results.getTokens());
+            return ok(parser.parse(block.text, block.location.line, block.location.char));
         }
 
         let parts = documentMap.value.parts;
@@ -223,10 +187,10 @@ function buildTokenize(doesIt: ILispSearches) : TokenFunction {
 }
 
 const tokenizer: IRegisterable = {
-    builder: (searches: Searcher) => buildTokenize(searches.searchLispFor),
+    builder: (searches: Searcher, getParser: CreateParser<Token>) => buildTokenize(searches.searchLispFor, getParser),
     name: 'tokenizer',
     singleton: true,
-    dependencies: ['searches']
+    dependencies: ['searches', 'parser']
 };
 
 export {

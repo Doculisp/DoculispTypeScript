@@ -27,6 +27,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 rest: rest,
                 line: line,
                 char: char,
+                type: "parse result"
             };
         }
         
