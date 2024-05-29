@@ -4,7 +4,7 @@
   "description": "A scripting language to build markdown documents",
   "main": "index.js",
   "scripts": {
-    "precompile": "rimraf src/**/*.js test/**/*.js dist/**/*",
+    "precompile": "rimraf src/**/*.js test/**/*.js dist/**/* -g",
     "compile": "tsc",
     "test": "jest tests"
   },
@@ -32,7 +32,7 @@
     "jest": "^29.3.1",
     "nyc": "^15.1.0",
     "prettier": "^3.2.5",
-    "rimraf": "~3.0.2",
+    "rimraf": "^5.0.7",
     "source-map-support": "^0.5.20",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
