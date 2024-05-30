@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types.containers";
 import { Result, fail, ok } from "../types.general";
-import { HandleValue, IParser, StepParseResult } from "../types.internal";
+import { HandleValue, IParser, IUnparsed, StepParseResult } from "../types.internal";
 
 function mapFirst<T>(collection: HandleValue<T>[], mapper: (value: HandleValue<T>) => StepParseResult<T>): StepParseResult<T> {
     for (let index = 0; index < collection.length; index++) {
@@ -26,14 +26,27 @@ class Parser<T> implements IParser<T> {
         handlers.forEach(addHandler);
     }
 
-    parse(value: string, line: number, char: number): Result<T[]> {
+    parse(value: string, line: number, char: number): Result<[T[], IUnparsed]> {
         const results: T[] = [];
+
+        function getUnparsed(): IUnparsed {
+            return {
+                type: 'unparsed',
+                location: { line, char, },
+                remaining: value,
+            };
+        }
+
         while(0 < value.length) {
             let result = mapFirst(this._handlers, h => h(value, line, char));
             
             if(!result.success) {
                 return fail(result.message, result.documentPath);
             }
+
+            if(result.value === 'stop') {
+                return ok([results, getUnparsed()]);
+            } 
 
             if(result.value){
                 let parseResult = result.value;
@@ -54,7 +67,7 @@ class Parser<T> implements IParser<T> {
             }
         }
 
-        return ok(results);
+        return ok([results, getUnparsed()]);
     }
 }
 

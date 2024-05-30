@@ -131,7 +131,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(whiteSpace.success){
-                        if(whiteSpace.value){
+                        if(whiteSpace.value && whiteSpace.value !== 'stop'){
                             if(start) {
                                 if(whiteSpace.value.type === 'parse result'){
                                     current += whiteSpace.value.result.value;
@@ -199,7 +199,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(doesIt.startWithDocuLisp.test(value)) {
                     let doculisp = isDoculisp(value, line, char);
                     if(doculisp.success) {
-                        if(doculisp.value){
+                        if(doculisp.value && doculisp.value !== 'stop'){
                             value = doculisp.value.rest;
 
                             if(doculisp.value.type === 'parse result') {
@@ -223,7 +223,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(hasWhiteSpace) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(whiteSpace.success){
-                        if(whiteSpace.value){
+                        if(whiteSpace.value && whiteSpace.value !== 'stop'){
                             value = whiteSpace.value.rest;
                             line = whiteSpace.value.line;
                             char = whiteSpace.value.char;
@@ -281,7 +281,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(whiteSpace.success){
-                        if(whiteSpace.value){
+                        if(whiteSpace.value && whiteSpace.value !== 'stop'){
                             if(start && line != whiteSpace.value.line) {
                                 return fail(`Inline code block at { line: ${start.line}, char: ${start.char} } contains a new line before closing.`, documentPath);
                             }
@@ -347,7 +347,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(doesIt.startWithWhiteSpace.test(value)) {
                     let whiteSpace = isWhiteSpace(value, line, char);
                     if(whiteSpace.success){
-                        if(whiteSpace.value){
+                        if(whiteSpace.value && whiteSpace.value !== 'stop'){
                             if(whiteSpace.value.type === 'parse result') {
                                 current += whiteSpace.value.result.value;
                             }
@@ -396,7 +396,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 } else if (hasWhiteSpace) {
                     const whiteSpace = isWhiteSpace(value, line, char);
                     if(whiteSpace.success){
-                        if(whiteSpace.value){
+                        if(whiteSpace.value && whiteSpace.value !== 'stop'){
                             if(whiteSpace.value.type === 'parse result') {
                                 current += whiteSpace.value.result.value;
                             }
@@ -424,7 +424,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(doesIt.startWithMultilineMarker.test(value)) {
                     let multiline = isMultiline(value, line, char);
                     if(multiline.success) {
-                        if(multiline.value) {
+                        if(multiline.value && multiline.value !== 'stop') {
                             let v = multiline.value;
                             value = v.rest;
                             line = v.line;
@@ -456,7 +456,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 if(doesIt.startWithInlineMarker.test(value)) {
                     let inline = isInline(value, line, char);
                     if(inline.success) {
-                        if(inline.value){
+                        if(inline.value && inline.value !== 'stop'){
                             let v = inline.value;
                             value = v.rest;
                             line = v.line;
@@ -509,7 +509,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             let lisp = isDoculisp(`${value})`, line, 1, { line: 1, char: 1 });
             if(lisp.success) {
                 let v = lisp.value;
-                if(v){
+                if(v && v !== 'stop'){
                     if(v.type === 'parse result') {
                         current[current.length] = {
                             location: { line: v.result.start.line, char: v.result.start.char },
@@ -547,7 +547,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
         while (0 < value.length) {
             let v = isWhiteSpace(value, line, char);
             if(v.success){
-                if(v.value) {
+                if(v.value && v.value !== 'stop') {
                     value = v.value.rest;
                     line = v.value.line;
                     char = v.value.char;
@@ -560,7 +560,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
             if(doesIt.startWithOpenComment.test(value)) {
                 let comment = isComment(value, line, char);
                 if(comment.success) {
-                    if(comment.value) {
+                    if(comment.value && comment.value !== 'stop') {
                         if(comment.value.type === 'parse group result'){
                             comment.value.result.forEach(element => {
                                 if(element.type === 'keep') {
@@ -587,7 +587,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
 
             let word = isWord(value, line, char);
             if(word.success) {
-                if(word.value) {
+                if(word.value && word.value !== 'stop') {
                     let v = word.value;
                     value = v.rest;
                     if(v.type === 'parse result') {

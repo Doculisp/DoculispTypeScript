@@ -157,7 +157,13 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
         const documentPath = documentMap.value.documentPath;
         
         function toTokens(block: ILispBlock): Result<Token[]> {
-            return parser.parse(block.text, block.location.line, block.location.char);
+            let parsed = parser.parse(block.text, block.location.line, block.location.char);
+            if(parsed.success) {
+                let [ret, _ignore] = parsed.value;
+                return ok(ret);
+            } else {
+                return parsed;
+            }
         }
 
         let parts = documentMap.value.parts;

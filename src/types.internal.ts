@@ -1,4 +1,4 @@
-import { Result } from "./types.general";
+import { ILocation, Result } from "./types.general";
 
 export interface IParseStepForward {
     rest: string;
@@ -26,12 +26,18 @@ export interface IDiscardResult {
     type: 'discard';
 };
 
-export type StepParseResult<T> = Result<(IParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)) | false>;
+export interface IUnparsed {
+    remaining: string;
+    location: ILocation;
+    type: 'unparsed'
+}
+
+export type StepParseResult<T> = Result<(IParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)) | false | 'stop'>;
 
 export type HandleValue<T> = (value: string, line: number, char: number) => StepParseResult<T>;
 
 export interface IParser<T> {
-    parse(value: string, line: number, char: number): Result<T[]>;
+    parse(value: string, line: number, char: number): Result<[T[], IUnparsed]>;
 }
 
 export type CreateParser<T> = (...handlers: HandleValue<T>[]) => IParser<T>;
