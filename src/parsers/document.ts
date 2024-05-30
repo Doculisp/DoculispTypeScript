@@ -3,7 +3,7 @@ import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { ILocation, Result, fail, ok } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
-import { IDiscardResult, IKeeper, StepParseResult } from "../types.internal";
+import { CreateParser, HandleValue, IDiscardResult, IKeeper, IParser, StepParseResult } from "../types.internal";
 
 type DocumentParse = {
     value: string;
@@ -11,7 +11,21 @@ type DocumentParse = {
 };
 
 
-function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
+function constructResult(current: string, start: ILocation | undefined, rest: string, line: number, char: number): StepParseResult<DocumentParse> {
+    if(start){
+        return ok({
+            type: 'parse result',
+            result: { start, value: current },
+            rest: rest,
+            line: line,
+            char: char
+        });
+    }
+
+    return ok(false);
+}
+
+function documentParse(doesIt: IDocumentSearches, createParser: CreateParser<any>): Valid<DocumentParser> {
     function parse(value: string, documentPath: string): Result<DocumentMap> {
         function constructDocumentMap(parts: DocumentPart[]) : DocumentMap {
             return {
@@ -19,69 +33,80 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                 parts,
             };
         }
-
-        function constructResult(current: string, start: ILocation | undefined, rest: string, line: number, char: number): StepParseResult<DocumentParse> {
-            if(start){
-                return ok({
-                    type: 'parse result',
-                    result: { start, value: current },
-                    rest: rest,
-                    line: line,
-                    char: char
-                });
-            }
-
-            return ok(false);
-        }
         
         function isWhiteSpace(value: string, line: number, char: number): StepParseResult<DocumentParse> {
-            let current = "";
             let start: ILocation | undefined;
-            let hasWhiteSpace: boolean = false;
-        
-            function addLine(expression: RegExp) : void {
-                let v: string = (value.match(expression) as any)[0];
+
+            function tryParseNewLine(beginsWith: RegExp): HandleValue<string> {
+                return function (value: string, line: number, _char: number): StepParseResult<string> {
+                    if(beginsWith.test(value)) {
+                        const found: string = (value.match(beginsWith) as any)[0];
+                        const rest = value.slice(found.length);
+                        if(!start){
+                            start = { line, char, };
+                        }
+
+                        return ok({
+                            type: 'parse result',
+                            result: found,
+                            rest,
+                            line: line + 1,
+                            char: 1,
+                        });
+                    }
+                    return ok(false);
+                };
+            }
+
+            const tryParseWindowsNewLine = tryParseNewLine(doesIt.startWithWindowsNewline);
+            const tryParseMacNewLine = tryParseNewLine(doesIt.startWithMacsNewline);
+            const tryParseLinuxNewLine = tryParseNewLine(doesIt.startWithLinuxNewline);
+
+            function tryParseWhiteSpace(value: string, line: number, char: number): StepParseResult<string> {
+                if(doesIt.startWithWhiteSpace.test(value)) {
+                    let found: string = (value.match(doesIt.startWithWhiteSpace) as any)[0];
+                    let rest = value.slice(found.length);
                     if(!start) {
                         start = { line, char };
                     }
-                    current += v;
-                    value = value.slice(v.length);
-                    char = 1;
-                    line++;
+
+                    return ok({
+                        type: 'parse result',
+                        result: found,
+                        rest,
+                        line,
+                        char: char + found.length,
+                    });
+                }
+
+                return ok('stop');
             }
-        
-            while(0 < value.length) {
-                if(/^\S/.test(value)) {
-                    return constructResult(current, start, value, line, char);
+
+            const parser: IParser<string> = createParser(tryParseWindowsNewLine, tryParseMacNewLine, tryParseLinuxNewLine, tryParseWhiteSpace);
+            const parsed = parser.parse(value, line, char);
+
+            if(parsed.success) {
+                const [results, leftover] = parsed.value;
+                if(start){
+                    if(0 < results.length) {
+                        let result = "";
+                        results.forEach(s => {
+                            result = result + s;
+                        });
+
+                        return ok({
+                            type: 'parse result',
+                            result: { start, value: result },
+                            rest: leftover.remaining,
+                            line: leftover.location.line,
+                            char: leftover.location.char,
+                        });
+                    }
                 }
-        
-                hasWhiteSpace = doesIt.startWithWindowsNewline.test(value);
-                if(hasWhiteSpace) {
-                    addLine(doesIt.startWithWindowsNewline);
-                    continue;
-                }
-                
-                hasWhiteSpace = doesIt.startWithMacsNewline.test(value);
-                if(hasWhiteSpace) {
-                    addLine(doesIt.startWithMacsNewline);
-                    continue;
-                }
-                
-                hasWhiteSpace = doesIt.startWithLinuxNewline.test(value);
-                if(hasWhiteSpace) {
-                    addLine(doesIt.startWithLinuxNewline);
-                    continue;
-                }
-        
-                if(!start) {
-                    start = { line, char };
-                }
-                current += value.charAt(0);
-                value = value.slice(1);
-                char++;
+                return ok(false);
+            } else {
+                return parsed;
             }
-        
-            return constructResult(current, start, value, line, char);
         }
 
         function isDoculisp(value: string, line: number, char: number, start?: ILocation | undefined): StepParseResult<DocumentParse> {
@@ -148,8 +173,8 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                             line = whiteSpace.value.line;
                             char = whiteSpace.value.char;
                             value = whiteSpace.value.rest;
+                            continue;
                         }
-                        continue;
                     }
                     else {
                         return whiteSpace;
@@ -227,8 +252,8 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                             value = whiteSpace.value.rest;
                             line = whiteSpace.value.line;
                             char = whiteSpace.value.char;
+                            continue;
                         }
-                        continue;
                     } else {
                         return whiteSpace;
                     }
@@ -300,8 +325,8 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
 
                             value = whiteSpace.value.rest;
                             char = whiteSpace.value.char;
+                            continue;
                         }
-                        continue;
                     }
                     return whiteSpace;
                 }
@@ -362,8 +387,8 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
 
                             value = whiteSpace.value.rest;
                             char = whiteSpace.value.char;
+                            continue;
                         }
-                        continue;
                     } else {
                         return whiteSpace;
                     }
@@ -412,8 +437,8 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
                             value = whiteSpace.value.rest;
                             line = whiteSpace.value.line;
                             char = whiteSpace.value.char;
+                            continue;
                         }
-                        continue;
                     }
                 }
         
@@ -506,7 +531,7 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
 
         let ext = path.extname(documentPath);
         if(ext === '.dlisp') {
-            let lisp = isDoculisp(`${value})`, line, 1, { line: 1, char: 1 });
+            let lisp = isDoculisp(`${value})`, 1, 1, { line: 1, char: 1 });
             if(lisp.success) {
                 let v = lisp.value;
                 if(v && v !== 'stop'){
@@ -628,10 +653,10 @@ function documentParse(doesIt: IDocumentSearches): Valid<DocumentParser> {
 }
 
 const registerable: IRegisterable = {
-    builder: (searches: Searcher) => documentParse(searches.searchDocumentFor),
+    builder: (searches: Searcher, createParser: CreateParser<any>) => documentParse(searches.searchDocumentFor, createParser),
     name: 'documentParse',
     singleton: true,
-    dependencies: ['searches']
+    dependencies: ['searches', 'parser']
 };
 
 export {

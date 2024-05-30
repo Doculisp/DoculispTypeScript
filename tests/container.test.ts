@@ -407,7 +407,7 @@ describe('the registry', () => {
             expect(testable.supportsReplace()).toBe(true);
         });
 
-        test.skip('should not allow you to replace a module if it is not testable.', () => {
+        test('should not allow you to replace a module if it is not testable.', () => {
             // TODO: need a real module to test this.
         });
 
