@@ -45,7 +45,11 @@ class Parser<T> implements IParser<T> {
                     results[results.length] = parseResult.result;
                 }
                 if(parseResult.type === 'parse group result') {
-                    parseResult.result.forEach(t =>{ results[results.length] = t; });
+                    parseResult.result.forEach(t =>{
+                        if(t.type === 'keep'){
+                            results[results.length] = t.value;
+                        }
+                    });
                 }
             }
         }

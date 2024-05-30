@@ -1,30 +1,32 @@
 import { Result } from "./types.general";
 
-export type SubParseResult<T> = {
-    result: T;
+export interface IParseStepForward {
     rest: string;
     line: number;
     char: number;
+};
+
+export interface ISubParseResult<T> {
+    result: T;
     type: 'parse result';
 }
 
-export type SubParseGroupResult<T> = {
-    result: T[];
-    rest: string;
-    line: number;
-    char: number;
+export interface ISubParseGroupResult<T> {
+    result: (IKeeper<T> | IDiscardResult)[];
     type: 'parse group result';
 
 };
 
-export type DiscardResult = { 
-    line: number; 
-    char: number; 
-    rest: string; 
-    type: 'discard'
+export interface IKeeper<T> {
+    type: 'keep';
+    value: T;
 };
 
-export type StepParseResult<T> = Result<SubParseGroupResult<T> | SubParseResult<T> | DiscardResult | false>;
+export interface IDiscardResult { 
+    type: 'discard';
+};
+
+export type StepParseResult<T> = Result<(IParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)) | false>;
 
 export type HandleValue<T> = (value: string, line: number, char: number) => StepParseResult<T>;
 
