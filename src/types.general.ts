@@ -16,9 +16,9 @@ export interface IFail {
 
 export type Result<T> = ISuccess<T> | IFail;
 
-export function ok<T>(value: T) : Result<T> {
+export function ok<T>(successfulValue: T) : Result<T> {
     return {
-        value,
+        value: successfulValue,
         success: true,
     };
 };

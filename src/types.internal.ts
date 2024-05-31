@@ -19,7 +19,7 @@ export interface ISubParseGroupResult<T> {
 
 export interface IKeeper<T> {
     type: 'keep';
-    value: T;
+    keptValue: T;
 };
 
 export interface IDiscardResult { 
@@ -41,8 +41,8 @@ export interface IInternals {
 
 export type StepParseResult<T> = Result<StepParse<T> | false | 'stop'>;
 
-export type HandleValue<T> = (value: string, line: number, char: number) => StepParseResult<T>;
+export type HandleValue<T> = (input: string, line: number, char: number) => StepParseResult<T>;
 
 export interface IParser<T> {
-    parse(value: string, line: number, char: number): Result<[T[], IUnparsed]>;
+    parse(input: string, line: number, char: number): Result<[T[], IUnparsed]>;
 }

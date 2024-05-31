@@ -2,7 +2,7 @@ import { IRegisterable } from "../types.containers";
 import { Result, fail, ok } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParse, StepParseResult } from "../types.internal";
 
-function mapFirst<T>(collection: HandleValue<T>[], mapper: (value: HandleValue<T>) => StepParseResult<T>): StepParseResult<T> {
+function mapFirst<T>(collection: HandleValue<T>[], mapper: (handler: HandleValue<T>) => StepParseResult<T>): StepParseResult<T> {
     for (let index = 0; index < collection.length; index++) {
         const element = collection[index] as any as HandleValue<T>;
         const result = mapper(element);
@@ -30,19 +30,19 @@ class Parser<T> implements IParser<T> {
         handlers.forEach(addHandler);
     }
 
-    parse(value: string, line: number, char: number): Result<[T[], IUnparsed]> {
+    parse(input: string, line: number, char: number): Result<[T[], IUnparsed]> {
         const results: T[] = [];
 
         function getUnparsed(): IUnparsed {
             return {
                 type: 'unparsed',
                 location: { line, char, },
-                remaining: value,
+                remaining: input,
             };
         }
 
-        while(0 < value.length) {
-            let result = mapFirst(this._handlers, h => h(value, line, char));
+        while(0 < input.length) {
+            let result = mapFirst(this._handlers, h => h(input, line, char));
             
             if(!result.success) {
                 return fail(result.message, result.documentPath);
@@ -56,7 +56,7 @@ class Parser<T> implements IParser<T> {
                 let parseResult = result.value;
                 line = parseResult.line;
                 char = parseResult.char;
-                value = parseResult.rest;
+                input = parseResult.rest;
 
                 if(parseResult.type === 'parse result'){
                     results[results.length] = parseResult.subResult;
@@ -64,7 +64,7 @@ class Parser<T> implements IParser<T> {
                 if(parseResult.type === 'parse group result') {
                     parseResult.subResult.forEach(t =>{
                         if(t.type === 'keep'){
-                            results[results.length] = t.value;
+                            results[results.length] = t.keptValue;
                         }
                     });
                 }

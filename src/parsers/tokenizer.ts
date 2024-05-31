@@ -28,52 +28,52 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : TokenFunction {
-    function tokenizeWhiteSpace(value: string, line: number, char: number): StepParseResult<Token> {
-        if(doesIt.startWithWindowsNewline.test(value)) {
-            const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
-            value = value.slice(newLine.length);
+    function tokenizeWhiteSpace(input: string, line: number, char: number): StepParseResult<Token> {
+        if(doesIt.startWithWindowsNewline.test(input)) {
+            const newLine = (input.match(doesIt.startWithWindowsNewline) as any)[0] as string;
+            input = input.slice(newLine.length);
             line++;
             char = 0;
             return ok({
-                rest: value,
+                rest: input,
                 char,
                 line,
                 type: 'discard',
             });
         }
 
-        if(doesIt.startWithLinuxNewline.test(value)) {
-            const newLine = (value.match(doesIt.startWithLinuxNewline) as any)[0] as string;
-            value = value.slice(newLine.length);
+        if(doesIt.startWithLinuxNewline.test(input)) {
+            const newLine = (input.match(doesIt.startWithLinuxNewline) as any)[0] as string;
+            input = input.slice(newLine.length);
             line++;
             char = 0;
             return ok({
-                rest: value,
+                rest: input,
                 char,
                 line,
                 type: 'discard',
             });
         }
 
-        if(doesIt.startWithMacsNewline.test(value)) {
-            const newLine = (value.match(doesIt.startWithMacsNewline) as any)[0] as string;
-            value = value.slice(newLine.length);
+        if(doesIt.startWithMacsNewline.test(input)) {
+            const newLine = (input.match(doesIt.startWithMacsNewline) as any)[0] as string;
+            input = input.slice(newLine.length);
             line++;
             char = 0;
             return ok({
-                rest: value,
+                rest: input,
                 char,
                 line,
                 type: 'discard',
             });
         }
 
-        if(doesIt.startWithWhiteSpace.test(value)) {
-            const space = (value.match(doesIt.startWithWhiteSpace) as any)[0] as string;
-            value = value.slice(space.length);
+        if(doesIt.startWithWhiteSpace.test(input)) {
+            const space = (input.match(doesIt.startWithWhiteSpace) as any)[0] as string;
+            input = input.slice(space.length);
             char += space.length;
             return ok({
-                rest: value,
+                rest: input,
                 line,
                 char,
                 type: 'discard',
@@ -83,8 +83,8 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
         return ok(false);
     }
 
-    function tokenizeParenthesis(value: string, line: number, char: number): StepParseResult<Token> {
-        if(doesIt.startWithOpenLisp.test(value)) {
+    function tokenizeParenthesis(input: string, line: number, char: number): StepParseResult<Token> {
+        if(doesIt.startWithOpenLisp.test(input)) {
             let open: Token = {
                 location: { line, char },
                 type: 'token - open parenthesis',
@@ -96,12 +96,12 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
                 subResult: open,
                 line,
                 char,
-                rest: value.slice(1),
+                rest: input.slice(1),
                 type: "parse result",
             });
         }
 
-        if(doesIt.startsWithCloseLisp.test(value)) {
+        if(doesIt.startsWithCloseLisp.test(input)) {
             let close: Token = {
                 type: 'token - close parenthesis',
                 location: { line, char },
@@ -113,7 +113,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
                 subResult: close,
                 line,
                 char,
-                rest: value.slice(1),
+                rest: input.slice(1),
                 type: "parse result",
             });
         }
@@ -121,10 +121,10 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
         return ok(false);
     }
 
-    function tokenizeAtom(value: string, line: number, char: number): StepParseResult<Token> {
+    function tokenizeAtom(input: string, line: number, char: number): StepParseResult<Token> {
         let doesItStartWithWord = /[\w\*\-]+/;
-        if(doesItStartWithWord.test(value)) {
-            let atomValue: string = (value.match(doesItStartWithWord) as any)[0];
+        if(doesItStartWithWord.test(input)) {
+            let atomValue: string = (input.match(doesItStartWithWord) as any)[0];
 
             let atom: Token = {
                 type: 'token - atom',
@@ -138,7 +138,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
                 subResult: atom,
                 line,
                 char,
-                rest: value.slice(atomValue.length),
+                rest: input.slice(atomValue.length),
                 type: "parse result",
             });
         }
