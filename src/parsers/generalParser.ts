@@ -59,10 +59,10 @@ class Parser<T> implements IParser<T> {
                 value = parseResult.rest;
 
                 if(parseResult.type === 'parse result'){
-                    results[results.length] = parseResult.result;
+                    results[results.length] = parseResult.subResult;
                 }
                 if(parseResult.type === 'parse group result') {
-                    parseResult.result.forEach(t =>{
+                    parseResult.subResult.forEach(t =>{
                         if(t.type === 'keep'){
                             results[results.length] = t.value;
                         }

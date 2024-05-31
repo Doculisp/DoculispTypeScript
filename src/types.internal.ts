@@ -7,12 +7,12 @@ export interface IParseStepForward {
 };
 
 export interface ISubParseResult<T> {
-    result: T;
+    subResult: T;
     type: 'parse result';
 }
 
 export interface ISubParseGroupResult<T> {
-    result: (IKeeper<T> | IDiscardResult)[];
+    subResult: (IKeeper<T> | IDiscardResult)[];
     type: 'parse group result';
 
 };

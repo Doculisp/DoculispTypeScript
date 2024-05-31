@@ -15,7 +15,7 @@ function constructResult(current: string, start: ILocation | undefined, rest: st
     if(start){
         return ok({
             type: 'parse result',
-            result: { start, value: current },
+            subResult: { start, value: current },
             rest: rest,
             line: line,
             char: char
@@ -59,7 +59,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                             if(predicate(found)){
                                 let ret = parserBuilder.buildStepParse<string>(step, { 
                                     type: 'parse result',
-                                    result: found,
+                                    subResult: found,
                                 });
                                 return ok(ret);
                             } else {
@@ -96,7 +96,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
                             return ok({
                                 type: 'parse result',
-                                result: packaging(result, start),
+                                subResult: packaging(result, start),
                                 rest: leftover.remaining,
                                 line: leftover.location.line,
                                 char: leftover.location.char,
@@ -144,7 +144,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         
                         return ok({
                             type: 'parse result',
-                            result: v,
+                            subResult: v,
                             rest: value.slice(v.length),
                             line,
                             char: char + v.length,
@@ -177,7 +177,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         else {
                             let ret = parserBuilder.buildStepParse<string>(step, {
                                 type: 'parse result',
-                                result: v,
+                                subResult: v,
                             });
                             return ok(ret);
                         }
@@ -204,7 +204,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         
                         return ok({
                             type: 'parse result',
-                            result: v,
+                            subResult: v,
                             rest: value.slice(v.length),
                             line,
                             char: char + v.length,
@@ -229,7 +229,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         const result = results.join('');
                         return ok({
                             type: 'parse result',
-                            result: { start, value: result.trim() },
+                            subResult: { start, value: result.trim() },
                             rest: leftover.remaining,
                             line: leftover.location.line,
                             char: leftover.location.char,
@@ -267,7 +267,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                     char += v.length;
                     return ok({
                         type: 'parse group result',
-                        result: results,
+                        subResult: results,
                         rest: value,
                         line,
                         char,
@@ -281,11 +281,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                             value = doculisp.value.rest;
 
                             if(doculisp.value.type === 'parse result') {
-                                results[results.length] = { type: 'keep', value: doculisp.value.result };
+                                results[results.length] = { type: 'keep', value: doculisp.value.subResult };
                             }
 
                             if(doculisp.value.type === 'parse group result') {
-                                doculisp.value.result.forEach(v => results[results.length] = v); 
+                                doculisp.value.subResult.forEach(v => results[results.length] = v); 
                             }
 
                             line = doculisp.value.line;
@@ -315,7 +315,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 if(!hasStart){
                     return ok({
                         type: 'parse group result',
-                        result: results,
+                        subResult: results,
                         rest: value,
                         line,
                         char,
@@ -366,11 +366,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                             }
                         
                             if(whiteSpace.value.type === 'parse result') {
-                                current += whiteSpace.value.result.value;
+                                current += whiteSpace.value.subResult.value;
                             }
 
                             if(whiteSpace.value.type === 'parse group result') {
-                                whiteSpace.value.result.forEach(v => {
+                                whiteSpace.value.subResult.forEach(v => {
                                     if(v.type === 'keep') {
                                         current += v.value;
                                     }
@@ -429,11 +429,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                     if(whiteSpace.success){
                         if(whiteSpace.value && whiteSpace.value !== 'stop'){
                             if(whiteSpace.value.type === 'parse result') {
-                                current += whiteSpace.value.result.value;
+                                current += whiteSpace.value.subResult.value;
                             }
 
                             if(whiteSpace.value.type === 'parse group result') {
-                                whiteSpace.value.result.forEach(r => {
+                                whiteSpace.value.subResult.forEach(r => {
                                     if(r.type === 'keep') {
                                         current += r.value;
                                     }
@@ -479,11 +479,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                     if(whiteSpace.success){
                         if(whiteSpace.value && whiteSpace.value !== 'stop'){
                             if(whiteSpace.value.type === 'parse result') {
-                                current += whiteSpace.value.result.value;
+                                current += whiteSpace.value.subResult.value;
                             }
 
                             if(whiteSpace.value.type === 'parse group result') {
-                                whiteSpace.value.result.forEach(r => {
+                                whiteSpace.value.subResult.forEach(r => {
                                     if(r.type === 'keep') {
                                         current += r.value;
                                     }
@@ -512,14 +512,14 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                             char = v.char;
 
                             if(v.type === 'parse result') {
-                                current += v.result.value;
+                                current += v.subResult.value;
                                 if(!start) {
-                                    start = v.result.start;
+                                    start = v.subResult.start;
                                 }
                             }
 
                             if(v.type === 'parse group result') {
-                                v.result.forEach(r => {
+                                v.subResult.forEach(r => {
                                     if(r.type === 'keep') {
                                         current += r.value.value;
                                         if(!start) {
@@ -543,14 +543,14 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                             line = v.line;
                             char = v.char;
                             if(v.type === 'parse result') {
-                                current += v.result.value;
+                                current += v.subResult.value;
                                 if(!start) {
-                                    start = v.result.start;
+                                    start = v.subResult.start;
                                 }
                             }
 
                             if(v.type === 'parse group result') {
-                                v.result.forEach(r => {
+                                v.subResult.forEach(r => {
                                     if(r.type === 'keep') {
                                         current += r.value.value;
                                         if(!start) {
@@ -628,7 +628,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 if(comment.success) {
                     if(comment.value && comment.value !== 'stop') {
                         if(comment.value.type === 'parse group result'){
-                            comment.value.result.forEach(element => {
+                            comment.value.subResult.forEach(element => {
                                 if(element.type === 'keep') {
                                     current[current.length] = {
                                         location: { line: element.value.start.line, char: element.value.start.char },
@@ -659,13 +659,13 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                     if(v.type === 'parse result') {
                         current[current.length] = {
                             location: { line, char },
-                            text: v.result.value,
+                            text: v.subResult.value,
                             type: "text",
                         };
                     }
 
                     if(v.type === 'parse group result') {
-                        v.result.forEach(r => {
+                        v.subResult.forEach(r => {
                             if(r.type === 'keep') {
                                 current[current.length] = {
                                     location: { line, char},

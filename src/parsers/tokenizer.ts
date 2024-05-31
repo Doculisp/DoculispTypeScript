@@ -93,7 +93,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
             char++;
 
             return ok({
-                result: open,
+                subResult: open,
                 line,
                 char,
                 rest: value.slice(1),
@@ -110,7 +110,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
             char++;
             
             return ok({
-                result: close,
+                subResult: close,
                 line,
                 char,
                 rest: value.slice(1),
@@ -135,7 +135,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
             char += atomValue.length;
 
             return ok({
-                result: atom,
+                subResult: atom,
                 line,
                 char,
                 rest: value.slice(atomValue.length),
