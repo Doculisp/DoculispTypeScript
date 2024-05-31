@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types.containers";
 import { Result, fail, ok } from "../types.general";
-import { HandleValue, IParser, IUnparsed, StepParseResult } from "../types.internal";
+import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParse, StepParseResult } from "../types.internal";
 
 function mapFirst<T>(collection: HandleValue<T>[], mapper: (value: HandleValue<T>) => StepParseResult<T>): StepParseResult<T> {
     for (let index = 0; index < collection.length; index++) {
@@ -75,12 +75,30 @@ class Parser<T> implements IParser<T> {
     }
 }
 
-function createHandler<T> (...handlers: HandleValue<T>[]) {
-    return new Parser<T>(...handlers);
-}
-
 const registerable: IRegisterable = {
-    builder: () => createHandler,
+    builder: () => { 
+        const ret: IInternals = {
+            createParser<T> (...handlers: HandleValue<T>[]): IParser<T> {
+                return new Parser<T>(...handlers);
+            },
+            buildStepParse<T>(step: IParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T> {
+                const stepKeys = 
+                    Object.
+                        keys(step);
+                const resultKeys =
+                    Object.
+                        keys(resultType);
+            
+                const ret: any = {};
+                
+                stepKeys.forEach(key => ret[key] = (step as any)[key]);
+                resultKeys.forEach(key => ret[key] = (resultType as any)[key]);
+            
+                return ret;
+            },
+        };
+        return ret; 
+    },
     name: 'parser',
     singleton: true,
     dependencies: []

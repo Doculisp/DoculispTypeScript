@@ -1,7 +1,7 @@
 import { IRegisterable } from "../types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
 import { Result, fail, ok } from "../types.general";
-import { CreateParser, StepParseResult } from "../types.internal";
+import { IInternals, StepParseResult } from "../types.internal";
 import { ILispSearches, Searcher } from "../types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
 
@@ -27,7 +27,7 @@ function getTokenBuilder() {
     };
 }
 
-function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>) : TokenFunction {
+function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : TokenFunction {
     function tokenizeWhiteSpace(value: string, line: number, char: number): StepParseResult<Token> {
         if(doesIt.startWithWindowsNewline.test(value)) {
             const newLine = (value.match(doesIt.startWithWindowsNewline) as any)[0] as string;
@@ -147,7 +147,7 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
     }
 
     const totalTokens = getTokenBuilder();
-    const parser = createParser(tokenizeWhiteSpace, tokenizeParenthesis, tokenizeAtom);
+    const parser = parserBuilder.createParser(tokenizeWhiteSpace, tokenizeParenthesis, tokenizeAtom);
 
     return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
         if(!documentMap.success) {
@@ -193,7 +193,7 @@ function buildTokenize(doesIt: ILispSearches, createParser: CreateParser<Token>)
 }
 
 const tokenizer: IRegisterable = {
-    builder: (searches: Searcher, getParser: CreateParser<Token>) => buildTokenize(searches.searchLispFor, getParser),
+    builder: (searches: Searcher, getParser: IInternals) => buildTokenize(searches.searchLispFor, getParser),
     name: 'tokenizer',
     singleton: true,
     dependencies: ['searches', 'parser']

@@ -32,12 +32,17 @@ export interface IUnparsed {
     type: 'unparsed'
 }
 
-export type StepParseResult<T> = Result<(IParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)) | false | 'stop'>;
+export type StepParse<T> = IParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult);
+
+export interface IInternals {
+    buildStepParse<T>(step: IParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T>;
+    createParser<T>(...handlers: HandleValue<T>[]): IParser<T>;
+}
+
+export type StepParseResult<T> = Result<StepParse<T> | false | 'stop'>;
 
 export type HandleValue<T> = (value: string, line: number, char: number) => StepParseResult<T>;
 
 export interface IParser<T> {
     parse(value: string, line: number, char: number): Result<[T[], IUnparsed]>;
 }
-
-export type CreateParser<T> = (...handlers: HandleValue<T>[]) => IParser<T>;

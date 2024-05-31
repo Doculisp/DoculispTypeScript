@@ -3,7 +3,7 @@ import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { ILocation, Result, fail, ok } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
-import { CreateParser, HandleValue, IDiscardResult, IKeeper, IParser, StepParseResult } from "../types.internal";
+import { HandleValue, IDiscardResult, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types.internal";
 
 type DocumentParse = {
     value: string;
@@ -25,7 +25,7 @@ function constructResult(current: string, start: ILocation | undefined, rest: st
     return ok(false);
 }
 
-function documentParse(doesIt: IDocumentSearches, createParser: CreateParser<any>): Valid<DocumentParser> {
+function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
     function parse(value: string, documentPath: string): Result<DocumentMap> {
         function constructDocumentMap(parts: DocumentPart[]) : DocumentMap {
             return {
@@ -54,21 +54,23 @@ function documentParse(doesIt: IDocumentSearches, createParser: CreateParser<any
                                 start = { line, char, };
                             }
 
+                            let step: IParseStepForward = {
+                                rest,
+                                line: line + 1,
+                                char: 1
+                            };
+
                             if(predicate(found)){
-                                return ok({
+                                let ret = parserBuilder.buildStepParse<string>(step, { 
                                     type: 'parse result',
                                     result: found,
-                                    rest,
-                                    line: line + 1,
-                                    char: 1,
                                 });
+                                return ok(ret);
                             } else {
-                                return ok({
+                                let ret = parserBuilder.buildStepParse<string>(step, {
                                     type: 'discard',
-                                    rest,
-                                    line: line + 1,
-                                    char: 1,
                                 });
+                                return ok(ret);
                             }
                         }
                         return ok(false);
@@ -87,28 +89,30 @@ function documentParse(doesIt: IDocumentSearches, createParser: CreateParser<any
                             start = { line, char };
                         }
 
+                        let step: IParseStepForward = {
+                            rest,
+                            line,
+                            char: char + found.length,
+                        };
+
                         if(predicate(found)) {
-                            return ok({
+                            let ret = parserBuilder.buildStepParse(step, {
                                 type: 'parse result',
                                 result: found,
-                                rest,
-                                line,
-                                char: char + found.length,
                             });
+                            return ok(ret);
                         } else {
-                            return ok({
+                            let ret = parserBuilder.buildStepParse(step, {
                                 type: 'discard',
-                                rest,
-                                line,
-                                char: char + found.length,
                             });
+                            ok(ret);
                         }
                     }
 
                     return ok('stop');
                 }
 
-                const parser: IParser<string> = createParser(tryParseWindowsNewLine, tryParseMacNewLine, tryParseLinuxNewLine, tryParseWhiteSpace);
+                const parser = parserBuilder.createParser<string>(tryParseWindowsNewLine, tryParseMacNewLine, tryParseLinuxNewLine, tryParseWhiteSpace);
                 const parsed = parser.parse(value, line, char);
 
                 if(parsed.success) {
@@ -186,22 +190,24 @@ function documentParse(doesIt: IDocumentSearches, createParser: CreateParser<any
                     let last = depth === 1;
                     depth--;
 
+                    let step: IParseStepForward = {
+                        rest,
+                        line: subLine,
+                        char: subChar + v.length,
+                    };
+
                     if(last) {
-                        return ok({
+                        let ret = parserBuilder.buildStepParse<string>(step, {
                             type: 'discard',
-                            rest,
-                            line: subLine,
-                            char: subChar + v.length,
                         });
+                        return ok(ret);
                     }
                     else {
-                        return ok({
+                        let ret = parserBuilder.buildStepParse<string>(step, {
                             type: 'parse result',
                             result: v,
-                            rest,
-                            line: subLine,
-                            char: subChar + v.length,
                         });
+                        return ok(ret);
                     }
                 }
 
@@ -236,7 +242,7 @@ function documentParse(doesIt: IDocumentSearches, createParser: CreateParser<any
                 return ok(false);
             }
 
-            let parser: IParser<string> = createParser(tryParseEndAll, tryParseDoculispOpen, tryParseOpenLisp, tryParseCloseLisp, buildWhiteSpaceChecker(predicate, (v: string) => { return v; }), tryParseText);
+            let parser = parserBuilder.createParser<string>(tryParseEndAll, tryParseDoculispOpen, tryParseOpenLisp, tryParseCloseLisp, buildWhiteSpaceChecker(predicate, (v: string) => { return v; }), tryParseText);
 
             const parsed = parser.parse(value, line, char);
 
@@ -731,7 +737,7 @@ function documentParse(doesIt: IDocumentSearches, createParser: CreateParser<any
 }
 
 const registerable: IRegisterable = {
-    builder: (searches: Searcher, createParser: CreateParser<any>) => documentParse(searches.searchDocumentFor, createParser),
+    builder: (searches: Searcher, createParser: IInternals) => documentParse(searches.searchDocumentFor, createParser),
     name: 'documentParse',
     singleton: true,
     dependencies: ['searches', 'parser']
