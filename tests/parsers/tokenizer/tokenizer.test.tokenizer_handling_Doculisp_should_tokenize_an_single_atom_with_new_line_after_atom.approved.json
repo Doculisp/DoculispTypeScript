@@ -20,7 +20,7 @@
       },
       {
         "location": {
-          "char": 0,
+          "char": 1,
           "line": 5
         },
         "type": "token - close parenthesis"

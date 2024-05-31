@@ -33,7 +33,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
             const newLine = (input.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             input = input.slice(newLine.length);
             line++;
-            char = 0;
+            char = 1;
             return ok({
                 rest: input,
                 char,
@@ -46,7 +46,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
             const newLine = (input.match(doesIt.startWithLinuxNewline) as any)[0] as string;
             input = input.slice(newLine.length);
             line++;
-            char = 0;
+            char = 1;
             return ok({
                 rest: input,
                 char,
@@ -59,7 +59,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
             const newLine = (input.match(doesIt.startWithMacsNewline) as any)[0] as string;
             input = input.slice(newLine.length);
             line++;
-            char = 0;
+            char = 1;
             return ok({
                 rest: input,
                 char,
