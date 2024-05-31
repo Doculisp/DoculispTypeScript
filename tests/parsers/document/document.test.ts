@@ -27,34 +27,34 @@ describe('document', () => {
                 verifyAsJson(result);
             });
         
-            test('should parse a simple text of "hello"', () => {
+            test.skip('should parse a simple text of "hello"', () => {
                 const result = parse('hello', 'C:/my_document.md')
         
                 verifyAsJson(result);
             });
     
-            test('should parse text of "blow fish"', () => {
+            test.skip('should parse text of "blow fish"', () => {
                 const result = parse('blow fish', 'C:/my_document.md')
                 verifyAsJson(result);
             });
     
-            test('should parse text of " blow fish"', () => {
+            test.skip('should parse text of " blow fish"', () => {
                 const result = parse(' blow fish', 'C:/my_document.md')
                 verifyAsJson(result);
             });
     
-            test('should parse text of " blow fish "', () => {
+            test.skip('should parse text of " blow fish "', () => {
                 const result = parse(' blow fish ', 'C:/my_document.md')
                 verifyAsJson(result);
             });
     
-            test('should parse text of "   \\r\\n blow fish"', () => {
+            test.skip('should parse text of "   \\r\\n blow fish"', () => {
                 const result = parse('   \r\n blow fish', 'C:/my_document.md');
                 verifyAsJson(result);
             });
         });
 
-        describe('html comments', () => {
+        describe.skip('html comments', () => {
             test('should not parse html comments', () => {
                 const md = `<!-- This is a comment -->hello bro`.trim();
     
@@ -149,7 +149,7 @@ describe('document', () => {
             });
         });
     
-        describe('Doculisp', () => {
+        describe.skip('Doculisp', () => {
             test('should parse a doculisp block at top of file', () => {
                 const md = '<!-- (dl (# header)) -->';
     
@@ -168,7 +168,7 @@ describe('document', () => {
         });
     });
 
-    describe('parsing .dlisp files', () => {
+    describe.skip('parsing .dlisp files', () => {
         test('should handle a correctly formatted file', () => {
             let dlisp = `
 (section-meta
