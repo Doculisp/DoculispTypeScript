@@ -13,7 +13,20 @@ function createMap(documentPath: string, parts: DocumentPart[]): DocumentMap {
 }
 
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
-    function parse(input: string, documentPath: string): Result<DocumentMap> {
+    function parse(documentText: string, documentPath: string): Result<DocumentMap> {
+        function isDiscardedWhiteSpace(input: string, line: number, char: number): StepParseResult<DocumentPart> {
+            if(doesIt.startWithWhiteSpace.test(input)) {
+                const found: string = (input.match(doesIt.startWithWhiteSpace) as any)[0];
+                return ok({
+                    type: 'discard',
+                    rest: input.slice(found.length),
+                    line,
+                    char: char + found.length,
+                });
+            }
+            return ok(false);
+        }
+
         function isWord(input: string, line: number, char: number): StepParseResult<DocumentPart> {
             return ok({
                 type: 'parse result',
@@ -28,8 +41,8 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             });
         }
 
-        const parser = parserBuilder.createParser(isWord);
-        const parsed = parser.parse(input, 1, 1);
+        const parser = parserBuilder.createParser(isDiscardedWhiteSpace, isWord);
+        const parsed = parser.parse(documentText, 1, 1);
         if(parsed.success) {
             const [parts, _remaining] = parsed.value;
             return ok(createMap(documentPath, parts));

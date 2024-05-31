@@ -38,7 +38,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should parse text of " blow fish"', () => {
+            test('should parse text of " blow fish"', () => {
                 const result = parse(' blow fish', 'C:/my_document.md')
                 verifyAsJson(result);
             });
