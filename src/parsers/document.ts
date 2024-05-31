@@ -33,20 +33,16 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 parts,
             };
         }
-
-        function buildWhiteSpaceDocumentParser() {
-            return buildWhiteSpaceChecker<DocumentParse>();
-        }
         
-        function buildWhiteSpaceChecker<T>(keepPredicate?: ((found: string) => Boolean) | undefined, packager?: ((whiteSpace: string, start: ILocation) => T) | undefined): HandleValue<T> {
+        function buildWhiteSpaceChecker<T = DocumentParse>(keepPredicate?: ((found: string) => Boolean) | undefined, packager?: ((whiteSpace: string, start: ILocation) => T) | undefined): HandleValue<T> {
             const predicate = keepPredicate ?? (() => true);
-            const packaging = packager ?? ((whiteSpace: string, start: ILocation) => { return { start, value: whiteSpace } as T; });
+            const packaging = packager ?? ((whiteSpace: string, start: ILocation) => { return { start, value: whiteSpace } as T});
 
             return function isWhiteSpace(value: string, line: number, char: number): StepParseResult<T> {
                 let start: ILocation | undefined;
 
-                function tryParseNewLine(beginsWith: RegExp): HandleValue<string> {
-                    return function (value: string, line: number, _char: number): StepParseResult<string> {
+                function tryParseIt(beginsWith: RegExp, defaultReturn: false | 'stop', lineIncrementor: (line: number) => number, charIncrementor: (char: number, found: string) => number): HandleValue<string> {
+                    return function (value: string, line: number, char: number): StepParseResult<string> {
                         if(beginsWith.test(value)) {
                             const found: string = (value.match(beginsWith) as any)[0];
                             const rest = value.slice(found.length);
@@ -56,8 +52,8 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
                             let step: IParseStepForward = {
                                 rest,
-                                line: line + 1,
-                                char: 1
+                                line: lineIncrementor(line),
+                                char: charIncrementor(char, found),
                             };
 
                             if(predicate(found)){
@@ -73,44 +69,18 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                                 return ok(ret);
                             }
                         }
-                        return ok(false);
-                    };
+                        return ok(defaultReturn);
+                    }
+                }
+
+                function tryParseNewLine(beginsWith: RegExp): HandleValue<string> {
+                    return tryParseIt(beginsWith, false, (line: number) => line + 1, () => 1);
                 }
 
                 const tryParseWindowsNewLine = tryParseNewLine(doesIt.startWithWindowsNewline);
                 const tryParseMacNewLine = tryParseNewLine(doesIt.startWithMacsNewline);
                 const tryParseLinuxNewLine = tryParseNewLine(doesIt.startWithLinuxNewline);
-
-                function tryParseWhiteSpace(value: string, line: number, char: number): StepParseResult<string> {
-                    if(doesIt.startWithWhiteSpace.test(value)) {
-                        let found: string = (value.match(doesIt.startWithWhiteSpace) as any)[0];
-                        let rest = value.slice(found.length);
-                        if(!start) {
-                            start = { line, char };
-                        }
-
-                        let step: IParseStepForward = {
-                            rest,
-                            line,
-                            char: char + found.length,
-                        };
-
-                        if(predicate(found)) {
-                            let ret = parserBuilder.buildStepParse(step, {
-                                type: 'parse result',
-                                result: found,
-                            });
-                            return ok(ret);
-                        } else {
-                            let ret = parserBuilder.buildStepParse(step, {
-                                type: 'discard',
-                            });
-                            ok(ret);
-                        }
-                    }
-
-                    return ok('stop');
-                }
+                const tryParseWhiteSpace = tryParseIt(doesIt.startWithWhiteSpace, 'stop', line => line, (char: number, found: string) => char + found.length);
 
                 const parser = parserBuilder.createParser<string>(tryParseWindowsNewLine, tryParseMacNewLine, tryParseLinuxNewLine, tryParseWhiteSpace);
                 const parsed = parser.parse(value, line, char);
@@ -140,132 +110,134 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             };
         }
 
-        function isDoculisp(value: string, line: number, char: number, start?: ILocation | undefined): StepParseResult<DocumentParse> {
-            let depth = !!start ? 1 : 0;
+        function buildDoculispChecker(start?: ILocation | undefined):HandleValue<DocumentParse> {
+            return function isDoculisp(value: string, line: number, char: number): StepParseResult<DocumentParse> {
+                let depth = !!start ? 1 : 0;
 
-            function tryParseDoculispOpen(value: string, line: number, char: number): StepParseResult<string> {
-                if(doesIt.startWithDocuLisp.test(value)){
-                    if(!start) {
-                        start = { line, char };
-                    } else {
-                        return fail(`Doculisp Block at { line: ${start.line}, char: ${start.char}} contains an embedded doculisp block at { line: ${line}, char: ${char} }.`, documentPath);
-                    }
+                function tryParseDoculispOpen(value: string, line: number, char: number): StepParseResult<string> {
+                    if(doesIt.startWithDocuLisp.test(value)){
+                        if(!start) {
+                            start = { line, char };
+                        } else {
+                            return fail(`Doculisp Block at { line: ${start.line}, char: ${start.char}} contains an embedded doculisp block at { line: ${line}, char: ${char} }.`, documentPath);
+                        }
 
-                    let v: string = (value.match(doesIt.startWithDocuLisp) as any)[0];
-                    depth++;
-                    
-                    return ok({
-                        type: 'discard',
-                        rest: value.slice(v.length),
-                        line,
-                        char: char + v.length,
-                    });
-                }
-
-                return ok(false);
-            }
-
-            function tryParseOpenLisp(value: string, line: number, char: number): StepParseResult<string> {
-                if(doesIt.startWithOpenLisp.test(value)) {
-                    let v: string = (value.match(doesIt.startWithOpenLisp) as any)[0];
-                    depth++;
-                    
-                    return ok({
-                        type: 'parse result',
-                        result: v,
-                        rest: value.slice(v.length),
-                        line,
-                        char: char + v.length,
-                    });
-                }
-
-                return ok(false);
-            }
-
-            function tryParseCloseLisp(value: string, subLine: number, subChar: number): StepParseResult<string> {
-                if(doesIt.startsWithCloseLisp.test(value)) {
-                    let v: string = (value.match(doesIt.startsWithCloseLisp) as any)[0];
-                    let rest = value.slice(v.length);
-
-                    let last = depth === 1;
-                    depth--;
-
-                    let step: IParseStepForward = {
-                        rest,
-                        line: subLine,
-                        char: subChar + v.length,
-                    };
-
-                    if(last) {
-                        let ret = parserBuilder.buildStepParse<string>(step, {
+                        let v: string = (value.match(doesIt.startWithDocuLisp) as any)[0];
+                        depth++;
+                        
+                        return ok({
                             type: 'discard',
+                            rest: value.slice(v.length),
+                            line,
+                            char: char + v.length,
                         });
-                        return ok(ret);
                     }
-                    else {
-                        let ret = parserBuilder.buildStepParse<string>(step, {
+
+                    return ok(false);
+                }
+
+                function tryParseOpenLisp(value: string, line: number, char: number): StepParseResult<string> {
+                    if(doesIt.startWithOpenLisp.test(value)) {
+                        let v: string = (value.match(doesIt.startWithOpenLisp) as any)[0];
+                        depth++;
+                        
+                        return ok({
                             type: 'parse result',
                             result: v,
+                            rest: value.slice(v.length),
+                            line,
+                            char: char + v.length,
                         });
-                        return ok(ret);
                     }
+
+                    return ok(false);
                 }
 
-                return ok(false);
-            }
+                function tryParseCloseLisp(value: string, subLine: number, subChar: number): StepParseResult<string> {
+                    if(doesIt.startsWithCloseLisp.test(value)) {
+                        let v: string = (value.match(doesIt.startsWithCloseLisp) as any)[0];
+                        let rest = value.slice(v.length);
 
-            function predicate() {
-                return !!start;
-            } 
+                        let last = depth === 1;
+                        depth--;
 
-            function tryParseEndAll(): StepParseResult<string> {
-                if(start && 0 === depth) {
-                    return ok('stop');
+                        let step: IParseStepForward = {
+                            rest,
+                            line: subLine,
+                            char: subChar + v.length,
+                        };
+
+                        if(last) {
+                            let ret = parserBuilder.buildStepParse<string>(step, {
+                                type: 'discard',
+                            });
+                            return ok(ret);
+                        }
+                        else {
+                            let ret = parserBuilder.buildStepParse<string>(step, {
+                                type: 'parse result',
+                                result: v,
+                            });
+                            return ok(ret);
+                        }
+                    }
+
+                    return ok(false);
                 }
-                return ok(false);
-            }
 
-            const startsWithWord = /^[^\s\(\)](\s*[^\s\(\)])+/;
-            function tryParseText(value: string, line: number, char: number): StepParseResult<string> {
-                if(startsWithWord.test(value)) {
-                    const v: string = (value.match(startsWithWord) as any)[0];
-                    
-                    return ok({
-                        type: 'parse result',
-                        result: v,
-                        rest: value.slice(v.length),
-                        line,
-                        char: char + v.length,
-                    });
+                function predicate() {
+                    return !!start;
+                } 
+
+                function tryParseEndAll(): StepParseResult<string> {
+                    if(start && 0 === depth) {
+                        return ok('stop');
+                    }
+                    return ok(false);
                 }
 
-                return ok(false);
-            }
+                const startsWithWord = /^[^\s\(\)](\s*[^\s\(\)])+/;
+                function tryParseText(value: string, line: number, char: number): StepParseResult<string> {
+                    if(startsWithWord.test(value)) {
+                        const v: string = (value.match(startsWithWord) as any)[0];
+                        
+                        return ok({
+                            type: 'parse result',
+                            result: v,
+                            rest: value.slice(v.length),
+                            line,
+                            char: char + v.length,
+                        });
+                    }
 
-            let parser = parserBuilder.createParser<string>(tryParseEndAll, tryParseDoculispOpen, tryParseOpenLisp, tryParseCloseLisp, buildWhiteSpaceChecker(predicate, (v: string) => { return v; }), tryParseText);
-
-            const parsed = parser.parse(value, line, char);
-
-            if(parsed.success) {
-                const [results, leftover] = parsed.value;
-
-                if(0 < depth) {
-                    return fail(`Doculisp block at { line: ${line}, char: ${char} } is not closed.`, documentPath);
+                    return ok(false);
                 }
-    
-                if(0 < results.length && start) {
-                    const result = results.join('');
-                    return ok({
-                        type: 'parse result',
-                        result: { start, value: result.trim() },
-                        rest: leftover.remaining,
-                        line: leftover.location.line,
-                        char: leftover.location.char,
-                    });
+
+                let parser = parserBuilder.createParser<string>(tryParseEndAll, tryParseDoculispOpen, tryParseOpenLisp, tryParseCloseLisp, buildWhiteSpaceChecker(predicate, (v: string) => { return v; }), tryParseText);
+
+                const parsed = parser.parse(value, line, char);
+
+                if(parsed.success) {
+                    const [results, leftover] = parsed.value;
+
+                    if(0 < depth) {
+                        return fail(`Doculisp block at { line: ${line}, char: ${char} } is not closed.`, documentPath);
+                    }
+        
+                    if(0 < results.length && start) {
+                        const result = results.join('');
+                        return ok({
+                            type: 'parse result',
+                            result: { start, value: result.trim() },
+                            rest: leftover.remaining,
+                            line: leftover.location.line,
+                            char: leftover.location.char,
+                        });
+                    }
+                    return ok(false);
+                } else {
+                    return parsed;
                 }
-                return ok(false);
-            } else {
-                return parsed;
             }
         }
         
@@ -302,7 +274,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 }
 
                 if(doesIt.startWithDocuLisp.test(value)) {
-                    let doculisp = isDoculisp(value, line, char);
+                    let doculisp = buildDoculispChecker()(value, line, char);
                     if(doculisp.success) {
                         if(doculisp.value && doculisp.value !== 'stop'){
                             value = doculisp.value.rest;
@@ -363,7 +335,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         function isInline(value: string, line: number, char: number): StepParseResult<DocumentParse> {
             let current = "";
             let start: ILocation | undefined;
-            const isWhiteSpace = buildWhiteSpaceDocumentParser();
+            const isWhiteSpace = buildWhiteSpaceChecker();
         
             while(0 < value.length) {
                 let inLineMarkerFound = doesIt.startWithInlineMarker.test(value);
@@ -430,7 +402,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         function isMultiline(value: string, line: number, char: number): StepParseResult<DocumentParse> {
             let current = "";
             let start: ILocation | undefined;
-            const isWhiteSpace = buildWhiteSpaceDocumentParser();
+            const isWhiteSpace = buildWhiteSpaceChecker();
         
             while(0 < value.length) {
                 let inLineMarkerFound = doesIt.startWithMultilineMarker.test(value);
@@ -495,7 +467,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         function isWord(value: string, line: number, char: number): StepParseResult<DocumentParse> {
             let current = "";
             let start: ILocation | undefined;
-            const isWhiteSpace = buildWhiteSpaceDocumentParser();
+            const isWhiteSpace = buildWhiteSpaceChecker();
         
             while(0 < value.length) {
                 let hasWhiteSpace = doesIt.startWithWhiteSpace.test(value);
@@ -614,7 +586,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
         let ext = path.extname(documentPath);
         if(ext === '.dlisp') {
-            let lisp = isDoculisp(`${value})`, 1, 1, { line: 1, char: 1 });
+            let lisp = buildDoculispChecker({ line: 1, char: 1})(`${value})`, 1, 1);
             if(lisp.success) {
                 let v = lisp.value;
                 if(v && v !== 'stop'){
