@@ -31,7 +31,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             return ok({
                 type: 'parse result',
                 subResult: {
-                    text: input,
+                    text: input.trim(),
                     location: { line, char, },
                     type: 'text'
                 },
