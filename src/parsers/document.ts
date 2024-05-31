@@ -111,6 +111,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
 
         function buildDoculispChecker(start?: ILocation | undefined):HandleValue<DocumentParse> {
+            const defaultReturn = !!start ? 'stop' : false;
             return function isDoculisp(value: string, line: number, char: number): StepParseResult<DocumentParse> {
                 let depth = !!start ? 1 : 0;
 
@@ -234,7 +235,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                             char: leftover.location.char,
                         });
                     }
-                    return ok(false);
+                    return ok(defaultReturn);
                 } else {
                     return parsed;
                 }
@@ -586,41 +587,25 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
         let ext = path.extname(documentPath);
         if(ext === '.dlisp') {
-            let lisp = buildDoculispChecker({ line: 1, char: 1})(`${value})`, 1, 1);
-            if(lisp.success) {
-                let v = lisp.value;
-                if(v && v !== 'stop'){
-                    if(v.type === 'parse result') {
-                        current[current.length] = {
-                            location: { line: v.result.start.line, char: v.result.start.char },
-                            text: v.result.value,
-                            type: 'lisp'
-                        };
-                    }
-
-                    if(v.type === 'parse group result') {
-                        v.result.forEach(r => {
-                            if(r.type === 'keep'){
-                                current[current.length] = {
-                                    location: { line: r.value.start.line, char: r.value.start.char },
-                                    text: r.value.value,
-                                    type: 'lisp'
-                                };
-                            }
-                        });
-                    }
-                    
-                    value = '';
-                    line = v.line;
-                    char = v.char;
-
-                    if(0 < v.rest.trim().length) {
-                        return fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: ${line}, char: ${char - 1} }.`, documentPath);
-                    }
+            const parser = parserBuilder.createParser(buildDoculispChecker({ line: 1, char: 1 }));
+            const parsed = parser.parse(`${value})`, 1, 1);
+            if(parsed.success) {
+                const [lispRaw, leftover] = parsed.value;
+                if(0 < leftover.remaining.trim().length) {
+                    return fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: ${leftover.location.line}, char: ${leftover.location.char - 1} }.`, documentPath);
                 }
-            }
-            else {
-                return fail(lisp.message, documentPath);
+
+                const lisp: DocumentPart[] = lispRaw.map(l => {
+                    return {
+                        location: l.start,
+                        text: l.value,
+                        type: 'lisp'
+                    };
+                })
+
+                return ok(constructDocumentMap(lisp));
+            } else {
+                return parsed;
             }
         }
 
