@@ -128,7 +128,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
 
             let atom: Token = {
                 type: 'token - atom',
-                value: atomValue,
+                text: atomValue,
                 location: { line, char },
             };
 

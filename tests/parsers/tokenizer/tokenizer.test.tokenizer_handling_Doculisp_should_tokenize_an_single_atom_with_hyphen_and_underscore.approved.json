@@ -15,8 +15,8 @@
           "char": 3,
           "line": 4
         },
-        "type": "token - atom",
-        "value": "atom-start_end"
+        "text": "atom-start_end",
+        "type": "token - atom"
       },
       {
         "location": {

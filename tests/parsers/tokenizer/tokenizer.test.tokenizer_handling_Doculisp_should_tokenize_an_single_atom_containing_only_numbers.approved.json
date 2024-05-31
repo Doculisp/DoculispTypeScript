@@ -15,8 +15,8 @@
           "char": 3,
           "line": 4
         },
-        "type": "token - atom",
-        "value": "123987"
+        "text": "123987",
+        "type": "token - atom"
       },
       {
         "location": {

@@ -15,8 +15,8 @@
           "char": 2,
           "line": 2
         },
-        "type": "token - atom",
-        "value": "*"
+        "text": "*",
+        "type": "token - atom"
       },
       {
         "location": {

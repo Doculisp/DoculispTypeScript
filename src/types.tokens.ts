@@ -18,13 +18,13 @@ export type CloseParenthesisToken = {
 };
 
 export type AtomToken = {
-    readonly value: string;
+    readonly text: string;
     readonly location: ILocation;
     readonly type: 'token - atom';
 };
 
 export type ParameterToken = {
-    readonly value: string;
+    readonly text: string;
     readonly location: ILocation;
     readonly type: 'token - parameter';
 };
