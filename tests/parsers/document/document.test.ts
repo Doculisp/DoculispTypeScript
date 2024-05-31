@@ -48,7 +48,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should parse text of "   \\r\\n blow fish"', () => {
+            test('should parse text of "   \\r\\n blow fish"', () => {
                 const result = parse('   \r\n blow fish', 'C:/my_document.md');
                 verifyAsJson(result);
             });
