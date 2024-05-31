@@ -27,7 +27,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
         
-            test.skip('should parse a simple text of "hello"', () => {
+            test('should parse a simple text of "hello"', () => {
                 const result = parse('hello', 'C:/my_document.md')
         
                 verifyAsJson(result);
