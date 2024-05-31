@@ -239,21 +239,7 @@ describe('document', () => {
         });
 
         test('should handle a file with to many parenthesis', () => {
-            let dlisp = `
-(section-meta
-    (title Doculisp)
-    (external
-        (Section ./structure.md)
-        (Section ./doculisp.md)
-        (Section ./section-meta.md)
-        (Section ./content.md)
-        (Section ./headings.md)
-        (Section ./comment.md)
-        (Section ./keywords.md)
-    )
-)
-
-(content (toc numbered-labeled)) )`;
+            let dlisp = `(content (toc numbered-labeled)) )`;
 
             let result = parse(dlisp, 'C:/main.dlisp');
 

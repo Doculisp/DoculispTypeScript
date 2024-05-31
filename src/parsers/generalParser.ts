@@ -6,7 +6,11 @@ function mapFirst<T>(collection: HandleValue<T>[], mapper: (value: HandleValue<T
     for (let index = 0; index < collection.length; index++) {
         const element = collection[index] as any as HandleValue<T>;
         const result = mapper(element);
-        if(result.success && result.value) {
+        if(result.success) {
+            if(result.value){
+                return result;
+            }
+        } else {
             return result;
         }
     }

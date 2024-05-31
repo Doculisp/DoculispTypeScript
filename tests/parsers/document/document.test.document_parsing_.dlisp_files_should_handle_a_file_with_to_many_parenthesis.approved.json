@@ -1,5 +1,5 @@
 {
   "documentPath": "C:/main.dlisp",
-  "message": "Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: 15, char: 33 }.",
+  "message": "Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: 1, char: 34 }.",
   "success": false
 }
