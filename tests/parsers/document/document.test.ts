@@ -140,7 +140,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should fail to parse a multiline code block that does not close', () => {
+            test('should fail to parse a multiline code block that does not close', () => {
                 let md = '```\nlet a = "hello;\nlet b = "world"\nconsole.log(a + " " + b);\n';
     
                 const result = parse(md, 'C:/bad/examples/multiline.md');
