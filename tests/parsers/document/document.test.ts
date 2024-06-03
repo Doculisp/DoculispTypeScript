@@ -149,8 +149,8 @@ describe('document', () => {
             });
         });
     
-        describe.skip('Doculisp', () => {
-            test.skip('should parse a doculisp block at top of file', () => {
+        describe('Doculisp', () => {
+            test('should parse a doculisp block at top of file', () => {
                 const md = '<!-- (dl (# header)) -->';
     
                 const result = parse(md, '_main.md');

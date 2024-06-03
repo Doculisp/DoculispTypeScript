@@ -285,7 +285,117 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-    function isComment(documentPath: string) {
+    function isDoculisp(documentPath: string): HandleValue<DocumentPart> {
+        return function (toParse: string, startLine: number, startChar: number): StepParseResult<DocumentPart> {
+            let depth = 0;
+            function tryParseDoculispOpen(input: string, line: number, char: number): StepParseResult<string> {
+                if(doesIt.startWithDocuLisp.test(input)) {
+                    const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
+                    const rest = input.slice(parsed.length);
+                    depth++;
+
+                    return ok({
+                        type: 'discard',
+                        rest,
+                        line,
+                        char: char + parsed.length,
+                    });
+                }
+                return ok(false);
+            }
+
+            function tryParseLispOpen(input: string, line: number, char: number): StepParseResult<string> {
+                if(doesIt.startWithOpenLisp.test(input)) {
+                    const parsed: string = (input.match(doesIt.startWithOpenLisp) as any)[0];
+                    const rest = input.slice(parsed.length);
+                    depth++;
+
+                    return ok({
+                        type: 'parse result',
+                        subResult: parsed,
+                        rest,
+                        line,
+                        char: char + parsed.length,
+                    });
+                }
+
+                return ok(false);
+            }
+
+            function tryParseLispClose(input: string, line: number, char: number): StepParseResult<string> {
+                if(doesIt.startsWithCloseLisp.test(input)) {
+                    const parsed: string = (input.match(doesIt.startsWithCloseLisp) as any)[0];
+                    const rest = input.slice(parsed.length);
+
+                    const step: IParseStepForward = {
+                        rest,
+                        line,
+                        char: char + parsed.length,
+                    };
+
+                    depth--;
+
+                    if(depth <= 0) {
+                        return ok(parserBuilder.buildStepParse(step, {
+                            type: 'discard',
+                        }));
+                    }
+
+                    return ok(parserBuilder.buildStepParse(step, {
+                        type: 'parse result',
+                        subResult: parsed,
+                    }));
+                }
+                return ok(false);
+            }
+
+            function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
+                if(0 < depth){
+                    const parsed = input.charAt(0);
+                    const rest = input.slice(1);
+
+                    return ok({
+                        type: 'parse result',
+                        subResult: parsed,
+                        rest,
+                        line,
+                        char: char + 1,
+                    });
+                }
+
+                return ok('stop');
+            }
+
+            function tryParseWhiteSpace(input: string, line: number, char: number): StepParseResult<string> {
+                if(0 < depth){
+                    const tryParseWhiteSpace = isKeptWhiteSpace(documentPath, id);
+                    return tryParseWhiteSpace(input, line, char);
+                }
+                return ok(false);
+            }
+
+            const parser = parserBuilder.createParser(documentPath, tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
+            const parsed = parser.parse(toParse, startLine, startChar);
+            if(parsed.success) {
+                const [parts, leftover] = parsed.value;
+                if(leftover.location.line === startLine && leftover.location.char === startChar) {
+                    return ok(false);
+                }
+
+                let result = parts.join('').trim();
+                return ok({
+                    type: 'parse result',
+                    subResult: { location: { line: startLine, char: startChar }, type: 'lisp', text: result },
+                    rest: leftover.remaining,
+                    line: leftover.location.line,
+                    char: leftover.location.char,
+                });
+            }
+            return parsed;
+        }
+    }
+
+    function isComment(documentPath: string): HandleValue<DocumentPart> {
         return function isComment(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
             let opened = false;
 
@@ -345,7 +455,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 })
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryEndAll);
+            const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, isDoculisp(documentPath), tryEndAll);
             const parsed = parser.parse(toParse, startingLine, startingChar);
 
             if(opened) {
