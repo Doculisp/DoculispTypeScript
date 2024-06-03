@@ -2,8 +2,8 @@ import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { Result, ok } from "../types.general";
 // import * as path from 'node:path';
-import { IDocumentSearches, Searcher } from "../types.textHelpers";
-import { HandleValue, IInternals, StepParseResult } from "../types.internal";
+import { IDocumentSearches, IWhiteSpaceSearches, Searcher } from "../types.textHelpers";
+import { HandleValue, IInternals, IParseStepForward, StepParseResult } from "../types.internal";
 
 function createMap(documentPath: string, parts: DocumentPart[]): DocumentMap {
     return {
@@ -12,11 +12,24 @@ function createMap(documentPath: string, parts: DocumentPart[]): DocumentMap {
     };
 }
 
+function id<T>(value: T): T {
+    return value;
+}
+
+
+function isStopParsingWhiteSpace(input: string, _line: number, _char: number): Result<'stop' | false> {
+    const regex = /\S+/;
+    if(regex.test(input)) {
+        return ok('stop');
+    }
+    return ok(false);
+}
+
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
-    function doesItStartWithDiscarded(regex: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<DocumentPart> {
+    function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<DocumentPart> {
         return function (input: string, line: number, char: number): StepParseResult<DocumentPart> {
-            if(regex.test(input)) {
-                const found: string = (input.match(regex) as any)[0];
+            if(startsWith.test(input)) {
+                const found: string = (input.match(startsWith) as any)[0];
                 return ok({
                     type: 'discard',
                     rest: input.slice(found.length),
@@ -28,22 +41,14 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-
-    function isDiscardedWhiteSpace(_documentPath: string) {
+    function isDiscardedWhiteSpace(_documentPath: string): HandleValue<DocumentPart> {
         return function isDiscardedWhiteSpace(input: string, line: number, char: number): StepParseResult<DocumentPart> {
             const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
             const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
             const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l + 1, () => 1);
             const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, l => l, (c, f) => c + f.length);
-            function isOver(input: string, line: number, char: number): StepParseResult<DocumentPart> {
-                const regex = /\S+/;
-                if(regex.test(input)) {
-                    return ok('stop');
-                }
-                return ok(false);
-            }
 
-            const whiteSpaceParser = parserBuilder.createParser(isWindows, isLinux, isMac, isWhiteSpace, isOver);
+            const whiteSpaceParser = parserBuilder.createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
             const parsed = whiteSpaceParser.parse(input, line, char);
             if(parsed.success) {
                 const [_, leftovers] = parsed.value;
@@ -60,6 +65,68 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             } else {
                 return parsed;
             }
+        }
+    }
+
+    function doesItStartWithKeep<T>(startsWith: RegExp, map: (parsed: string) => T, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<T> {
+        return function (input:string, line: number, char: number): StepParseResult<T> {
+            if(startsWith.test(input)) {
+                const parsed: string = (input.match(startsWith) as any)[0];
+                const rest = input.slice(parsed.length);
+                return ok({
+                    type: 'parse result',
+                    subResult: map(parsed),
+                    rest,
+                    line: lineIncrement(line),
+                    char: charIncrement(char, parsed),
+                });
+            }
+            return ok(false);
+        }
+    }
+
+    function isKeptWhiteSpace<T>(_documentPath: string, map: (value: string) => T): HandleValue<T> {
+        const it = doesIt as IWhiteSpaceSearches;
+        return function (input: string, line: number, char: number): StepParseResult<T> {
+            const isWindows = doesItStartWithKeep(it.startWithWindowsNewline, map, l => l + 1, () => 1);
+            const isLinux = doesItStartWithKeep(it.startWithLinuxNewline, map, l => l + 1, () => 1);
+            const isMac = doesItStartWithKeep(it.startWithMacsNewline, map, l => l + 1, () => 1);
+            const isWhiteSpace = doesItStartWithKeep(it.startWithWhiteSpace, map, id, (c, f) => c + f.length);
+
+            const parser = parserBuilder.createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
+            const parsed = parser.parse(input, line, char);
+            if(parsed.success) {
+                const [result, leftover] = parsed.value;
+                if(leftover.location.line === line && leftover.location.char === char) {
+                    return ok(false);
+                }
+
+                let step: IParseStepForward = {
+                    rest: leftover.remaining,
+                    line: leftover.location.line,
+                    char: leftover.location.char,
+                }
+
+                if(0 === result.length) {
+                    return ok(parserBuilder.buildStepParse(step, {
+                        type: 'discard',
+                    }));
+                }
+
+                if(1 === result.length) {
+                    return ok(parserBuilder.buildStepParse(step, {
+                        type: 'parse result',
+                        subResult: result[0] as T
+                    }));
+                }
+
+                return ok(parserBuilder.buildStepParse(step, {
+                    type: 'parse group result',
+                    subResult: result.map(r => { return { type:'keep', keptValue: r }; }),
+                }));
+            }
+
+            return parsed;
         }
     }
 
@@ -150,19 +217,49 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-    function isWord(_documentPath: string) {
-        return function isWord(input: string, line: number, char: number): StepParseResult<DocumentPart> {
-            return ok({
-                type: 'parse result',
-                subResult: {
-                    text: input.trim(),
-                    location: { line, char, },
-                    type: 'text'
-                },
-                rest: '',
-                char: char + input.length,
-                line,
-            });
+    function isWord(documentPath: string) {
+        return function isWord(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
+            function tryParseEndParse(input: string, _line: number, _char: number): StepParseResult<string> {
+                if(doesIt.startWithOpenComment.test(input)) {
+                    return ok('stop')
+                }
+                return ok(false);
+            }
+
+            const tryParseWhiteSpace = isKeptWhiteSpace(documentPath, id);
+
+            function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
+                const startsWithWord = /^\w/;
+                if(startsWithWord.test(input)) {
+                    const parsed = input.charAt(0);
+                    const rest = input.slice(1);
+                    return ok({
+                        type: 'parse result',
+                        subResult: parsed,
+                        rest,
+                        line,
+                        char: char + 1,
+                    });
+                }
+                return ok(false);
+            }
+
+            const parser = parserBuilder.createParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
+            const parsed = parser.parse(toParse, startingLine, startingChar);
+
+            if(parsed.success) {
+                const [parts, leftover] = parsed.value;
+                const result = parts.join('').trim();
+                return ok({
+                    type: 'parse result',
+                    subResult: { type: 'text', text: result, location: { line: startingLine, char: startingChar } },
+                    rest: leftover.remaining,
+                    line: leftover.location.line,
+                    char: leftover.location.char,
+                });
+            }
+
+            return parsed;
         }
     }
 

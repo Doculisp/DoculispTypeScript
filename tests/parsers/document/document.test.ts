@@ -63,7 +63,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should not parse html but preserve new line counts comments', () => {
+            test('should not parse html but preserve new line counts comments', () => {
                 const md = `<!--
     This is a comment
     -->
@@ -75,7 +75,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should not parse html comments in the middle of text.', () => {
+            test('should not parse html comments in the middle of text.', () => {
                 const md = `hello
     <!-- need stuff here -->
     
