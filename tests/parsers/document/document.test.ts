@@ -54,7 +54,7 @@ describe('document', () => {
             });
         });
 
-        describe.skip('html comments', () => {
+        describe('html comments', () => {
             test('should not parse html comments', () => {
                 const md = `<!-- This is a comment -->hello bro`.trim();
     
@@ -63,7 +63,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should not parse html but preserve new line counts comments', () => {
+            test.skip('should not parse html but preserve new line counts comments', () => {
                 const md = `<!--
     This is a comment
     -->
@@ -75,7 +75,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should not parse html comments in the middle of text.', () => {
+            test.skip('should not parse html comments in the middle of text.', () => {
                 const md = `hello
     <!-- need stuff here -->
     
@@ -86,7 +86,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should parse html comments inside an inline code block', () => {
+            test.skip('should parse html comments inside an inline code block', () => {
                 const md = '`<!-- an example html comment -->`';
     
                 const result = parse(md, 'C:/html/inline.md');
@@ -94,7 +94,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should parse html comments inside a multiline code block', () => {
+            test.skip('should parse html comments inside a multiline code block', () => {
                 const md = `An example of an markdown document with html comments:
     \`\`\`markdown
     # A document
@@ -111,7 +111,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail to parse if html comment is not closed', () => {
+            test.skip('should fail to parse if html comment is not closed', () => {
                 let md = `<!--
     Hello
     World
@@ -122,7 +122,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail if inline code block does not close', () => {
+            test.skip('should fail if inline code block does not close', () => {
                 let md = '`let b = 7';
     
                 const result = parse(md, 'C:/bad/noCloseInline.md');
@@ -130,7 +130,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail to parse an inline code block with a line break', () => {
+            test.skip('should fail to parse an inline code block with a line break', () => {
                 let md = `\`let a = 0;
     let b = a;
     \``;
@@ -140,7 +140,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail to parse a multiline code block that does not close', () => {
+            test.skip('should fail to parse a multiline code block that does not close', () => {
                 let md = '```\nlet a = "hello;\nlet b = "world"\nconsole.log(a + " " + b);\n';
     
                 const result = parse(md, 'C:/bad/examples/multiline.md');
@@ -150,7 +150,7 @@ describe('document', () => {
         });
     
         describe.skip('Doculisp', () => {
-            test('should parse a doculisp block at top of file', () => {
+            test.skip('should parse a doculisp block at top of file', () => {
                 const md = '<!-- (dl (# header)) -->';
     
                 const result = parse(md, '_main.md');
@@ -158,7 +158,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
             
-            test('should parse a doculisp block in the middle of file', () => {
+            test.skip('should parse a doculisp block in the middle of file', () => {
             const md = '# Title\r\nsome text about title\r\n<!--\r\nSome lisp: (dl (# two)) -->\r\nMickey Mouse Hotline.';
     
                 const result = parse(md, '_main.md');
@@ -169,7 +169,7 @@ describe('document', () => {
     });
 
     describe.skip('parsing .dlisp files', () => {
-        test('should handle a correctly formatted file', () => {
+        test.skip('should handle a correctly formatted file', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)
@@ -192,7 +192,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test('should fail to parse a file that contains a dl atom', () => {
+        test.skip('should fail to parse a file that contains a dl atom', () => {
             let dlisp = `(dl
 (section-meta
     (title Doculisp)
@@ -215,7 +215,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test('should handle a file with parentheses that do not close', () => {
+        test.skip('should handle a file with parentheses that do not close', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)
@@ -238,7 +238,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test('should handle a file with to many parenthesis', () => {
+        test.skip('should handle a file with to many parenthesis', () => {
             let dlisp = `(content (toc numbered-labeled)) )`;
 
             let result = parse(dlisp, 'C:/main.dlisp');
