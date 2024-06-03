@@ -348,6 +348,10 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
             const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryEndAll);
             const parsed = parser.parse(toParse, startingLine, startingChar);
+
+            if(opened) {
+                return fail(`Open HTML Comment at { line: ${startingLine}, char: ${startingChar} } but does not close.`, documentPath);
+            }
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
                 if(0 < result.length) {

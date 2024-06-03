@@ -111,7 +111,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should fail to parse if html comment is not closed', () => {
+            test('should fail to parse if html comment is not closed', () => {
                 let md = `<!--
     Hello
     World
