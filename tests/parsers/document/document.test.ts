@@ -94,7 +94,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should parse html comments inside a multiline code block', () => {
+            test('should parse html comments inside a multiline code block', () => {
                 const md = `An example of an markdown document with html comments:
     \`\`\`markdown
     # A document

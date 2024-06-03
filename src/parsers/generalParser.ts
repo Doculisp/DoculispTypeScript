@@ -1,5 +1,5 @@
 import { IRegisterable } from "../types.containers";
-import { Result, fail, ok } from "../types.general";
+import { Result, ok } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParse, StepParseResult } from "../types.internal";
 
 function mapFirst<T>(documentPath: string, input: string, line: number, char: number, collection: HandleValue<T>[]): StepParseResult<T> {
@@ -15,7 +15,7 @@ function mapFirst<T>(documentPath: string, input: string, line: number, char: nu
         }
     }
 
-    return fail(`No parser found for "${input}"`, documentPath);
+    return ok('stop');
 }
 
 class Parser<T> implements IParser<T> {

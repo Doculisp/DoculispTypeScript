@@ -8,7 +8,15 @@
           "char": 1,
           "line": 1
         },
-        "text": "An example of an markdown document with html comments:\n    ```markdown\n    # A document\n    \n    <!-- this need\n    a summary\n    -->\n    \n    ## Sub section title\n    ```",
+        "text": "An example of an markdown document with html comments",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "line": 2
+        },
+        "text": "```markdown\n    # A document\n    \n    <!-- this need\n    a summary\n    -->\n    \n    ## Sub section title\n    ```",
         "type": "text"
       }
     ]

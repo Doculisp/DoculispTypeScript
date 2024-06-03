@@ -130,6 +130,76 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
+    function isMultiline(documentPath: string) : HandleValue<DocumentPart> {
+        return function(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
+            let state: 'unopened' | 'open' | 'close' = 'unopened';
+
+            function tryParseMultiline(input: string, line: number, char: number): StepParseResult<string> {
+                if(doesIt.startWithMultilineMarker.test(input)) {
+                    if(state === 'unopened' || state === 'close') {
+                        state = 'open';
+                    } else if (state === 'open') {
+                        state = 'close';
+                    }
+
+                    const parsed: string = (input.match(doesIt.startWithMultilineMarker) as any)[0];
+                    const rest = input.slice(parsed.length);
+
+                    return ok({
+                        type: 'parse result',
+                        subResult: parsed,
+                        rest,
+                        line,
+                        char: char + parsed.length,
+                    });
+                }
+                return ok(false);
+            }
+
+            const tryParseWhiteSpace = isKeptWhiteSpace(documentPath, id);
+
+            function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
+                if(state === 'close' || state === 'unopened') {
+                    return ok('stop');
+                }
+
+                const parsed = input.charAt(0);
+                const rest = input.slice(1);
+
+                return ok({
+                    type: 'parse result',
+                    subResult: parsed,
+                    rest,
+                    line,
+                    char: char + 1,
+                });
+            }
+
+            const parser = parserBuilder.createParser(documentPath, tryParseMultiline, tryParseWhiteSpace, tryParseWord);
+            const parsed = parser.parse(toParse, startingLine, startingChar);
+
+            if(parsed.success) {
+                const [peaces, leftover] = parsed.value;
+                if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
+                    return ok(false);
+                }
+
+                const result = peaces.join('').trim();
+                const rest = leftover.remaining;
+                
+                return ok({
+                    type: 'parse result',
+                    subResult: { location: { line: startingLine, char: startingChar }, type: 'text', text: result },
+                    rest,
+                    line: leftover.location.line,
+                    char: leftover.location.char,
+                });
+            }
+
+            return parsed;
+        }
+    }
+
     function isInline(documentPath: string): HandleValue<DocumentPart> {
         return function (toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
             let state: 'unopened' | 'open' | 'close' = 'unopened';
@@ -364,7 +434,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             });
         }
 
-        const parser = parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath), parseNext);
+        const parser = parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath), parseNext);
         const parsed = parser.parse(documentText, 1, 1);
         if(parsed.success) {
             const [parts, _remaining] = parsed.value;
