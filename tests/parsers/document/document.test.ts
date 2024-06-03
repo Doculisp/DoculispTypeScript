@@ -122,7 +122,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should fail if inline code block does not close', () => {
+            test('should fail if inline code block does not close', () => {
                 let md = '`let b = 7';
     
                 const result = parse(md, 'C:/bad/noCloseInline.md');
@@ -130,7 +130,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test.skip('should fail to parse an inline code block with a line break', () => {
+            test('should fail to parse an inline code block with a line break', () => {
                 let md = `\`let a = 0;
     let b = a;
     \``;

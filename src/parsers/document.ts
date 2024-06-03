@@ -202,15 +202,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
     function isInline(documentPath: string): HandleValue<DocumentPart> {
         return function (toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
-            let state: 'unopened' | 'open' | 'close' = 'unopened';
+            let opened: boolean = false;
 
             function tryParseInLine(input: string, line: number, char: number): StepParseResult<string> {
                 if(doesIt.startWithInlineMarker.test(input)) {
-                    if(state === 'unopened' || state === 'close') {
-                        state = 'open';
-                    } else if(state === 'open') {
-                        state = 'close'
-                    }
+                    opened = !opened;
 
                     const parsed: string = (input.match(doesIt.startWithInlineMarker) as any)[0];
                     const rest = input.slice(parsed.length);
@@ -230,7 +226,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 if(doesIt.startWithWhiteSpace.test(input)) {
                     let doesItStartWithNewLine = /^\r|\n/;
                     if(doesItStartWithNewLine.test(input)) {
-                        return fail(`Inline code block spans multiple lines at { line: ${line}, char: ${char} }`, documentPath);
+                        return fail(`Inline code block at { line: ${startingLine}, char: ${startingChar} } contains a new line before closing.`, documentPath);
                     }
 
                     const parsed: string = (input.match(doesIt.startWithWhiteSpace) as any)[0];
@@ -247,7 +243,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             }
 
             function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
-                if(state === 'close' || state === 'unopened') {
+                if(!opened) {
                     return ok('stop');
                 }
 
@@ -266,7 +262,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             const parsed = parser.parse(toParse, startingLine, startingChar);
 
             if(parsed.success) {
-                const [parts, leftover] = parsed.value;
+                if(opened) {
+                    return fail(`Inline code block at { line: ${startingLine}, char: ${startingChar} } does not close`, documentPath);
+                }
+    
+                    const [parts, leftover] = parsed.value;
                 if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
                     return ok(false);
                 }
