@@ -36,7 +36,7 @@ export type StepParse<T> = IParseStepForward & (ISubParseGroupResult<T> | ISubPa
 
 export interface IInternals {
     buildStepParse<T>(step: IParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T>;
-    createParser<T>(...handlers: HandleValue<T>[]): IParser<T>;
+    createParser<T>(documentPath: string, ...handlers: HandleValue<T>[]): IParser<T>;
 }
 
 export type StepParseResult<T> = Result<StepParse<T> | false | 'stop'>;

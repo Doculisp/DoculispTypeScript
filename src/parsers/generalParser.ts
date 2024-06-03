@@ -2,10 +2,10 @@ import { IRegisterable } from "../types.containers";
 import { Result, fail, ok } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParse, StepParseResult } from "../types.internal";
 
-function mapFirst<T>(collection: HandleValue<T>[], mapper: (handler: HandleValue<T>) => StepParseResult<T>): StepParseResult<T> {
+function mapFirst<T>(documentPath: string, input: string, line: number, char: number, collection: HandleValue<T>[]): StepParseResult<T> {
     for (let index = 0; index < collection.length; index++) {
-        const element = collection[index] as any as HandleValue<T>;
-        const result = mapper(element);
+        const handler = collection[index] as any as HandleValue<T>;
+        const result = handler(input, line, char);
         if(result.success) {
             if(result.value){
                 return result;
@@ -15,13 +15,15 @@ function mapFirst<T>(collection: HandleValue<T>[], mapper: (handler: HandleValue
         }
     }
 
-    return ok(false);
+    return fail(`No parser found for "${input}"`, documentPath);
 }
 
 class Parser<T> implements IParser<T> {
     private readonly _handlers: HandleValue<T>[] = [];
+    private readonly _documentPath: string;
 
-    constructor(...handlers: HandleValue<T>[]) {
+    constructor(documentPath: string,...handlers: HandleValue<T>[]) {
+        this._documentPath = documentPath;
         let that = this;
         function addHandler(handler: HandleValue<T>) {
             that._handlers[that._handlers.length] = handler;
@@ -42,10 +44,10 @@ class Parser<T> implements IParser<T> {
         }
 
         while(0 < input.length) {
-            let result = mapFirst(this._handlers, h => h(input, line, char));
+            let result = mapFirst(this._documentPath, input, line, char, this._handlers);
             
             if(!result.success) {
-                return fail(result.message, result.documentPath);
+                return result;
             }
 
             if(result.value === 'stop') {
@@ -78,8 +80,8 @@ class Parser<T> implements IParser<T> {
 const registerable: IRegisterable = {
     builder: () => { 
         const ret: IInternals = {
-            createParser<T> (...handlers: HandleValue<T>[]): IParser<T> {
-                return new Parser<T>(...handlers);
+            createParser<T> (documentPath: string, ...handlers: HandleValue<T>[]): IParser<T> {
+                return new Parser<T>(documentPath, ...handlers);
             },
             buildStepParse<T>(step: IParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T> {
                 const stepKeys = 

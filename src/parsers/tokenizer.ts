@@ -147,7 +147,6 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
     }
 
     const totalTokens = getTokenBuilder();
-    const parser = parserBuilder.createParser(tokenizeWhiteSpace, tokenizeParenthesis, tokenizeAtom);
 
     return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
         if(!documentMap.success) {
@@ -155,6 +154,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
         }
         
         const documentPath = documentMap.value.documentPath;
+        const parser = parserBuilder.createParser(documentPath, tokenizeWhiteSpace, tokenizeParenthesis, tokenizeAtom);
         
         function toTokens(block: ILispBlock): Result<Token[]> {
             let parsed = parser.parse(block.text, block.location.line, block.location.char);
