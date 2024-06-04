@@ -40,14 +40,14 @@ function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: numb
     }
 }
 
-function doesItStartWithKeep<T>(startsWith: RegExp, map: (parsed: string) => T, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<T> {
-    return function (input:string, line: number, char: number): StepParseResult<T> {
+function doesItStartWithKeep(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<string> {
+    return function (input:string, line: number, char: number): StepParseResult<string> {
         if(startsWith.test(input)) {
             const parsed: string = (input.match(startsWith) as any)[0];
             const rest = input.slice(parsed.length);
             return ok({
                 type: 'parse result',
-                subResult: map(parsed),
+                subResult: parsed,
                 rest,
                 line: lineIncrement(line),
                 char: charIncrement(char, parsed),
@@ -86,13 +86,13 @@ function isDiscardedWhiteSpace(doesIt: IDocumentSearches, createParser: (...hand
 
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
     
-    function isKeptWhiteSpace<T>(_documentPath: string, map: (value: string) => T): HandleValue<T> {
+    function isKeptWhiteSpace(): HandleValue<string> {
         const it = doesIt as IWhiteSpaceSearches;
-        return function (input: string, line: number, char: number): StepParseResult<T> {
-            const isWindows = doesItStartWithKeep(it.startWithWindowsNewline, map, l => l + 1, () => 1);
-            const isLinux = doesItStartWithKeep(it.startWithLinuxNewline, map, l => l + 1, () => 1);
-            const isMac = doesItStartWithKeep(it.startWithMacsNewline, map, l => l + 1, () => 1);
-            const isWhiteSpace = doesItStartWithKeep(it.startWithWhiteSpace, map, id, (c, f) => c + f.length);
+        return function (input: string, line: number, char: number): StepParseResult<string> {
+            const isWindows = doesItStartWithKeep(it.startWithWindowsNewline, l => l + 1, () => 1);
+            const isLinux = doesItStartWithKeep(it.startWithLinuxNewline, l => l + 1, () => 1);
+            const isMac = doesItStartWithKeep(it.startWithMacsNewline, l => l + 1, () => 1);
+            const isWhiteSpace = doesItStartWithKeep(it.startWithWhiteSpace, id, (c, f) => c + f.length);
 
             const parser = parserBuilder.createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
             const parsed = parser.parse(input, line, char);
@@ -117,7 +117,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 if(1 === result.length) {
                     return ok(parserBuilder.buildStepParse(step, {
                         type: 'parse result',
-                        subResult: result[0] as T
+                        subResult: result[0] as string
                     }));
                 }
 
@@ -153,7 +153,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 return ok(false);
             }
 
-            const tryParseWhiteSpace = isKeptWhiteSpace(documentPath, id);
+            const tryParseWhiteSpace = isKeptWhiteSpace();
 
             function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
                 if(!opened) {
@@ -382,7 +382,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
             function tryParseWhiteSpace(input: string, line: number, char: number): StepParseResult<string> {
                 if(0 < depth){
-                    const tryParseWhiteSpace = isKeptWhiteSpace(documentPath, id);
+                    const tryParseWhiteSpace = isKeptWhiteSpace();
                     return tryParseWhiteSpace(input, line, char);
                 }
                 return ok(false);
@@ -536,7 +536,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 return ok(false);
             }
 
-            const tryParseWhiteSpace = isKeptWhiteSpace(documentPath, id);
+            const tryParseWhiteSpace = isKeptWhiteSpace();
 
             function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
                 const startsWithWord = /^\S/;
