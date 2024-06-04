@@ -34,6 +34,8 @@ export interface IUnparsed {
 
 export type StepParse<T> = IParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult);
 
+export type CreateParser<T> = (...handlers: HandleValue<T>[]) => IParser<T>;
+
 export interface IInternals {
     buildStepParse<T>(step: IParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T>;
     createParser<T>(...handlers: HandleValue<T>[]): IParser<T>;
