@@ -239,7 +239,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test.skip('should handle a file with to many parenthesis', () => {
+        test('should handle a file with to many parenthesis', () => {
             let dlisp = `(content (toc numbered-labeled)) )`;
 
             let result = parse(dlisp, 'C:/main.dlisp');

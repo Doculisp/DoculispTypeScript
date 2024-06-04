@@ -292,6 +292,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             }
 
             let depth = isOpen ? 1 : 0;
+            isOpen = false;
             function tryParseDoculispOpen(input: string, line: number, char: number): StepParseResult<string> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
@@ -592,7 +593,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         if(parsed.success) {
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
-                return fail('baddddd', documentPath);
+                return fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: ${leftover.location.line}, char: ${leftover.location.char - 1} }.`, documentPath);
             }
 
             return ok(createMap(documentPath, parts));
