@@ -576,16 +576,6 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
     }
 
     function parse(documentText: string, documentPath: string): Result<DocumentMap> {
-        function parseNext(input: string, line: number, char: number): StepParseResult<DocumentPart> {
-            let rest = input.slice(1);
-            return ok({
-                type: 'discard',
-                rest,
-                line,
-                char: char + 1,
-            });
-        }
-
         const isDoculispFile = path.extname(documentPath) === '.dlisp';
         const toParse: string =
             isDoculispFile ?
@@ -595,7 +585,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         const parser = 
             isDoculispFile ?
             parserBuilder.createParser(documentPath, isDoculisp(documentPath, true)) :
-            parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath), parseNext);
+            parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath));
 
         const parsed = parser.parse(toParse, 1, 1);
 
