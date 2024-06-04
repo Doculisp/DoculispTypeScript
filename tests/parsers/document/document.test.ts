@@ -214,7 +214,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test.skip('should handle a file with parentheses that do not close', () => {
+        test('should handle a file with parentheses that do not close', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)
@@ -222,14 +222,8 @@ describe('document', () => {
         (Section ./structure.md)
         (Section ./doculisp.md
         (Section ./section-meta.md)
-        (Section ./content.md)
-        (Section ./headings.md)
-        (Section ./comment.md)
-        (Section ./keywords.md)
     )
 )
-
-(content (toc numbered-labeled))
 `;
 
             let result = parse(dlisp, 'C:/main.dlisp');

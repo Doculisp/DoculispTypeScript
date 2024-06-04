@@ -391,6 +391,10 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             const parser = parserBuilder.createParser(documentPath, tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, startLine, startChar);
             if(parsed.success) {
+                if(0 < depth) {
+                    return fail(`Doculisp block at { line: ${startLine}, char: ${startChar} } is not closed.`, documentPath);
+                }
+
                 const [parts, leftover] = parsed.value;
                 if(leftover.location.line === startLine && leftover.location.char === startChar) {
                     return ok(false);
