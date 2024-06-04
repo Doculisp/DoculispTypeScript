@@ -285,11 +285,21 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-    function isDoculisp(documentPath: string): HandleValue<DocumentPart> {
+    function isDoculisp(documentPath: string, charOffset: number): HandleValue<DocumentPart> {
         return function (toParse: string, startLine: number, startChar: number): StepParseResult<DocumentPart> {
+            function updateChar(char: number, found: string): number {
+                let ret = char + found.length + charOffset;
+                charOffset = 0;
+                return ret;
+            }
+
             let depth = 0;
             function tryParseDoculispOpen(input: string, line: number, char: number): StepParseResult<string> {
                 if(doesIt.startWithDocuLisp.test(input)) {
+                    if(0 < depth) {
+                        return fail(`Doculisp Block at { line: ${startLine}, char: ${startChar} } contains an embedded doculisp block at { line: ${line}, char: ${char} }.`, documentPath);
+                    }
+
                     const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
                     const rest = input.slice(parsed.length);
                     depth++;
@@ -298,7 +308,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         type: 'discard',
                         rest,
                         line,
-                        char: char + parsed.length,
+                        char: updateChar(char, parsed),
                     });
                 }
                 return ok(false);
@@ -317,7 +327,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         subResult: parsed,
                         rest,
                         line,
-                        char: char + parsed.length,
+                        char: updateChar(char, parsed),
                     });
                 }
 
@@ -334,7 +344,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                     const step: IParseStepForward = {
                         rest,
                         line,
-                        char: char + parsed.length,
+                        char: updateChar(char, parsed),
                     };
 
                     depth--;
@@ -363,7 +373,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         subResult: parsed,
                         rest,
                         line,
-                        char: char + 1,
+                        char: updateChar(char, parsed),
                     });
                 }
 
@@ -408,7 +418,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-    function isComment(documentPath: string): HandleValue<DocumentPart> {
+    function isComment(documentPath: string, charOffset: number): HandleValue<DocumentPart> {
         return function isComment(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
             let opened = false;
 
@@ -468,13 +478,13 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 })
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, isDoculisp(documentPath), tryEndAll);
+            const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, isDoculisp(documentPath, charOffset), tryEndAll);
             const parsed = parser.parse(toParse, startingLine, startingChar);
-
-            if(opened) {
-                return fail(`Open HTML Comment at { line: ${startingLine}, char: ${startingChar} } but does not close.`, documentPath);
-            }
             if(parsed.success) {
+                if(opened) {
+                    return fail(`Open HTML Comment at { line: ${startingLine}, char: ${startingChar} } but does not close.`, documentPath);
+                }
+
                 const [result, leftover] = parsed.value;
                 if(0 < result.length) {
                     return ok({
@@ -493,9 +503,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                         char: leftover.location.char,
                     });
                 }
+
+                return ok(false);
             }
 
-            return ok(false);
+            return parsed;
         }
     }
 
@@ -567,12 +579,12 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
 
         const ext: string = path.extname(documentPath);
-        const toParse: string =
+        const [toParse, offset]: [string, number] =
             ext === '.dlisp' ?
-            `(dl ${documentText})` :
-            documentText;
+            [`(dl ${documentText})`, -4] :
+            [documentText, 0];
 
-        const parser = parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath), parseNext);
+        const parser = parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath, offset), isWord(documentPath), parseNext);
         const parsed = parser.parse(toParse, 1, 1);
         if(parsed.success) {
             const [parts, _remaining] = parsed.value;

@@ -2,7 +2,7 @@ import { IRegisterable } from "../types.containers";
 import { Result, ok } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParse, StepParseResult } from "../types.internal";
 
-function mapFirst<T>(documentPath: string, input: string, line: number, char: number, collection: HandleValue<T>[]): StepParseResult<T> {
+function mapFirst<T>(_documentPath: string, input: string, line: number, char: number, collection: HandleValue<T>[]): StepParseResult<T> {
     for (let index = 0; index < collection.length; index++) {
         const handler = collection[index] as any as HandleValue<T>;
         const result = handler(input, line, char);
