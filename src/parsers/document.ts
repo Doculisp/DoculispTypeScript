@@ -40,6 +40,23 @@ function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: numb
     }
 }
 
+function doesItStartWithKeep<T>(startsWith: RegExp, map: (parsed: string) => T, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<T> {
+    return function (input:string, line: number, char: number): StepParseResult<T> {
+        if(startsWith.test(input)) {
+            const parsed: string = (input.match(startsWith) as any)[0];
+            const rest = input.slice(parsed.length);
+            return ok({
+                type: 'parse result',
+                subResult: map(parsed),
+                rest,
+                line: lineIncrement(line),
+                char: charIncrement(char, parsed),
+            });
+        }
+        return ok(false);
+    }
+}
+
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
     
     function isDiscardedWhiteSpace(_documentPath: string): HandleValue<DocumentPart> {
@@ -66,23 +83,6 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             } else {
                 return parsed;
             }
-        }
-    }
-
-    function doesItStartWithKeep<T>(startsWith: RegExp, map: (parsed: string) => T, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<T> {
-        return function (input:string, line: number, char: number): StepParseResult<T> {
-            if(startsWith.test(input)) {
-                const parsed: string = (input.match(startsWith) as any)[0];
-                const rest = input.slice(parsed.length);
-                return ok({
-                    type: 'parse result',
-                    subResult: map(parsed),
-                    rest,
-                    line: lineIncrement(line),
-                    char: charIncrement(char, parsed),
-                });
-            }
-            return ok(false);
         }
     }
 
