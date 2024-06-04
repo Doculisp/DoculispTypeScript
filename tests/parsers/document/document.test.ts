@@ -165,11 +165,19 @@ describe('document', () => {
     
                 verifyAsJson(result);
             });
+
+            test('should parse lisp outside an html tag as text', () => {
+                const md = '(# Heading) Hello Doculisp';
+
+                const result = parse(md, 'documentExample.md');
+
+                verifyAsJson(result);
+            });
         });
     });
 
-    describe.skip('parsing .dlisp files', () => {
-        test.skip('should handle a correctly formatted file', () => {
+    describe('parsing .dlisp files', () => {
+        test('should handle a correctly formatted file', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)

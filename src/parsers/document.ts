@@ -1,7 +1,7 @@
 import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { Result, fail, ok } from "../types.general";
-// import * as path from 'node:path';
+import * as path from 'node:path';
 import { IDocumentSearches, IWhiteSpaceSearches, Searcher } from "../types.textHelpers";
 import { HandleValue, IInternals, IParseStepForward, StepParseResult } from "../types.internal";
 
@@ -305,6 +305,8 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             }
 
             function tryParseLispOpen(input: string, line: number, char: number): StepParseResult<string> {
+                if(depth === 0) return ok(false);
+
                 if(doesIt.startWithOpenLisp.test(input)) {
                     const parsed: string = (input.match(doesIt.startWithOpenLisp) as any)[0];
                     const rest = input.slice(parsed.length);
@@ -323,6 +325,8 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             }
 
             function tryParseLispClose(input: string, line: number, char: number): StepParseResult<string> {
+                if(depth === 0) return ok(false);
+                
                 if(doesIt.startsWithCloseLisp.test(input)) {
                     const parsed: string = (input.match(doesIt.startsWithCloseLisp) as any)[0];
                     const rest = input.slice(parsed.length);
@@ -382,14 +386,23 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                     return ok(false);
                 }
 
-                let result = parts.join('').trim();
-                return ok({
-                    type: 'parse result',
-                    subResult: { location: { line: startLine, char: startChar }, type: 'lisp', text: result },
+                const step: IParseStepForward = {
                     rest: leftover.remaining,
                     line: leftover.location.line,
                     char: leftover.location.char,
-                });
+                };
+
+                if(0 === parts.length) {
+                    return ok(parserBuilder.buildStepParse(step, {
+                        type: 'discard'
+                    }));
+                }
+
+                let result = parts.join('').trim();
+                return ok(parserBuilder.buildStepParse(step, {
+                    type: 'parse result',
+                    subResult: { location: { line: startLine, char: startChar }, type: 'lisp', text: result },
+                }));
             }
             return parsed;
         }
@@ -495,6 +508,9 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 if(doesIt.startWithInlineMarker.test(input)) {
                     return ok('stop')
                 }
+                if(doesIt.startWithDocuLisp.test(input)) {
+                    return ok('stop');
+                }
                 return ok(false);
             }
 
@@ -550,8 +566,14 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             });
         }
 
+        const ext: string = path.extname(documentPath);
+        const toParse: string =
+            ext === '.dlisp' ?
+            `(dl ${documentText})` :
+            documentText;
+
         const parser = parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath), parseNext);
-        const parsed = parser.parse(documentText, 1, 1);
+        const parsed = parser.parse(toParse, 1, 1);
         if(parsed.success) {
             const [parts, _remaining] = parsed.value;
             return ok(createMap(documentPath, parts));
