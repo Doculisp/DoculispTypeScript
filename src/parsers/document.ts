@@ -524,8 +524,8 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-    function isWord(documentPath: string) {
-        return function isWord(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
+    function isWord() {
+        return function (toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
             function tryParseEndParse(input: string, _line: number, _char: number): StepParseResult<string> {
                 if(doesIt.startWithOpenComment.test(input)) {
                     return ok('stop')
@@ -587,7 +587,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         const parser = 
             isDoculispFile ?
             parserBuilder.createParser(isDoculisp(documentPath, true)) :
-            parserBuilder.createParser(isDiscardedWhiteSpace(doesIt, parserBuilder.createParser), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath));
+            parserBuilder.createParser(isDiscardedWhiteSpace(doesIt, parserBuilder.createParser), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord());
 
         const parsed = parser.parse(toParse, 1, 1);
 
