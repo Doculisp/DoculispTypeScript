@@ -285,15 +285,13 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-    function isDoculisp(documentPath: string, charOffset: number): HandleValue<DocumentPart> {
+    function isDoculisp(documentPath: string, isOpen?: boolean): HandleValue<DocumentPart> {
         return function (toParse: string, startLine: number, startChar: number): StepParseResult<DocumentPart> {
             function updateChar(char: number, found: string): number {
-                let ret = char + found.length + charOffset;
-                charOffset = 0;
-                return ret;
+                return char + found.length;
             }
 
-            let depth = 0;
+            let depth = isOpen ? 1 : 0;
             function tryParseDoculispOpen(input: string, line: number, char: number): StepParseResult<string> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
@@ -422,9 +420,10 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         }
     }
 
-    function isComment(documentPath: string, charOffset: number): HandleValue<DocumentPart> {
+    function isComment(documentPath: string): HandleValue<DocumentPart> {
         return function isComment(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
             let opened = false;
+            const tryDoculisp = isDoculisp(documentPath);
 
             const stripWhiteSpace = isDiscardedWhiteSpace(documentPath);
 
@@ -469,6 +468,14 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 return ok(false);
             }
 
+            function tryParseDoculisp(input: string, line: number, char: number): StepParseResult<DocumentPart> {
+                if(!opened) {
+                    return ok(false);
+                }
+
+                return tryDoculisp(input, line, char);
+            }
+
             function tryEndAll(input: string, line: number, char: number): StepParseResult<DocumentPart> {
                 if(!opened) {
                     return ok('stop');
@@ -482,7 +489,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 })
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, isDoculisp(documentPath, charOffset), tryEndAll);
+            const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryParseDoculisp, tryEndAll);
             const parsed = parser.parse(toParse, startingLine, startingChar);
             if(parsed.success) {
                 if(opened) {
@@ -523,9 +530,6 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 }
                 if(doesIt.startWithInlineMarker.test(input)) {
                     return ok('stop')
-                }
-                if(doesIt.startWithDocuLisp.test(input)) {
-                    return ok('stop');
                 }
                 return ok(false);
             }
@@ -582,16 +586,25 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             });
         }
 
-        const ext: string = path.extname(documentPath);
-        const [toParse, offset]: [string, number] =
-            ext === '.dlisp' ?
-            [`(dl ${documentText})`, -4] :
-            [documentText, 0];
+        const isDoculispFile = path.extname(documentPath) === '.dlisp';
+        const toParse: string =
+            isDoculispFile ?
+            `${documentText})` :
+            documentText;
 
-        const parser = parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath, offset), isWord(documentPath), parseNext);
+        const parser = 
+            isDoculispFile ?
+            parserBuilder.createParser(documentPath, isDoculisp(documentPath, true)) :
+            parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath), parseNext);
+
         const parsed = parser.parse(toParse, 1, 1);
+
         if(parsed.success) {
-            const [parts, _remaining] = parsed.value;
+            const [parts, leftover] = parsed.value;
+            if(isDoculispFile && 0 < leftover.remaining.length) {
+                return fail('baddddd', documentPath);
+            }
+
             return ok(createMap(documentPath, parts));
         } else {
             return parsed;

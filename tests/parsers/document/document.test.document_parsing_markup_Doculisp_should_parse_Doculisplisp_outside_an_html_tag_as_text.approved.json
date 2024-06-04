@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "value": {
+    "documentPath": "documentExample2.md",
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "line": 1
+        },
+        "text": "(dl (# Heading)) Hello Doculisp",
+        "type": "text"
+      }
+    ]
+  }
+}

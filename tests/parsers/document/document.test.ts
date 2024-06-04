@@ -173,6 +173,14 @@ describe('document', () => {
 
                 verifyAsJson(result);
             });
+
+            test('should parse Doculisplisp outside an html tag as text', () => {
+                const md = '(dl (# Heading)) Hello Doculisp';
+
+                const result = parse(md, 'documentExample2.md');
+
+                verifyAsJson(result);
+            });
         });
     });
 
