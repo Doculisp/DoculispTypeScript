@@ -2,7 +2,7 @@ import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { Result, fail, ok } from "../types.general";
 import * as path from 'node:path';
-import { IDocumentSearches, IWhiteSpaceSearches, Searcher } from "../types.textHelpers";
+import { IDocumentSearches, IMarkupSearches, IWhiteSpaceSearches, Searcher } from "../types.textHelpers";
 import { HandleValue, IInternals, IParseStepForward, IParser, StepParseResult } from "../types.internal";
 
 function createMap(documentPath: string, parts: DocumentPart[]): DocumentMap {
@@ -84,13 +84,12 @@ function isDiscardedWhiteSpace(doesIt: IDocumentSearches, createParser: (...hand
     }
 }
 
-function isKeptWhiteSpace(doesIt: IDocumentSearches, parserBuilder: IInternals): HandleValue<string> {
-    const it = doesIt as IWhiteSpaceSearches;
+function isKeptWhiteSpace(doesIt: IWhiteSpaceSearches, parserBuilder: IInternals): HandleValue<string> {
     return function (input: string, line: number, char: number): StepParseResult<string> {
-        const isWindows = doesItStartWithKeep(it.startWithWindowsNewline, l => l + 1, () => 1);
-        const isLinux = doesItStartWithKeep(it.startWithLinuxNewline, l => l + 1, () => 1);
-        const isMac = doesItStartWithKeep(it.startWithMacsNewline, l => l + 1, () => 1);
-        const isWhiteSpace = doesItStartWithKeep(it.startWithWhiteSpace, id, (c, f) => c + f.length);
+        const isWindows = doesItStartWithKeep((doesIt as IWhiteSpaceSearches).startWithWindowsNewline, l => l + 1, () => 1);
+        const isLinux = doesItStartWithKeep((doesIt as IWhiteSpaceSearches).startWithLinuxNewline, l => l + 1, () => 1);
+        const isMac = doesItStartWithKeep((doesIt as IWhiteSpaceSearches).startWithMacsNewline, l => l + 1, () => 1);
+        const isWhiteSpace = doesItStartWithKeep((doesIt as IWhiteSpaceSearches).startWithWhiteSpace, id, (c, f) => c + f.length);
 
         const parser = parserBuilder.createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
         const parsed = parser.parse(input, line, char);
@@ -129,77 +128,77 @@ function isKeptWhiteSpace(doesIt: IDocumentSearches, parserBuilder: IInternals):
     }
 }
 
-function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
-    
-    function isMultiline(documentPath: string) : HandleValue<DocumentPart> {
-        return function(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
-            let opened: boolean = false;
+function isMultiline(documentPath: string, doesIt: (IMarkupSearches & IWhiteSpaceSearches), parserBuilder: IInternals) : HandleValue<DocumentPart> {
+    return function(toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
+        let opened: boolean = false;
 
-            function tryParseMultiline(input: string, line: number, char: number): StepParseResult<string> {
-                if(doesIt.startWithMultilineMarker.test(input)) {
-                    opened = !opened;
+        function tryParseMultiline(input: string, line: number, char: number): StepParseResult<string> {
+            if(doesIt.startWithMultilineMarker.test(input)) {
+                opened = !opened;
 
-                    const parsed: string = (input.match(doesIt.startWithMultilineMarker) as any)[0];
-                    const rest = input.slice(parsed.length);
-
-                    return ok({
-                        type: 'parse result',
-                        subResult: parsed,
-                        rest,
-                        line,
-                        char: char + parsed.length,
-                    });
-                }
-                return ok(false);
-            }
-
-            const tryParseWhiteSpace = isKeptWhiteSpace(doesIt, parserBuilder);
-
-            function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
-                if(!opened) {
-                    return ok('stop');
-                }
-
-                const parsed = input.charAt(0);
-                const rest = input.slice(1);
+                const parsed: string = (input.match(doesIt.startWithMultilineMarker) as any)[0];
+                const rest = input.slice(parsed.length);
 
                 return ok({
                     type: 'parse result',
                     subResult: parsed,
                     rest,
                     line,
-                    char: char + 1,
+                    char: char + parsed.length,
                 });
             }
-
-            const parser = parserBuilder.createParser(tryParseMultiline, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, startingLine, startingChar);
-
-            if(parsed.success) {
-                if(opened) {
-                    return fail(`Multiline code block at { line: ${startingLine}, char: ${startingChar} } does not close`, documentPath);
-                }
-                const [peaces, leftover] = parsed.value;
-                if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
-                    return ok(false);
-                }
-
-                const result = peaces.join('').trim();
-                const rest = leftover.remaining;
-                
-                return ok({
-                    type: 'parse result',
-                    subResult: { location: { line: startingLine, char: startingChar }, type: 'text', text: result },
-                    rest,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
-                });
-            }
-
-            return parsed;
+            return ok(false);
         }
-    }
 
+        const tryParseWhiteSpace = isKeptWhiteSpace(doesIt, parserBuilder);
+
+        function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
+            if(!opened) {
+                return ok('stop');
+            }
+
+            const parsed = input.charAt(0);
+            const rest = input.slice(1);
+
+            return ok({
+                type: 'parse result',
+                subResult: parsed,
+                rest,
+                line,
+                char: char + 1,
+            });
+        }
+
+        const parser = parserBuilder.createParser(tryParseMultiline, tryParseWhiteSpace, tryParseWord);
+        const parsed = parser.parse(toParse, startingLine, startingChar);
+
+        if(parsed.success) {
+            if(opened) {
+                return fail(`Multiline code block at { line: ${startingLine}, char: ${startingChar} } does not close`, documentPath);
+            }
+            const [peaces, leftover] = parsed.value;
+            if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
+                return ok(false);
+            }
+
+            const result = peaces.join('').trim();
+            const rest = leftover.remaining;
+            
+            return ok({
+                type: 'parse result',
+                subResult: { location: { line: startingLine, char: startingChar }, type: 'text', text: result },
+                rest,
+                line: leftover.location.line,
+                char: leftover.location.char,
+            });
+        }
+
+        return parsed;
+    }
+}
+
+function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
+    
     function isInline(documentPath: string): HandleValue<DocumentPart> {
         return function (toParse: string, startingLine: number, startingChar: number): StepParseResult<DocumentPart> {
             let opened: boolean = false;
@@ -587,7 +586,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
         const parser = 
             isDoculispFile ?
             parserBuilder.createParser(isDoculisp(documentPath, true)) :
-            parserBuilder.createParser(isDiscardedWhiteSpace(doesIt, parserBuilder.createParser), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord());
+            parserBuilder.createParser(isDiscardedWhiteSpace(doesIt, parserBuilder.createParser), isMultiline(documentPath, doesIt, parserBuilder), isInline(documentPath), isComment(documentPath), isWord());
 
         const parsed = parser.parse(toParse, 1, 1);
 
