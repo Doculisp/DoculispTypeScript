@@ -158,7 +158,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
             
-            test.skip('should parse a doculisp block in the middle of file', () => {
+            test('should parse a doculisp block in the middle of file', () => {
             const md = '# Title\r\nsome text about title\r\n<!--\r\nSome lisp: (dl (# two)) -->\r\nMickey Mouse Hotline.';
     
                 const result = parse(md, '_main.md');

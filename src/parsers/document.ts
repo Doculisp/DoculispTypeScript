@@ -492,13 +492,16 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 if(doesIt.startWithOpenComment.test(input)) {
                     return ok('stop')
                 }
+                if(doesIt.startWithInlineMarker.test(input)) {
+                    return ok('stop')
+                }
                 return ok(false);
             }
 
             const tryParseWhiteSpace = isKeptWhiteSpace(documentPath, id);
 
             function tryParseWord(input: string, line: number, char: number): StepParseResult<string> {
-                const startsWithWord = /^\w/;
+                const startsWithWord = /^\S/;
                 if(startsWithWord.test(input)) {
                     const parsed = input.charAt(0);
                     const rest = input.slice(1);
