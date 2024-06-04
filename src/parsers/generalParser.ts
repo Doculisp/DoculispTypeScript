@@ -2,7 +2,7 @@ import { IRegisterable } from "../types.containers";
 import { Result, ok } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParse, StepParseResult } from "../types.internal";
 
-function mapFirst<T>(_documentPath: string, input: string, line: number, char: number, collection: HandleValue<T>[]): StepParseResult<T> {
+function mapFirst<T>(input: string, line: number, char: number, collection: HandleValue<T>[]): StepParseResult<T> {
     for (let index = 0; index < collection.length; index++) {
         const handler = collection[index] as any as HandleValue<T>;
         const result = handler(input, line, char);
@@ -20,10 +20,7 @@ function mapFirst<T>(_documentPath: string, input: string, line: number, char: n
 
 class Parser<T> implements IParser<T> {
     private readonly _handlers: HandleValue<T>[] = [];
-    private readonly _documentPath: string;
-
-    constructor(documentPath: string,...handlers: HandleValue<T>[]) {
-        this._documentPath = documentPath;
+    constructor(...handlers: HandleValue<T>[]) {
         let that = this;
         function addHandler(handler: HandleValue<T>) {
             that._handlers[that._handlers.length] = handler;
@@ -44,7 +41,7 @@ class Parser<T> implements IParser<T> {
         }
 
         while(0 < input.length) {
-            let result = mapFirst(this._documentPath, input, line, char, this._handlers);
+            let result = mapFirst(input, line, char, this._handlers);
             
             if(!result.success) {
                 return result;
@@ -80,8 +77,8 @@ class Parser<T> implements IParser<T> {
 const registerable: IRegisterable = {
     builder: () => { 
         const ret: IInternals = {
-            createParser<T> (documentPath: string, ...handlers: HandleValue<T>[]): IParser<T> {
-                return new Parser<T>(documentPath, ...handlers);
+            createParser<T> (...handlers: HandleValue<T>[]): IParser<T> {
+                return new Parser<T>(...handlers);
             },
             buildStepParse<T>(step: IParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T> {
                 const stepKeys = 

@@ -42,14 +42,14 @@ function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: numb
 
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
     
-    function isDiscardedWhiteSpace(documentPath: string): HandleValue<DocumentPart> {
+    function isDiscardedWhiteSpace(_documentPath: string): HandleValue<DocumentPart> {
         return function isDiscardedWhiteSpace(input: string, line: number, char: number): StepParseResult<DocumentPart> {
             const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
             const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
             const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l + 1, () => 1);
             const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, l => l, (c, f) => c + f.length);
 
-            const whiteSpaceParser = parserBuilder.createParser(documentPath, isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
+            const whiteSpaceParser = parserBuilder.createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
             const parsed = whiteSpaceParser.parse(input, line, char);
             if(parsed.success) {
                 const [_, leftovers] = parsed.value;
@@ -94,7 +94,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
             const isMac = doesItStartWithKeep(it.startWithMacsNewline, map, l => l + 1, () => 1);
             const isWhiteSpace = doesItStartWithKeep(it.startWithWhiteSpace, map, id, (c, f) => c + f.length);
 
-            const parser = parserBuilder.createParser(documentPath, isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
+            const parser = parserBuilder.createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
             const parsed = parser.parse(input, line, char);
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
@@ -172,7 +172,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 });
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseMultiline, tryParseWhiteSpace, tryParseWord);
+            const parser = parserBuilder.createParser(tryParseMultiline, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, startingLine, startingChar);
 
             if(parsed.success) {
@@ -258,7 +258,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 });
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseInLine, tryParseWhiteSpace, tryParseWord);
+            const parser = parserBuilder.createParser(tryParseInLine, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, startingLine, startingChar);
 
             if(parsed.success) {
@@ -388,7 +388,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 return ok(false);
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
+            const parser = parserBuilder.createParser(tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, startLine, startChar);
             if(parsed.success) {
                 if(0 < depth) {
@@ -491,7 +491,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 })
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryParseDoculisp, tryEndAll);
+            const parser = parserBuilder.createParser(tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryParseDoculisp, tryEndAll);
             const parsed = parser.parse(toParse, startingLine, startingChar);
             if(parsed.success) {
                 if(opened) {
@@ -554,7 +554,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
                 return ok(false);
             }
 
-            const parser = parserBuilder.createParser(documentPath, tryParseEndParse, tryParseWhiteSpace, tryParseWord);
+            const parser = parserBuilder.createParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, startingLine, startingChar);
 
             if(parsed.success) {
@@ -586,8 +586,8 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Va
 
         const parser = 
             isDoculispFile ?
-            parserBuilder.createParser(documentPath, isDoculisp(documentPath, true)) :
-            parserBuilder.createParser(documentPath, isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath));
+            parserBuilder.createParser(isDoculisp(documentPath, true)) :
+            parserBuilder.createParser(isDiscardedWhiteSpace(documentPath), isMultiline(documentPath), isInline(documentPath), isComment(documentPath), isWord(documentPath));
 
         const parsed = parser.parse(toParse, 1, 1);
 
