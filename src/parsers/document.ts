@@ -25,22 +25,23 @@ function isStopParsingWhiteSpace(input: string, _line: number, _char: number): R
     return ok(false);
 }
 
-function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
-    function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<DocumentPart> {
-        return function (input: string, line: number, char: number): StepParseResult<DocumentPart> {
-            if(startsWith.test(input)) {
-                const found: string = (input.match(startsWith) as any)[0];
-                return ok({
-                    type: 'discard',
-                    rest: input.slice(found.length),
-                    line: lineIncrement(line),
-                    char: charIncrement(char, found),
-                });
-            }
-            return ok(false);
+function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleValue<DocumentPart> {
+    return function (input: string, line: number, char: number): StepParseResult<DocumentPart> {
+        if(startsWith.test(input)) {
+            const found: string = (input.match(startsWith) as any)[0];
+            return ok({
+                type: 'discard',
+                rest: input.slice(found.length),
+                line: lineIncrement(line),
+                char: charIncrement(char, found),
+            });
         }
+        return ok(false);
     }
+}
 
+function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals): Valid<DocumentParser> {
+    
     function isDiscardedWhiteSpace(documentPath: string): HandleValue<DocumentPart> {
         return function isDiscardedWhiteSpace(input: string, line: number, char: number): StepParseResult<DocumentPart> {
             const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
