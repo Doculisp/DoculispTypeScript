@@ -4,7 +4,7 @@ import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import { ITestableContainer } from "../../../src/types.containers";
 import { TokenFunction } from '../../../src/types.tokens';
-import { ILocation, Result, fail } from "../../../src/types.general";
+import { ILocation, Result, fail, ok } from "../../../src/types.general";
 import { DocumentMap } from "../../../src/types.document";
 
 describe('tokenizer', () => {
@@ -187,6 +187,26 @@ describe('tokenizer', () => {
                 },
             };
             
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
+
+        test('should tokenize a single atom with a single word parameter', () => {
+            const start: ILocation = { line: 1, char: 13 };
+
+            let parseResult: Result<DocumentMap> = ok({
+                documentPath: 'Z:/parameter.md',
+                parts: [
+                    {
+                        type: 'lisp',
+                        text: '(the thing)',
+                        location: start,
+
+                    }
+                ],
+            }); 
+
             const result = tokenizer(parseResult);
 
             verifyAsJson(result);

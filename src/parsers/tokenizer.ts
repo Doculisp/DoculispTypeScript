@@ -28,8 +28,11 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : TokenFunction {
+    let isToken = false;
+
     function tokenizeWhiteSpace(input: string, line: number, char: number): StepParseResult<Token> {
         if(doesIt.startWithWindowsNewline.test(input)) {
+            isToken = false;
             const newLine = (input.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             input = input.slice(newLine.length);
             line++;
@@ -89,6 +92,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
                 location: { line, char },
                 type: 'token - open parenthesis',
             };
+            isToken = true;
 
             char++;
 
@@ -122,8 +126,8 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
     }
 
     function tokenizeAtom(input: string, line: number, char: number): StepParseResult<Token> {
-        let doesItStartWithWord = /[\w\*\-]+/;
-        if(doesItStartWithWord.test(input)) {
+        let doesItStartWithWord = /^[\w\*\-]+/;
+        if(doesItStartWithWord.test(input) && isToken) {
             let atomValue: string = (input.match(doesItStartWithWord) as any)[0];
 
             let atom: Token = {
@@ -132,6 +136,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
                 location: { line, char },
             };
 
+            isToken = false;
             char += atomValue.length;
 
             return ok({
@@ -146,6 +151,32 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
         return ok(false);
     }
 
+    function tokenizeParameter(input: string, line: number, char: number): StepParseResult<Token> {
+        let doesItStartWithParameter = /^[\w\*\-]+(\s+[\w\*\-]*)*(?:\))/;
+        if(doesItStartWithParameter.test(input) && !isToken) {
+            let parameterValue: string = (input.match(doesItStartWithParameter) as any)[0];
+            let value = parameterValue.substring(0, parameterValue.length -1);
+
+            let atom: Token = {
+                type: 'token - parameter',
+                text: value.trim(),
+                location: { line, char }
+            };
+
+            char += value.length;
+
+            return ok({
+                type: 'parse result',
+                subResult: atom,
+                rest: input.slice(value.length),
+                line,
+                char,
+            });
+        }
+
+        return ok(false);
+    }
+
     const totalTokens = getTokenBuilder();
 
     return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
@@ -154,7 +185,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
         }
         
         const documentPath = documentMap.value.documentPath;
-        const parser = parserBuilder.createParser(tokenizeWhiteSpace, tokenizeParenthesis, tokenizeAtom);
+        const parser = parserBuilder.createParser(tokenizeParameter,  tokenizeWhiteSpace, tokenizeParenthesis, tokenizeAtom);
         
         function toTokens(block: ILispBlock): Result<Token[]> {
             let parsed = parser.parse(block.text, block.location.line, block.location.char);
