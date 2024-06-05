@@ -207,5 +207,28 @@ describe('tokenizer', () => {
 
             verifyAsJson(result);
         });
+
+        test('should handle nested lisp', () => {
+            const start: ILocation = { line: 2, char: 1};
+
+            let parseResult: Result<DocumentMap> = ok({
+                documentPath: 'A:/main.md',
+                parts: [
+                    {
+                        type: 'lisp',
+                        location: start,
+                        text: `(section-meta
+        (external
+            (Section ./structure.md)
+        )
+    )`,
+                    }
+                ]
+            });
+
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
     });
 });

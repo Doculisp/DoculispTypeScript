@@ -126,7 +126,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
     }
 
     function tokenizeAtom(input: string, line: number, char: number): StepParseResult<Token> {
-        let doesItStartWithWord = /^[\w\*\-]+/;
+        let doesItStartWithWord = /^[\:\w\*\-]+/;
         if(doesItStartWithWord.test(input) && isToken) {
             let atomValue: string = (input.match(doesItStartWithWord) as any)[0];
 
@@ -152,7 +152,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
     }
 
     function tokenizeParameter(input: string, line: number, char: number): StepParseResult<Token> {
-        let doesItStartWithParameter = /^[\w\*\-]+(\s+[\w\*\-]*)*(?:\))/;
+        let doesItStartWithParameter = /^[\:\./\\\w\*\-]+(\s+[\:\./\\\w\*\-]*)*(?:\))/;
         if(doesItStartWithParameter.test(input) && !isToken) {
             let parameterValue: string = (input.match(doesItStartWithParameter) as any)[0];
             let value = parameterValue.substring(0, parameterValue.length -1);
