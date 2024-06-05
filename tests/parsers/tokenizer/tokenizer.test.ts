@@ -243,6 +243,8 @@ describe('tokenizer', () => {
                         text: `(section-meta
         (*external
             (Section ./structure.md)
+            (*Section ./comments.md)
+            (Section ./toc.md)
         )
     )`,
                     }
