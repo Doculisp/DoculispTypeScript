@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "value": {
+    "documentPath": "A:/main.md",
+    "tokens": [
+      {
+        "location": {
+          "char": 1,
+          "line": 2
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 2,
+          "line": 2
+        },
+        "text": "section-meta",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 5,
+          "line": 6
+        },
+        "type": "token - close parenthesis"
+      }
+    ]
+  }
+}

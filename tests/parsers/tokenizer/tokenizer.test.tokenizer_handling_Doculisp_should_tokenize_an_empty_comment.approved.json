@@ -2,29 +2,6 @@
   "success": true,
   "value": {
     "documentPath": "D:/comments/simple.md",
-    "tokens": [
-      {
-        "location": {
-          "char": 1,
-          "line": 2
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
-          "char": 2,
-          "line": 2
-        },
-        "text": "*",
-        "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 3,
-          "line": 2
-        },
-        "type": "token - close parenthesis"
-      }
-    ]
+    "tokens": []
   }
 }
