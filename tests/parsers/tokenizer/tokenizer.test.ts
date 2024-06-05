@@ -1,4 +1,3 @@
-
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";

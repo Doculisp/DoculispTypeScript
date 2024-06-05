@@ -16,7 +16,6 @@ function id<T>(value: T): T {
     return value;
 }
 
-
 function isStopParsingWhiteSpace(input: string, _line: number, _char: number): Result<'stop' | false> {
     const regex = /\S+/;
     if(regex.test(input)) {
