@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "value": {
+    "documentPath": "Z:/parameter.md",
+    "tokens": [
+      {
+        "location": {
+          "char": 13,
+          "line": 1
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 14,
+          "line": 1
+        },
+        "text": "title",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 20,
+          "line": 1
+        },
+        "text": "the thing from beyond\n\tthe swamp",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 52,
+          "line": 1
+        },
+        "type": "token - close parenthesis"
+      }
+    ]
+  }
+}

@@ -211,5 +211,25 @@ describe('tokenizer', () => {
 
             verifyAsJson(result);
         });
+
+        test('should tokenize a single atom with a multi word parameter', () => {
+            const start: ILocation = { line: 1, char: 13 };
+
+            let parseResult: Result<DocumentMap> = ok({
+                documentPath: 'Z:/parameter.md',
+                parts: [
+                    {
+                        type: 'lisp',
+                        text: '(title the thing from beyond\n\tthe swamp)',
+                        location: start,
+
+                    }
+                ],
+            }); 
+
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
     });
 });
