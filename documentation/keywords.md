@@ -18,7 +18,7 @@ Here is a list of all the key atoms by depth:
     * `link` text
       * `*`
     * `external`
-      * ?? path
+      * name path
       * `*`
     * `*`
   * `content`
