@@ -1,10 +1,10 @@
 import { IRegisterable } from "../types.containers";
 import { Result, ok } from "../types.general";
-import { HandleStringValue, IDiscardResult, IInternals, IStringParseStepForward, IStringParser as IStringParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParse, StepParseResult } from "../types.internal";
+import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParseResult, StepParse } from "../types.internal";
 
-function mapFirst<T>(input: string, line: number, char: number, collection: HandleStringValue<T>[]): StepParseResult<T> {
+function mapFirst<TParse, TResult>(input: TParse, line: number, char: number, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
     for (let index = 0; index < collection.length; index++) {
-        const handler = collection[index] as any as HandleStringValue<T>;
+        const handler = collection[index] as HandleValue<TParse, TResult>;
         const result = handler(input, line, char);
         if(result.success) {
             if(result.value){
@@ -18,21 +18,24 @@ function mapFirst<T>(input: string, line: number, char: number, collection: Hand
     return ok('stop');
 }
 
-class Parser<T> implements IStringParser<T> {
-    private readonly _handlers: HandleStringValue<T>[] = [];
-    constructor(...handlers: HandleStringValue<T>[]) {
+class Parser<TParse, TResult> implements IParser<TParse, TResult> {
+    private readonly _handlers: HandleValue<TParse, TResult>[] = [];
+    private readonly _needsParsing: (input: TParse) => boolean;
+
+    constructor(_needsParsing: (input: TParse) => boolean, ...handlers: HandleValue<TParse, TResult>[]) {
         let that = this;
-        function addHandler(handler: HandleStringValue<T>) {
+        function addHandler(handler: HandleValue<TParse, TResult>) {
             that._handlers[that._handlers.length] = handler;
         }
 
+        this._needsParsing = _needsParsing;
         handlers.forEach(addHandler);
     }
 
-    parse(input: string, line: number, char: number): Result<[T[], IUnparsed]> {
-        const results: T[] = [];
+    parse(input: TParse, line: number, char: number): Result<[TResult[], IUnparsed<TParse>]> {
+        const results: TResult[] = [];
 
-        function getUnparsed(): IUnparsed {
+        function getUnparsed(): IUnparsed<TParse> {
             return {
                 type: 'unparsed',
                 location: { line, char, },
@@ -40,7 +43,7 @@ class Parser<T> implements IStringParser<T> {
             };
         }
 
-        while(0 < input.length) {
+        while(this._needsParsing(input)) {
             let result = mapFirst(input, line, char, this._handlers);
             
             if(!result.success) {
@@ -77,10 +80,14 @@ class Parser<T> implements IStringParser<T> {
 const registerable: IRegisterable = {
     builder: () => { 
         const ret: IInternals = {
-            createStringParser<T> (...handlers: HandleStringValue<T>[]): IStringParser<T> {
-                return new Parser<T>(...handlers);
+            createStringParser<T> (...handlers: HandleValue<string, T>[]): IParser<string, T> {
+                return new Parser<string, T>((input: string) => (0 < input.length), ...handlers);
             },
-            buildStepParse<T>(step: IStringParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T> {
+            createArrayParser<TParse, TResult>(...handlers: HandleValue<TParse[], TResult>[]): IParser<TParse[], TResult> {
+                return new Parser<TParse[], TResult>((input: TParse[]) => (0 < input.length), ...handlers);
+            },
+
+            buildStepParse<TParse, TResult>(step: IParseStepForward<TParse>, resultType: (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult)): StepParse<TParse, TResult> {
                 const stepKeys = 
                     Object.
                         keys(step);
