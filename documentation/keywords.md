@@ -11,17 +11,18 @@ Here is a list of all the key atoms by depth:
 * markdown
 * `dl`
   * `section-meta`
-    * `title`
+    * `title` text
       * `*`
-    * `subtitle`
+    * `subtitle` text
       * `*`
-    * `link`
+    * `link` text
       * `*`
     * `external`
+      * ?? path
       * `*`
     * `*`
   * `content`
-    * `toc`
-  * `#`
+    * `toc` bullet style
+  * `#` text
   * `*`
 * `*`
