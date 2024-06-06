@@ -220,7 +220,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
     }
 
     function tokenizeAtom(input: string, line: number, char: number): StepParseResult<Token> {
-        let doesItStartWithWord = /^[\:\w\*\-]+/;
+        let doesItStartWithWord = /^[^\(\)\s]+/;
         if(doesItStartWithWord.test(input) && isToken) {
             let atomValue: string = (input.match(doesItStartWithWord) as any)[0];
 
