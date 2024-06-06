@@ -246,7 +246,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
     }
 
     function tokenizeParameter(input: string, line: number, char: number): StepParseResult<Token> {
-        let doesItStartWithParameter = /^[^\)\s]+[^\)]+/;
+        let doesItStartWithParameter = /^[^\)\s]+[^\)]*/;
         if(doesItStartWithParameter.test(input) && !isToken) {
             let parameterValue: string = (input.match(doesItStartWithParameter) as any)[0];
 
