@@ -1,6 +1,6 @@
 import { ILocation, Result } from "./types.general";
 
-export interface IParseStepForward {
+export interface IStringParseStepForward {
     rest: string;
     line: number;
     char: number;
@@ -32,19 +32,19 @@ export interface IUnparsed {
     type: 'unparsed'
 }
 
-export type StepParse<T> = IParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult);
+export type StepParse<T> = IStringParseStepForward & (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult);
 
-export type CreateParser<T> = (...handlers: HandleValue<T>[]) => IParser<T>;
+export type CreateStringParser<T> = (...handlers: HandleStringValue<T>[]) => IStringParser<T>;
 
 export interface IInternals {
-    buildStepParse<T>(step: IParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T>;
-    createParser<T>(...handlers: HandleValue<T>[]): IParser<T>;
+    buildStepParse<T>(step: IStringParseStepForward, resultType: (ISubParseGroupResult<T> | ISubParseResult<T> | IDiscardResult)): StepParse<T>;
+    createStringParser<T>(...handlers: HandleStringValue<T>[]): IStringParser<T>;
 }
 
 export type StepParseResult<T> = Result<StepParse<T> | false | 'stop'>;
 
-export type HandleValue<T> = (input: string, line: number, char: number) => StepParseResult<T>;
+export type HandleStringValue<T> = (input: string, line: number, char: number) => StepParseResult<T>;
 
-export interface IParser<T> {
+export interface IStringParser<T> {
     parse(input: string, line: number, char: number): Result<[T[], IUnparsed]>;
 }
