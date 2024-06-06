@@ -34,8 +34,6 @@ export interface IUnparsed<TParse> {
     type: 'unparsed'
 };
 
-export interface IStringUnparsed extends IUnparsed<string> {};
-
 export type StepParse<TParse, TResult> = IParseStepForward<TParse> & (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult);
 
 export type StringStepParse<T> = StepParse<string, T>;
@@ -52,8 +50,6 @@ export interface IParser<TParse, TResult> {
     parse(input: TParse, line: number, char: number): Result<[TResult[], IUnparsed<TParse>]>;
 };
 
-export interface IStringParser<T> extends IParser<string, T> {};
-
 export type CreateParser<TParse, TResult> = (...handlers: HandleValue<TParse, TResult>[]) => IParser<TParse, TResult>;
 
 export type CreateStringParser<T> = CreateParser<string, T>;
@@ -61,5 +57,5 @@ export type CreateStringParser<T> = CreateParser<string, T>;
 export interface IInternals {
     buildStepParse<TParse, TResult>(step: IParseStepForward<TParse>, resultType: (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult)): StepParse<TParse, TResult>;
     createArrayParser<TParse, TResult>(...handlers: HandleValue<TParse[], TResult>[]): IParser<TParse[], TResult>;
-    createStringParser<T>(...handlers: HandleStringValue<T>[]): IStringParser<T>;
+    createStringParser<T>(...handlers: HandleStringValue<T>[]): IParser<string, T>;
 }
