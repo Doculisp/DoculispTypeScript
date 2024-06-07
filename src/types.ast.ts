@@ -55,14 +55,18 @@ export interface IHeader extends ILocationSortable {
     readonly text: string;
 };
 
-export type Ast = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
-
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'ast-section';
     readonly ast: Ast[];
 };
 
-export type ParseAst = (tokenResults: Result<Token[]>) => Result<ISectionWriter>;
+export interface IEmptyAst {
+    readonly type: 'ast-empty';
+}
+
+export type Ast = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
+
+export type ParseAst = (tokenResults: Result<Token[]>) => Result<ISectionWriter | IEmptyAst>;
 export interface IAstParser {
-    parse(tokenResults: Result<Token[]>): Result<ISectionWriter>;
+    parse(tokenResults: Result<Token[]>): Result<ISectionWriter | IEmptyAst>;
 };
