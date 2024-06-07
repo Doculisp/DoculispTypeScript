@@ -5,7 +5,7 @@ import { IAstParser } from '../../../src/types.ast'
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import { Result, fail, ok } from "../../../src/types.general";
-import { Token } from "../../../src/types.tokens";
+import { TokenizedDocument } from "../../../src/types.tokens";
 
 describe('ast', () => {
     let environment: ITestableContainer = undefined as any;
@@ -30,7 +30,10 @@ describe('ast', () => {
     });
 
     test('should return an empty ast if there was no tokens', () => {
-        const tokens: Result<Token[]> = ok([]);
+        const tokens: Result<TokenizedDocument> = ok({
+            documentPath: 'A:/empty/doc.md',
+            tokens: []
+        });
 
         const result = parser.parse(tokens);
 

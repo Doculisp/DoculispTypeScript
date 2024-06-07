@@ -1,6 +1,9 @@
 {
   "success": true,
   "value": {
-    "type": "ast-empty"
+    "documentPath": "A:/empty/doc.md",
+    "section": {
+      "type": "ast-empty"
+    }
   }
 }

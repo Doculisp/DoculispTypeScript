@@ -1,5 +1,5 @@
 import { ILocation, Result } from "./types.general";
-import { Token } from "./types.tokens";
+import { TokenizedDocument } from "./types.tokens";
 
 export type AstBefore = -1
 export type AstSame = 0
@@ -55,18 +55,23 @@ export interface IHeader extends ILocationSortable {
     readonly text: string;
 };
 
+export type AstParts = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
+
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'ast-section';
-    readonly ast: Ast[];
+    readonly ast: AstParts[];
 };
 
 export interface IEmptyAst {
     readonly type: 'ast-empty';
 }
 
-export type Ast = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
+export interface IAst {
+    documentPath: string;
+    section: ISectionWriter | IEmptyAst;
+}
 
-export type ParseAst = (tokenResults: Result<Token[]>) => Result<ISectionWriter | IEmptyAst>;
+export type ParseAst = (tokenResults: Result<TokenizedDocument>) => Result<IAst>;
 export interface IAstParser {
-    parse(tokenResults: Result<Token[]>): Result<ISectionWriter | IEmptyAst>;
+    parse(tokenResults: Result<TokenizedDocument>): Result<IAst>;
 };

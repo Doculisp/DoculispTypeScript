@@ -1,14 +1,17 @@
-import { IAstParser, IEmptyAst, ISectionWriter } from "../types.ast";
+import { IAst, IAstParser } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { Result, ok } from "../types.general";
 import { IInternals } from "../types.internal";
-import { Token } from "../types.tokens";
+import { TokenizedDocument } from "../types.tokens";
 
 function buildAstParser(internals: IInternals): IAstParser {
     return {
-        parse(maybeTokens: Result<Token[]>): Result<ISectionWriter | IEmptyAst> {
+        parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){
-                return ok({type: 'ast-empty'});
+                return ok({
+                    documentPath: maybeTokens.value.documentPath,
+                    section: { type: 'ast-empty' },
+                });
             }
 
             return maybeTokens;
