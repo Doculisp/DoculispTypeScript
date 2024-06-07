@@ -1,35 +1,37 @@
-import { ILocation } from "./types.general";
+import { ILocation, Result } from "./types.general";
+import { Token } from "./types.tokens";
 
-export type AstOrder = 'before' | 'same' | 'after';
+export type AstBefore = -1
+export type AstSame = 0
+export type AstAfter = 1;
+export type AstOrder = AstBefore | AstSame | AstAfter;
 
-export interface IAst {
-    readonly inDocumentOrder: ILocation;
-    readonly documentOrder: number;
-    compare(other: IAst): AstOrder;
+export interface IDocumentOrder extends ILocation {
+    readonly documentDepth: number;
+    readonly documentIndex: number;
+    compare(other: IDocumentOrder): AstOrder;
+}
+
+export interface ILocationSortable {
+    readonly documentOrder: IDocumentOrder;
 };
 
-export interface IWrite extends IAst {
+export interface IWrite extends ILocationSortable {
     readonly type: 'ast-write';
     readonly value: string;
 };
 
-export interface ISubTitle extends IAst {
-    readonly type: 'ast-subtitle';
-    readonly subtitle: string;
-};
-
-export interface ITitle extends IAst {
-    readonly type: 'ast-title',
+export interface ITitle extends ILocationSortable {
+    readonly type: 'ast-title';
     readonly title: string;
     readonly label: string;
     readonly link: string;
-    readonly subTitle: ISubTitle | false;
 };
 
-export interface ILoad extends IAst {
+export interface ILoad extends ILocationSortable {
     readonly type: 'ast-load';
     readonly path: string;
-    readonly document: IDocumentWriter | false;
+    readonly document: ISectionWriter | false;
 }
 
 export type AstBulletStyle = 
@@ -41,24 +43,26 @@ export type AstBulletStyle =
     'bulleted' |
     'bulleted-labeled';
 
-export interface ITableOfContents extends IAst {
+export interface ITableOfContents extends ILocationSortable {
     readonly type: 'ast-toc';
     readonly sectionTitles: ITitle[];
     readonly bulletStyle: AstBulletStyle;
 };
 
-export interface IHeader extends IAst {
+export interface IHeader extends ILocationSortable {
     readonly type: 'ast-header'
     readonly depthCount: number;
     readonly text: string;
 };
 
-export interface IContent extends IAst {
-    readonly type: 'ast-content-write';
+export type Ast = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
+
+export interface ISectionWriter extends ILocationSortable {
+    readonly type: 'ast-section';
+    readonly ast: Ast[];
 };
 
-export interface IDocumentWriter extends IAst {
-    readonly type: 'ast-document';
-    readonly subDocuments: ILoad[];
-    readonly ast: IAst[];
+export type ParseAst = (tokenResults: Result<Token[]>) => Result<ISectionWriter>;
+export interface IAstParser {
+    parse(tokenResults: Result<Token[]>): Result<ISectionWriter>;
 };
