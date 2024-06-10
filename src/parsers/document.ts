@@ -2,7 +2,7 @@ import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
 import { IUtil, Result, ok } from "../types.general";
 import * as path from 'node:path';
-import { IDocumentSearches, ILispSearches, IMarkupSearches, IWhiteSpaceSearches, Searcher } from "../types.textHelpers";
+import { IDocumentSearches, IMarkupSearches, IWhiteSpaceSearches, Searcher } from "../types.textHelpers";
 import { CreateStringParser, HandleStringValue, IInternals, IStringParseStepForward, StringStepParseResult } from "../types.internal";
 
 function createMap(documentPath: string, parts: DocumentPart[]): DocumentMap {
@@ -27,6 +27,7 @@ function isStopParsingWhiteSpace(input: string, _line: number, _char: number): R
 type ParesBuilder = {
     doesItStartWithKeep(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<string>;
     isDiscardedWhiteSpace(): HandleStringValue<DocumentPart>;
+    isKeptWhiteSpace(): HandleStringValue<string>;
 };
 
 function parseBuilders(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
@@ -89,60 +90,60 @@ function parseBuilders(documentPath: string, doesIt: IDocumentSearches, internal
             }
         }
     }
+
+    function isKeptWhiteSpace(): HandleStringValue<string> {
+        return function (input: string, line: number, char: number): StringStepParseResult<string> {
+            const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
+            const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
+            const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, l => l + 1, () => 1);
+            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, id, (c, f) => c + f.length);
+    
+            const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
+            const parsed = parser.parse(input, line, char);
+            if(parsed.success) {
+                const [result, leftover] = parsed.value;
+                if(leftover.location.line === line && leftover.location.char === char) {
+                    return util.ok(false);
+                }
+    
+                let step: IStringParseStepForward = {
+                    rest: leftover.remaining,
+                    line: leftover.location.line,
+                    char: leftover.location.char,
+                }
+    
+                if(0 === result.length) {
+                    return util.ok(internals.buildStepParse(step, {
+                        type: 'discard',
+                    }));
+                }
+    
+                if(1 === result.length) {
+                    return util.ok(internals.buildStepParse(step, {
+                        type: 'parse result',
+                        subResult: result[0] as string
+                    }));
+                }
+    
+                return util.ok(internals.buildStepParse(step, {
+                    type: 'parse group result',
+                    subResult: result.map(r => { return { type:'keep', keptValue: r }; }),
+                }));
+            }
+    
+            return parsed;
+        }
+    }
     
     return {
         doesItStartWithKeep,
         isDiscardedWhiteSpace,
+        isKeptWhiteSpace,
     };
 }
 
-function isKeptWhiteSpace(documentSearches: IDocumentSearches, internals: IInternals, util: IUtil): HandleStringValue<string> {
-    const builder = parseBuilders('', documentSearches, internals, util)
-    return function (input: string, line: number, char: number): StringStepParseResult<string> {
-        const doesIt: IWhiteSpaceSearches = documentSearches;
-        const isWindows = builder.doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
-        const isLinux = builder.doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
-        const isMac = builder.doesItStartWithKeep(doesIt.startWithMacsNewline, l => l + 1, () => 1);
-        const isWhiteSpace = builder.doesItStartWithKeep(doesIt.startWithWhiteSpace, id, (c, f) => c + f.length);
-
-        const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
-        const parsed = parser.parse(input, line, char);
-        if(parsed.success) {
-            const [result, leftover] = parsed.value;
-            if(leftover.location.line === line && leftover.location.char === char) {
-                return util.ok(false);
-            }
-
-            let step: IStringParseStepForward = {
-                rest: leftover.remaining,
-                line: leftover.location.line,
-                char: leftover.location.char,
-            }
-
-            if(0 === result.length) {
-                return util.ok(internals.buildStepParse(step, {
-                    type: 'discard',
-                }));
-            }
-
-            if(1 === result.length) {
-                return util.ok(internals.buildStepParse(step, {
-                    type: 'parse result',
-                    subResult: result[0] as string
-                }));
-            }
-
-            return util.ok(internals.buildStepParse(step, {
-                type: 'parse group result',
-                subResult: result.map(r => { return { type:'keep', keptValue: r }; }),
-            }));
-        }
-
-        return parsed;
-    }
-}
-
-function isMultiline(documentPath: string, doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil) : HandleStringValue<DocumentPart> {
+function isMultiline(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil) : HandleStringValue<DocumentPart> {
+    const builder = parseBuilders(documentPath, doesIt, internals, util);
     return function(toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
         let opened: boolean = false;
 
@@ -164,7 +165,7 @@ function isMultiline(documentPath: string, doesIt: IDocumentSearches, parserBuil
             return util.ok(false);
         }
 
-        const tryParseWhiteSpace = isKeptWhiteSpace(doesIt, parserBuilder, util);
+        const tryParseWhiteSpace = builder.isKeptWhiteSpace();
 
         function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
             if(!opened) {
@@ -183,7 +184,7 @@ function isMultiline(documentPath: string, doesIt: IDocumentSearches, parserBuil
             });
         }
 
-        const parser = parserBuilder.createStringParser(tryParseMultiline, tryParseWhiteSpace, tryParseWord);
+        const parser = internals.createStringParser(tryParseMultiline, tryParseWhiteSpace, tryParseWord);
         const parsed = parser.parse(toParse, startingLine, startingChar);
 
         if(parsed.success) {
@@ -297,7 +298,8 @@ function isInline(documentPath: string, doesIt: (IMarkupSearches & IWhiteSpaceSe
     }
 }
 
-function isDoculisp(documentPath: string, doesIt: (IMarkupSearches & ILispSearches), parserBuilder: IInternals, util: IUtil, isOpen?: boolean): HandleStringValue<DocumentPart> {
+function isDoculisp(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil, isOpen?: boolean): HandleStringValue<DocumentPart> {
+    const builder = parseBuilders(documentPath, doesIt, internals, util);
     return function (toParse: string, startLine: number, startChar: number): StringStepParseResult<DocumentPart> {
         function updateChar(char: number, found: string): number {
             return char + found.length;
@@ -361,12 +363,12 @@ function isDoculisp(documentPath: string, doesIt: (IMarkupSearches & ILispSearch
                 depth--;
 
                 if(depth <= 0) {
-                    return util.ok(parserBuilder.buildStepParse(step, {
+                    return util.ok(internals.buildStepParse(step, {
                         type: 'discard',
                     }));
                 }
 
-                return util.ok(parserBuilder.buildStepParse(step, {
+                return util.ok(internals.buildStepParse(step, {
                     type: 'parse result',
                     subResult: parsed,
                 }));
@@ -393,13 +395,13 @@ function isDoculisp(documentPath: string, doesIt: (IMarkupSearches & ILispSearch
 
         function tryParseWhiteSpace(input: string, line: number, char: number): StringStepParseResult<string> {
             if(0 < depth){
-                const tryParseWhiteSpace = isKeptWhiteSpace(doesIt, parserBuilder, util);
+                const tryParseWhiteSpace = builder.isKeptWhiteSpace();
                 return tryParseWhiteSpace(input, line, char);
             }
             return util.ok(false);
         }
 
-        const parser = parserBuilder.createStringParser(tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
+        const parser = internals.createStringParser(tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
         const parsed = parser.parse(toParse, startLine, startChar);
         if(parsed.success) {
             if(0 < depth) {
@@ -418,13 +420,13 @@ function isDoculisp(documentPath: string, doesIt: (IMarkupSearches & ILispSearch
             };
 
             if(0 === parts.length) {
-                return util.ok(parserBuilder.buildStepParse(step, {
+                return util.ok(internals.buildStepParse(step, {
                     type: 'discard'
                 }));
             }
 
             let result = parts.join('').trim();
-            return util.ok(parserBuilder.buildStepParse(step, {
+            return util.ok(internals.buildStepParse(step, {
                 type: 'parse result',
                 subResult: { location: { line: startLine, char: startChar }, type: 'lisp', text: result },
             }));
@@ -536,7 +538,8 @@ function isComment(documentPath: string, doesIt: IDocumentSearches, parserBuilde
     }
 }
 
-function isWord(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil) {
+function isWord(doesIt: IDocumentSearches, internals: IInternals, util: IUtil) {
+    const builder = parseBuilders('', doesIt, internals, util);
     return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
         function tryParseEndParse(input: string, _line: number, _char: number): StringStepParseResult<string> {
             if(doesIt.startWithOpenComment.test(input)) {
@@ -548,7 +551,7 @@ function isWord(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUti
             return util.ok(false);
         }
 
-        const tryParseWhiteSpace = isKeptWhiteSpace(doesIt, parserBuilder, util);
+        const tryParseWhiteSpace = builder.isKeptWhiteSpace();
 
         function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
             const startsWithWord = /^\S/;
@@ -566,7 +569,7 @@ function isWord(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUti
             return util.ok(false);
         }
 
-        const parser = parserBuilder.createStringParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
+        const parser = internals.createStringParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
         const parsed = parser.parse(toParse, startingLine, startingChar);
 
         if(parsed.success) {
