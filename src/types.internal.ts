@@ -1,7 +1,10 @@
 import { ILocation, Result } from "./types.general";
 
-export interface IParseStepForward<TParse> extends ILocation {
-    rest: TParse,
+export interface IParseRemaining<TParse> {
+    rest: TParse;
+};
+
+export interface IParseStepForward<TParse> extends IParseRemaining<TParse>, ILocation {
 }
 
 export interface IStringParseStepForward extends IParseStepForward<string> {};
