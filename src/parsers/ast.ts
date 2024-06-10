@@ -1,7 +1,7 @@
 import { AstAfter, AstBefore, AstPart, AstSame, IAst, IAstParser, IDocumentOrder } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { IUtil, Result } from "../types.general";
-import { HandleValue, IInternals, StepParse, StepParseResult } from "../types.internal";
+import { HandleValue, IInternals, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
 function before() : AstBefore { return -1; }
@@ -48,7 +48,8 @@ function createDocumentOrder(documentDepth: number, documentIndex: number, line:
     };
 }
 
-function isText(ok: (successfulValue: StepParse<Token[], AstPart> | false | 'stop') => StepParseResult<Token[], AstPart>): HandleValue<Token[], AstPart> {
+function isText(util: IUtil): HandleValue<Token[], AstPart> {
+    const ok = util.ok;
     return function (input: Token[], line: number, char: number): StepParseResult<Token[], AstPart> {
         const token: Token = input.shift() as Token;
         if(token.type === 'token - text') {
@@ -75,8 +76,8 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
         parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
-                const parser = internals.createArrayParser(isText(ok));
-                const parsed = parser.parse(document.tokens, 0, 0);
+                const parser = internals.createArrayParser(isText(util));
+                const parsed = parser.parse(document.tokens, util.location(0, 0));
                 
                 if(parsed.success) {
                     const [result, _leftovers] = parsed.value;

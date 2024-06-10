@@ -76,7 +76,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, l => l, (c, f) => c + f.length);
     
             const whiteSpaceParser = createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
-            const parsed = whiteSpaceParser.parse(input, line, char);
+            const parsed = whiteSpaceParser.parse(input, util.location(line, char));
             if(parsed.success) {
                 const [_, leftovers] = parsed.value;
                 if(leftovers.remaining === input) {
@@ -103,7 +103,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, id, (c, f) => c + f.length);
     
             const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
-            const parsed = parser.parse(input, line, char);
+            const parsed = parser.parse(input, util.location(line, char));
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
                 if(leftover.location.line === line && leftover.location.char === char) {
@@ -181,7 +181,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             }
     
             const parser = internals.createStringParser(tryParseMultiline, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, startingLine, startingChar);
+            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
     
             if(parsed.success) {
                 if(opened) {
@@ -267,7 +267,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             }
     
             const parser = internals.createStringParser(tryParseInLine, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, startingLine, startingChar);
+            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
     
             if(parsed.success) {
                 if(opened) {
@@ -397,7 +397,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             }
     
             const parser = internals.createStringParser(tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, startLine, startChar);
+            const parsed = parser.parse(toParse, util.location(startLine, startChar));
             if(parsed.success) {
                 if(0 < depth) {
                     return util.fail(`Doculisp block at { line: ${startLine}, char: ${startChar} } is not closed.`, documentPath);
@@ -500,7 +500,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             }
     
             const parser = internals.createStringParser(tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryParseDoculisp, tryEndAll);
-            const parsed = parser.parse(toParse, startingLine, startingChar);
+            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
             if(parsed.success) {
                 if(opened) {
                     return util.fail(`Open HTML Comment at { line: ${startingLine}, char: ${startingChar} } but does not close.`, documentPath);
@@ -563,7 +563,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             }
     
             const parser = internals.createStringParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, startingLine, startingChar);
+            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
     
             if(parsed.success) {
                 const [parts, leftover] = parsed.value;
@@ -616,7 +616,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
                 partParsers.isWord()
             );
 
-        const parsed = parser.parse(toParse, 1, 1);
+        const parsed = parser.parse(toParse, util.location(1, 1));
 
         if(parsed.success) {
             const [parts, leftover] = parsed.value;

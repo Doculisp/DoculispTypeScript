@@ -1,11 +1,11 @@
 import { IRegisterable } from "../types.containers";
-import { IUtil, Result } from "../types.general";
+import { ILocation, IUtil, Result } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParseResult, StepParse } from "../types.internal";
 
-function mapFirst<TParse, TResult>(util: IUtil, input: TParse, line: number, char: number, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
+function mapFirst<TParse, TResult>(util: IUtil, input: TParse, current: ILocation, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
     for (let index = 0; index < collection.length; index++) {
         const handler = collection[index] as HandleValue<TParse, TResult>;
-        const result = handler(input, line, char);
+        const result = handler(input, current.line, current.char);
         if(result.success) {
             if(result.value){
                 return result;
@@ -34,19 +34,21 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
         handlers.forEach(addHandler);
     }
 
-    parse(input: TParse, line: number, char: number): Result<[TResult[], IUnparsed<TParse>]> {
+    parse(input: TParse, initialLocation: ILocation): Result<[TResult[], IUnparsed<TParse>]> {
         const results: TResult[] = [];
+        const location = this._util.location;
+        let current = initialLocation;
 
         function getUnparsed(): IUnparsed<TParse> {
             return {
                 type: 'unparsed',
-                location: { line, char, },
+                location: location(current.line, current.char),
                 remaining: input,
             };
         }
 
         while(this._needsParsing(input)) {
-            let result = mapFirst(this._util, input, line, char, this._handlers);
+            let result = mapFirst(this._util, input, current, this._handlers);
             
             if(!result.success) {
                 return result;
@@ -58,8 +60,7 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
 
             if(result.value){
                 let parseResult = result.value;
-                line = parseResult.line;
-                char = parseResult.char;
+                current = location(parseResult.line, parseResult.char);
                 input = parseResult.rest;
 
                 if(parseResult.type === 'parse result'){

@@ -1,9 +1,7 @@
 import { ILocation, Result } from "./types.general";
 
-export interface IParseStepForward<TParse> {
+export interface IParseStepForward<TParse> extends ILocation {
     rest: TParse,
-    line: number,
-    char: number,
 }
 
 export interface IStringParseStepForward extends IParseStepForward<string> {};
@@ -47,7 +45,7 @@ export type HandleValue<TParse, TResult> = (input: TParse, line: number, char: n
 export type HandleStringValue<T> = (input: string, line: number, char: number) => StringStepParseResult<T>;
 
 export interface IParser<TParse, TResult> {
-    parse(input: TParse, line: number, char: number): Result<[TResult[], IUnparsed<TParse>]>;
+    parse(input: TParse, initialLocation: ILocation): Result<[TResult[], IUnparsed<TParse>]>;
 };
 
 export type CreateParser<TParse, TResult> = (...handlers: HandleValue<TParse, TResult>[]) => IParser<TParse, TResult>;

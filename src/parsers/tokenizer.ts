@@ -164,7 +164,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         }
 
         const parser = parserBuilder.createStringParser(tryParseOpenComment, tryParseOpenParen, tryParseCloseParen, tryParseWhiteSpace, tryParseText);
-        const parsed = parser.parse(toParse, startLine, startChar);
+        const parsed = parser.parse(toParse, util.location(startLine, startChar));
 
         if(parsed.success) {
             const [_parts, leftover] = parsed.value;
@@ -283,7 +283,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         const parser = parserBuilder.createStringParser(tokenizeWhiteSpace, tokenizeComment, tokenizeParenthesis, tokenizeParameter, tokenizeAtom);
         
         function toTokens(block: ILispBlock): Result<Token[]> {
-            let parsed = parser.parse(block.text, block.location.line, block.location.char);
+            let parsed = parser.parse(block.text, block.location);
             if(parsed.success) {
                 let [ret, _ignore] = parsed.value;
                 return ok(ret);
