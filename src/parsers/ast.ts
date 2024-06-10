@@ -1,7 +1,7 @@
 import { AstAfter, AstBefore, AstPart, AstSame, IAst, IAstParser, IDocumentOrder } from "../types.ast";
 import { IRegisterable } from "../types.containers";
-import { Result, ok } from "../types.general";
-import { IInternals, StepParseResult } from "../types.internal";
+import { IUtil, Result } from "../types.general";
+import { HandleValue, IInternals, StepParse, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
 function before() : AstBefore { return -1; }
@@ -48,31 +48,34 @@ function createDocumentOrder(documentDepth: number, documentIndex: number, line:
     };
 }
 
-function isText(input: Token[], line: number, char: number): StepParseResult<Token[], AstPart> {
-    const token: Token = input.shift() as Token;
-    if(token.type === 'token - text') {
-        let order = createDocumentOrder(0, 0, token.location.line, token.location.char);
-        return ok({
-            type: 'parse result',
-            subResult: {
-                type: 'ast-write',
-                documentOrder: order,
-                value: token.text,
-            },
-            line: line,
-            char: char + 1,
-            rest: input
-        });
+function isText(ok: (successfulValue: StepParse<Token[], AstPart> | false | 'stop') => StepParseResult<Token[], AstPart>): HandleValue<Token[], AstPart> {
+    return function (input: Token[], line: number, char: number): StepParseResult<Token[], AstPart> {
+        const token: Token = input.shift() as Token;
+        if(token.type === 'token - text') {
+            let order = createDocumentOrder(0, 0, token.location.line, token.location.char);
+            return ok({
+                type: 'parse result',
+                subResult: {
+                    type: 'ast-write',
+                    documentOrder: order,
+                    value: token.text,
+                },
+                line: line,
+                char: char + 1,
+                rest: input
+            });
+        }
+        return ok(false);
     }
-    return ok(false);
 }
 
-function buildAstParser(internals: IInternals): IAstParser {
+function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
+    const ok = util.ok;
     return {
         parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
-                const parser = internals.createArrayParser(isText);
+                const parser = internals.createArrayParser(isText(ok));
                 const parsed = parser.parse(document.tokens, 0, 0);
                 
                 if(parsed.success) {
@@ -104,10 +107,10 @@ function buildAstParser(internals: IInternals): IAstParser {
 }
 
 const astParser: IRegisterable = {
-    builder: (internals: IInternals) => buildAstParser(internals),
+    builder: (internals: IInternals, util: IUtil) => buildAstParser(internals, util),
     name: 'astParse',
     singleton: true,
-    dependencies: ['parser']
+    dependencies: ['parser', 'util']
 };
 
 export {
