@@ -85,8 +85,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     return util.ok({
                         type: 'discard',
                         rest: leftovers.remaining,
-                        line: leftovers.location.line,
-                        char: leftovers.location.char,
+                        line: leftovers.line,
+                        char: leftovers.char,
                     });
                 }
             } else {
@@ -106,14 +106,14 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const parsed = parser.parse(input, util.location(line, char));
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
-                if(leftover.location.line === line && leftover.location.char === char) {
+                if(leftover.line === line && leftover.char === char) {
                     return util.ok(false);
                 }
     
                 let step: IStringParseStepForward = {
                     rest: leftover.remaining,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
+                    line: leftover.line,
+                    char: leftover.char,
                 }
     
                 if(0 === result.length) {
@@ -188,7 +188,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     return util.fail(`Multiline code block at { line: ${startingLine}, char: ${startingChar} } does not close`, documentPath);
                 }
                 const [peaces, leftover] = parsed.value;
-                if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
+                if(leftover.line === startingLine && leftover.char === startingChar) {
                     return util.ok(false);
                 }
     
@@ -199,8 +199,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     type: 'parse result',
                     subResult: { location: { line: startingLine, char: startingChar }, type: 'text', text: result },
                     rest,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
+                    line: leftover.line,
+                    char: leftover.char,
                 });
             }
     
@@ -275,7 +275,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 }
     
                     const [parts, leftover] = parsed.value;
-                if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
+                if(leftover.line === startingLine && leftover.char === startingChar) {
                     return util.ok(false);
                 }
     
@@ -285,8 +285,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     type: 'parse result',
                     subResult: { type: 'text', location: { line: startingLine, char: startingChar }, text: result },
                     rest: leftover.remaining,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
+                    line: leftover.line,
+                    char: leftover.char,
                 });
             }
     
@@ -404,14 +404,14 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 }
     
                 const [parts, leftover] = parsed.value;
-                if(leftover.location.line === startLine && leftover.location.char === startChar) {
+                if(leftover.line === startLine && leftover.char === startChar) {
                     return util.ok(false);
                 }
     
                 const step: IStringParseStepForward = {
                     rest: leftover.remaining,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
+                    line: leftover.line,
+                    char: leftover.char,
                 };
     
                 if(0 === parts.length) {
@@ -512,16 +512,16 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         type: 'parse group result',
                         subResult: result.map(r => { return { type: 'keep', keptValue: r }}),
                         rest: leftover.remaining,
-                        line: leftover.location.line,
-                        char: leftover.location.char,
+                        line: leftover.line,
+                        char: leftover.char,
                     });
                 }
-                else if(leftover.location.line !== startingLine || leftover.location.char !== startingChar) {
+                else if(leftover.line !== startingLine || leftover.char !== startingChar) {
                     return util.ok({
                         type: 'discard',
                         rest: leftover.remaining,
-                        line: leftover.location.line,
-                        char: leftover.location.char,
+                        line: leftover.line,
+                        char: leftover.char,
                     });
                 }
     
@@ -567,7 +567,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
             if(parsed.success) {
                 const [parts, leftover] = parsed.value;
-                if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
+                if(leftover.line === startingLine && leftover.char === startingChar) {
                     return util.ok(false);
                 }
     
@@ -576,8 +576,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     type: 'parse result',
                     subResult: { type: 'text', text: result, location: { line: startingLine, char: startingChar } },
                     rest: leftover.remaining,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
+                    line: leftover.line,
+                    char: leftover.char,
                 });
             }
     
@@ -621,7 +621,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
         if(parsed.success) {
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
-                return util.fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: ${leftover.location.line}, char: ${leftover.location.char - 1} }.`, documentPath);
+                return util.fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: ${leftover.line}, char: ${leftover.char - 1} }.`, documentPath);
             }
 
             return util.ok(createMap(documentPath, parts));

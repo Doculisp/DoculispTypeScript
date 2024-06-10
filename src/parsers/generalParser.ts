@@ -42,7 +42,8 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
         function getUnparsed(): IUnparsed<TParse> {
             return {
                 type: 'unparsed',
-                location: location(current.line, current.char),
+                line: current.line,
+                char: current.char,
                 remaining: input,
             };
         }

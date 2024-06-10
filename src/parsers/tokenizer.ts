@@ -168,15 +168,15 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
 
         if(parsed.success) {
             const [_parts, leftover] = parsed.value;
-            if(leftover.location.line === startLine && leftover.location.char === startChar) {
+            if(leftover.line === startLine && leftover.char === startChar) {
                 return ok(false);
             }
 
             return ok({
                 type: 'discard',
                 rest: leftover.remaining,
-                line: leftover.location.line,
-                char: leftover.location.char,
+                line: leftover.line,
+                char: leftover.char,
             });
         }
         return parsed;

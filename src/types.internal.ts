@@ -26,10 +26,12 @@ export interface IDiscardResult {
     type: 'discard';
 };
 
-export interface IUnparsed<TParse> {
+export interface IUnparsedInfo<TParse> {
     remaining: TParse;
-    location: ILocation;
     type: 'unparsed'
+}
+
+export interface IUnparsed<TParse> extends IUnparsedInfo<TParse>, ILocation {
 };
 
 export type StepParse<TParse, TResult> = IParseStepForward<TParse> & (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult);
