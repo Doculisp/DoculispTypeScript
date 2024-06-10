@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
-import { Result, fail, ok } from "../types.general";
+import { IUtil, Result } from "../types.general";
 import { IInternals, StringStepParseResult } from "../types.internal";
 import { ILispSearches, Searcher } from "../types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
@@ -27,8 +27,10 @@ function getTokenBuilder() {
     };
 }
 
-function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : TokenFunction {
+function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: IUtil) : TokenFunction {
     let isToken = false;
+    const ok = util.ok;
+    const fail = util.fail;
 
     function tokenizeWhiteSpace(input: string, line: number, char: number): StringStepParseResult<Token> {
         if(doesIt.startWithWindowsNewline.test(input)) {
@@ -37,7 +39,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
             input = input.slice(newLine.length);
             line++;
             char = 1;
-            return ok({
+            return util.ok({
                 rest: input,
                 char,
                 line,
@@ -317,10 +319,10 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals) : Token
 }
 
 const tokenizer: IRegisterable = {
-    builder: (searches: Searcher, getParser: IInternals) => buildTokenize(searches.searchLispFor, getParser),
+    builder: (searches: Searcher, getParser: IInternals, util: IUtil) => buildTokenize(searches.searchLispFor, getParser, util),
     name: 'tokenizer',
     singleton: true,
-    dependencies: ['searches', 'parser']
+    dependencies: ['searches', 'parser', 'util']
 };
 
 export {
