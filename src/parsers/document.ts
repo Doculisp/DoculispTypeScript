@@ -30,6 +30,7 @@ type ParesBuilder = {
     isMultiline() : HandleStringValue<DocumentPart>;
     isInline(): HandleStringValue<DocumentPart>;
     isDoculisp(isOpen?: boolean): HandleStringValue<DocumentPart>;
+    isComment(): HandleStringValue<DocumentPart>;
 };
 
 function getPartParsers(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
@@ -427,45 +428,18 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             return parsed;
         }
     }
+
+    function isComment(): HandleStringValue<DocumentPart> {
+        return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
+            let opened = false;
+            const tryDoculisp = isDoculisp();
     
-    return {
-        isDiscardedWhiteSpace,
-        isKeptWhiteSpace,
-        isMultiline,
-        isInline,
-        isDoculisp,
-    };
-}
-
-function isComment(documentPath: string, doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil): HandleStringValue<DocumentPart> {
-    const builder = getPartParsers(documentPath, doesIt, parserBuilder, util)
-    return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
-        let opened = false;
-        const tryDoculisp = builder.isDoculisp();
-
-        const stripWhiteSpace = builder.isDiscardedWhiteSpace();
-
-        function tryParseOpenComment(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
-            if(doesIt.startWithOpenComment.test(input)) {
-                const parsed: string = (input.match(doesIt.startWithOpenComment) as any)[0];
-                opened = true;
-                return util.ok({
-                    type: 'discard',
-                    rest: input.slice(parsed.length),
-                    line,
-                    char: char + parsed.length,
-                });
-            }
-            
-            return util.ok(false);
-        }
-
-        function tryParseCloseComment(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
-            if(doesIt.startWithCloseComment.test(input)) {
-                if(opened){
-                    const parsed: string = (input.match(doesIt.startWithCloseComment) as any)[0];
-                    opened = false;
-
+            const stripWhiteSpace = isDiscardedWhiteSpace();
+    
+            function tryParseOpenComment(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+                if(doesIt.startWithOpenComment.test(input)) {
+                    const parsed: string = (input.match(doesIt.startWithOpenComment) as any)[0];
+                    opened = true;
                     return util.ok({
                         type: 'discard',
                         rest: input.slice(parsed.length),
@@ -473,71 +447,98 @@ function isComment(documentPath: string, doesIt: IDocumentSearches, parserBuilde
                         char: char + parsed.length,
                     });
                 }
-
-                return util.ok('stop');
-            }
-            return util.ok(false);
-        }
-
-        function tryParseWhiteSpace(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
-            if(opened && doesIt.startWithWhiteSpace.test(input)) {
-                return stripWhiteSpace(input, line, char);
-            }
-            return util.ok(false);
-        }
-
-        function tryParseDoculisp(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
-            if(!opened) {
+                
                 return util.ok(false);
             }
-
-            return tryDoculisp(input, line, char);
-        }
-
-        function tryEndAll(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
-            if(!opened) {
-                return util.ok('stop');
+    
+            function tryParseCloseComment(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+                if(doesIt.startWithCloseComment.test(input)) {
+                    if(opened){
+                        const parsed: string = (input.match(doesIt.startWithCloseComment) as any)[0];
+                        opened = false;
+    
+                        return util.ok({
+                            type: 'discard',
+                            rest: input.slice(parsed.length),
+                            line,
+                            char: char + parsed.length,
+                        });
+                    }
+    
+                    return util.ok('stop');
+                }
+                return util.ok(false);
             }
-
-            return util.ok({
-                type: 'discard',
-                rest: input.slice(1),
-                line,
-                char: char + 1,
-            })
-        }
-
-        const parser = parserBuilder.createStringParser(tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryParseDoculisp, tryEndAll);
-        const parsed = parser.parse(toParse, startingLine, startingChar);
-        if(parsed.success) {
-            if(opened) {
-                return util.fail(`Open HTML Comment at { line: ${startingLine}, char: ${startingChar} } but does not close.`, documentPath);
+    
+            function tryParseWhiteSpace(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+                if(opened && doesIt.startWithWhiteSpace.test(input)) {
+                    return stripWhiteSpace(input, line, char);
+                }
+                return util.ok(false);
             }
-
-            const [result, leftover] = parsed.value;
-            if(0 < result.length) {
-                return util.ok({
-                    type: 'parse group result',
-                    subResult: result.map(r => { return { type: 'keep', keptValue: r }}),
-                    rest: leftover.remaining,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
-                });
+    
+            function tryParseDoculisp(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+                if(!opened) {
+                    return util.ok(false);
+                }
+    
+                return tryDoculisp(input, line, char);
             }
-            else if(leftover.location.line !== startingLine || leftover.location.char !== startingChar) {
+    
+            function tryEndAll(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+                if(!opened) {
+                    return util.ok('stop');
+                }
+    
                 return util.ok({
                     type: 'discard',
-                    rest: leftover.remaining,
-                    line: leftover.location.line,
-                    char: leftover.location.char,
-                });
+                    rest: input.slice(1),
+                    line,
+                    char: char + 1,
+                })
             }
-
-            return util.ok(false);
+    
+            const parser = internals.createStringParser(tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryParseDoculisp, tryEndAll);
+            const parsed = parser.parse(toParse, startingLine, startingChar);
+            if(parsed.success) {
+                if(opened) {
+                    return util.fail(`Open HTML Comment at { line: ${startingLine}, char: ${startingChar} } but does not close.`, documentPath);
+                }
+    
+                const [result, leftover] = parsed.value;
+                if(0 < result.length) {
+                    return util.ok({
+                        type: 'parse group result',
+                        subResult: result.map(r => { return { type: 'keep', keptValue: r }}),
+                        rest: leftover.remaining,
+                        line: leftover.location.line,
+                        char: leftover.location.char,
+                    });
+                }
+                else if(leftover.location.line !== startingLine || leftover.location.char !== startingChar) {
+                    return util.ok({
+                        type: 'discard',
+                        rest: leftover.remaining,
+                        line: leftover.location.line,
+                        char: leftover.location.char,
+                    });
+                }
+    
+                return util.ok(false);
+            }
+    
+            return parsed;
         }
-
-        return parsed;
     }
+    
+    return {
+        isDiscardedWhiteSpace,
+        isKeptWhiteSpace,
+        isMultiline,
+        isInline,
+        isDoculisp,
+        isComment,
+    };
 }
 
 function isWord(doesIt: IDocumentSearches, internals: IInternals, util: IUtil) {
@@ -606,7 +607,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
         const parser = 
             isDoculispFile ?
             parserBuilder.createStringParser(partParsers.isDoculisp(true)) :
-            parserBuilder.createStringParser(partParsers.isDiscardedWhiteSpace(), partParsers.isMultiline(), partParsers.isInline(), isComment(documentPath, doesIt, parserBuilder, util), isWord(doesIt, parserBuilder, util));
+            parserBuilder.createStringParser(partParsers.isDiscardedWhiteSpace(), partParsers.isMultiline(), partParsers.isInline(), partParsers.isComment(), isWord(doesIt, parserBuilder, util));
 
         const parsed = parser.parse(toParse, 1, 1);
 
