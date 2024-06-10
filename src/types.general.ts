@@ -30,3 +30,11 @@ export function fail(message: string, documentPath: string) : Result<any> {
         success: false,
     };
 };
+
+export type LocationBuilder = (line: number, char: number) => ILocation;
+
+export interface IUtil {
+    ok<T>(successfulValue: T): ISuccess<T>
+    fail(message: string, documentPath: string): IFail;
+    location: (line: number, char: number) => ILocation;
+}
