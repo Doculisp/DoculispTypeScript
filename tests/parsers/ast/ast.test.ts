@@ -4,13 +4,15 @@ import { ITestableContainer } from "../../../src/types.containers";
 import { IAstParser } from '../../../src/types.ast'
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
-import { Result, fail, ok } from "../../../src/types.general";
+import { IFail, ISuccess, IUtil, Result } from "../../../src/types.general";
 import { TokenizedDocument } from "../../../src/types.tokens";
 
 describe('ast', () => {
     let environment: ITestableContainer = undefined as any;
     let parser: IAstParser = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
+    let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
+    let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -19,6 +21,9 @@ describe('ast', () => {
     beforeEach(() => {
         environment = container.buildTestable();
         parser = environment.buildAs<IAstParser>('astParse');
+        const util = environment.buildAs<IUtil>('util');
+        ok = util.ok;
+        fail = util.fail;
     });
 
     test('should return failure if given failure', () => {
