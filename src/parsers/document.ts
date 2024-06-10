@@ -25,7 +25,6 @@ function isStopParsingWhiteSpace(input: string, _line: number, _char: number): R
 }
 
 type ParesBuilder = {
-    doesItStartWithKeep(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<string>;
     isDiscardedWhiteSpace(): HandleStringValue<DocumentPart>;
     isKeptWhiteSpace(): HandleStringValue<string>;
 };
@@ -136,7 +135,6 @@ function parseBuilders(documentPath: string, doesIt: IDocumentSearches, internal
     }
     
     return {
-        doesItStartWithKeep,
         isDiscardedWhiteSpace,
         isKeptWhiteSpace,
     };
