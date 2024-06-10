@@ -33,7 +33,7 @@ function buildGeneral(): IUtil {
 
 const astParser: IRegisterable = {
     builder: () => buildGeneral(),
-    name: 'general',
+    name: 'util',
     singleton: true,
     dependencies: []
 };
