@@ -1,6 +1,6 @@
 import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
-import { IUtil, Result, ok } from "../types.general";
+import { IUtil, Result } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
 import { HandleStringValue, IInternals, IStringParseStepForward, StringStepParseResult } from "../types.internal";
@@ -16,14 +16,6 @@ function id<T>(value: T): T {
     return value;
 }
 
-function isStopParsingWhiteSpace(input: string, _line: number, _char: number): Result<'stop' | false> {
-    const regex = /\S+/;
-    if(regex.test(input)) {
-        return ok('stop');
-    }
-    return ok(false);
-}
-
 type ParesBuilder = {
     isDiscardedWhiteSpace(): HandleStringValue<DocumentPart>;
     isKeptWhiteSpace(): HandleStringValue<string>;
@@ -35,6 +27,14 @@ type ParesBuilder = {
 };
 
 function getPartParsers(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
+    function isStopParsingWhiteSpace(input: string, _line: number, _char: number): Result<'stop' | false> {
+        const regex = /\S+/;
+        if(regex.test(input)) {
+            return util.ok('stop');
+        }
+        return util.ok(false);
+    }
+
     function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<DocumentPart> {
         return function (input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
             if(startsWith.test(input)) {
