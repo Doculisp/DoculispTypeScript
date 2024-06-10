@@ -1,0 +1,27 @@
+{
+  "success": true,
+  "value": {
+    "documentPath": "T:/ext/only.md",
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 0,
+            "documentIndex": 0,
+            "line": 2
+          },
+          "type": "ast-write",
+          "value": "Some text"
+        }
+      ],
+      "documentOrder": {
+        "char": 0,
+        "documentDepth": 0,
+        "documentIndex": 0,
+        "line": 0
+      },
+      "type": "ast-section"
+    }
+  }
+}

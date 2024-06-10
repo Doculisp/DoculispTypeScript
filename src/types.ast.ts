@@ -55,11 +55,11 @@ export interface IHeader extends ILocationSortable {
     readonly text: string;
 };
 
-export type AstParts = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
+export type AstPart = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
 
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'ast-section';
-    readonly ast: AstParts[];
+    readonly ast: AstPart[];
 };
 
 export interface IEmptyAst {

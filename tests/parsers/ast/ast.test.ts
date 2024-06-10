@@ -39,4 +39,21 @@ describe('ast', () => {
 
         verifyAsJson(result);
     });
+
+    test('should parse a text token', () => {
+        const tokens: Result<TokenizedDocument> = ok({
+            documentPath: 'T:/ext/only.md',
+            tokens: [
+                {
+                    type: 'token - text',
+                    location: { line: 2, char: 1 },
+                    text: 'Some text',
+                }
+            ],
+        });
+
+        const result = parser.parse(tokens);
+
+        verifyAsJson(result);
+    });
 });
