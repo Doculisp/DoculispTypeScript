@@ -31,6 +31,7 @@ type ParesBuilder = {
     isInline(): HandleStringValue<DocumentPart>;
     isDoculisp(isOpen?: boolean): HandleStringValue<DocumentPart>;
     isComment(): HandleStringValue<DocumentPart>;
+    isWord(): HandleStringValue<DocumentPart>;
 };
 
 function getPartParsers(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
@@ -530,6 +531,59 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             return parsed;
         }
     }
+
+    function isWord(): HandleStringValue<DocumentPart> {
+        return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
+            function tryParseEndParse(input: string, _line: number, _char: number): StringStepParseResult<string> {
+                if(doesIt.startWithOpenComment.test(input)) {
+                    return util.ok('stop')
+                }
+                if(doesIt.startWithInlineMarker.test(input)) {
+                    return util.ok('stop')
+                }
+                return util.ok(false);
+            }
+    
+            const tryParseWhiteSpace = isKeptWhiteSpace();
+    
+            function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
+                const startsWithWord = /^\S/;
+                if(startsWithWord.test(input)) {
+                    const parsed = input.charAt(0);
+                    const rest = input.slice(1);
+                    return util.ok({
+                        type: 'parse result',
+                        subResult: parsed,
+                        rest,
+                        line,
+                        char: char + 1,
+                    });
+                }
+                return util.ok(false);
+            }
+    
+            const parser = internals.createStringParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
+            const parsed = parser.parse(toParse, startingLine, startingChar);
+    
+            if(parsed.success) {
+                const [parts, leftover] = parsed.value;
+                if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
+                    return util.ok(false);
+                }
+    
+                const result = parts.join('').trim();
+                return util.ok({
+                    type: 'parse result',
+                    subResult: { type: 'text', text: result, location: { line: startingLine, char: startingChar } },
+                    rest: leftover.remaining,
+                    line: leftover.location.line,
+                    char: leftover.location.char,
+                });
+            }
+    
+            return parsed;
+        }
+    }
     
     return {
         isDiscardedWhiteSpace,
@@ -538,61 +592,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
         isInline,
         isDoculisp,
         isComment,
+        isWord,
     };
-}
-
-function isWord(doesIt: IDocumentSearches, internals: IInternals, util: IUtil) {
-    const builder = getPartParsers('', doesIt, internals, util);
-    return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
-        function tryParseEndParse(input: string, _line: number, _char: number): StringStepParseResult<string> {
-            if(doesIt.startWithOpenComment.test(input)) {
-                return util.ok('stop')
-            }
-            if(doesIt.startWithInlineMarker.test(input)) {
-                return util.ok('stop')
-            }
-            return util.ok(false);
-        }
-
-        const tryParseWhiteSpace = builder.isKeptWhiteSpace();
-
-        function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
-            const startsWithWord = /^\S/;
-            if(startsWithWord.test(input)) {
-                const parsed = input.charAt(0);
-                const rest = input.slice(1);
-                return util.ok({
-                    type: 'parse result',
-                    subResult: parsed,
-                    rest,
-                    line,
-                    char: char + 1,
-                });
-            }
-            return util.ok(false);
-        }
-
-        const parser = internals.createStringParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
-        const parsed = parser.parse(toParse, startingLine, startingChar);
-
-        if(parsed.success) {
-            const [parts, leftover] = parsed.value;
-            if(leftover.location.line === startingLine && leftover.location.char === startingChar) {
-                return util.ok(false);
-            }
-
-            const result = parts.join('').trim();
-            return util.ok({
-                type: 'parse result',
-                subResult: { type: 'text', text: result, location: { line: startingLine, char: startingChar } },
-                rest: leftover.remaining,
-                line: leftover.location.line,
-                char: leftover.location.char,
-            });
-        }
-
-        return parsed;
-    }
 }
 
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil): Valid<DocumentParser> {    
@@ -607,7 +608,13 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
         const parser = 
             isDoculispFile ?
             parserBuilder.createStringParser(partParsers.isDoculisp(true)) :
-            parserBuilder.createStringParser(partParsers.isDiscardedWhiteSpace(), partParsers.isMultiline(), partParsers.isInline(), partParsers.isComment(), isWord(doesIt, parserBuilder, util));
+            parserBuilder.createStringParser(
+                partParsers.isDiscardedWhiteSpace(), 
+                partParsers.isMultiline(), 
+                partParsers.isInline(), 
+                partParsers.isComment(), 
+                partParsers.isWord()
+            );
 
         const parsed = parser.parse(toParse, 1, 1);
 
