@@ -4,13 +4,15 @@ import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import { ITestableContainer } from "../../../src/types.containers";
 import { TokenFunction } from '../../../src/types.tokens';
-import { ILocation, Result, fail, ok } from "../../../src/types.general";
+import { IFail, ILocation, ISuccess, IUtil, Result } from "../../../src/types.general";
 import { DocumentMap } from "../../../src/types.document";
 
 describe('tokenizer', () => {
     let environment: ITestableContainer = undefined as any;
     let tokenizer: TokenFunction = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
+    let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
+    let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -19,6 +21,9 @@ describe('tokenizer', () => {
     beforeEach(() => {
         environment = container.buildTestable();
         tokenizer = environment.buildAs<TokenFunction>('tokenizer');
+        const util = environment.buildAs<IUtil>('util');
+        ok = util.ok;
+        fail = util.fail;
     });
 
     test('should fail if document parsing failed', () => {
