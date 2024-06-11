@@ -4,7 +4,9 @@ export interface IParseRemaining<TParse> {
     rest: TParse;
 };
 
-export interface IParseStepForward<TParse> extends IParseRemaining<TParse>, ILocation {
+export interface IParseStepForward<TParse> extends IParseRemaining<TParse> {
+    line: number;
+    char: number;
 }
 
 export interface IStringParseStepForward extends IParseStepForward<string> {};
@@ -31,10 +33,12 @@ export interface IDiscardResult {
 
 export interface IUnparsedInfo<TParse> {
     remaining: TParse;
-    type: 'unparsed'
+    type: 'unparsed';
 }
 
-export interface IUnparsed<TParse> extends IUnparsedInfo<TParse>, ILocation {
+export interface IUnparsed<TParse> extends IUnparsedInfo<TParse> {
+    line: number;
+    char: number;
 };
 
 export type StepParse<TParse, TResult> = IParseStepForward<TParse> & (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult);
