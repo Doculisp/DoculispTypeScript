@@ -1,4 +1,13 @@
-export interface ILocation {
+export type IsBefore = -1
+export type IsSame = 0
+export type IsAfter = 1;
+export type IsOrder = IsBefore | IsSame | IsAfter;
+
+export interface IComparable<T> {
+    compare(other: T) : IsOrder
+};
+
+export interface ILocation extends IComparable<ILocation> {
     readonly line: number;
     readonly char: number;
 };

@@ -13,6 +13,7 @@ describe('tokenizer', () => {
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
+    let util: IUtil = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -21,7 +22,7 @@ describe('tokenizer', () => {
     beforeEach(() => {
         environment = container.buildTestable();
         tokenizer = environment.buildAs<TokenFunction>('tokenizer');
-        const util = environment.buildAs<IUtil>('util');
+        util = environment.buildAs<IUtil>('util');
         ok = util.ok;
         fail = util.fail;
     });
@@ -84,7 +85,7 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom', () => {
-            const start: ILocation = { line: 4, char: 2 };
+            const start: ILocation = util.location(4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'D:/comments/simple.md',
                 parts: [
@@ -102,7 +103,7 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom with space after atom', () => {
-            const start: ILocation = { line: 4, char: 2 };
+            const start: ILocation = util.location(4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'D:/comments/simple.md',
                 parts: [
@@ -120,7 +121,7 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom with new line after atom', () => {
-            const start: ILocation = { line: 4, char: 2 };
+            const start: ILocation = util.location(4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'D:/comments/simple.md',
                 parts: [
@@ -138,7 +139,7 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom containing only numbers', () => {
-            const start: ILocation = { line: 4, char: 2 };
+            const start: ILocation = util.location(4, 2 );
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'D:/comments/simple.md',
                 parts: [
@@ -156,7 +157,7 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom with hyphen and underscore', () => {
-            const start: ILocation = { line: 4, char: 2 };
+            const start: ILocation = util.location(4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'D:/comments/simple.md',
                 parts: [
@@ -174,7 +175,7 @@ describe('tokenizer', () => {
         });
 
         test('should tokenize a single atom with a single word parameter', () => {
-            const start: ILocation = { line: 1, char: 13 };
+            const start: ILocation = util.location(1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'Z:/parameter.md',
@@ -194,7 +195,7 @@ describe('tokenizer', () => {
         });
 
         test('should tokenize a single atom with a multi word parameter', () => {
-            const start: ILocation = { line: 1, char: 13 };
+            const start: ILocation = util.location(1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'Z:/parameter.md',
@@ -214,7 +215,7 @@ describe('tokenizer', () => {
         });
 
         test('should handle nested lisp', () => {
-            const start: ILocation = { line: 2, char: 1};
+            const start: ILocation = util.location(2, 1);
 
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'A:/main.md',
@@ -237,7 +238,7 @@ describe('tokenizer', () => {
         });
 
         test('should handle comment with nested lisp', () => {
-            const start: ILocation = { line: 2, char: 1};
+            const start: ILocation = util.location(2, 1);
 
             let parseResult: Result<DocumentMap> = ok({
                 documentPath: 'A:/main.md',

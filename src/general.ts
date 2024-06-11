@@ -1,5 +1,9 @@
 import { IRegisterable } from "./types.containers";
-import { IFail, ILocation, ISuccess, IUtil } from "./types.general";
+import { IFail, ILocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame } from "./types.general";
+
+function before() : IsBefore { return -1; }
+function after()  : IsAfter  { return  1; }
+function same()   : IsSame   { return  0; }
 
 class Location implements ILocation {
     private readonly _line: number;
@@ -16,6 +20,24 @@ class Location implements ILocation {
 
     public get char(): number {
         return this._char;
+    }
+
+    compare(other: ILocation): IsOrder {
+        if(other.line < this._line) {
+            return before();
+        }
+        if(this._line < other.line) {
+            return after();
+        }
+
+        if(other.char < this._char) {
+            return before();
+        }
+        if(this.char < other.char) {
+            return after();
+        }
+
+        return same();
     }
 
     toString(): string {
