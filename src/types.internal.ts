@@ -45,9 +45,9 @@ export type StepParseResult<TParse, TResult> = Result<StepParse<TParse, TResult>
 
 export type StringStepParseResult<T> = StepParseResult<string, T>;
 
-export type HandleValue<TParse, TResult> = (input: TParse, line: number, char: number) => StepParseResult<TParse, TResult>;
+export type HandleValue<TParse, TResult> = (input: TParse, current: ILocation) => StepParseResult<TParse, TResult>;
 
-export type HandleStringValue<T> = (input: string, line: number, char: number) => StringStepParseResult<T>;
+export type HandleStringValue<T> = (input: string, current: ILocation) => StringStepParseResult<T>;
 
 export interface IParser<TParse, TResult> {
     parse(input: TParse, initialLocation: ILocation): Result<[TResult[], IUnparsed<TParse>]>;

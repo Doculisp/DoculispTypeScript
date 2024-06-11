@@ -1,17 +1,17 @@
 export interface ILocation {
-    line: number;
-    char: number;
+    readonly line: number;
+    readonly char: number;
 };
 
 export interface ISuccess<T> {
-    value: T;
-    success: true;
+    readonly value: T;
+    readonly success: true;
 };
 
 export interface IFail {
-    message: string;
-    documentPath: string;
-    success: false;
+    readonly message: string;
+    readonly documentPath: string;
+    readonly success: false;
 };
 
 export type Result<T> = ISuccess<T> | IFail;

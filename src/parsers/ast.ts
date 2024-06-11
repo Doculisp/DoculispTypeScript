@@ -1,6 +1,6 @@
 import { AstAfter, AstBefore, AstPart, AstSame, IAst, IAstParser, IDocumentOrder } from "../types.ast";
 import { IRegisterable } from "../types.containers";
-import { IUtil, Result } from "../types.general";
+import { ILocation, IUtil, Result } from "../types.general";
 import { HandleValue, IInternals, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
@@ -50,7 +50,7 @@ function createDocumentOrder(documentDepth: number, documentIndex: number, line:
 
 function isText(util: IUtil): HandleValue<Token[], AstPart> {
     const ok = util.ok;
-    return function (input: Token[], line: number, char: number): StepParseResult<Token[], AstPart> {
+    return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
         const token: Token = input.shift() as Token;
         if(token.type === 'token - text') {
             let order = createDocumentOrder(0, 0, token.location.line, token.location.char);
@@ -61,8 +61,8 @@ function isText(util: IUtil): HandleValue<Token[], AstPart> {
                     documentOrder: order,
                     value: token.text,
                 },
-                line: line,
-                char: char + 1,
+                line: current.line,
+                char: current.char + 1,
                 rest: input
             });
         }

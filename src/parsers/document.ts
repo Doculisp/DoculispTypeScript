@@ -1,6 +1,6 @@
 import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
-import { IUtil, Result } from "../types.general";
+import { ILocation, IUtil, Result } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
 import { HandleStringValue, IInternals, IStringParseStepForward, StringStepParseResult } from "../types.internal";
@@ -27,7 +27,7 @@ type ParesBuilder = {
 };
 
 function getPartParsers(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
-    function isStopParsingWhiteSpace(input: string, _line: number, _char: number): Result<'stop' | false> {
+    function isStopParsingWhiteSpace(input: string, _current: ILocation): Result<'stop' | false> {
         const regex = /\S+/;
         if(regex.test(input)) {
             return util.ok('stop');
@@ -36,14 +36,14 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
 
     function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<DocumentPart> {
-        return function (input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+        return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
             if(startsWith.test(input)) {
                 const found: string = (input.match(startsWith) as any)[0];
                 return util.ok({
                     type: 'discard',
                     rest: input.slice(found.length),
-                    line: lineIncrement(line),
-                    char: charIncrement(char, found),
+                    line: lineIncrement(current.line),
+                    char: charIncrement(current.char, found),
                 });
             }
             return util.ok(false);
@@ -51,7 +51,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
 
     function doesItStartWithKeep(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<string> {
-        return function (input:string, line: number, char: number): StringStepParseResult<string> {
+        return function (input:string, current: ILocation): StringStepParseResult<string> {
             if(startsWith.test(input)) {
                 const parsed: string = (input.match(startsWith) as any)[0];
                 const rest = input.slice(parsed.length);
@@ -59,8 +59,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     type: 'parse result',
                     subResult: parsed,
                     rest,
-                    line: lineIncrement(line),
-                    char: charIncrement(char, parsed),
+                    line: lineIncrement(current.line),
+                    char: charIncrement(current.char, parsed),
                 });
             }
             return util.ok(false);
@@ -69,14 +69,14 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
 
     function isDiscardedWhiteSpace(): HandleStringValue<DocumentPart> {
         const createParser = internals.createStringParser<DocumentPart>;
-        return function (input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+        return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
             const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
             const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
             const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l + 1, () => 1);
             const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, l => l, (c, f) => c + f.length);
     
             const whiteSpaceParser = createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
-            const parsed = whiteSpaceParser.parse(input, util.location(line, char));
+            const parsed = whiteSpaceParser.parse(input, util.location(current.line, current.char));
             if(parsed.success) {
                 const [_, leftovers] = parsed.value;
                 if(leftovers.remaining === input) {
@@ -96,17 +96,17 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
 
     function isKeptWhiteSpace(): HandleStringValue<string> {
-        return function (input: string, line: number, char: number): StringStepParseResult<string> {
+        return function (input: string, current: ILocation): StringStepParseResult<string> {
             const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
             const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
             const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, l => l + 1, () => 1);
             const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, id, (c, f) => c + f.length);
     
             const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
-            const parsed = parser.parse(input, util.location(line, char));
+            const parsed = parser.parse(input, util.location(current.line, current.char));
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
-                if(leftover.line === line && leftover.char === char) {
+                if(leftover.line === current.line && leftover.char === current.char) {
                     return util.ok(false);
                 }
     
@@ -140,10 +140,10 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
 
     function isMultiline() : HandleStringValue<DocumentPart> {
-        return function(toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
+        return function(toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let opened: boolean = false;
     
-            function tryParseMultiline(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseMultiline(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithMultilineMarker.test(input)) {
                     opened = !opened;
     
@@ -154,8 +154,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line,
-                        char: char + parsed.length,
+                        line: current.line,
+                        char: current.char + parsed.length,
                     });
                 }
                 return util.ok(false);
@@ -163,7 +163,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
             const tryParseWhiteSpace = isKeptWhiteSpace();
     
-            function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
                 if(!opened) {
                     return util.ok('stop');
                 }
@@ -175,20 +175,20 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     type: 'parse result',
                     subResult: parsed,
                     rest,
-                    line,
-                    char: char + 1,
+                    line: current.line,
+                    char: current.char + 1,
                 });
             }
     
             const parser = internals.createStringParser(tryParseMultiline, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
+            const parsed = parser.parse(toParse, starting);
     
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Multiline code block at { line: ${startingLine}, char: ${startingChar} } does not close`, documentPath);
+                    return util.fail(`Multiline code block at { line: ${starting.line}, char: ${starting.char} } does not close`, documentPath);
                 }
                 const [peaces, leftover] = parsed.value;
-                if(leftover.line === startingLine && leftover.char === startingChar) {
+                if(leftover.line === starting.line && leftover.char === starting.char) {
                     return util.ok(false);
                 }
     
@@ -197,7 +197,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 
                 return util.ok({
                     type: 'parse result',
-                    subResult: { location: { line: startingLine, char: startingChar }, type: 'text', text: result },
+                    subResult: { location: starting, type: 'text', text: result },
                     rest,
                     line: leftover.line,
                     char: leftover.char,
@@ -209,10 +209,10 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
 
     function isInline(): HandleStringValue<DocumentPart> {
-        return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
+        return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let opened: boolean = false;
     
-            function tryParseInLine(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseInLine(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithInlineMarker.test(input)) {
                     opened = !opened;
     
@@ -223,18 +223,18 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line,
-                        char: char + parsed.length,
+                        line: current.line,
+                        char: current.char + parsed.length,
                     });
                 }
                 return util.ok(false);
             }
     
-            function tryParseWhiteSpace(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithWhiteSpace.test(input)) {
                     let doesItStartWithNewLine = /^\r|\n/;
                     if(doesItStartWithNewLine.test(input)) {
-                        return util.fail(`Inline code block at { line: ${startingLine}, char: ${startingChar} } contains a new line before closing.`, documentPath);
+                        return util.fail(`Inline code block at { line: ${starting.line}, char: ${starting.char} } contains a new line before closing.`, documentPath);
                     }
     
                     const parsed: string = (input.match(doesIt.startWithWhiteSpace) as any)[0];
@@ -243,14 +243,14 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line,
-                        char: char + parsed.length,
+                        line: current.line,
+                        char: current.char + parsed.length,
                     });
                 }
                 return util.ok(false);
             }
     
-            function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
                 if(!opened) {
                     return util.ok('stop');
                 }
@@ -261,21 +261,21 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     type: 'parse result',
                     subResult: parsed,
                     rest,
-                    line,
-                    char: char + 1,
+                    line: current.line,
+                    char: current.char + 1,
                 });
             }
     
             const parser = internals.createStringParser(tryParseInLine, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
+            const parsed = parser.parse(toParse, starting);
     
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Inline code block at { line: ${startingLine}, char: ${startingChar} } does not close`, documentPath);
+                    return util.fail(`Inline code block at { line: ${starting.line}, char: ${starting.char} } does not close`, documentPath);
                 }
     
                     const [parts, leftover] = parsed.value;
-                if(leftover.line === startingLine && leftover.char === startingChar) {
+                if(leftover.line === starting.line && leftover.char === starting.char) {
                     return util.ok(false);
                 }
     
@@ -283,7 +283,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
                 return util.ok({
                     type: 'parse result',
-                    subResult: { type: 'text', location: { line: startingLine, char: startingChar }, text: result },
+                    subResult: { type: 'text', location: starting, text: result },
                     rest: leftover.remaining,
                     line: leftover.line,
                     char: leftover.char,
@@ -295,17 +295,17 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
     
     function isDoculisp(isOpen?: boolean): HandleStringValue<DocumentPart> {
-        return function (toParse: string, startLine: number, startChar: number): StringStepParseResult<DocumentPart> {
+        return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             function updateChar(char: number, found: string): number {
                 return char + found.length;
             }
     
             let depth = isOpen ? 1 : 0;
             isOpen = false;
-            function tryParseDoculispOpen(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
-                        return util.fail(`Doculisp Block at { line: ${startLine}, char: ${startChar} } contains an embedded doculisp block at { line: ${line}, char: ${char} }.`, documentPath);
+                        return util.fail(`Doculisp Block at { line: ${starting.line}, char: ${starting.char} } contains an embedded doculisp block at { line: ${current.line}, char: ${current.char} }.`, documentPath);
                     }
     
                     const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
@@ -315,14 +315,14 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                     return util.ok({
                         type: 'discard',
                         rest,
-                        line,
-                        char: updateChar(char, parsed),
+                        line: current.line,
+                        char: updateChar(current.char, parsed),
                     });
                 }
                 return util.ok(false);
             }
     
-            function tryParseLispOpen(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseLispOpen(input: string, current: ILocation): StringStepParseResult<string> {
                 if(depth === 0) return util.ok(false);
     
                 if(doesIt.startWithOpenLisp.test(input)) {
@@ -334,15 +334,15 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line,
-                        char: updateChar(char, parsed),
+                        line: current.line,
+                        char: updateChar(current.char, parsed),
                     });
                 }
     
                 return util.ok(false);
             }
     
-            function tryParseLispClose(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseLispClose(input: string, current: ILocation): StringStepParseResult<string> {
                 if(depth === 0) return util.ok(false);
                 
                 if(doesIt.startsWithCloseLisp.test(input)) {
@@ -351,8 +351,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
                     const step: IStringParseStepForward = {
                         rest,
-                        line,
-                        char: updateChar(char, parsed),
+                        line: current.line,
+                        char: updateChar(current.char, parsed),
                     };
     
                     depth--;
@@ -371,7 +371,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 return util.ok(false);
             }
     
-            function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
                 if(0 < depth){
                     const parsed = input.charAt(0);
                     const rest = input.slice(1);
@@ -380,31 +380,31 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line,
-                        char: updateChar(char, parsed),
+                        line: current.line,
+                        char: updateChar(current.char, parsed),
                     });
                 }
     
                 return util.ok('stop');
             }
     
-            function tryParseWhiteSpace(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
                 if(0 < depth){
                     const tryParseWhiteSpace = isKeptWhiteSpace();
-                    return tryParseWhiteSpace(input, line, char);
+                    return tryParseWhiteSpace(input, current);
                 }
                 return util.ok(false);
             }
     
             const parser = internals.createStringParser(tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, util.location(startLine, startChar));
+            const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(0 < depth) {
-                    return util.fail(`Doculisp block at { line: ${startLine}, char: ${startChar} } is not closed.`, documentPath);
+                    return util.fail(`Doculisp block at { line: ${starting.line}, char: ${starting.char} } is not closed.`, documentPath);
                 }
     
                 const [parts, leftover] = parsed.value;
-                if(leftover.line === startLine && leftover.char === startChar) {
+                if(leftover.line === starting.line && leftover.char === starting.char) {
                     return util.ok(false);
                 }
     
@@ -423,7 +423,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 let result = parts.join('').trim();
                 return util.ok(internals.buildStepParse(step, {
                     type: 'parse result',
-                    subResult: { location: { line: startLine, char: startChar }, type: 'lisp', text: result },
+                    subResult: { location: starting, type: 'lisp', text: result },
                 }));
             }
             return parsed;
@@ -431,28 +431,28 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
 
     function isComment(): HandleStringValue<DocumentPart> {
-        return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
+        return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let opened = false;
             const tryDoculisp = isDoculisp();
     
             const stripWhiteSpace = isDiscardedWhiteSpace();
     
-            function tryParseOpenComment(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+            function tryParseOpenComment(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithOpenComment.test(input)) {
                     const parsed: string = (input.match(doesIt.startWithOpenComment) as any)[0];
                     opened = true;
                     return util.ok({
                         type: 'discard',
                         rest: input.slice(parsed.length),
-                        line,
-                        char: char + parsed.length,
+                        line: current.line,
+                        char: current.char + parsed.length,
                     });
                 }
                 
                 return util.ok(false);
             }
     
-            function tryParseCloseComment(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+            function tryParseCloseComment(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithCloseComment.test(input)) {
                     if(opened){
                         const parsed: string = (input.match(doesIt.startWithCloseComment) as any)[0];
@@ -461,8 +461,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         return util.ok({
                             type: 'discard',
                             rest: input.slice(parsed.length),
-                            line,
-                            char: char + parsed.length,
+                            line: current.line,
+                            char: current.char + parsed.length,
                         });
                     }
     
@@ -471,22 +471,22 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 return util.ok(false);
             }
     
-            function tryParseWhiteSpace(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(opened && doesIt.startWithWhiteSpace.test(input)) {
-                    return stripWhiteSpace(input, line, char);
+                    return stripWhiteSpace(input, current);
                 }
                 return util.ok(false);
             }
     
-            function tryParseDoculisp(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+            function tryParseDoculisp(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(!opened) {
                     return util.ok(false);
                 }
     
-                return tryDoculisp(input, line, char);
+                return tryDoculisp(input, current);
             }
     
-            function tryEndAll(input: string, line: number, char: number): StringStepParseResult<DocumentPart> {
+            function tryEndAll(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(!opened) {
                     return util.ok('stop');
                 }
@@ -494,16 +494,16 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 return util.ok({
                     type: 'discard',
                     rest: input.slice(1),
-                    line,
-                    char: char + 1,
+                    line: current.line,
+                    char: current.char + 1,
                 })
             }
     
             const parser = internals.createStringParser(tryParseOpenComment, tryParseCloseComment, tryParseWhiteSpace, tryParseDoculisp, tryEndAll);
-            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
+            const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Open HTML Comment at { line: ${startingLine}, char: ${startingChar} } but does not close.`, documentPath);
+                    return util.fail(`Open HTML Comment at { line: ${starting.line}, char: ${starting.char} } but does not close.`, documentPath);
                 }
     
                 const [result, leftover] = parsed.value;
@@ -516,7 +516,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         char: leftover.char,
                     });
                 }
-                else if(leftover.line !== startingLine || leftover.char !== startingChar) {
+                else if(leftover.line !== starting.line || leftover.char !== starting.char) {
                     return util.ok({
                         type: 'discard',
                         rest: leftover.remaining,
@@ -533,8 +533,8 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     }
 
     function isWord(): HandleStringValue<DocumentPart> {
-        return function (toParse: string, startingLine: number, startingChar: number): StringStepParseResult<DocumentPart> {
-            function tryParseEndParse(input: string, _line: number, _char: number): StringStepParseResult<string> {
+        return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
+            function tryParseEndParse(input: string, _current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithOpenComment.test(input)) {
                     return util.ok('stop')
                 }
@@ -546,7 +546,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
             const tryParseWhiteSpace = isKeptWhiteSpace();
     
-            function tryParseWord(input: string, line: number, char: number): StringStepParseResult<string> {
+            function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
                 const startsWithWord = /^\S/;
                 if(startsWithWord.test(input)) {
                     const parsed = input.charAt(0);
@@ -555,26 +555,26 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line,
-                        char: char + 1,
+                        line: current.line,
+                        char: current.char + 1,
                     });
                 }
                 return util.ok(false);
             }
     
             const parser = internals.createStringParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
-            const parsed = parser.parse(toParse, util.location(startingLine, startingChar));
+            const parsed = parser.parse(toParse, starting);
     
             if(parsed.success) {
                 const [parts, leftover] = parsed.value;
-                if(leftover.line === startingLine && leftover.char === startingChar) {
+                if(leftover.line === starting.line && leftover.char === starting.char) {
                     return util.ok(false);
                 }
     
                 const result = parts.join('').trim();
                 return util.ok({
                     type: 'parse result',
-                    subResult: { type: 'text', text: result, location: { line: startingLine, char: startingChar } },
+                    subResult: { type: 'text', text: result, location: starting },
                     rest: leftover.remaining,
                     line: leftover.line,
                     char: leftover.char,

@@ -5,7 +5,7 @@ import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, IS
 function mapFirst<TParse, TResult>(util: IUtil, input: TParse, current: ILocation, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
     for (let index = 0; index < collection.length; index++) {
         const handler = collection[index] as HandleValue<TParse, TResult>;
-        const result = handler(input, current.line, current.char);
+        const result = handler(input, current);
         if(result.success) {
             if(result.value){
                 return result;

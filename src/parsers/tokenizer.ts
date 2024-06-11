@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
-import { IUtil, Result } from "../types.general";
+import { ILocation, IUtil, Result } from "../types.general";
 import { IInternals, StringStepParseResult } from "../types.internal";
 import { ILispSearches, Searcher } from "../types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
@@ -32,13 +32,13 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
     const ok = util.ok;
     const fail = util.fail;
 
-    function tokenizeWhiteSpace(input: string, line: number, char: number): StringStepParseResult<Token> {
+    function tokenizeWhiteSpace(input: string, current: ILocation): StringStepParseResult<Token> {
         if(doesIt.startWithWindowsNewline.test(input)) {
             isToken = false;
             const newLine = (input.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             input = input.slice(newLine.length);
-            line++;
-            char = 1;
+            const line = current.line + 1;
+            const char = 1;
             return util.ok({
                 rest: input,
                 char,
@@ -50,8 +50,8 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         if(doesIt.startWithLinuxNewline.test(input)) {
             const newLine = (input.match(doesIt.startWithLinuxNewline) as any)[0] as string;
             input = input.slice(newLine.length);
-            line++;
-            char = 1;
+            const line = current.line + 1;
+            const char = 1;
             return ok({
                 rest: input,
                 char,
@@ -63,8 +63,8 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         if(doesIt.startWithMacsNewline.test(input)) {
             const newLine = (input.match(doesIt.startWithMacsNewline) as any)[0] as string;
             input = input.slice(newLine.length);
-            line++;
-            char = 1;
+            const line = current.line + 1;
+            const char = 1;
             return ok({
                 rest: input,
                 char,
@@ -76,10 +76,10 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         if(doesIt.startWithWhiteSpace.test(input)) {
             const space = (input.match(doesIt.startWithWhiteSpace) as any)[0] as string;
             input = input.slice(space.length);
-            char += space.length;
+            const char = current.char + space.length;
             return ok({
                 rest: input,
-                line,
+                line: current.line,
                 char,
                 type: 'discard',
             });
@@ -88,9 +88,9 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         return ok(false);
     }
 
-    function tokenizeComment(toParse: string, startLine: number, startChar: number): StringStepParseResult<Token> {
+    function tokenizeComment(toParse: string, starting: ILocation): StringStepParseResult<Token> {
         let depth = 0;
-        function tryParse(startsWith: RegExp, input: string, line: number, char: number): StringStepParseResult<string> {
+        function tryParse(startsWith: RegExp, input: string, current: ILocation): StringStepParseResult<string> {
             if(startsWith.test(input)) {
                 const parsed: string = (input.match(startsWith) as any)[0];
                 const rest = input.slice(parsed.length);
@@ -98,16 +98,16 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
                 return ok({
                     type: 'discard',
                     rest,
-                    line,
-                    char: char + parsed.length,
+                    line: current.line,
+                    char: current.char + parsed.length,
                 });
             }
             return ok(false);
         }
         
-        function tryParseOpenComment(input: string, line: number, char: number): StringStepParseResult<string> {
+        function tryParseOpenComment(input: string, current: ILocation): StringStepParseResult<string> {
             const startsWithComment = /^\(\*/;
-            const result = tryParse(startsWithComment, input, line, char);
+            const result = tryParse(startsWithComment, input, current);
             if(result.success && result.value) {
                 depth++;
             }
@@ -115,9 +115,9 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             return result;
         }
 
-        function tryParseOpenParen(input: string, line: number, char: number): StringStepParseResult<string> {
+        function tryParseOpenParen(input: string, current: ILocation): StringStepParseResult<string> {
             if(0 < depth) {
-                const result = tryParse(doesIt.startWithOpenLisp, input, line, char);
+                const result = tryParse(doesIt.startWithOpenLisp, input, current);
                 if(result.success && result.value) {
                     depth++;
                 }
@@ -126,9 +126,9 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             return ok('stop');
         }
 
-        function tryParseCloseParen(input: string, line: number, char: number): StringStepParseResult<string> {
+        function tryParseCloseParen(input: string, current: ILocation): StringStepParseResult<string> {
             if(0 < depth) {
-                const result = tryParse(doesIt.startsWithCloseLisp, input, line, char);
+                const result = tryParse(doesIt.startsWithCloseLisp, input, current);
                 if(result.success && result.value) {
                     depth --;
                 }
@@ -137,9 +137,9 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             return ok('stop');
         }
 
-        function tryParseWhiteSpace(input: string, line: number, char: number): StringStepParseResult<string> {
+        function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
             if(0 < depth) {
-                let parsed = tokenizeWhiteSpace(input, line, char);
+                let parsed = tokenizeWhiteSpace(input, current);
                 if(parsed.success) {
                     if(parsed.value && parsed.value !== 'stop'){
                         return ok({
@@ -156,19 +156,19 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             return ok('stop')
         }
 
-        function tryParseText(input: string, line: number, char: number): StringStepParseResult<string> {
+        function tryParseText(input: string, current: ILocation): StringStepParseResult<string> {
             if(0 < depth) {
-                return tryParse(/^./, input, line, char);
+                return tryParse(/^./, input, current);
             }
             return ok('stop')
         }
 
         const parser = parserBuilder.createStringParser(tryParseOpenComment, tryParseOpenParen, tryParseCloseParen, tryParseWhiteSpace, tryParseText);
-        const parsed = parser.parse(toParse, util.location(startLine, startChar));
+        const parsed = parser.parse(toParse, starting);
 
         if(parsed.success) {
             const [_parts, leftover] = parsed.value;
-            if(leftover.line === startLine && leftover.char === startChar) {
+            if(leftover.line === starting.line && leftover.char === starting.char) {
                 return ok(false);
             }
 
@@ -182,19 +182,19 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         return parsed;
     }
 
-    function tokenizeParenthesis(input: string, line: number, char: number): StringStepParseResult<Token> {
+    function tokenizeParenthesis(input: string, current: ILocation): StringStepParseResult<Token> {
         if(doesIt.startWithOpenLisp.test(input)) {
             let open: Token = {
-                location: { line, char },
+                location: current,
                 type: 'token - open parenthesis',
             };
             isToken = true;
 
-            char++;
+            const char = current.char + 1;
 
             return ok({
                 subResult: open,
-                line,
+                line: current.line,
                 char,
                 rest: input.slice(1),
                 type: "parse result",
@@ -204,14 +204,14 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         if(doesIt.startsWithCloseLisp.test(input)) {
             let close: Token = {
                 type: 'token - close parenthesis',
-                location: { line, char },
+                location: current,
             };
 
-            char++;
+            const char = current.char + 1;
             
             return ok({
                 subResult: close,
-                line,
+                line: current.line,
                 char,
                 rest: input.slice(1),
                 type: "parse result",
@@ -221,7 +221,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         return ok(false);
     }
 
-    function tokenizeAtom(input: string, line: number, char: number): StringStepParseResult<Token> {
+    function tokenizeAtom(input: string, current: ILocation): StringStepParseResult<Token> {
         let doesItStartWithWord = /^[^\(\)\s]+/;
         if(doesItStartWithWord.test(input) && isToken) {
             let atomValue: string = (input.match(doesItStartWithWord) as any)[0];
@@ -229,15 +229,15 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             let atom: Token = {
                 type: 'token - atom',
                 text: atomValue,
-                location: { line, char },
+                location: current,
             };
 
             isToken = false;
-            char += atomValue.length;
+            const char = current.char + atomValue.length;
 
             return ok({
                 subResult: atom,
-                line,
+                line: current.line,
                 char,
                 rest: input.slice(atomValue.length),
                 type: "parse result",
@@ -247,7 +247,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         return ok(false);
     }
 
-    function tokenizeParameter(input: string, line: number, char: number): StringStepParseResult<Token> {
+    function tokenizeParameter(input: string, current: ILocation): StringStepParseResult<Token> {
         let doesItStartWithParameter = /^[^\)\s]+[^\)]*/;
         if(doesItStartWithParameter.test(input) && !isToken) {
             let parameterValue: string = (input.match(doesItStartWithParameter) as any)[0];
@@ -255,16 +255,16 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             let atom: Token = {
                 type: 'token - parameter',
                 text: parameterValue.trim(),
-                location: { line, char }
+                location: current,
             };
 
-            char += parameterValue.length;
+            const char = current.char + parameterValue.length;
 
             return ok({
                 type: 'parse result',
                 subResult: atom,
                 rest: input.slice(parameterValue.length),
-                line,
+                line: current.line,
                 char,
             });
         }
