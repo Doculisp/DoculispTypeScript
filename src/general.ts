@@ -1,6 +1,32 @@
 import { IRegisterable } from "./types.containers";
 import { IFail, ILocation, ISuccess, IUtil } from "./types.general";
 
+class Location implements ILocation {
+    private readonly _line: number;
+    private readonly _char: number;
+    
+    constructor(line: number, char: number) {
+        this._line = line;
+        this._char = char;
+    }
+
+    public get line(): number {
+        return this._line;
+    }
+
+    public get char(): number {
+        return this._char;
+    }
+
+    toString(): string {
+        return `{ line: ${this._line}, char: ${this._char} }`;
+    }
+
+    asJson() {
+        return { line: this._line, char: this._char };
+    }
+}
+
 function buildGeneral(): IUtil {
     function ok<T>(successfulValue: T) : ISuccess<T> {
         return {
@@ -18,10 +44,7 @@ function buildGeneral(): IUtil {
     };
 
     function location(line: number, char: number): ILocation {
-        return {
-            line,
-            char,
-        }
+        return new Location(line, char);
     }
 
     return {

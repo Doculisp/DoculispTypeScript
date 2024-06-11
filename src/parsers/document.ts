@@ -185,7 +185,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Multiline code block at { line: ${starting.line}, char: ${starting.char} } does not close`, documentPath);
+                    return util.fail(`Multiline code block at ${starting.toString()} does not close`, documentPath);
                 }
                 const [peaces, leftover] = parsed.value;
                 if(leftover.line === starting.line && leftover.char === starting.char) {
@@ -234,7 +234,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 if(doesIt.startWithWhiteSpace.test(input)) {
                     let doesItStartWithNewLine = /^\r|\n/;
                     if(doesItStartWithNewLine.test(input)) {
-                        return util.fail(`Inline code block at { line: ${starting.line}, char: ${starting.char} } contains a new line before closing.`, documentPath);
+                        return util.fail(`Inline code block at ${starting.toString()} contains a new line before closing.`, documentPath);
                     }
     
                     const parsed: string = (input.match(doesIt.startWithWhiteSpace) as any)[0];
@@ -271,7 +271,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Inline code block at { line: ${starting.line}, char: ${starting.char} } does not close`, documentPath);
+                    return util.fail(`Inline code block at ${starting.toString()} does not close`, documentPath);
                 }
     
                     const [parts, leftover] = parsed.value;
@@ -305,7 +305,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
-                        return util.fail(`Doculisp Block at { line: ${starting.line}, char: ${starting.char} } contains an embedded doculisp block at { line: ${current.line}, char: ${current.char} }.`, documentPath);
+                        return util.fail(`Doculisp Block at ${starting.toString()} contains an embedded doculisp block at ${starting.toString()}.`, documentPath);
                     }
     
                     const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
@@ -400,7 +400,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(0 < depth) {
-                    return util.fail(`Doculisp block at { line: ${starting.line}, char: ${starting.char} } is not closed.`, documentPath);
+                    return util.fail(`Doculisp block at ${starting.toString()} is not closed.`, documentPath);
                 }
     
                 const [parts, leftover] = parsed.value;
@@ -503,7 +503,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Open HTML Comment at { line: ${starting.line}, char: ${starting.char} } but does not close.`, documentPath);
+                    return util.fail(`Open HTML Comment at ${starting.toString()} but does not close.`, documentPath);
                 }
     
                 const [result, leftover] = parsed.value;

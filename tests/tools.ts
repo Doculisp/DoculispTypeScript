@@ -15,8 +15,11 @@ export function order<T>(thing: T): T {
             b[index] = order(b[index]);
         }
         return b as any;
+    } else if((thing as any).asJson) {
+        thing = (thing as any).asJson();
     }
-    let a = thing as any;
+
+    const a = thing as any;
     if(a.constructor?.name !== null && a.constructor.name !== 'Object') {
         return thing;
     }
@@ -24,6 +27,7 @@ export function order<T>(thing: T): T {
     const keys = 
         Object.
             keys(a).
+            filter(key => !key.startsWith('_')).
             sort();
     const ret: any = {};
     
