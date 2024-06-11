@@ -1,4 +1,4 @@
-import { ILocation, Result } from "./types.general";
+import { Result } from "./types.general";
 import { TokenizedDocument } from "./types.tokens";
 
 export type AstBefore = -1
@@ -6,9 +6,11 @@ export type AstSame = 0
 export type AstAfter = 1;
 export type AstOrder = AstBefore | AstSame | AstAfter;
 
-export interface IDocumentOrder extends ILocation {
+export interface IDocumentOrder {
     readonly documentDepth: number;
     readonly documentIndex: number;
+    readonly line: number;
+    readonly char: number;
     compare(other: IDocumentOrder): AstOrder;
 }
 

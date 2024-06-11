@@ -621,7 +621,8 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
         if(parsed.success) {
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
-                return util.fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at { line: ${leftover.line}, char: ${leftover.char - 1} }.`, documentPath);
+                const ending = util.location(leftover.line, leftover.char - 1);
+                return util.fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at ${ ending.toString() }.`, documentPath);
             }
 
             return util.ok(createMap(documentPath, parts));
