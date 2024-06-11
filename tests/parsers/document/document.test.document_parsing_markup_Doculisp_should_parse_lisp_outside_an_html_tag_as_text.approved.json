@@ -1,16 +1,23 @@
 {
   "success": true,
   "value": {
-    "documentPath": "documentExample.md",
     "parts": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 0,
+          "documentPath": "documentExample.md",
           "line": 1
         },
         "text": "(# Heading) Hello Doculisp",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 0,
+      "documentPath": "documentExample.md"
+    }
   }
 }

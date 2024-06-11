@@ -1,11 +1,13 @@
 {
   "success": true,
   "value": {
-    "documentPath": "_main.md",
     "parts": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "_main.md",
           "line": 1
         },
         "text": "# Title\r\nsome text about title",
@@ -14,6 +16,9 @@
       {
         "location": {
           "char": 12,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "_main.md",
           "line": 4
         },
         "text": "(# two)",
@@ -22,11 +27,19 @@
       {
         "location": {
           "char": 1,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "_main.md",
           "line": 5
         },
         "text": "Mickey Mouse Hotline.",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "_main.md"
+    }
   }
 }

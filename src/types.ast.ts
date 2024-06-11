@@ -1,4 +1,4 @@
-import { Result } from "./types.general";
+import { IProjectLocation, Result } from "./types.general";
 import { TokenizedDocument } from "./types.tokens";
 
 export type AstBefore = -1
@@ -69,7 +69,7 @@ export interface IEmptyAst {
 }
 
 export interface IAst {
-    documentPath: string;
+    projectLocation: IProjectLocation;
     section: ISectionWriter | IEmptyAst;
 }
 

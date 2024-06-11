@@ -37,7 +37,7 @@ describe('tokenizer', () => {
 
     test('should return empty if given an empty parse result', () => {
         const parseResult: Result<DocumentMap> = ok({
-            documentPath: 'c:/empty/readme.md',
+            projectLocation: { documentPath: 'c:/empty/readme.md', documentDepth: 0, documentIndex: 0 },
             parts: [],
         });
 
@@ -48,15 +48,12 @@ describe('tokenizer', () => {
 
     test('should tokenize text as text', () => {
         const parseResult: Result<DocumentMap> = ok({
-            documentPath: 'myText.md',
+            projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
             parts: [
                 {
                     type: 'text',
                     text: 'hello my text',
-                    location: {
-                        line: 5,
-                        char: 23
-                    },
+                    location: util.location('D:/comments/simple.md', 0, 0, 5, 23),
                 }
             ],
         });
@@ -69,12 +66,12 @@ describe('tokenizer', () => {
     describe('handling Doculisp', () => {
         test('should tokenize an empty comment', () => {
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'D:/comments/simple.md',
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
                         text: '(*)',
-                        location: { line: 2, char: 1 },
+                        location: util.location('D:/comments/simple.md', 0, 0, 2, 1),
                     },
                 ],
             });
@@ -85,9 +82,9 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom', () => {
-            const start: ILocation = util.location(4, 2);
+            const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'D:/comments/simple.md',
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -103,9 +100,9 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom with space after atom', () => {
-            const start: ILocation = util.location(4, 2);
+            const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'D:/comments/simple.md',
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -121,9 +118,9 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom with new line after atom', () => {
-            const start: ILocation = util.location(4, 2);
+            const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'D:/comments/simple.md',
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -139,9 +136,9 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom containing only numbers', () => {
-            const start: ILocation = util.location(4, 2 );
+            const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2 );
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'D:/comments/simple.md',
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -157,9 +154,9 @@ describe('tokenizer', () => {
         });
         
         test('should tokenize an single atom with hyphen and underscore', () => {
-            const start: ILocation = util.location(4, 2);
+            const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'D:/comments/simple.md',
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -175,10 +172,10 @@ describe('tokenizer', () => {
         });
 
         test('should tokenize a single atom with a single word parameter', () => {
-            const start: ILocation = util.location(1, 13);
+            const start: ILocation = util.location('Z:/parameter.md', 0, 0, 1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'Z:/parameter.md',
+                projectLocation: { documentPath: 'Z:/parameter.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -195,10 +192,10 @@ describe('tokenizer', () => {
         });
 
         test('should tokenize a single atom with a multi word parameter', () => {
-            const start: ILocation = util.location(1, 13);
+            const start: ILocation = util.location('Z:/parameter.md', 0, 0, 1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'Z:/parameter.md',
+                projectLocation: { documentPath: 'Z:/parameter.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -215,10 +212,10 @@ describe('tokenizer', () => {
         });
 
         test('should handle nested lisp', () => {
-            const start: ILocation = util.location(2, 1);
+            const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
 
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'A:/main.md',
+                projectLocation: { documentPath: 'A:/main.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',
@@ -238,10 +235,10 @@ describe('tokenizer', () => {
         });
 
         test('should handle comment with nested lisp', () => {
-            const start: ILocation = util.location(2, 1);
+            const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
 
             let parseResult: Result<DocumentMap> = ok({
-                documentPath: 'A:/main.md',
+                projectLocation: { documentPath: 'A:/main.md', documentDepth: 0, documentIndex: 0 },
                 parts: [
                     {
                         type: 'lisp',

@@ -1,11 +1,18 @@
 {
   "success": true,
   "value": {
-    "documentPath": "A:/main.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "A:/main.md"
+    },
     "tokens": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 2
         },
         "type": "token - open parenthesis"
@@ -13,6 +20,9 @@
       {
         "location": {
           "char": 2,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 2
         },
         "text": "section-meta",
@@ -21,6 +31,9 @@
       {
         "location": {
           "char": 9,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 3
         },
         "type": "token - open parenthesis"
@@ -28,6 +41,9 @@
       {
         "location": {
           "char": 10,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 3
         },
         "text": "external",
@@ -36,6 +52,9 @@
       {
         "location": {
           "char": 13,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 4
         },
         "type": "token - open parenthesis"
@@ -43,6 +62,9 @@
       {
         "location": {
           "char": 14,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 4
         },
         "text": "Section",
@@ -51,6 +73,9 @@
       {
         "location": {
           "char": 22,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 4
         },
         "text": "./structure.md",
@@ -59,6 +84,9 @@
       {
         "location": {
           "char": 36,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 4
         },
         "type": "token - close parenthesis"
@@ -66,6 +94,9 @@
       {
         "location": {
           "char": 9,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 5
         },
         "type": "token - close parenthesis"
@@ -73,6 +104,9 @@
       {
         "location": {
           "char": 5,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 6
         },
         "type": "token - close parenthesis"

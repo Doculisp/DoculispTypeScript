@@ -77,14 +77,14 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
                 const parser = internals.createArrayParser(isText(util));
-                const parsed = parser.parse(document.tokens, util.location(0, 0));
+                const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 0, 0));
                 
                 if(parsed.success) {
                     const [result, _leftovers] = parsed.value;
 
                     if(0 < result.length){
                         return ok({
-                            documentPath: document.documentPath,
+                            projectLocation: document.projectLocation,
                             section: {
                                 type: 'ast-section',
                                 ast: result,
@@ -94,7 +94,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     }
 
                     return ok({
-                        documentPath: document.documentPath,
+                        projectLocation: document.projectLocation,
                         section: { type: 'ast-empty' },
                     });
                 }

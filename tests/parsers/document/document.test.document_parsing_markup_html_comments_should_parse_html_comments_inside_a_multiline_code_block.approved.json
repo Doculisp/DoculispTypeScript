@@ -1,11 +1,13 @@
 {
   "success": true,
   "value": {
-    "documentPath": "C:/markdown/multiline.md",
     "parts": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 0,
+          "documentPath": "C:/markdown/multiline.md",
           "line": 1
         },
         "text": "An example of an markdown document with html comments:",
@@ -14,11 +16,19 @@
       {
         "location": {
           "char": 5,
+          "documentDepth": 1,
+          "documentIndex": 0,
+          "documentPath": "C:/markdown/multiline.md",
           "line": 2
         },
         "text": "```markdown\n    # A document\n    \n    <!-- this need\n    a summary\n    -->\n    \n    ## Sub section title\n    ```",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 0,
+      "documentPath": "C:/markdown/multiline.md"
+    }
   }
 }

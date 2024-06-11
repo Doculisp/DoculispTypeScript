@@ -36,7 +36,6 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
 
     parse(input: TParse, initialLocation: ILocation): Result<[TResult[], IUnparsed<TParse>]> {
         const results: TResult[] = [];
-        const location = this._util.location;
         let current = initialLocation;
 
         function getUnparsed(): IUnparsed<TParse> {
@@ -61,7 +60,7 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
 
             if(result.value){
                 let parseResult = result.value;
-                current = location(parseResult.line, parseResult.char);
+                current =  this._util.toLocation(initialLocation, parseResult.line, parseResult.char);
                 input = parseResult.rest;
 
                 if(parseResult.type === 'parse result'){

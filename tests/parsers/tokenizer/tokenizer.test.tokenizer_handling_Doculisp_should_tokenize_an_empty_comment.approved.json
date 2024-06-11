@@ -1,7 +1,11 @@
 {
   "success": true,
   "value": {
-    "documentPath": "D:/comments/simple.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "D:/comments/simple.md"
+    },
     "tokens": []
   }
 }

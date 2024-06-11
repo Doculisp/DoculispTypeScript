@@ -1,7 +1,11 @@
 {
   "success": true,
   "value": {
-    "documentPath": "C:/my_document.md",
-    "parts": []
+    "parts": [],
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "C:/my_document.md"
+    }
   }
 }

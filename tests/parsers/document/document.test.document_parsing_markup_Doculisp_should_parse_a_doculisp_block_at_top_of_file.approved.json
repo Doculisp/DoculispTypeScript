@@ -1,16 +1,23 @@
 {
   "success": true,
   "value": {
-    "documentPath": "_main.md",
     "parts": [
       {
         "location": {
           "char": 6,
+          "documentDepth": 12,
+          "documentIndex": 3,
+          "documentPath": "_main.md",
           "line": 1
         },
         "text": "(# header)",
         "type": "lisp"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 12,
+      "documentIndex": 3,
+      "documentPath": "_main.md"
+    }
   }
 }

@@ -1,16 +1,23 @@
 {
   "success": true,
   "value": {
-    "documentPath": "C:/readme.md",
     "parts": [
       {
         "location": {
           "char": 24,
+          "documentDepth": 0,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
           "line": 4
         },
         "text": "hello bro",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 3,
+      "documentPath": "C:/readme.md"
+    }
   }
 }

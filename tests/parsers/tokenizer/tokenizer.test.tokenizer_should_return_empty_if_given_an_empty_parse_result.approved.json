@@ -1,7 +1,11 @@
 {
   "success": true,
   "value": {
-    "documentPath": "c:/empty/readme.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "c:/empty/readme.md"
+    },
     "tokens": []
   }
 }

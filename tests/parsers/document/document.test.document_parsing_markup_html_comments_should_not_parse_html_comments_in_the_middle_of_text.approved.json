@@ -1,11 +1,13 @@
 {
   "success": true,
   "value": {
-    "documentPath": "C:/comments/helloWorld.md",
     "parts": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 3,
+          "documentIndex": 0,
+          "documentPath": "C:/comments/helloWorld.md",
           "line": 1
         },
         "text": "hello",
@@ -14,11 +16,19 @@
       {
         "location": {
           "char": 5,
+          "documentDepth": 3,
+          "documentIndex": 0,
+          "documentPath": "C:/comments/helloWorld.md",
           "line": 4
         },
         "text": "world",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 3,
+      "documentIndex": 0,
+      "documentPath": "C:/comments/helloWorld.md"
+    }
   }
 }

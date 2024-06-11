@@ -1,5 +1,5 @@
 {
   "documentPath": "C:/bad/examples/multiline.md",
-  "message": "Multiline code block at { line: 1, char: 1 } does not close",
+  "message": "Multiline code block at {\"path\":\"C:/bad/examples/multiline.md\",\"line\":1,\"char\":1} does not close",
   "success": false
 }

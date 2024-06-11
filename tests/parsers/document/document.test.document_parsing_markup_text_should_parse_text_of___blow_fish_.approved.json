@@ -1,16 +1,23 @@
 {
   "success": true,
   "value": {
-    "documentPath": "C:/my_document.md",
     "parts": [
       {
         "location": {
           "char": 2,
+          "documentDepth": 9,
+          "documentIndex": 10,
+          "documentPath": "C:/my_document.md",
           "line": 1
         },
         "text": "blow fish",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 9,
+      "documentIndex": 10,
+      "documentPath": "C:/my_document.md"
+    }
   }
 }

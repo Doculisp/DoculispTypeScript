@@ -1,11 +1,18 @@
 {
   "success": true,
   "value": {
-    "documentPath": "A:/main.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "A:/main.md"
+    },
     "tokens": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 2
         },
         "type": "token - open parenthesis"
@@ -13,6 +20,9 @@
       {
         "location": {
           "char": 2,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 2
         },
         "text": "section-meta",
@@ -21,6 +31,9 @@
       {
         "location": {
           "char": 5,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
           "line": 8
         },
         "type": "token - close parenthesis"

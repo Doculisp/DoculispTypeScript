@@ -1,16 +1,23 @@
 {
   "success": true,
   "value": {
-    "documentPath": "C:/my_document.md",
     "parts": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "C:/my_document.md",
           "line": 1
         },
         "text": "hello",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "C:/my_document.md"
+    }
   }
 }

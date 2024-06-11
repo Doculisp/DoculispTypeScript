@@ -1,11 +1,18 @@
 {
   "success": true,
   "value": {
-    "documentPath": "Z:/parameter.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "Z:/parameter.md"
+    },
     "tokens": [
       {
         "location": {
           "char": 13,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "Z:/parameter.md",
           "line": 1
         },
         "type": "token - open parenthesis"
@@ -13,6 +20,9 @@
       {
         "location": {
           "char": 14,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "Z:/parameter.md",
           "line": 1
         },
         "text": "title",
@@ -21,6 +31,9 @@
       {
         "location": {
           "char": 20,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "Z:/parameter.md",
           "line": 1
         },
         "text": "the thing from beyond\n\tthe swamp",
@@ -29,6 +42,9 @@
       {
         "location": {
           "char": 52,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "Z:/parameter.md",
           "line": 1
         },
         "type": "token - close parenthesis"

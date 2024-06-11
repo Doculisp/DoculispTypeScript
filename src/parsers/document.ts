@@ -1,13 +1,13 @@
 import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
-import { ILocation, IUtil, Result } from "../types.general";
+import { ILocation, IProjectLocation, IUtil, Result } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
 import { HandleStringValue, IInternals, IStringParseStepForward, StringStepParseResult } from "../types.internal";
 
-function createMap(documentPath: string, parts: DocumentPart[]): DocumentMap {
+function createMap(projectLocation: IProjectLocation, parts: DocumentPart[]): DocumentMap {
     return {
-        documentPath,
+        projectLocation,
         parts,
     };
 }
@@ -26,7 +26,7 @@ type ParesBuilder = {
     isWord(): HandleStringValue<DocumentPart>;
 };
 
-function getPartParsers(documentPath: string, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
+function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
     function isStopParsingWhiteSpace(input: string, _current: ILocation): Result<'stop' | false> {
         const regex = /\S+/;
         if(regex.test(input)) {
@@ -76,7 +76,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, l => l, (c, f) => c + f.length);
     
             const whiteSpaceParser = createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
-            const parsed = whiteSpaceParser.parse(input, util.location(current.line, current.char));
+            const parsed = whiteSpaceParser.parse(input, current);
             if(parsed.success) {
                 const [_, leftovers] = parsed.value;
                 if(leftovers.remaining === input) {
@@ -103,7 +103,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, id, (c, f) => c + f.length);
     
             const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
-            const parsed = parser.parse(input, util.location(current.line, current.char));
+            const parsed = parser.parse(input, current);
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
                 if(leftover.line === current.line && leftover.char === current.char) {
@@ -185,7 +185,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Multiline code block at ${starting.toString()} does not close`, documentPath);
+                    return util.fail(`Multiline code block at ${starting.toString()} does not close`, projectLocation.documentPath);
                 }
                 const [peaces, leftover] = parsed.value;
                 if(leftover.line === starting.line && leftover.char === starting.char) {
@@ -234,7 +234,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
                 if(doesIt.startWithWhiteSpace.test(input)) {
                     let doesItStartWithNewLine = /^\r|\n/;
                     if(doesItStartWithNewLine.test(input)) {
-                        return util.fail(`Inline code block at ${starting.toString()} contains a new line before closing.`, documentPath);
+                        return util.fail(`Inline code block at ${starting.toString()} contains a new line before closing.`, projectLocation.documentPath);
                     }
     
                     const parsed: string = (input.match(doesIt.startWithWhiteSpace) as any)[0];
@@ -271,7 +271,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
     
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Inline code block at ${starting.toString()} does not close`, documentPath);
+                    return util.fail(`Inline code block at ${starting.toString()} does not close`, projectLocation.documentPath);
                 }
     
                     const [parts, leftover] = parsed.value;
@@ -305,7 +305,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
-                        return util.fail(`Doculisp Block at ${starting.toString()} contains an embedded doculisp block at ${starting.toString()}.`, documentPath);
+                        return util.fail(`Doculisp Block at ${starting.toString()} contains an embedded doculisp block at ${starting.toString()}.`, projectLocation.documentPath);
                     }
     
                     const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
@@ -400,7 +400,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(0 < depth) {
-                    return util.fail(`Doculisp block at ${starting.toString()} is not closed.`, documentPath);
+                    return util.fail(`Doculisp block at ${starting.toString()} is not closed.`, projectLocation.documentPath);
                 }
     
                 const [parts, leftover] = parsed.value;
@@ -503,7 +503,7 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(opened) {
-                    return util.fail(`Open HTML Comment at ${starting.toString()} but does not close.`, documentPath);
+                    return util.fail(`Open HTML Comment at ${starting.toString()} but does not close.`, projectLocation.documentPath);
                 }
     
                 const [result, leftover] = parsed.value;
@@ -597,8 +597,9 @@ function getPartParsers(documentPath: string, doesIt: IDocumentSearches, interna
 }
 
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil): Valid<DocumentParser> {    
-    return function (documentText: string, documentPath: string): Result<DocumentMap> {
-        const partParsers = getPartParsers(documentPath, doesIt, parserBuilder, util);
+    return function (documentText: string, projectLocation: IProjectLocation): Result<DocumentMap> {
+        const partParsers = getPartParsers(projectLocation, doesIt, parserBuilder, util);
+        const documentPath = projectLocation.documentPath;
         const isDoculispFile = path.extname(documentPath) === '.dlisp';
         const toParse: string =
             isDoculispFile ?
@@ -616,16 +617,16 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
                 partParsers.isWord()
             );
 
-        const parsed = parser.parse(toParse, util.location(1, 1));
+        const parsed = parser.parse(toParse, util.toLocation(projectLocation, 1, 1));
 
         if(parsed.success) {
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
-                const ending = util.location(leftover.line, leftover.char - 1);
+                const ending = util.toLocation(projectLocation, leftover.line, leftover.char - 1);
                 return util.fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at ${ ending.toString() }.`, documentPath);
             }
 
-            return util.ok(createMap(documentPath, parts));
+            return util.ok(createMap(projectLocation, parts));
         } else {
             return parsed;
         }

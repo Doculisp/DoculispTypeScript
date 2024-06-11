@@ -279,7 +279,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             return fail(documentMap.message, documentMap.documentPath);
         }
         
-        const documentPath = documentMap.value.documentPath;
+        const documentPath = documentMap.value.projectLocation.documentPath;
         const parser = parserBuilder.createStringParser(tokenizeWhiteSpace, tokenizeComment, tokenizeParenthesis, tokenizeParameter, tokenizeAtom);
         
         function toTokens(block: ILispBlock): Result<Token[]> {
@@ -312,7 +312,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
         }
 
         return ok({
-            documentPath: documentPath,
+            projectLocation: documentMap.value.projectLocation,
             tokens: totalTokens.getTokens(),
         });
     }

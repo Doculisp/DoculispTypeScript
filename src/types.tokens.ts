@@ -1,5 +1,5 @@
 import { DocumentMap } from "./types.document";
-import { ILocation, Result } from "./types.general";
+import { ILocation, IProjectLocation, Result } from "./types.general";
 
 export type TextToken = {
     readonly text: string;
@@ -33,7 +33,7 @@ export type Token = TextToken | OpenParenthesisToken | CloseParenthesisToken | A
 
 export type TokenizedDocument = {
     readonly tokens: Token[];
-    readonly documentPath: string;
+    readonly projectLocation: IProjectLocation;
 };
 
 export type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocument>;

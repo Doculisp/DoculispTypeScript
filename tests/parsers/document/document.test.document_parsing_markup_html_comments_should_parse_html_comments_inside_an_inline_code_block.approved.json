@@ -1,16 +1,23 @@
 {
   "success": true,
   "value": {
-    "documentPath": "C:/html/inline.md",
     "parts": [
       {
         "location": {
           "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "C:/html/inline.md",
           "line": 1
         },
         "text": "`<!-- an example html comment -->`",
         "type": "text"
       }
-    ]
+    ],
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "C:/html/inline.md"
+    }
   }
 }

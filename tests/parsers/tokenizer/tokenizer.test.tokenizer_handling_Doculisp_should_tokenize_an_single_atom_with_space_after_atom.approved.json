@@ -1,11 +1,18 @@
 {
   "success": true,
   "value": {
-    "documentPath": "D:/comments/simple.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "D:/comments/simple.md"
+    },
     "tokens": [
       {
         "location": {
           "char": 2,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "D:/comments/simple.md",
           "line": 4
         },
         "type": "token - open parenthesis"
@@ -13,6 +20,9 @@
       {
         "location": {
           "char": 3,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "D:/comments/simple.md",
           "line": 4
         },
         "text": "atom",
@@ -21,6 +31,9 @@
       {
         "location": {
           "char": 8,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "D:/comments/simple.md",
           "line": 4
         },
         "type": "token - close parenthesis"

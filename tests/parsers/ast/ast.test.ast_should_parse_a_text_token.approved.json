@@ -1,7 +1,11 @@
 {
   "success": true,
   "value": {
-    "documentPath": "T:/ext/only.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "T:/ext/only.md"
+    },
     "section": {
       "ast": [
         {

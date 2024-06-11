@@ -1,4 +1,4 @@
-import { ILocation, Result } from "./types.general";
+import { ILocation, IProjectLocation, Result } from "./types.general";
 
 export interface IText {
     readonly text: string;
@@ -16,7 +16,7 @@ export type DocumentPart = IText | ILispBlock;
 
 export type DocumentMap = {
     readonly parts: DocumentPart[];
-    readonly documentPath: string;
+    readonly projectLocation: IProjectLocation;
 };
 
-export type DocumentParser = (text: string, path: string) => Result<DocumentMap>;
+export type DocumentParser = (text: string, projectLocation: IProjectLocation) => Result<DocumentMap>;

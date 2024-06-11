@@ -13,6 +13,7 @@ describe('ast', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
+    let util: IUtil = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -21,7 +22,7 @@ describe('ast', () => {
     beforeEach(() => {
         environment = container.buildTestable();
         parser = environment.buildAs<IAstParser>('astParse');
-        const util = environment.buildAs<IUtil>('util');
+        util = environment.buildAs<IUtil>('util');
         ok = util.ok;
         fail = util.fail;
     });
@@ -36,7 +37,7 @@ describe('ast', () => {
 
     test('should return an empty ast if there was no tokens', () => {
         const tokens: Result<TokenizedDocument> = ok({
-            documentPath: 'A:/empty/doc.md',
+            projectLocation: { documentPath: 'A:/empty/doc.md', documentDepth: 0, documentIndex: 0 },
             tokens: []
         });
 
@@ -47,11 +48,11 @@ describe('ast', () => {
 
     test('should parse a text token', () => {
         const tokens: Result<TokenizedDocument> = ok({
-            documentPath: 'T:/ext/only.md',
+            projectLocation: { documentPath: 'T:/ext/only.md', documentDepth: 0, documentIndex: 0 },
             tokens: [
                 {
                     type: 'token - text',
-                    location: { line: 2, char: 1 },
+                    location: util.location('T:/ext/only.md', 0, 0, 2, 1),
                     text: 'Some text',
                 }
             ],

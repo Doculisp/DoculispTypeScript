@@ -1,5 +1,5 @@
 {
   "documentPath": "C:/examples/bad.md",
-  "message": "Open HTML Comment at { line: 1, char: 1 } but does not close.",
+  "message": "Open HTML Comment at {\"path\":\"C:/examples/bad.md\",\"line\":1,\"char\":1} but does not close.",
   "success": false
 }

@@ -1,7 +1,11 @@
 {
   "success": true,
   "value": {
-    "documentPath": "A:/empty/doc.md",
+    "projectLocation": {
+      "documentDepth": 0,
+      "documentIndex": 0,
+      "documentPath": "A:/empty/doc.md"
+    },
     "section": {
       "type": "ast-empty"
     }
