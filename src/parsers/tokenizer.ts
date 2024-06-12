@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
-import { ILocation, IUtil, Result } from "../types.general";
+import { ILocation, IUtil, Result, isSame } from "../types.general";
 import { IInternals, StringStepParseResult } from "../types.internal";
 import { ILispSearches, Searcher } from "../types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
@@ -155,14 +155,14 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
 
         if(parsed.success) {
             const [_parts, leftover] = parsed.value;
-            if(leftover.line === starting.line && leftover.char === starting.char) {
+            if(leftover.location.compare(starting) === isSame) {
                 return ok(false);
             }
 
             return ok({
                 type: 'discard',
                 rest: leftover.remaining,
-                location: util.toLocation(starting, leftover.line, leftover.char),
+                location: leftover.location,
             });
         }
         return parsed;

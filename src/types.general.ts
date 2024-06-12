@@ -3,6 +3,10 @@ export type IsSame = 0
 export type IsAfter = 1;
 export type IsOrder = IsBefore | IsSame | IsAfter;
 
+export const isBefore: IsBefore = -1;
+export const isSame: IsSame = 0;
+export const isAfter: IsAfter = 1;
+
 export interface IComparable<T> {
     compare(other: T) : IsOrder
 };

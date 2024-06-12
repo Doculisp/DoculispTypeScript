@@ -1,9 +1,9 @@
 import { IRegisterable, Valid } from "../types.containers";
 import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
-import { ILocation, IProjectLocation, IUtil, Result } from "../types.general";
+import { ILocation, IProjectLocation, IUtil, Result, isSame } from "../types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types.textHelpers";
-import { HandleStringValue, IInternals, IStringParseStepForward, StringStepParseResult } from "../types.internal";
+import { HandleStringValue, IInternals, IParseStepForward, IStringParseStepForward, StringStepParseResult } from "../types.internal";
 
 function createMap(projectLocation: IProjectLocation, parts: DocumentPart[]): DocumentMap {
     return {
@@ -83,7 +83,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return util.ok({
                         type: 'discard',
                         rest: leftovers.remaining,
-                        location: util.toLocation(projectLocation, leftovers.line, leftovers.char),
+                        location: leftovers.location,
                     });
                 }
             } else {
@@ -103,13 +103,13 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             const parsed = parser.parse(input, current);
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
-                if(leftover.line === current.line && leftover.char === current.char) {
+                if(leftover.location.compare(current) === isSame) {
                     return util.ok(false);
                 }
     
                 let step: IStringParseStepForward = {
                     rest: leftover.remaining,
-                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
+                    location: leftover.location,
                 }
     
                 if(0 === result.length) {
@@ -182,7 +182,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return util.fail(`Multiline code block at ${starting.toString()} does not close`, projectLocation.documentPath);
                 }
                 const [peaces, leftover] = parsed.value;
-                if(leftover.line === starting.line && leftover.char === starting.char) {
+                if(leftover.location.compare(starting) === isSame) {
                     return util.ok(false);
                 }
     
@@ -193,7 +193,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: { location: starting, type: 'text', text: result },
                     rest,
-                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
+                    location: leftover.location,
                 });
             }
     
@@ -265,7 +265,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 }
     
                     const [parts, leftover] = parsed.value;
-                if(leftover.line === starting.line && leftover.char === starting.char) {
+                if(leftover.location.compare(starting) === isSame) {
                     return util.ok(false);
                 }
     
@@ -275,7 +275,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: { type: 'text', location: starting, text: result },
                     rest: leftover.remaining,
-                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
+                    location: leftover.location,
                 });
             }
     
@@ -385,13 +385,13 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 }
     
                 const [parts, leftover] = parsed.value;
-                if(leftover.line === starting.line && leftover.char === starting.char) {
+                if(leftover.location.compare(starting) === isSame) {
                     return util.ok(false);
                 }
     
                 const step: IStringParseStepForward = {
                     rest: leftover.remaining,
-                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
+                    location: leftover.location,
                 };
     
                 if(0 === parts.length) {
@@ -482,22 +482,33 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(opened) {
                     return util.fail(`Open HTML Comment at ${starting.toString()} but does not close.`, projectLocation.documentPath);
                 }
-    
+
                 const [result, leftover] = parsed.value;
-                if(0 < result.length) {
-                    return util.ok({
-                        type: 'parse group result',
-                        subResult: result.map(r => { return { type: 'keep', keptValue: r }}),
-                        rest: leftover.remaining,
-                        location: util.toLocation(projectLocation, leftover.line, leftover.char),
-                    });
+                const step : IParseStepForward<string> = {
+                    location: leftover.location,
+                    rest: leftover.remaining,
                 }
-                else if(leftover.line !== starting.line || leftover.char !== starting.char) {
-                    return util.ok({
-                        type: 'discard',
-                        rest: leftover.remaining,
-                        location: util.toLocation(projectLocation, leftover.line, leftover.char),
-                    });
+    
+                if(0 < result.length) {
+                    return util.ok(
+                        internals.buildStepParse(
+                            step,
+                            {
+                                type: 'parse group result',
+                                subResult: result.map(r => { return { type: 'keep', keptValue: r }})
+                            }
+                        )
+                    );
+                }
+                else if(leftover.location.compare(starting) !== isSame) {
+                    return util.ok(
+                        internals.buildStepParse(
+                            step,
+                            {
+                                type: 'discard'
+                            }
+                        )
+                    );
                 }
     
                 return util.ok(false);
@@ -541,7 +552,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             if(parsed.success) {
                 const [parts, leftover] = parsed.value;
-                if(leftover.line === starting.line && leftover.char === starting.char) {
+                if(leftover.location.compare(starting) === isSame) {
                     return util.ok(false);
                 }
     
@@ -550,7 +561,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: { type: 'text', text: result, location: starting },
                     rest: leftover.remaining,
-                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
+                    location: leftover.location,
                 });
             }
     
@@ -595,7 +606,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
         if(parsed.success) {
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
-                const ending = util.toLocation(projectLocation, leftover.line, leftover.char - 1);
+                const ending = leftover.location.increaseChar(-1);
                 return util.fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at ${ ending.toString() }.`, documentPath);
             }
 

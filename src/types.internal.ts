@@ -1,43 +1,42 @@
 import { ILocation, Result } from "./types.general";
 
 export interface IParseRemaining<TParse> {
-    rest: TParse;
+    readonly rest: TParse;
 };
 
 export interface IParseStepForward<TParse> extends IParseRemaining<TParse> {
-    location: ILocation;
+    readonly location: ILocation;
 }
 
 export interface IStringParseStepForward extends IParseStepForward<string> {};
 
 export interface ISubParseResult<T> {
-    subResult: T;
-    type: 'parse result';
+    readonly subResult: T;
+    readonly type: 'parse result';
 }
 
 export interface ISubParseGroupResult<T> {
-    subResult: (IKeeper<T> | IDiscardResult)[];
-    type: 'parse group result';
+    readonly subResult: (IKeeper<T> | IDiscardResult)[];
+    readonly type: 'parse group result';
 
 };
 
 export interface IKeeper<T> {
-    type: 'keep';
-    keptValue: T;
+    readonly type: 'keep';
+    readonly keptValue: T;
 };
 
 export interface IDiscardResult { 
-    type: 'discard';
+    readonly type: 'discard';
 };
 
 export interface IUnparsedInfo<TParse> {
-    remaining: TParse;
-    type: 'unparsed';
+    readonly remaining: TParse;
+    readonly type: 'unparsed';
 }
 
 export interface IUnparsed<TParse> extends IUnparsedInfo<TParse> {
-    line: number;
-    char: number;
+    readonly location: ILocation;
 };
 
 export type StepParse<TParse, TResult> = IParseStepForward<TParse> & (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult);
