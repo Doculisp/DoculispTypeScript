@@ -1,9 +1,5 @@
 import { IRegisterable } from "./types.containers";
-import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "./types.general";
-
-function before() : IsBefore { return isBefore; }
-function after()  : IsAfter  { return isAfter; }
-function same()   : IsSame   { return isSame; }
+import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsOrder, isAfter, isBefore, isSame } from "./types.general";
 
 class Location implements ILocation {
     private readonly _documentPath: string;
@@ -40,6 +36,15 @@ class Location implements ILocation {
         return this._char;
     }
 
+    orderId(): number {
+        return (
+            this._documentDepth * 1000
+            + this._documentIndex * 100
+            + this._line * 10
+            + this._char
+        );
+    }
+
     increaseLine(by?: number | undefined): ILocation {
         let add = by ?? 1;
         return new Location(this._documentPath, this._documentDepth, this._documentIndex, this._line + add, 1);
@@ -51,35 +56,18 @@ class Location implements ILocation {
     }
 
     compare(other: ILocation): IsOrder {
-        if(other.documentDepth < this._documentDepth) {
-            return before();
-        }
-        if(this._documentDepth < other.documentDepth) {
-            return after();
+        let oOrder = other.orderId();
+        let order = this.orderId();
+
+        if(oOrder < order) {
+            return isBefore;
         }
 
-        if(other.documentIndex < this._documentIndex) {
-            return before();
-        }
-        if(this._documentIndex < other.documentIndex) {
-            return after();
+        if(order < oOrder) {
+            return isAfter;
         }
 
-        if(other.line < this._line) {
-            return before();
-        }
-        if(this._line < other.line) {
-            return after();
-        }
-
-        if(other.char < this._char) {
-            return before();
-        }
-        if(this.char < other.char) {
-            return after();
-        }
-
-        return same();
+        return isSame;
     }
 
     toString(): string {
