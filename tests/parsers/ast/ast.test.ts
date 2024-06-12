@@ -46,112 +46,118 @@ describe('ast', () => {
         fail = util.fail;
     });
 
-    test('should return failure if given failure', () => {
-        const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
-
-        const result = parser.parse(failure);
-
-        verifyAsJson(result);
-    });
-
-    test('should return an empty ast if there was no tokens', () => {
-        const tokens: Result<TokenizedDocument> = ok({
-            projectLocation: buildLocation('A:/empty/doc.md', 0, 0),
-            tokens: []
+    describe('basic functionality', () => {
+        test('should return failure if given failure', () => {
+            const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
+    
+            const result = parser.parse(failure);
+    
+            verifyAsJson(result);
         });
-
-        const result = parser.parse(tokens);
-
-        verifyAsJson(result);
-    });
-
-    test('should parse a text token', () => {
-        const projectLocation = buildLocation('T:/ext/only.md', 0, 1);
-        const tokens: Result<TokenizedDocument> = ok({
-            projectLocation: projectLocation,
-            tokens: [
-                {
-                    type: 'token - text',
-                    location: util.toLocation(projectLocation, 2, 1),
-                    text: 'Some text',
-                }
-            ],
+    
+        test('should return an empty ast if there was no tokens', () => {
+            const tokens: Result<TokenizedDocument> = ok({
+                projectLocation: buildLocation('A:/empty/doc.md', 0, 0),
+                tokens: []
+            });
+    
+            const result = parser.parse(tokens);
+    
+            verifyAsJson(result);
         });
-
-        const result = parser.parse(tokens);
-
-        verifyAsJson(result);
-    });
-
-    test('should parse multiple text tokens', () => {
-        const projectLocation = buildLocation('T:/ext/only.md', 1, 1);
-        const tokens: Result<TokenizedDocument> = ok({
-            projectLocation: projectLocation,
-            tokens: [
-                {
-                    type: 'token - text',
-                    location: util.toLocation(projectLocation, 1, 1),
-                    text: 'Intro text',
-                },
-                {
-                    type: 'token - text',
-                    location: util.toLocation(projectLocation, 5, 1),
-                    text: 'Text after some comment',
-                }
-            ],
+    
+        test('should parse a text token', () => {
+            const projectLocation = buildLocation('T:/ext/only.md', 0, 1);
+            const tokens: Result<TokenizedDocument> = ok({
+                projectLocation: projectLocation,
+                tokens: [
+                    {
+                        type: 'token - text',
+                        location: util.toLocation(projectLocation, 2, 1),
+                        text: 'Some text',
+                    }
+                ],
+            });
+    
+            const result = parser.parse(tokens);
+    
+            verifyAsJson(result);
         });
-
-        const result = parser.parse(tokens);
-
-        verifyAsJson(result);
+    
+        test('should parse multiple text tokens', () => {
+            const projectLocation = buildLocation('T:/ext/only.md', 1, 1);
+            const tokens: Result<TokenizedDocument> = ok({
+                projectLocation: projectLocation,
+                tokens: [
+                    {
+                        type: 'token - text',
+                        location: util.toLocation(projectLocation, 1, 1),
+                        text: 'Intro text',
+                    },
+                    {
+                        type: 'token - text',
+                        location: util.toLocation(projectLocation, 5, 1),
+                        text: 'Text after some comment',
+                    }
+                ],
+            });
+    
+            const result = parser.parse(tokens);
+    
+            verifyAsJson(result);
+        });
     });
 
-    test('should simple lisp tokens', () => {
-        const contents = `<!--
+    describe('lisp', () => {
+        test('should simple lisp tokens', () => {
+            const contents = `<!--
 (dl (# My heading))
 -->`
-        const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
-
-        verifyAsJson(result);
-    });
-
-    test('should not parse a bad header', () => {
-        const contents = `<!--
+            const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
+    
+            verifyAsJson(result);
+        });
+    
+        test('should not parse a bad header', () => {
+            const contents = `<!--
 (dl (#head My heading))
 -->`
-        const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 2));
-
-        verifyAsJson(result);
-    });
-
-    test('should not parse a header without a parameter', () => {
-        const contents = `<!--
+            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 2));
+    
+            verifyAsJson(result);
+        });
+    
+        test('should not parse a header without a parameter', () => {
+            const contents = `<!--
 (dl (#))
 -->`
-        const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 3));
+            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 3));
+    
+            verifyAsJson(result);
+        });
 
-        verifyAsJson(result);
-    });
-
-    test('should parse a section meta lisp', () => {
-        const contents = `
+        describe('section-meta atom', () => {
+            test('should parse a title', () => {
+                const contents = `
 (section-meta
     (title My Cool Document)
 )
-`;
-        const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
-
-        verifyAsJson(result);
-    });
-
-    test('should not parse a title without a parameter', () => {
-        const contents = `
+        `;
+                const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
+        
+                verifyAsJson(result);
+            });
+        
+            test('should not parse a title without a parameter', () => {
+                const contents = `
 (section-meta
     (title)
 )
-`;
-        const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
-
-        verifyAsJson(result);
+        `;
+                const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
+        
+                verifyAsJson(result);
+            });
+        });
     });
 });
