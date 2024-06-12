@@ -112,7 +112,7 @@ describe('ast', () => {
         test('should simple lisp tokens', () => {
             const contents = `<!--
 (dl (# My heading))
--->`
+-->`;
             const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
     
             verifyAsJson(result);
@@ -121,7 +121,7 @@ describe('ast', () => {
         test('should not parse a bad header', () => {
             const contents = `<!--
 (dl (#head My heading))
--->`
+-->`;
             const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 2));
     
             verifyAsJson(result);
@@ -130,33 +130,35 @@ describe('ast', () => {
         test('should not parse a header without a parameter', () => {
             const contents = `<!--
 (dl (#))
--->`
+-->`;
             const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 3));
     
             verifyAsJson(result);
         });
 
-        describe('section-meta atom', () => {
-            test('should parse a title', () => {
-                const contents = `
+        describe('section-meta', () => {
+            describe('title', () => {
+                test('should parse a title', () => {
+                    const contents = `
 (section-meta
     (title My Cool Document)
 )
-        `;
-                const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
-        
-                verifyAsJson(result);
-            });
-        
-            test('should not parse a title without a parameter', () => {
-                const contents = `
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
+            
+                    verifyAsJson(result);
+                });
+            
+                test('should not parse a title without a parameter', () => {
+                    const contents = `
 (section-meta
     (title)
 )
-        `;
-                const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
-        
-                verifyAsJson(result);
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
+            
+                    verifyAsJson(result);
+                });
             });
         });
     });
