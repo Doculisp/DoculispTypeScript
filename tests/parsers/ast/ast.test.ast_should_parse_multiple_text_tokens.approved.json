@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 0,
+      "documentPath": "T:/ext/only.md"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 0,
+            "documentPath": "T:/ext/only.md",
+            "line": 1
+          },
+          "type": "ast-write",
+          "value": "Intro text"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 0,
+            "documentPath": "T:/ext/only.md",
+            "line": 5
+          },
+          "type": "ast-write",
+          "value": "Text after some comment"
+        }
+      ],
+      "documentOrder": {
+        "char": 0,
+        "documentDepth": 1,
+        "documentIndex": 0,
+        "documentPath": "T:/ext/only.md",
+        "line": 0
+      },
+      "type": "ast-section"
+    }
+  }
+}

@@ -1,9 +1,9 @@
-import { container } from "../../../src/container";
+import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
+import { getVerifier } from "../../tools";
+import { container } from "../../../src/container";
 import { ITestableContainer } from "../../../src/types.containers";
 import { IAstParser } from '../../../src/types.ast'
-import { getVerifier } from "../../tools";
-import { Options } from "approvals/lib/Core/Options";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
 import { TokenizedDocument } from "../../../src/types.tokens";
 
@@ -63,6 +63,29 @@ describe('ast', () => {
                     type: 'token - text',
                     location: util.toLocation(projectLocation, 2, 1),
                     text: 'Some text',
+                }
+            ],
+        });
+
+        const result = parser.parse(tokens);
+
+        verifyAsJson(result);
+    });
+
+    test('should parse multiple text tokens', () => {
+        const projectLocation = buildLocation('T:/ext/only.md', 1, 0);
+        const tokens: Result<TokenizedDocument> = ok({
+            projectLocation: projectLocation,
+            tokens: [
+                {
+                    type: 'token - text',
+                    location: util.toLocation(projectLocation, 1, 1),
+                    text: 'Intro text',
+                },
+                {
+                    type: 'token - text',
+                    location: util.toLocation(projectLocation, 5, 1),
+                    text: 'Text after some comment',
                 }
             ],
         });
