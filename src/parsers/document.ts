@@ -31,14 +31,14 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         return util.ok(false);
     }
 
-    function doesItStartWithDiscarded(startsWith: RegExp, projectLocation: IProjectLocation, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<DocumentPart> {
+    function doesItStartWithDiscarded(startsWith: RegExp, incrementor: (current: ILocation, foundLength: number) => ILocation): HandleStringValue<DocumentPart> {
         return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
             if(startsWith.test(input)) {
                 const found: string = (input.match(startsWith) as any)[0];
                 return util.ok({
                     type: 'discard',
                     rest: input.slice(found.length),
-                    location: util.toLocation(projectLocation, lineIncrement(current.line), charIncrement(current.char, found)),
+                    location: incrementor(current, found.length),
                 });
             }
             return util.ok(false);
@@ -64,10 +64,10 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     function isDiscardedWhiteSpace(): HandleStringValue<DocumentPart> {
         const createParser = internals.createStringParser<DocumentPart>;
         return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
-            const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, projectLocation, l => l + 1, () => 1);
-            const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, projectLocation, l => l + 1, () => 1);
-            const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, projectLocation, l => l + 1, () => 1);
-            const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, projectLocation, l => l, (c, f) => c + f.length);
+            const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l.increaseLine());
+            const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, l => l.increaseLine());
+            const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l.increaseLine());
+            const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, (l, f) => l.increaseChar(f));
     
             const whiteSpaceParser = createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
             const parsed = whiteSpaceParser.parse(input, current);
