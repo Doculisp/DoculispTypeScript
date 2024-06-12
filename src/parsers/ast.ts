@@ -45,7 +45,7 @@ function isLisp(internals: IInternals, util: IUtil): HandleValue<Token[], AstPar
 
             const part: AstPart = {
                 type: 'ast-header',
-                depthCount: atom.text.length,
+                depthCount: atom.text.length + open.location.documentDepth,
                 text: param.text,
                 documentOrder: open.location,
             };
