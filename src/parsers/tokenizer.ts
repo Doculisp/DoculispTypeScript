@@ -171,8 +171,8 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
     function tokenizeParenthesis(input: string, current: ILocation): StringStepParseResult<Token> {
         if(doesIt.startWithOpenLisp.test(input)) {
             let open: Token = {
-                location: current,
                 type: 'token - open parenthesis',
+                location: current,
             };
             isToken = true;
 

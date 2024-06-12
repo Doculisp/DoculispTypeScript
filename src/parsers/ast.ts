@@ -145,14 +145,13 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
 function isHeader(util: IUtil): HandleValue<Token[], AstPart> {
     return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-        if(4 < input.length) {
+        if(input.length < 3) {
             return util.ok(false);
         }
 
         let open = input[0] as Token;
         let atom = input[1] as Token;
         let param = input[2] as Token;
-        let close = input[3] as Token;
 
         if(open.type !== 'token - open parenthesis') {
             return util.ok(false);
@@ -166,9 +165,9 @@ function isHeader(util: IUtil): HandleValue<Token[], AstPart> {
             return util.fail(`Header at ${open.location.toString()} has no header text.`, open.location.documentPath);
         }
 
+        let close = input[3] as Token;
         if(close.type !== 'token - close parenthesis') {
-            // possible error
-            return util.ok(false);
+            return util.fail(`Header at ${open.location.toString()} has unexpected character at ${close.location.toString()}`, close.location.documentPath);
         }
 
         const match: string = (atom.text.match(/#+/) as any)[0];
