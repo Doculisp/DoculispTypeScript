@@ -4,8 +4,16 @@ import { ITestableContainer } from "../../../src/types.containers";
 import { IAstParser } from '../../../src/types.ast'
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
-import { IFail, ISuccess, IUtil, Result } from "../../../src/types.general";
+import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
 import { TokenizedDocument } from "../../../src/types.tokens";
+
+function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
+    return {
+        documentPath: path,
+        documentDepth: depth,
+        documentIndex: index,
+    };
+}
 
 describe('ast', () => {
     let environment: ITestableContainer = undefined as any;
@@ -37,7 +45,7 @@ describe('ast', () => {
 
     test('should return an empty ast if there was no tokens', () => {
         const tokens: Result<TokenizedDocument> = ok({
-            projectLocation: { documentPath: 'A:/empty/doc.md', documentDepth: 0, documentIndex: 0 },
+            projectLocation: buildLocation('A:/empty/doc.md', 0, 0),
             tokens: []
         });
 
@@ -47,12 +55,13 @@ describe('ast', () => {
     });
 
     test('should parse a text token', () => {
+        const projectLocation = buildLocation('T:/ext/only.md', 0, 1);
         const tokens: Result<TokenizedDocument> = ok({
-            projectLocation: { documentPath: 'T:/ext/only.md', documentDepth: 0, documentIndex: 0 },
+            projectLocation: projectLocation,
             tokens: [
                 {
                     type: 'token - text',
-                    location: util.location('T:/ext/only.md', 0, 0, 2, 1),
+                    location: util.toLocation(projectLocation, 2, 1),
                     text: 'Some text',
                 }
             ],
