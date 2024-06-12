@@ -33,6 +33,12 @@ function isLisp(internals: IInternals, util: IUtil): HandleValue<Token[], AstPar
                 return util.ok(false);
             }
 
+            const match: string = (atom.text.match(/#+/) as any)[0];
+
+            if(match.length !== atom.text.length) {
+                return util.fail(`Header at ${open.location.toString()} has invalid syntax.`, open.location.documentPath);
+            }
+
             input.shift();
             input.shift();
             input.shift();

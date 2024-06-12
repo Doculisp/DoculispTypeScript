@@ -44,4 +44,5 @@ export interface IUtil {
     fail(message: string, documentPath: string): IFail;
     location: (documentPath: string, documentDepth: number, documentIndex: number, line: number, char: number) => ILocation;
     toLocation: (projectLocation: IProjectLocation, line: number, char: number) => ILocation;
+    getProjectLocation: (location: ILocation) => IProjectLocation;
 }

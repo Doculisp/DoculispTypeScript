@@ -106,35 +106,46 @@ class Location implements ILocation {
     }
 }
 
+function ok<T>(successfulValue: T) : ISuccess<T> {
+    return {
+        value: successfulValue,
+        success: true,
+    };
+};
+
+function fail(message: string, documentPath: string) : IFail {
+    return {
+        message,
+        documentPath,
+        success: false,
+    };
+};
+
+function location(documentPath: string, documentDepth: number, documentIndex: number, line: number, char: number): ILocation {
+    return new Location(documentPath, documentDepth, documentIndex, line, char);
+}
+
+function toLocation(projectLocation: IProjectLocation, line: number, char: number): ILocation {
+    return new Location(projectLocation.documentPath, projectLocation.documentDepth, projectLocation.documentIndex, line, char);
+}
+
+function getProjectLocation(location: ILocation): IProjectLocation {
+    return {
+        documentPath: location.documentPath,
+        documentDepth: location.documentDepth,
+        documentIndex: location.documentIndex,
+    };
+}
+
 function buildGeneral(): IUtil {
-    function ok<T>(successfulValue: T) : ISuccess<T> {
-        return {
-            value: successfulValue,
-            success: true,
-        };
-    };
-
-    function fail(message: string, documentPath: string) : IFail {
-        return {
-            message,
-            documentPath,
-            success: false,
-        };
-    };
-
-    function location(documentPath: string, documentDepth: number, documentIndex: number, line: number, char: number): ILocation {
-        return new Location(documentPath, documentDepth, documentIndex, line, char);
-    }
-
-    function toLocation(projectLocation: IProjectLocation, line: number, char: number): ILocation {
-        return new Location(projectLocation.documentPath, projectLocation.documentDepth, projectLocation.documentIndex, line, char);
-    }
+    
 
     return {
         ok,
         fail,
         location,
         toLocation,
+        getProjectLocation,
     };
 }
 
