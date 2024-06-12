@@ -42,7 +42,7 @@ class Location implements ILocation {
 
     increaseLine(by?: number | undefined): ILocation {
         let add = by ?? 1;
-        return new Location(this._documentPath, this._documentDepth, this._documentIndex, this._line + add, 0);
+        return new Location(this._documentPath, this._documentDepth, this._documentIndex, this._line + add, 1);
     }
 
     increaseChar(by?: number | undefined): ILocation {

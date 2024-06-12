@@ -60,7 +60,7 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
 
             if(result.value){
                 let parseResult = result.value;
-                current =  this._util.toLocation(initialLocation, parseResult.line, parseResult.char);
+                current =  this._util.toLocation(initialLocation, parseResult.location.line, parseResult.location.char);
                 input = parseResult.rest;
 
                 if(parseResult.type === 'parse result'){

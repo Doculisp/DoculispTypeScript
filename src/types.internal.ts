@@ -5,8 +5,7 @@ export interface IParseRemaining<TParse> {
 };
 
 export interface IParseStepForward<TParse> extends IParseRemaining<TParse> {
-    line: number;
-    char: number;
+    location: ILocation;
 }
 
 export interface IStringParseStepForward extends IParseStepForward<string> {};

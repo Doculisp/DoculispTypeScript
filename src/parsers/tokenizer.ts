@@ -37,51 +37,40 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             isToken = false;
             const newLine = (input.match(doesIt.startWithWindowsNewline) as any)[0] as string;
             input = input.slice(newLine.length);
-            const line = current.line + 1;
-            const char = 1;
             return util.ok({
-                rest: input,
-                char,
-                line,
                 type: 'discard',
+                rest: input,
+                location: current.increaseLine(),
             });
         }
 
         if(doesIt.startWithLinuxNewline.test(input)) {
             const newLine = (input.match(doesIt.startWithLinuxNewline) as any)[0] as string;
             input = input.slice(newLine.length);
-            const line = current.line + 1;
-            const char = 1;
             return ok({
-                rest: input,
-                char,
-                line,
                 type: 'discard',
+                rest: input,
+                location: current.increaseLine(),
             });
         }
 
         if(doesIt.startWithMacsNewline.test(input)) {
             const newLine = (input.match(doesIt.startWithMacsNewline) as any)[0] as string;
             input = input.slice(newLine.length);
-            const line = current.line + 1;
-            const char = 1;
             return ok({
-                rest: input,
-                char,
-                line,
                 type: 'discard',
+                rest: input,
+                location: current.increaseLine(),
             });
         }
 
         if(doesIt.startWithWhiteSpace.test(input)) {
             const space = (input.match(doesIt.startWithWhiteSpace) as any)[0] as string;
             input = input.slice(space.length);
-            const char = current.char + space.length;
             return ok({
-                rest: input,
-                line: current.line,
-                char,
                 type: 'discard',
+                rest: input,
+                location: current.increaseChar(space.length),
             });
         }
 
@@ -98,8 +87,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
                 return ok({
                     type: 'discard',
                     rest,
-                    line: current.line,
-                    char: current.char + parsed.length,
+                    location: current.increaseChar(parsed.length),
                 });
             }
             return ok(false);
@@ -145,8 +133,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
                         return ok({
                             type: 'discard',
                             rest: parsed.value.rest,
-                            line: parsed.value.line,
-                            char: parsed.value.char,
+                            location: parsed.value.location,
                         });
                     }
                     return ok(false);
@@ -175,8 +162,7 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             return ok({
                 type: 'discard',
                 rest: leftover.remaining,
-                line: leftover.line,
-                char: leftover.char,
+                location: util.toLocation(starting, leftover.line, leftover.char),
             });
         }
         return parsed;
@@ -190,14 +176,11 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             };
             isToken = true;
 
-            const char = current.char + 1;
-
             return ok({
-                subResult: open,
-                line: current.line,
-                char,
-                rest: input.slice(1),
                 type: "parse result",
+                subResult: open,
+                rest: input.slice(1),
+                location: current.increaseChar(),
             });
         }
 
@@ -206,15 +189,12 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
                 type: 'token - close parenthesis',
                 location: current,
             };
-
-            const char = current.char + 1;
             
             return ok({
-                subResult: close,
-                line: current.line,
-                char,
-                rest: input.slice(1),
                 type: "parse result",
+                subResult: close,
+                rest: input.slice(1),
+                location: current.increaseChar(),
             });
         }
 
@@ -233,14 +213,12 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
             };
 
             isToken = false;
-            const char = current.char + atomValue.length;
 
             return ok({
                 subResult: atom,
-                line: current.line,
-                char,
                 rest: input.slice(atomValue.length),
                 type: "parse result",
+                location: current.increaseChar(atomValue.length),
             });
         }
 
@@ -258,14 +236,11 @@ function buildTokenize(doesIt: ILispSearches, parserBuilder: IInternals, util: I
                 location: current,
             };
 
-            const char = current.char + parameterValue.length;
-
             return ok({
                 type: 'parse result',
                 subResult: atom,
                 rest: input.slice(parameterValue.length),
-                line: current.line,
-                char,
+                location: current.increaseChar(parameterValue.length),
             });
         }
 

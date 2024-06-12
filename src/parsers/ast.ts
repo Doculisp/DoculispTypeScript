@@ -61,8 +61,7 @@ function isText(util: IUtil): HandleValue<Token[], AstPart> {
                     documentOrder: order,
                     value: token.text,
                 },
-                line: current.line,
-                char: current.char + 1,
+                location: current.increaseChar(1),
                 rest: input
             });
         }

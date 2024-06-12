@@ -35,22 +35,21 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         return util.ok(false);
     }
 
-    function doesItStartWithDiscarded(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<DocumentPart> {
+    function doesItStartWithDiscarded(startsWith: RegExp, projectLocation: IProjectLocation, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<DocumentPart> {
         return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
             if(startsWith.test(input)) {
                 const found: string = (input.match(startsWith) as any)[0];
                 return util.ok({
                     type: 'discard',
                     rest: input.slice(found.length),
-                    line: lineIncrement(current.line),
-                    char: charIncrement(current.char, found),
+                    location: util.toLocation(projectLocation, lineIncrement(current.line), charIncrement(current.char, found)),
                 });
             }
             return util.ok(false);
         }
     }
 
-    function doesItStartWithKeep(startsWith: RegExp, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<string> {
+    function doesItStartWithKeep(startsWith: RegExp, projectLocation: IProjectLocation, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<string> {
         return function (input:string, current: ILocation): StringStepParseResult<string> {
             if(startsWith.test(input)) {
                 const parsed: string = (input.match(startsWith) as any)[0];
@@ -59,8 +58,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: parsed,
                     rest,
-                    line: lineIncrement(current.line),
-                    char: charIncrement(current.char, parsed),
+                    location: util.toLocation(projectLocation, lineIncrement(current.line), charIncrement(current.char, parsed)),
                 });
             }
             return util.ok(false);
@@ -70,10 +68,10 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     function isDiscardedWhiteSpace(): HandleStringValue<DocumentPart> {
         const createParser = internals.createStringParser<DocumentPart>;
         return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
-            const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
-            const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
-            const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l + 1, () => 1);
-            const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, l => l, (c, f) => c + f.length);
+            const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, projectLocation, l => l + 1, () => 1);
+            const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, projectLocation, l => l + 1, () => 1);
+            const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, projectLocation, l => l + 1, () => 1);
+            const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, projectLocation, l => l, (c, f) => c + f.length);
     
             const whiteSpaceParser = createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
             const parsed = whiteSpaceParser.parse(input, current);
@@ -85,8 +83,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return util.ok({
                         type: 'discard',
                         rest: leftovers.remaining,
-                        line: leftovers.line,
-                        char: leftovers.char,
+                        location: util.toLocation(projectLocation, leftovers.line, leftovers.char),
                     });
                 }
             } else {
@@ -97,10 +94,10 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
 
     function isKeptWhiteSpace(): HandleStringValue<string> {
         return function (input: string, current: ILocation): StringStepParseResult<string> {
-            const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l + 1, () => 1);
-            const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l + 1, () => 1);
-            const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, l => l + 1, () => 1);
-            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, id, (c, f) => c + f.length);
+            const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, projectLocation, l => l + 1, () => 1);
+            const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, projectLocation, l => l + 1, () => 1);
+            const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, projectLocation, l => l + 1, () => 1);
+            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, projectLocation, id, (c, f) => c + f.length);
     
             const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
             const parsed = parser.parse(input, current);
@@ -112,8 +109,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                 let step: IStringParseStepForward = {
                     rest: leftover.remaining,
-                    line: leftover.line,
-                    char: leftover.char,
+                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
                 }
     
                 if(0 === result.length) {
@@ -154,8 +150,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line: current.line,
-                        char: current.char + parsed.length,
+                        location: current.increaseChar(parsed.length),
                     });
                 }
                 return util.ok(false);
@@ -175,8 +170,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: parsed,
                     rest,
-                    line: current.line,
-                    char: current.char + 1,
+                    location: current.increaseChar(1),
                 });
             }
     
@@ -199,8 +193,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: { location: starting, type: 'text', text: result },
                     rest,
-                    line: leftover.line,
-                    char: leftover.char,
+                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
                 });
             }
     
@@ -223,8 +216,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line: current.line,
-                        char: current.char + parsed.length,
+                        location: current.increaseChar(parsed.length),
                     });
                 }
                 return util.ok(false);
@@ -243,8 +235,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line: current.line,
-                        char: current.char + parsed.length,
+                        location: current.increaseChar(parsed.length),
                     });
                 }
                 return util.ok(false);
@@ -261,8 +252,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: parsed,
                     rest,
-                    line: current.line,
-                    char: current.char + 1,
+                    location: current.increaseChar(1),
                 });
             }
     
@@ -285,8 +275,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: { type: 'text', location: starting, text: result },
                     rest: leftover.remaining,
-                    line: leftover.line,
-                    char: leftover.char,
+                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
                 });
             }
     
@@ -296,10 +285,6 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
     function isDoculisp(isOpen?: boolean): HandleStringValue<DocumentPart> {
         return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
-            function updateChar(char: number, found: string): number {
-                return char + found.length;
-            }
-    
             let depth = isOpen ? 1 : 0;
             isOpen = false;
             function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<string> {
@@ -315,8 +300,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return util.ok({
                         type: 'discard',
                         rest,
-                        line: current.line,
-                        char: updateChar(current.char, parsed),
+                        location: current.increaseChar(parsed.length),
                     });
                 }
                 return util.ok(false);
@@ -334,8 +318,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line: current.line,
-                        char: updateChar(current.char, parsed),
+                        location: current.increaseChar(parsed.length),
                     });
                 }
     
@@ -351,8 +334,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     const step: IStringParseStepForward = {
                         rest,
-                        line: current.line,
-                        char: updateChar(current.char, parsed),
+                        location: current.increaseChar(parsed.length),
                     };
     
                     depth--;
@@ -380,8 +362,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line: current.line,
-                        char: updateChar(current.char, parsed),
+                        location: current.increaseChar(parsed.length),
                     });
                 }
     
@@ -410,8 +391,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                 const step: IStringParseStepForward = {
                     rest: leftover.remaining,
-                    line: leftover.line,
-                    char: leftover.char,
+                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
                 };
     
                 if(0 === parts.length) {
@@ -444,8 +424,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return util.ok({
                         type: 'discard',
                         rest: input.slice(parsed.length),
-                        line: current.line,
-                        char: current.char + parsed.length,
+                        location: current.increaseChar(parsed.length),
                     });
                 }
                 
@@ -461,8 +440,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         return util.ok({
                             type: 'discard',
                             rest: input.slice(parsed.length),
-                            line: current.line,
-                            char: current.char + parsed.length,
+                            location: current.increaseChar(parsed.length),
                         });
                     }
     
@@ -494,8 +472,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 return util.ok({
                     type: 'discard',
                     rest: input.slice(1),
-                    line: current.line,
-                    char: current.char + 1,
+                    location: current.increaseChar(1),
                 })
             }
     
@@ -512,16 +489,14 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'parse group result',
                         subResult: result.map(r => { return { type: 'keep', keptValue: r }}),
                         rest: leftover.remaining,
-                        line: leftover.line,
-                        char: leftover.char,
+                        location: util.toLocation(projectLocation, leftover.line, leftover.char),
                     });
                 }
                 else if(leftover.line !== starting.line || leftover.char !== starting.char) {
                     return util.ok({
                         type: 'discard',
                         rest: leftover.remaining,
-                        line: leftover.line,
-                        char: leftover.char,
+                        location: util.toLocation(projectLocation, leftover.line, leftover.char),
                     });
                 }
     
@@ -555,8 +530,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'parse result',
                         subResult: parsed,
                         rest,
-                        line: current.line,
-                        char: current.char + 1,
+                        location: current.increaseChar(1),
                     });
                 }
                 return util.ok(false);
@@ -576,8 +550,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: { type: 'text', text: result, location: starting },
                     rest: leftover.remaining,
-                    line: leftover.line,
-                    char: leftover.char,
+                    location: util.toLocation(projectLocation, leftover.line, leftover.char),
                 });
             }
     
