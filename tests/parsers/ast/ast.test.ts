@@ -155,8 +155,20 @@ describe('ast', () => {
     (title)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
+                    const result = toResult(contents, buildLocation('main.dlisp', 3, 4));
             
+                    verifyAsJson(result);
+                });
+
+                test('should parse the link', () => {
+                    const contents = `
+(section-meta
+    (title My cool title✨)
+    (link my_cool_title)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+        
                     verifyAsJson(result);
                 });
             });

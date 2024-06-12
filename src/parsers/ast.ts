@@ -40,6 +40,50 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             });
         }
 
+        function tryParseLink(input: Token[], current: ILocation): StepParseResult<Token[], { text: string, location: ILocation }> {
+            if(!sectionFound) {
+                return util.ok(false);
+            }
+
+            if(input.length < 3) {
+                return util.ok(false);
+            }
+
+            const open = input[0] as Token;
+            const atom = input[1] as Token;
+            const param = input[2] as Token;
+
+            if(open.type !== 'token - open parenthesis') {
+                return util.ok(false);
+            }
+
+            if(atom.type !== 'token - atom' || atom.text !== 'link') {
+                return util.ok(false);
+            }
+
+            if(param.type !== 'token - parameter') {
+                // possible error
+                return util.ok(false);
+            }
+
+            const close = input[3] as Token;
+            if(close.type !== 'token - close parenthesis') {
+                return util.ok(false);
+            }
+
+            input.shift();
+            input.shift();
+            input.shift();
+            input.shift();
+
+            return util.ok({
+                type: 'parse result',
+                subResult: { text: param.text, location: param.location },
+                rest: input,
+                location: current.increaseChar(),
+            });
+        }
+
         function tryParseTitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
             if(!sectionFound && input.length < 3) {
                 return util.ok(false);
@@ -71,7 +115,22 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             input.shift();
             input.shift();
 
-            const link = '#' + param.text.toLocaleLowerCase().replaceAll(' ', '_') ; //need to take link parameter.
+            const parsedLink = tryParseLink(input, current);
+
+            let linkText: string | false = false;
+            if(parsedLink.success && parsedLink.value) {
+                if(parsedLink.value !== 'stop') {
+                    if(parsedLink.value.type === 'parse result') {
+                        linkText = parsedLink.value.subResult.text;
+                    }
+                }
+            }
+
+            const link = '#' + (
+                linkText ? 
+                linkText :
+                param.text.toLocaleLowerCase().replaceAll(' ', '_'));
+
             const label = ' '.padStart(open.location.documentDepth + 1, '#') + param.text;
 
             const part: AstPart = {
