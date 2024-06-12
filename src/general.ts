@@ -1,5 +1,9 @@
 import { IRegisterable } from "./types.containers";
-import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsOrder, isAfter, isBefore, isSame } from "./types.general";
+import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "./types.general";
+
+function before() : IsBefore { return isBefore; }
+function after()  : IsAfter  { return isAfter; }
+function same()   : IsSame   { return isSame; }
 
 class Location implements ILocation {
     private readonly _documentPath: string;
@@ -56,18 +60,35 @@ class Location implements ILocation {
     }
 
     compare(other: ILocation): IsOrder {
-        let oOrder = other.orderId();
-        let order = this.orderId();
-
-        if(oOrder < order) {
-            return isBefore;
+        if(other.documentDepth < this._documentDepth) {
+            return before();
+        }
+        if(this._documentDepth < other.documentDepth) {
+            return after();
         }
 
-        if(order < oOrder) {
-            return isAfter;
+        if(other.documentIndex < this._documentIndex) {
+            return before();
+        }
+        if(this._documentIndex < other.documentIndex) {
+            return after();
         }
 
-        return isSame;
+        if(other.line < this._line) {
+            return before();
+        }
+        if(this._line < other.line) {
+            return after();
+        }
+
+        if(other.char < this._char) {
+            return before();
+        }
+        if(this.char < other.char) {
+            return after();
+        }
+
+        return same();
     }
 
     toString(): string {

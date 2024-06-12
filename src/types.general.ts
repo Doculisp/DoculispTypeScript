@@ -20,7 +20,6 @@ export interface IProjectLocation {
 export interface ILocation extends IProjectLocation, IComparable<ILocation> {
     readonly line: number;
     readonly char: number;
-    orderId(): number;
     increaseLine(by?: number|undefined): ILocation;
     increaseChar(by?: number|undefined): ILocation;
 };
