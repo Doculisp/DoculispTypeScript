@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 3,
+      "documentIndex": 3,
+      "documentPath": "main.dlisp"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 3,
+            "documentIndex": 3,
+            "documentPath": "main.dlisp",
+            "line": 2
+          },
+          "label": "### My Cool Document",
+          "link": "#my_cool_document",
+          "title": "My Cool Document",
+          "type": "ast-title"
+        }
+      ],
+      "documentOrder": {
+        "char": 0,
+        "documentDepth": 3,
+        "documentIndex": 3,
+        "documentPath": "main.dlisp",
+        "line": 0
+      },
+      "type": "ast-section"
+    }
+  }
+}

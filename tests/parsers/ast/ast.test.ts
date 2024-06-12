@@ -84,7 +84,7 @@ describe('ast', () => {
     });
 
     test('should parse multiple text tokens', () => {
-        const projectLocation = buildLocation('T:/ext/only.md', 1, 0);
+        const projectLocation = buildLocation('T:/ext/only.md', 1, 1);
         const tokens: Result<TokenizedDocument> = ok({
             projectLocation: projectLocation,
             tokens: [
@@ -119,7 +119,7 @@ describe('ast', () => {
         const contents = `<!--
 (dl (#head My heading))
 -->`
-        const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
+        const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 2));
 
         verifyAsJson(result);
     });
@@ -128,7 +128,18 @@ describe('ast', () => {
         const contents = `<!--
 (dl (#))
 -->`
-        const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
+        const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 3));
+
+        verifyAsJson(result);
+    });
+
+    test('should parse a section meta lisp', () => {
+        const contents = `
+(section-meta
+    (title My Cool Document)
+)
+`;
+        const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
 
         verifyAsJson(result);
     });
