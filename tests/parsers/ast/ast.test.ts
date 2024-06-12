@@ -3,9 +3,10 @@ import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { container } from "../../../src/container";
 import { ITestableContainer } from "../../../src/types.containers";
-import { IAstParser } from '../../../src/types.ast'
+import { IAst, IAstParser } from '../../../src/types.ast'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
-import { TokenizedDocument } from "../../../src/types.tokens";
+import { TokenFunction, TokenizedDocument } from "../../../src/types.tokens";
+import { DocumentParser } from "../../../src/types.document";
 
 function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
     return {
@@ -22,6 +23,7 @@ describe('ast', () => {
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
     let util: IUtil = undefined as any;
+    let toResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -31,6 +33,15 @@ describe('ast', () => {
         environment = container.buildTestable();
         parser = environment.buildAs<IAstParser>('astParse');
         util = environment.buildAs<IUtil>('util');
+        let document = environment.buildAs<DocumentParser>('documentParse');
+        let tokenizer = environment.buildAs<TokenFunction>('tokenizer');
+
+        toResult = (text: string, projectLocation: IProjectLocation) => {
+            const docResult = document(text, projectLocation);
+            const tokens = tokenizer(docResult);
+            return parser.parse(tokens);
+        };
+        
         ok = util.ok;
         fail = util.fail;
     });
@@ -91,6 +102,15 @@ describe('ast', () => {
         });
 
         const result = parser.parse(tokens);
+
+        verifyAsJson(result);
+    });
+
+    test('should simple lisp tokens', () => {
+        const contents = `<!--
+(dl (# My heading))
+-->`
+        const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
 
         verifyAsJson(result);
     });
