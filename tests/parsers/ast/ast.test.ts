@@ -143,4 +143,15 @@ describe('ast', () => {
 
         verifyAsJson(result);
     });
+
+    test('should not parse a title without a parameter', () => {
+        const contents = `
+(section-meta
+    (title)
+)
+`;
+        const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
+
+        verifyAsJson(result);
+    });
 });

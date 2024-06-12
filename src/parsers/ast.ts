@@ -41,14 +41,13 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
         }
 
         function tryParseTitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-            if(!sectionFound && input.length < 4) {
+            if(!sectionFound && input.length < 3) {
                 return util.ok(false);
             }
 
             const open = input[0] as Token;
             const atom = input[1] as Token;
             const param = input[2] as Token;
-            const close = input[3] as Token;
 
             if(open.type !== 'token - open parenthesis') {
                 return util.ok(false);
@@ -59,12 +58,11 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             }
 
             if(param.type !== 'token - parameter') {
-                // possible error
-                return util.ok(false);
+                return util.fail(`Title at ${open.location.toString()} does not contain title text.`, open.location.documentPath);
             }
 
+            const close = input[3] as Token;
             if(close.type !== 'token - close parenthesis') {
-                // possible error
                 return util.ok(false);
             }
 
