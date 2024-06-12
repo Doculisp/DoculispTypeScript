@@ -20,13 +20,12 @@ function isLisp(internals: IInternals, util: IUtil): HandleValue<Token[], AstPar
                 return util.ok(false);
             }
 
-            // possible error: '#text'
             if(atom.type !== 'token - atom' || !atom.text.startsWith('#')) {
                 return util.ok(false);
             }
 
             if(param.type !== 'token - parameter') {
-                return util.ok(false);
+                return util.fail(`Header at ${open.location.toString()} has no header text.`, open.location.documentPath);
             }
 
             if(close.type !== 'token - close parenthesis') {

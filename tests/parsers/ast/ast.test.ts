@@ -123,4 +123,13 @@ describe('ast', () => {
 
         verifyAsJson(result);
     });
+
+    test('should not parse a header without a parameter', () => {
+        const contents = `<!--
+(dl (#))
+-->`
+        const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
+
+        verifyAsJson(result);
+    });
 });
