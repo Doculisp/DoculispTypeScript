@@ -12,10 +12,6 @@ function createMap(projectLocation: IProjectLocation, parts: DocumentPart[]): Do
     };
 }
 
-function id<T>(value: T): T {
-    return value;
-}
-
 type ParesBuilder = {
     isDiscardedWhiteSpace(): HandleStringValue<DocumentPart>;
     isKeptWhiteSpace(): HandleStringValue<string>;
@@ -49,7 +45,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         }
     }
 
-    function doesItStartWithKeep(startsWith: RegExp, projectLocation: IProjectLocation, lineIncrement: (line: number) => number, charIncrement: (char: number, found: string) => number): HandleStringValue<string> {
+    function doesItStartWithKeep(startsWith: RegExp, incrementor: (current: ILocation, foundLength: number) => ILocation): HandleStringValue<string> {
         return function (input:string, current: ILocation): StringStepParseResult<string> {
             if(startsWith.test(input)) {
                 const parsed: string = (input.match(startsWith) as any)[0];
@@ -58,7 +54,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     type: 'parse result',
                     subResult: parsed,
                     rest,
-                    location: util.toLocation(projectLocation, lineIncrement(current.line), charIncrement(current.char, parsed)),
+                    location: incrementor(current, parsed.length),
                 });
             }
             return util.ok(false);
@@ -94,10 +90,10 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
 
     function isKeptWhiteSpace(): HandleStringValue<string> {
         return function (input: string, current: ILocation): StringStepParseResult<string> {
-            const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, projectLocation, l => l + 1, () => 1);
-            const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, projectLocation, l => l + 1, () => 1);
-            const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, projectLocation, l => l + 1, () => 1);
-            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, projectLocation, id, (c, f) => c + f.length);
+            const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l.increaseLine());
+            const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l.increaseLine());
+            const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, l => l.increaseLine());
+            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, (l, f) => l.increaseChar(f));
     
             const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
             const parsed = parser.parse(input, current);
