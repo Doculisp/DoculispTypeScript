@@ -13,6 +13,7 @@
             "char": 1,
             "documentDepth": 0,
             "documentIndex": 0,
+            "documentPath": "T:/ext/only.md",
             "line": 2
           },
           "type": "ast-write",
@@ -23,6 +24,7 @@
         "char": 0,
         "documentDepth": 0,
         "documentIndex": 0,
+        "documentPath": "T:/ext/only.md",
         "line": 0
       },
       "type": "ast-section"

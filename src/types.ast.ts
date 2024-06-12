@@ -1,21 +1,8 @@
-import { IProjectLocation, Result } from "./types.general";
+import { ILocation, IProjectLocation, Result } from "./types.general";
 import { TokenizedDocument } from "./types.tokens";
 
-export type AstBefore = -1
-export type AstSame = 0
-export type AstAfter = 1;
-export type AstOrder = AstBefore | AstSame | AstAfter;
-
-export interface IDocumentOrder {
-    readonly documentDepth: number;
-    readonly documentIndex: number;
-    readonly line: number;
-    readonly char: number;
-    compare(other: IDocumentOrder): AstOrder;
-}
-
 export interface ILocationSortable {
-    readonly documentOrder: IDocumentOrder;
+    readonly documentOrder: ILocation;
 };
 
 export interface IWrite extends ILocationSortable {

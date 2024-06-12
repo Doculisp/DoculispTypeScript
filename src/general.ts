@@ -1,9 +1,9 @@
 import { IRegisterable } from "./types.containers";
-import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame } from "./types.general";
+import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "./types.general";
 
-function before() : IsBefore { return -1; }
-function after()  : IsAfter  { return  1; }
-function same()   : IsSame   { return  0; }
+function before() : IsBefore { return isBefore; }
+function after()  : IsAfter  { return isAfter; }
+function same()   : IsSame   { return isSame; }
 
 class Location implements ILocation {
     private readonly _documentPath: string;
