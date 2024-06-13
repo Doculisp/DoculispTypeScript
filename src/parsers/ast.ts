@@ -433,7 +433,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
                 const parser = internals.createArrayParser(isText(internals, util), isHeader(internals, util), isSectionMeta(internals, util));
-                const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 0, 0));
+                const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 1, 1));
                 
                 if(parsed.success) {
                     const [result, _leftovers] = parsed.value;
@@ -444,7 +444,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                             section: {
                                 type: 'ast-section',
                                 ast: result,
-                                documentOrder: util.toLocation(document.projectLocation, 0, 0),
+                                documentOrder: util.toLocation(document.projectLocation, 1, 1),
                             },
                         });
                     }

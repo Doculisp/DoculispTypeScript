@@ -22,11 +22,11 @@
         }
       ],
       "documentOrder": {
-        "char": 0,
+        "char": 1,
         "documentDepth": 2,
         "documentIndex": 1,
         "documentPath": "S:/ome/file.md",
-        "line": 0
+        "line": 1
       },
       "type": "ast-section"
     }
