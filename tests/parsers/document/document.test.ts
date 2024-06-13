@@ -19,6 +19,30 @@ describe('document', () => {
         parse = environment.buildAs<DocumentParser>('documentParse');
     });
 
+    test('should not allow a document with a zero depth.', () => {
+        const result = parse('hello', { documentPath: 'C:/my_document.md', documentDepth: 0, documentIndex: 6 });
+        
+        verifyAsJson(result);
+    });
+
+    test('should not allow a document with a negative depth.', () => {
+        const result = parse('hello', { documentPath: 'C:/my_document.md', documentDepth: -1, documentIndex: 6 });
+        
+        verifyAsJson(result);
+    });
+
+    test('should not allow a document with a zero index.', () => {
+        const result = parse('', { documentPath: 'C:/my_document.md', documentDepth: 4, documentIndex: 0 });
+        
+        verifyAsJson(result);
+    });
+
+    test('should not allow a document with a negative index.', () => {
+        const result = parse('', { documentPath: 'C:/my_document.md', documentDepth: 4, documentIndex: -1 });
+        
+        verifyAsJson(result);
+    });
+
     describe('parsing markup', () => {
         describe('text', () => {
             test('should successfully parse an empty string', () => {
