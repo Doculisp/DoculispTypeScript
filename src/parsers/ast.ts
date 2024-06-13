@@ -1,4 +1,4 @@
-import { AstPart, IAst, IAstParser } from "../types.ast";
+import { AstPart, IAst, IAstParser, ITitle } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { ILocation, IUtil, Result } from "../types.general";
 import { HandleValue, IInternals, StepParseResult } from "../types.internal";
@@ -9,6 +9,8 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
         let sectionFound = false;
         let depth = 0;
         let start: ILocation | undefined;
+        let linkText: string | false = false;
+        let title: ITitle | false = false;
 
         function tryParseSectionMeta(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
             if(input.length < 2) {
@@ -37,50 +39,6 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
                 type: 'discard',
                 location: current.increaseChar(),
                 rest: input,
-            });
-        }
-
-        function tryParseLink(input: Token[], current: ILocation): StepParseResult<Token[], { text: string, location: ILocation }> {
-            if(!sectionFound) {
-                return util.ok(false);
-            }
-
-            if(input.length < 3) {
-                return util.ok(false);
-            }
-
-            const open = input[0] as Token;
-            const atom = input[1] as Token;
-            const param = input[2] as Token;
-
-            if(open.type !== 'token - open parenthesis') {
-                return util.ok(false);
-            }
-
-            if(atom.type !== 'token - atom' || atom.text !== 'link') {
-                return util.ok(false);
-            }
-
-            if(param.type !== 'token - parameter') {
-                // possible error
-                return util.ok(false);
-            }
-
-            const close = input[3] as Token;
-            if(close.type !== 'token - close parenthesis') {
-                return util.ok(false);
-            }
-
-            input.shift();
-            input.shift();
-            input.shift();
-            input.shift();
-
-            return util.ok({
-                type: 'parse result',
-                subResult: { text: param.text, location: param.location },
-                rest: input,
-                location: current.increaseChar(),
             });
         }
 
@@ -115,25 +73,14 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             input.shift();
             input.shift();
 
-            const parsedLink = tryParseLink(input, current);
-
-            let linkText: string | false = false;
-            if(parsedLink.success && parsedLink.value) {
-                if(parsedLink.value !== 'stop') {
-                    if(parsedLink.value.type === 'parse result') {
-                        linkText = parsedLink.value.subResult.text;
-                    }
-                }
-            }
-
-            const link = '#' + (
+            const link = (
                 linkText ? 
                 linkText :
-                param.text.toLocaleLowerCase().replaceAll(' ', '_'));
+                '#' + param.text.toLocaleLowerCase().replaceAll(' ', '_'));
 
             const label = ' '.padStart(open.location.documentDepth + 1, '#') + param.text;
 
-            const part: AstPart = {
+            title = {
                 type: 'ast-title',
                 title: param.text,
                 label,
@@ -142,8 +89,64 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             };
 
             return util.ok({
-                type: 'parse result',
-                subResult: part,
+                type: 'discard',
+                rest: input,
+                location: current.increaseChar(),
+            });
+        }
+
+        function tryParseLink(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+            if(!sectionFound) {
+                return util.ok(false);
+            }
+
+            if(input.length < 3) {
+                return util.ok(false);
+            }
+
+            const open = input[0] as Token;
+            const link = input[1] as Token;
+            const param = input[2] as Token;
+
+            if(open.type !== 'token - open parenthesis') {
+                return util.ok(false);
+            }
+
+            if(link.type !== 'token - atom' || link.text !== 'link') {
+                return util.ok(false)
+            }
+
+            if(param.type !== 'token - parameter') {
+                // possible error
+                return util.ok(false);
+            }
+
+            const close = input[3] as Token;
+            if(close.type !== 'token - close parenthesis') {
+                return util.ok(false);
+            }
+
+            linkText = '#' + param.text;
+
+            if(title) {
+                const n: ITitle = {
+                    type: 'ast-title',
+                    label: title.label,
+                    title: title.title,
+                    link: linkText,
+                    documentOrder: title.documentOrder,
+                }
+
+                title = n;
+            }
+
+            input.shift();
+            input.shift();
+            input.shift();
+            input.shift();
+
+            return util.ok({
+                type: 'discard',
                 rest: input,
                 location: current.increaseChar(),
             });
@@ -174,22 +177,24 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             });
         }
 
-        const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose);
+        const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink);
         const parsed = parser.parse(toParse, starting);
 
         if(!parsed.success) {
             return parsed;
         }
 
+        if(!start) {
+            return util.ok(false);
+        }
+
         const [result, leftovers] = parsed.value;
 
-        if(start && 0 === result.length) {
+        if(!title) {
             return util.fail(`section-meta atom at ${start.toString()} must contain at least a title.`, starting.documentPath);
         }
 
-        if(0 === result.length) {
-            return util.ok(false);
-        }
+        result.unshift(title);
 
         return util.ok({
             type: 'parse group result',

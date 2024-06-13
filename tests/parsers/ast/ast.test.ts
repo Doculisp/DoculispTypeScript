@@ -171,6 +171,18 @@ describe('ast', () => {
         
                     verifyAsJson(result);
                 });
+
+                test('should parse the link if it comes before the title', () => {
+                    const contents = `
+(section-meta
+    (link my_cool_title)
+    (title My cool title✨)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+        
+                    verifyAsJson(result);
+                });
             });
         });
     });
