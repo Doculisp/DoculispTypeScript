@@ -5,7 +5,7 @@
       {
         "location": {
           "char": 24,
-          "documentDepth": 0,
+          "documentDepth": 8,
           "documentIndex": 3,
           "documentPath": "C:/readme.md",
           "line": 4
@@ -15,7 +15,7 @@
       }
     ],
     "projectLocation": {
-      "documentDepth": 0,
+      "documentDepth": 8,
       "documentIndex": 3,
       "documentPath": "C:/readme.md"
     }

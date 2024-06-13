@@ -5,8 +5,8 @@
       {
         "location": {
           "char": 6,
-          "documentDepth": 12,
-          "documentIndex": 3,
+          "documentDepth": 3,
+          "documentIndex": 7,
           "documentPath": "_main.md",
           "line": 1
         },
@@ -15,8 +15,8 @@
       }
     ],
     "projectLocation": {
-      "documentDepth": 12,
-      "documentIndex": 3,
+      "documentDepth": 3,
+      "documentIndex": 7,
       "documentPath": "_main.md"
     }
   }

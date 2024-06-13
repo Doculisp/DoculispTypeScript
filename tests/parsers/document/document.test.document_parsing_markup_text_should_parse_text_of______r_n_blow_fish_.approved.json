@@ -6,7 +6,7 @@
         "location": {
           "char": 2,
           "documentDepth": 1,
-          "documentIndex": 7,
+          "documentIndex": 8,
           "documentPath": "C:/my_document.md",
           "line": 2
         },
@@ -16,7 +16,7 @@
     ],
     "projectLocation": {
       "documentDepth": 1,
-      "documentIndex": 7,
+      "documentIndex": 8,
       "documentPath": "C:/my_document.md"
     }
   }

@@ -5,8 +5,8 @@
       {
         "location": {
           "char": 1,
-          "documentDepth": 1,
-          "documentIndex": 0,
+          "documentDepth": 4,
+          "documentIndex": 3,
           "documentPath": "C:/markdown/multiline.md",
           "line": 1
         },
@@ -16,8 +16,8 @@
       {
         "location": {
           "char": 5,
-          "documentDepth": 1,
-          "documentIndex": 0,
+          "documentDepth": 4,
+          "documentIndex": 3,
           "documentPath": "C:/markdown/multiline.md",
           "line": 2
         },
@@ -26,8 +26,8 @@
       }
     ],
     "projectLocation": {
-      "documentDepth": 1,
-      "documentIndex": 0,
+      "documentDepth": 4,
+      "documentIndex": 3,
       "documentPath": "C:/markdown/multiline.md"
     }
   }

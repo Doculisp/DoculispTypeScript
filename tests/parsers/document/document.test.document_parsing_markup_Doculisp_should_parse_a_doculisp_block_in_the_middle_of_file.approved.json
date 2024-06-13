@@ -5,8 +5,8 @@
       {
         "location": {
           "char": 1,
-          "documentDepth": 0,
-          "documentIndex": 0,
+          "documentDepth": 7,
+          "documentIndex": 5,
           "documentPath": "_main.md",
           "line": 1
         },
@@ -16,8 +16,8 @@
       {
         "location": {
           "char": 12,
-          "documentDepth": 0,
-          "documentIndex": 0,
+          "documentDepth": 7,
+          "documentIndex": 5,
           "documentPath": "_main.md",
           "line": 4
         },
@@ -27,8 +27,8 @@
       {
         "location": {
           "char": 1,
-          "documentDepth": 0,
-          "documentIndex": 0,
+          "documentDepth": 7,
+          "documentIndex": 5,
           "documentPath": "_main.md",
           "line": 5
         },
@@ -37,8 +37,8 @@
       }
     ],
     "projectLocation": {
-      "documentDepth": 0,
-      "documentIndex": 0,
+      "documentDepth": 7,
+      "documentIndex": 5,
       "documentPath": "_main.md"
     }
   }
