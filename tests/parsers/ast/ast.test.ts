@@ -184,6 +184,18 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
+                test('should not parse a link with no parameter', () => {
+                    const contents = `
+(section-meta
+    (link)
+    (title My cool title✨)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 3, 10));
+                            
+                    verifyAsJson(result);
+                });
+
                 test('should parse the subtitle command', () => {
                     const contents = `
 (section-meta

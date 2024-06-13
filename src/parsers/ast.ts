@@ -126,8 +126,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             }
 
             if(param.type !== 'token - parameter') {
-                // possible error
-                return internals.noResultFound();
+                return util.fail(`the Link Command at ${open.location.toString()} does not have a link text.`, open.location.documentPath);
             }
 
             const close = input[3] as Token;

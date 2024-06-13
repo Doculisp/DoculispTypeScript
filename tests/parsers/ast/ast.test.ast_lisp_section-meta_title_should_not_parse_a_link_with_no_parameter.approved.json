@@ -1,0 +1,5 @@
+{
+  "documentPath": "main.dlisp",
+  "message": "the Link Command at {\"path\":\"main.dlisp\",\"line\":2,\"char\":5} does not have a link text.",
+  "success": false
+}
