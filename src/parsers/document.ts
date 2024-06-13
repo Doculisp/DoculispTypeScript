@@ -617,7 +617,7 @@ const registerable: IRegisterable = {
     builder: (searches: Searcher, createParser: IInternals, util: IUtil) => documentParse(searches.searchDocumentFor, createParser, util),
     name: 'documentParse',
     singleton: true,
-    dependencies: ['searches', 'parser', 'util']
+    dependencies: ['searches', 'internals', 'util']
 };
 
 export {

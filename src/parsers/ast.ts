@@ -386,7 +386,7 @@ const astParser: IRegisterable = {
     builder: (internals: IInternals, util: IUtil) => buildAstParser(internals, util),
     name: 'astParse',
     singleton: true,
-    dependencies: ['parser', 'util']
+    dependencies: ['internals', 'util']
 };
 
 export {

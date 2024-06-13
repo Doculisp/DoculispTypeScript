@@ -40,7 +40,7 @@ export type Result<T> = ISuccess<T> | IFail;
 export type LocationBuilder = (line: number, char: number) => ILocation;
 
 export interface IUtil {
-    ok<T>(successfulValue: T): ISuccess<T>
+    ok<T>(successfulValue: T): ISuccess<T>;
     fail(message: string, documentPath: string): IFail;
     location: (documentPath: string, documentDepth: number, documentIndex: number, line: number, char: number) => ILocation;
     toLocation: (projectLocation: IProjectLocation, line: number, char: number) => ILocation;

@@ -1,5 +1,5 @@
 import { IRegisterable } from "../types.containers";
-import { ILocation, IUtil, Result } from "../types.general";
+import { ILocation, ISuccess, IUtil, Result } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParseResult, StepParse } from "../types.internal";
 
 function mapFirst<TParse, TResult>(util: IUtil, input: TParse, current: ILocation, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
@@ -104,10 +104,16 @@ const registerable: IRegisterable = {
             
                 return ret;
             },
+            noResultFound(): ISuccess<false> {
+                return util.ok(false);
+            },
+            stopFindingResults(): ISuccess<'stop'> {
+                return util.ok('stop');
+            },
         };
         return ret; 
     },
-    name: 'parser',
+    name: 'internals',
     singleton: true,
     dependencies: ['util']
 };

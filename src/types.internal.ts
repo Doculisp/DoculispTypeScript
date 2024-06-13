@@ -1,4 +1,4 @@
-import { ILocation, Result } from "./types.general";
+import { ILocation, ISuccess, Result } from "./types.general";
 
 export interface IParseRemaining<TParse> {
     readonly rest: TParse;
@@ -60,6 +60,8 @@ export type CreateParser<TParse, TResult> = (...handlers: HandleValue<TParse, TR
 export type CreateStringParser<T> = CreateParser<string, T>;
 
 export interface IInternals {
+    noResultFound(): ISuccess<false>;
+    stopFindingResults(): ISuccess<'stop'>;
     buildStepParse<TParse, TResult>(step: IParseStepForward<TParse>, resultType: (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult)): StepParse<TParse, TResult>;
     createArrayParser<TParse, TResult>(...handlers: HandleValue<TParse[], TResult>[]): IParser<TParse[], TResult>;
     createStringParser<T>(...handlers: HandleStringValue<T>[]): IParser<string, T>;

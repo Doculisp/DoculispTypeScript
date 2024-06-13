@@ -297,7 +297,7 @@ const tokenizer: IRegisterable = {
     builder: (searches: Searcher, getParser: IInternals, util: IUtil) => buildTokenize(searches.searchLispFor, getParser, util),
     name: 'tokenizer',
     singleton: true,
-    dependencies: ['searches', 'parser', 'util']
+    dependencies: ['searches', 'internals', 'util']
 };
 
 export {
