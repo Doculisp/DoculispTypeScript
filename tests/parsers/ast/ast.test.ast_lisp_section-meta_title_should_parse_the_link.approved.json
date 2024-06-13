@@ -16,7 +16,7 @@
             "documentPath": "main.dlisp",
             "line": 2
           },
-          "label": "#### My cool title✨ ####",
+          "label": "### My cool title✨ ###",
           "link": "#my_cool_title",
           "title": "My cool title✨",
           "type": "ast-title"

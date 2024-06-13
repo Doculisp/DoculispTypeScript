@@ -16,7 +16,7 @@
             "documentPath": "main.dlisp",
             "line": 2
           },
-          "label": "## My Cool Document ##",
+          "label": "# My Cool Document #",
           "link": "#my_cool_document",
           "title": "My Cool Document",
           "type": "ast-title"

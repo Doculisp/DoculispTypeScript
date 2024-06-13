@@ -5,7 +5,7 @@ import { HandleValue, IInternals, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
 function headerize(depth: number, value: string): string {
-    const id = ''.padStart(depth + 1, '#');
+    const id = ''.padStart(depth, '#');
     return `${id} ${value} ${id}`;
 }
 
