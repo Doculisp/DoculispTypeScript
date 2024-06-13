@@ -19,18 +19,18 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
         function tryParseSectionMeta(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
             if(input.length < 2) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const open = input[0] as Token;
             const atom = input[1] as Token;
 
             if(open.type !== 'token - open parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(atom.type !== 'token - atom' || atom.text !== 'section-meta') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             //Possible error: (section-meta (section-meta (title something)))
@@ -48,7 +48,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
         function tryParseTitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
             if(!start && input.length < 3) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const open = input[0] as Token;
@@ -56,11 +56,11 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             const param = input[2] as Token;
 
             if(open.type !== 'token - open parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(atom.type !== 'token - atom' || atom.text !== 'title') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(param.type !== 'token - parameter') {
@@ -69,7 +69,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
             const close = input[3] as Token;
             if(close.type !== 'token - close parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             input.shift();
@@ -106,11 +106,11 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
         function tryParseLink(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
             if(!start) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(input.length < 3) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const open = input[0] as Token;
@@ -118,21 +118,21 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             const param = input[2] as Token;
 
             if(open.type !== 'token - open parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(link.type !== 'token - atom' || link.text !== 'link') {
-                return util.ok(false)
+                return internals.noResultFound()
             }
 
             if(param.type !== 'token - parameter') {
                 // possible error
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const close = input[3] as Token;
             if(close.type !== 'token - close parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             linkText = '#' + param.text;
@@ -163,11 +163,11 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
         function tryParseSubtitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
             if(!start) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(input.length < 4) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const open = input[0] as Token;
@@ -175,21 +175,21 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             const param = input[2] as Token;
 
             if(open.type !== 'token - open parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(atom.type !== 'token - atom') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(param.type !== 'token - parameter') {
                 // possible error
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const close = input[3] as Token;
             if(close.type !== 'token - close parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const text = headerize(starting.documentDepth + 2, param.text);
@@ -221,17 +221,17 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
         function tryParseClose(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
             if(!start || depth < 1) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             if(input.length < 1) {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             const close = input[0] as Token;
 
             if(close.type !== 'token - close parenthesis') {
-                return util.ok(false);
+                return internals.noResultFound();
             }
 
             depth--;
@@ -252,7 +252,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
         }
 
         if(!start) {
-            return util.ok(false);
+            return internals.noResultFound();
         }
 
         const [result, leftovers] = parsed.value;
@@ -272,10 +272,10 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
     };
 }
 
-function isHeader(util: IUtil): HandleValue<Token[], AstPart> {
+function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
     return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
         if(input.length < 3) {
-            return util.ok(false);
+            return internals.noResultFound();
         }
 
         let open = input[0] as Token;
@@ -283,11 +283,11 @@ function isHeader(util: IUtil): HandleValue<Token[], AstPart> {
         let param = input[2] as Token;
 
         if(open.type !== 'token - open parenthesis') {
-            return util.ok(false);
+            return internals.noResultFound();
         }
 
         if(atom.type !== 'token - atom' || !atom.text.startsWith('#')) {
-            return util.ok(false);
+            return internals.noResultFound();
         }
 
         if(param.type !== 'token - parameter') {
@@ -326,7 +326,7 @@ function isHeader(util: IUtil): HandleValue<Token[], AstPart> {
     }
 }
 
-function isText(util: IUtil): HandleValue<Token[], AstPart> {
+function isText(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
     return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
         const token: Token = input[0] as Token;
         if(token.type === 'token - text') {
@@ -342,7 +342,7 @@ function isText(util: IUtil): HandleValue<Token[], AstPart> {
                 rest: input
             });
         }
-        return util.ok(false);
+        return internals.noResultFound();
     }
 }
 
@@ -351,7 +351,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
         parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
-                const parser = internals.createArrayParser(isText(util), isHeader(util), isSectionMeta(internals, util));
+                const parser = internals.createArrayParser(isText(internals, util), isHeader(internals, util), isSectionMeta(internals, util));
                 const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 0, 0));
                 
                 if(parsed.success) {

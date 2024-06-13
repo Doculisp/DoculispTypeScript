@@ -28,7 +28,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         if(regex.test(input)) {
             return util.ok('stop');
         }
-        return util.ok(false);
+        return internals.noResultFound();
     }
 
     function doesItStartWithDiscarded(startsWith: RegExp, incrementor: (current: ILocation, foundLength: number) => ILocation): HandleStringValue<DocumentPart> {
@@ -41,7 +41,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     location: incrementor(current, found.length),
                 });
             }
-            return util.ok(false);
+            return internals.noResultFound();
         }
     }
 
@@ -57,7 +57,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     location: incrementor(current, parsed.length),
                 });
             }
-            return util.ok(false);
+            return internals.noResultFound();
         }
     }
 
@@ -74,7 +74,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             if(parsed.success) {
                 const [_, leftovers] = parsed.value;
                 if(leftovers.remaining === input) {
-                    return util.ok(false);
+                    return internals.noResultFound();
                 } else {
                     return util.ok({
                         type: 'discard',
@@ -100,7 +100,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
                 if(leftover.location.compare(current) === isSame) {
-                    return util.ok(false);
+                    return internals.noResultFound();
                 }
     
                 let step: IStringParseStepForward = {
@@ -149,7 +149,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         location: current.increaseChar(parsed.length),
                     });
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             const tryParseWhiteSpace = isKeptWhiteSpace();
@@ -179,7 +179,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 }
                 const [peaces, leftover] = parsed.value;
                 if(leftover.location.compare(starting) === isSame) {
-                    return util.ok(false);
+                    return internals.noResultFound();
                 }
     
                 const result = peaces.join('').trim();
@@ -215,7 +215,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         location: current.increaseChar(parsed.length),
                     });
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
@@ -234,7 +234,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         location: current.increaseChar(parsed.length),
                     });
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
@@ -262,7 +262,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     const [parts, leftover] = parsed.value;
                 if(leftover.location.compare(starting) === isSame) {
-                    return util.ok(false);
+                    return internals.noResultFound();
                 }
     
                 let result = parts.join('');
@@ -299,11 +299,11 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         location: current.increaseChar(parsed.length),
                     });
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseLispOpen(input: string, current: ILocation): StringStepParseResult<string> {
-                if(depth === 0) return util.ok(false);
+                if(depth === 0) return internals.noResultFound();
     
                 if(doesIt.startWithOpenLisp.test(input)) {
                     const parsed: string = (input.match(doesIt.startWithOpenLisp) as any)[0];
@@ -318,11 +318,11 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     });
                 }
     
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseLispClose(input: string, current: ILocation): StringStepParseResult<string> {
-                if(depth === 0) return util.ok(false);
+                if(depth === 0) return internals.noResultFound();
                 
                 if(doesIt.startsWithCloseLisp.test(input)) {
                     const parsed: string = (input.match(doesIt.startsWithCloseLisp) as any)[0];
@@ -346,7 +346,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         subResult: parsed,
                     }));
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
@@ -370,7 +370,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     const tryParseWhiteSpace = isKeptWhiteSpace();
                     return tryParseWhiteSpace(input, current);
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             const parser = internals.createStringParser(tryParseDoculispOpen, tryParseLispOpen, tryParseLispClose, tryParseWhiteSpace, tryParseWord);
@@ -382,7 +382,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                 const [parts, leftover] = parsed.value;
                 if(leftover.location.compare(starting) === isSame) {
-                    return util.ok(false);
+                    return internals.noResultFound();
                 }
     
                 const step: IStringParseStepForward = {
@@ -424,7 +424,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     });
                 }
                 
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseCloseComment(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
@@ -442,19 +442,19 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok('stop');
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(opened && doesIt.startWithWhiteSpace.test(input)) {
                     return stripWhiteSpace(input, current);
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             function tryParseDoculisp(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(!opened) {
-                    return util.ok(false);
+                    return internals.noResultFound();
                 }
     
                 return tryDoculisp(input, current);
@@ -507,7 +507,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     );
                 }
     
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             return parsed;
@@ -523,7 +523,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(doesIt.startWithInlineMarker.test(input)) {
                     return util.ok('stop')
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             const tryParseWhiteSpace = isKeptWhiteSpace();
@@ -540,7 +540,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         location: current.increaseChar(1),
                     });
                 }
-                return util.ok(false);
+                return internals.noResultFound();
             }
     
             const parser = internals.createStringParser(tryParseEndParse, tryParseWhiteSpace, tryParseWord);
@@ -549,7 +549,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             if(parsed.success) {
                 const [parts, leftover] = parsed.value;
                 if(leftover.location.compare(starting) === isSame) {
-                    return util.ok(false);
+                    return internals.noResultFound();
                 }
     
                 const result = parts.join('').trim();
