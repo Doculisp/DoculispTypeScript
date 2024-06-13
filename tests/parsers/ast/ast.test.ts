@@ -57,7 +57,7 @@ describe('ast', () => {
     
         test('should return an empty ast if there was no tokens', () => {
             const tokens: Result<TokenizedDocument> = ok({
-                projectLocation: buildLocation('A:/empty/doc.md', 0, 0),
+                projectLocation: buildLocation('A:/empty/doc.md', 4, 10),
                 tokens: []
             });
     
@@ -67,7 +67,7 @@ describe('ast', () => {
         });
     
         test('should parse a text token', () => {
-            const projectLocation = buildLocation('T:/ext/only.md', 0, 1);
+            const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,
                 tokens: [
@@ -85,7 +85,7 @@ describe('ast', () => {
         });
     
         test('should parse multiple text tokens', () => {
-            const projectLocation = buildLocation('T:/ext/only.md', 1, 1);
+            const projectLocation = buildLocation('T:/ext/only.md', 4, 8);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,
                 tokens: [
@@ -113,7 +113,7 @@ describe('ast', () => {
             const contents = `<!--
 (dl (# My heading))
 -->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 1, 2));
+            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 1));
     
             verifyAsJson(result);
         });
@@ -122,7 +122,7 @@ describe('ast', () => {
             const contents = `<!--
 (dl (#head My heading))
 -->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 2));
+            const result = toResult(contents, buildLocation('S:/ome/file.md', 3, 2));
     
             verifyAsJson(result);
         });
@@ -144,7 +144,7 @@ describe('ast', () => {
     (title My Cool Document)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 3, 3));
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
             
                     verifyAsJson(result);
                 });
@@ -155,7 +155,7 @@ describe('ast', () => {
     (title)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 3, 4));
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
             
                     verifyAsJson(result);
                 });
@@ -167,7 +167,7 @@ describe('ast', () => {
     (link my_cool_title)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+                    const result = toResult(contents, buildLocation('main.dlisp', 3, 10));
         
                     verifyAsJson(result);
                 });
@@ -179,7 +179,7 @@ describe('ast', () => {
     (title My cool title✨)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+                    const result = toResult(contents, buildLocation('main.dlisp', 3, 10));
         
                     verifyAsJson(result);
                 });
@@ -203,7 +203,7 @@ describe('ast', () => {
     (title My cool title)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+                    const result = toResult(contents, buildLocation('main.dlisp', 2, 7));
         
                     verifyAsJson(result);
                 });

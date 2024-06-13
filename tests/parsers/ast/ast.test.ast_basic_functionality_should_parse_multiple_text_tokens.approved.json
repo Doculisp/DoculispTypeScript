@@ -2,8 +2,8 @@
   "success": true,
   "value": {
     "projectLocation": {
-      "documentDepth": 1,
-      "documentIndex": 1,
+      "documentDepth": 4,
+      "documentIndex": 8,
       "documentPath": "T:/ext/only.md"
     },
     "section": {
@@ -11,8 +11,8 @@
         {
           "documentOrder": {
             "char": 1,
-            "documentDepth": 1,
-            "documentIndex": 1,
+            "documentDepth": 4,
+            "documentIndex": 8,
             "documentPath": "T:/ext/only.md",
             "line": 1
           },
@@ -22,8 +22,8 @@
         {
           "documentOrder": {
             "char": 1,
-            "documentDepth": 1,
-            "documentIndex": 1,
+            "documentDepth": 4,
+            "documentIndex": 8,
             "documentPath": "T:/ext/only.md",
             "line": 5
           },
@@ -33,8 +33,8 @@
       ],
       "documentOrder": {
         "char": 0,
-        "documentDepth": 1,
-        "documentIndex": 1,
+        "documentDepth": 4,
+        "documentIndex": 8,
         "documentPath": "T:/ext/only.md",
         "line": 0
       },

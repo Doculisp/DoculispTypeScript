@@ -2,18 +2,18 @@
   "success": true,
   "value": {
     "projectLocation": {
-      "documentDepth": 1,
-      "documentIndex": 2,
+      "documentDepth": 2,
+      "documentIndex": 1,
       "documentPath": "S:/ome/file.md"
     },
     "section": {
       "ast": [
         {
-          "depthCount": 2,
+          "depthCount": 3,
           "documentOrder": {
             "char": 1,
-            "documentDepth": 1,
-            "documentIndex": 2,
+            "documentDepth": 2,
+            "documentIndex": 1,
             "documentPath": "S:/ome/file.md",
             "line": 2
           },
@@ -23,8 +23,8 @@
       ],
       "documentOrder": {
         "char": 0,
-        "documentDepth": 1,
-        "documentIndex": 2,
+        "documentDepth": 2,
+        "documentIndex": 1,
         "documentPath": "S:/ome/file.md",
         "line": 0
       },

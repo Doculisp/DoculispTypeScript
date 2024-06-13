@@ -2,8 +2,8 @@
   "success": true,
   "value": {
     "projectLocation": {
-      "documentDepth": 0,
-      "documentIndex": 1,
+      "documentDepth": 2,
+      "documentIndex": 9,
       "documentPath": "T:/ext/only.md"
     },
     "section": {
@@ -11,8 +11,8 @@
         {
           "documentOrder": {
             "char": 1,
-            "documentDepth": 0,
-            "documentIndex": 1,
+            "documentDepth": 2,
+            "documentIndex": 9,
             "documentPath": "T:/ext/only.md",
             "line": 2
           },
@@ -22,8 +22,8 @@
       ],
       "documentOrder": {
         "char": 0,
-        "documentDepth": 0,
-        "documentIndex": 1,
+        "documentDepth": 2,
+        "documentIndex": 9,
         "documentPath": "T:/ext/only.md",
         "line": 0
       },
