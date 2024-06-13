@@ -4,12 +4,17 @@ import { ILocation, IUtil, Result } from "../types.general";
 import { HandleValue, IInternals, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
+function headerize(depth: number, value: string): string {
+    const id = ''.padStart(depth + 1, '#');
+    return `${id} ${value} ${id}`;
+}
+
 function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
     return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], AstPart> {
-        let sectionFound = false;
         let depth = 0;
         let start: ILocation | undefined;
         let linkText: string | false = false;
+        let subTitleText: string | false = false;
         let title: ITitle | false = false;
 
         function tryParseSectionMeta(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
@@ -29,7 +34,6 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             }
 
             //Possible error: (section-meta (section-meta (title something)))
-            sectionFound = true;
             depth++;
             start = open.location;
             input.shift();
@@ -43,7 +47,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
         }
 
         function tryParseTitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-            if(!sectionFound && input.length < 3) {
+            if(!start && input.length < 3) {
                 return util.ok(false);
             }
 
@@ -78,11 +82,16 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
                 linkText :
                 '#' + param.text.toLocaleLowerCase().replaceAll(' ', '_'));
 
-            const label = ' '.padStart(open.location.documentDepth + 1, '#') + param.text;
+            const label = headerize(open.location.documentDepth, param.text);
+            const subtitle: string | undefined = 
+                subTitleText ?
+                subTitleText :
+                undefined;
 
             title = {
                 type: 'ast-title',
                 title: param.text,
+                subtitle,
                 label,
                 link,
                 documentOrder: open.location,
@@ -96,7 +105,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
         }
 
         function tryParseLink(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-            if(!sectionFound) {
+            if(!start) {
                 return util.ok(false);
             }
 
@@ -152,8 +161,66 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             });
         }
 
+        function tryParseSubtitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+            if(!start) {
+                return util.ok(false);
+            }
+
+            if(input.length < 4) {
+                return util.ok(false);
+            }
+
+            const open = input[0] as Token;
+            const atom = input[1] as Token;
+            const param = input[2] as Token;
+
+            if(open.type !== 'token - open parenthesis') {
+                return util.ok(false);
+            }
+
+            if(atom.type !== 'token - atom') {
+                return util.ok(false);
+            }
+
+            if(param.type !== 'token - parameter') {
+                // possible error
+                return util.ok(false);
+            }
+
+            const close = input[3] as Token;
+            if(close.type !== 'token - close parenthesis') {
+                return util.ok(false);
+            }
+
+            const text = headerize(starting.documentDepth + 2, param.text);
+
+            if(title) {
+                const nt: ITitle = {
+                    type: 'ast-title',
+                    title: title.title,
+                    subtitle: text,
+                    label: title.label,
+                    link: title.link,
+                    documentOrder: title.documentOrder,
+                };
+
+                title = nt;
+            }
+
+            subTitleText = text;
+            input.shift();
+            input.shift();
+            input.shift();
+
+            return util.ok({
+                type: 'discard',
+                rest: input,
+                location: open.location,
+            });
+        }
+
         function tryParseClose(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-            if(!sectionFound || depth < 1) {
+            if(!start || depth < 1) {
                 return util.ok(false);
             }
 
@@ -177,7 +244,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             });
         }
 
-        const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink);
+        const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle);
         const parsed = parser.parse(toParse, starting);
 
         if(!parsed.success) {

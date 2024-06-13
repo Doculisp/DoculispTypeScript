@@ -15,6 +15,7 @@ export interface ITitle extends ILocationSortable {
     readonly title: string;
     readonly label: string;
     readonly link: string;
+    readonly subtitle?: string | undefined;
 };
 
 export interface ILoad extends ILocationSortable {

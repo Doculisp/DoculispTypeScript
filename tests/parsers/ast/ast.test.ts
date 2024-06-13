@@ -183,6 +183,30 @@ describe('ast', () => {
         
                     verifyAsJson(result);
                 });
+
+                test('should parse the subtitle command', () => {
+                    const contents = `
+(section-meta
+    (title My cool title)
+    (subtitle This is information)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+        
+                    verifyAsJson(result);
+                });
+
+                test('should parse the subtitle before title command', () => {
+                    const contents = `
+(section-meta
+    (subtitle This is information)
+    (title My cool title)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+        
+                    verifyAsJson(result);
+                });
             });
         });
     });
