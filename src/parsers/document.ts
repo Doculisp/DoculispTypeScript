@@ -26,7 +26,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     function isStopParsingWhiteSpace(input: string, _current: ILocation): Result<'stop' | false> {
         const regex = /\S+/;
         if(regex.test(input)) {
-            return util.ok('stop');
+            return internals.stopFindingResults();
         }
         return internals.noResultFound();
     }
@@ -156,7 +156,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
                 if(!opened) {
-                    return util.ok('stop');
+                    return internals.stopFindingResults();
                 }
     
                 const parsed = input.charAt(0);
@@ -239,7 +239,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
                 if(!opened) {
-                    return util.ok('stop');
+                    return internals.stopFindingResults();
                 }
     
                 let parsed = input.charAt(0);
@@ -362,7 +362,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     });
                 }
     
-                return util.ok('stop');
+                return internals.stopFindingResults();
             }
     
             function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
@@ -440,7 +440,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         });
                     }
     
-                    return util.ok('stop');
+                    return internals.stopFindingResults();
                 }
                 return internals.noResultFound();
             }
@@ -462,7 +462,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             function tryEndAll(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(!opened) {
-                    return util.ok('stop');
+                    return internals.stopFindingResults();
                 }
     
                 return util.ok({
@@ -518,10 +518,10 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             function tryParseEndParse(input: string, _current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithOpenComment.test(input)) {
-                    return util.ok('stop')
+                    return internals.stopFindingResults()
                 }
                 if(doesIt.startWithInlineMarker.test(input)) {
-                    return util.ok('stop')
+                    return internals.stopFindingResults()
                 }
                 return internals.noResultFound();
             }

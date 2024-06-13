@@ -109,7 +109,7 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 }
                 return result;
             }
-            return util.ok('stop');
+            return internals.stopFindingResults();
         }
 
         function tryParseCloseParen(input: string, current: ILocation): StringStepParseResult<string> {
@@ -120,7 +120,7 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 }
                 return result;
             }
-            return util.ok('stop');
+            return internals.stopFindingResults();
         }
 
         function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
@@ -138,14 +138,14 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 }
                 return parsed;
             }
-            return util.ok('stop')
+            return internals.stopFindingResults()
         }
 
         function tryParseText(input: string, current: ILocation): StringStepParseResult<string> {
             if(0 < depth) {
                 return tryParse(/^./, input, current);
             }
-            return util.ok('stop')
+            return internals.stopFindingResults()
         }
 
         const parser = internals.createStringParser(tryParseOpenComment, tryParseOpenParen, tryParseCloseParen, tryParseWhiteSpace, tryParseText);

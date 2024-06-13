@@ -2,7 +2,7 @@ import { IRegisterable } from "../types.containers";
 import { ILocation, ISuccess, IUtil, Result } from "../types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParseResult, StepParse } from "../types.internal";
 
-function mapFirst<TParse, TResult>(util: IUtil, input: TParse, current: ILocation, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
+function mapFirst<TParse, TResult>(internals: IInternals, input: TParse, current: ILocation, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
     for (let index = 0; index < collection.length; index++) {
         const handler = collection[index] as HandleValue<TParse, TResult>;
         const result = handler(input, current);
@@ -15,21 +15,23 @@ function mapFirst<TParse, TResult>(util: IUtil, input: TParse, current: ILocatio
         }
     }
 
-    return util.ok('stop');
+    return internals.stopFindingResults();
 }
 
 class Parser<TParse, TResult> implements IParser<TParse, TResult> {
     private readonly _handlers: HandleValue<TParse, TResult>[] = [];
     private readonly _needsParsing: (input: TParse) => boolean;
     private readonly _util: IUtil;
+    private readonly _internals: IInternals;
 
-    constructor(util: IUtil, needsParsing: (input: TParse) => boolean, ...handlers: HandleValue<TParse, TResult>[]) {
+    constructor(util: IUtil, internals: IInternals, needsParsing: (input: TParse) => boolean, ...handlers: HandleValue<TParse, TResult>[]) {
         let that = this;
         function addHandler(handler: HandleValue<TParse, TResult>) {
             that._handlers[that._handlers.length] = handler;
         }
 
         this._util = util;
+        this._internals = internals;
         this._needsParsing = needsParsing;
         handlers.forEach(addHandler);
     }
@@ -47,7 +49,7 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
         }
 
         while(this._needsParsing(input)) {
-            let result = mapFirst(this._util, input, current, this._handlers);
+            let result = mapFirst(this._internals, input, current, this._handlers);
             
             if(!result.success) {
                 return result;
@@ -81,35 +83,44 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
 
 const registerable: IRegisterable = {
     builder: (util: IUtil) => { 
-        const ret: IInternals = {
-            createStringParser<T> (...handlers: HandleValue<string, T>[]): IParser<string, T> {
-                return new Parser<string, T>(util, (input: string) => (0 < input.length), ...handlers);
-            },
-            createArrayParser<TParse, TResult>(...handlers: HandleValue<TParse[], TResult>[]): IParser<TParse[], TResult> {
-                return new Parser<TParse[], TResult>(util, (input: TParse[]) => (0 < input.length), ...handlers);
-            },
+        function createStringParser<T> (...handlers: HandleValue<string, T>[]): IParser<string, T> {
+            return new Parser<string, T>(util, ret, (input: string) => (0 < input.length), ...handlers);
+        }
 
-            buildStepParse<TParse, TResult>(step: IParseStepForward<TParse>, resultType: (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult)): StepParse<TParse, TResult> {
-                const stepKeys = 
-                    Object.
-                        keys(step);
-                const resultKeys =
-                    Object.
-                        keys(resultType);
+        function createArrayParser<TParse, TResult>(...handlers: HandleValue<TParse[], TResult>[]): IParser<TParse[], TResult> {
+            return new Parser<TParse[], TResult>(util, ret, (input: TParse[]) => (0 < input.length), ...handlers);
+        }
+
+        function buildStepParse<TParse, TResult>(step: IParseStepForward<TParse>, resultType: (ISubParseGroupResult<TResult> | ISubParseResult<TResult> | IDiscardResult)): StepParse<TParse, TResult> {
+            const stepKeys = 
+                Object.
+                    keys(step);
+            const resultKeys =
+                Object.
+                    keys(resultType);
+        
+            const ret: any = {};
             
-                const ret: any = {};
-                
-                stepKeys.forEach(key => ret[key] = (step as any)[key]);
-                resultKeys.forEach(key => ret[key] = (resultType as any)[key]);
-            
-                return ret;
-            },
-            noResultFound(): ISuccess<false> {
-                return util.ok(false);
-            },
-            stopFindingResults(): ISuccess<'stop'> {
-                return util.ok('stop');
-            },
+            stepKeys.forEach(key => ret[key] = (step as any)[key]);
+            resultKeys.forEach(key => ret[key] = (resultType as any)[key]);
+        
+            return ret;
+        }
+
+        function noResultFound(): ISuccess<false> {
+            return util.ok(false);
+        }
+
+        function stopFindingResults(): ISuccess<'stop'> {
+            return util.ok('stop');
+        }
+
+        const ret: IInternals = {
+            createStringParser,
+            createArrayParser,
+            buildStepParse,
+            noResultFound,
+            stopFindingResults,
         };
         return ret; 
     },
