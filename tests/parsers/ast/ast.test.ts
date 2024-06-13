@@ -219,6 +219,18 @@ describe('ast', () => {
         
                     verifyAsJson(result);
                 });
+
+                test('should not parse a subtitle without a parameter', () => {
+                    const contents = `
+(section-meta
+    (title My cool title)
+    (subtitle)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 10));
+        
+                    verifyAsJson(result);
+                });
             });
         });
     });

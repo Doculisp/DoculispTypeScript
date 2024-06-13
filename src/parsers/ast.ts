@@ -182,8 +182,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             }
 
             if(param.type !== 'token - parameter') {
-                // possible error
-                return internals.noResultFound();
+                return util.fail(`The Subtitle command at ${open.location} does not contain subtitle text.`, open.location.documentPath);
             }
 
             const close = input[3] as Token;
