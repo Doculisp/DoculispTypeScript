@@ -16,23 +16,10 @@
             "documentPath": "main.dlisp",
             "line": 1
           },
-          "label": "# Doculisp a short description #",
-          "link": "#doculisp_a_short_description",
-          "title": "Doculisp a short description",
+          "label": "# Doculisp is ✨ #",
+          "link": "#doculisp_is_",
+          "title": "Doculisp is ✨",
           "type": "ast-title"
-        },
-        {
-          "document": false,
-          "documentOrder": {
-            "char": 9,
-            "documentDepth": 1,
-            "documentIndex": 4,
-            "documentPath": "main.dlisp",
-            "line": 4
-          },
-          "path": "./doculisp.md",
-          "sectionLabel": "section",
-          "type": "ast-load"
         },
         {
           "document": false,
@@ -43,8 +30,21 @@
             "documentPath": "main.dlisp",
             "line": 5
           },
-          "path": "./section-meta.md",
-          "sectionLabel": "section",
+          "path": "./structure.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 4,
+            "documentPath": "main.dlisp",
+            "line": 6
+          },
+          "path": "./doculisp.md",
+          "sectionLabel": "Section",
           "type": "ast-load"
         }
       ],

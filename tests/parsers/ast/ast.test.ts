@@ -258,6 +258,38 @@ describe('ast', () => {
 
                     verifyAsJson(result);
                 });
+
+                test('should handle them all put together', () => {
+                    const contents = `
+(section-meta
+    (title Doculisp is ✨)
+    (link doculisp_is_)
+    (external
+        (Section ./structure.md)
+        (Section ./doculisp.md)
+    )
+)`;
+
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+
+                    verifyAsJson(result);
+                });
+
+                test('should handle them all put together out of order', () => {
+                    const contents = `
+(section-meta
+    (link doculisp_is_)
+    (external
+        (Section ./structure.md)
+        (Section ./doculisp.md)
+    )
+    (title Doculisp is ✨)
+)`;
+
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+
+                    verifyAsJson(result);
+                });
             });
         });
     });

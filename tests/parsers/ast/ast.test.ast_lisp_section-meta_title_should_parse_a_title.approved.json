@@ -10,11 +10,11 @@
       "ast": [
         {
           "documentOrder": {
-            "char": 5,
+            "char": 1,
             "documentDepth": 1,
             "documentIndex": 7,
             "documentPath": "main.dlisp",
-            "line": 2
+            "line": 1
           },
           "label": "# My Cool Document #",
           "link": "#my_cool_document",

@@ -53,7 +53,11 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
         }
 
         function tryParseTitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-            if(!start && input.length < 3) {
+            if(!start) {
+                return internals.noResultFound();
+            }
+
+            if(input.length < 3) {
                 return internals.noResultFound();
             }
 
@@ -95,7 +99,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
                 subtitle,
                 label,
                 link,
-                documentOrder: open.location,
+                documentOrder: start,
             };
 
             return util.ok({
