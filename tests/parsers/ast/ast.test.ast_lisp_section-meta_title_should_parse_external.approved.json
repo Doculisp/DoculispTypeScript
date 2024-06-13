@@ -1,0 +1,61 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 4,
+      "documentPath": "main.dlisp"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 1,
+            "documentIndex": 4,
+            "documentPath": "main.dlisp",
+            "line": 2
+          },
+          "label": "# Doculisp a short description #",
+          "link": "#doculisp_a_short_description",
+          "title": "Doculisp a short description",
+          "type": "ast-title"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 4,
+            "documentPath": "main.dlisp",
+            "line": 4
+          },
+          "path": "./doculisp.md",
+          "sectionLabel": "section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 4,
+            "documentPath": "main.dlisp",
+            "line": 5
+          },
+          "path": "./section-meta.md",
+          "sectionLabel": "section",
+          "type": "ast-load"
+        }
+      ],
+      "documentOrder": {
+        "char": 0,
+        "documentDepth": 1,
+        "documentIndex": 4,
+        "documentPath": "main.dlisp",
+        "line": 0
+      },
+      "type": "ast-section"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { AstPart, IAst, IAstParser, ITitle } from "../types.ast";
+import { AstPart, IAst, IAstParser, ILoad, ITitle } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { ILocation, IUtil, Result } from "../types.general";
 import { HandleValue, IInternals, StepParseResult } from "../types.internal";
@@ -173,7 +173,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
                 return internals.noResultFound();
             }
 
-            if(atom.type !== 'token - atom') {
+            if(atom.type !== 'token - atom' || atom.text !== 'subtitle') {
                 return internals.noResultFound();
             }
 
@@ -233,7 +233,101 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             });
         }
 
-        const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle);
+        function trySubParseLoadable(input: Token[], current: ILocation): StepParseResult<Token[], ILoad> {
+            if(!start) {
+                return internals.noResultFound();
+            }
+
+            if(depth < 2) {
+                return internals.noResultFound();
+            }
+
+            if(input.length < 4) {
+                return internals.noResultFound();
+            }
+
+            const open = input[0] as Token;
+            const atom = input[1] as Token;
+            const param = input[2] as Token;
+
+            if(open.type !== 'token - open parenthesis') {
+                return internals.noResultFound();
+            }
+
+            if(atom.type !== 'token - atom') {
+                return internals.noResultFound();
+            }
+
+            if(param.type !== 'token - parameter') {
+                return util.fail(`Section command named "${atom.text}" at ${open.location} does not have a section title.`, open.location.documentPath);
+            }
+
+            const close = input[3] as Token;
+            if(close.type !== 'token - close parenthesis') {
+                return internals.noResultFound();
+            }
+
+            const load: ILoad = {
+                type: 'ast-load',
+                sectionLabel: atom.text,
+                path: param.text,
+                documentOrder: open.location,
+                document: false,
+            }
+
+            return util.ok({
+                type: 'parse result',
+                subResult: load,
+                rest: trimArray(4, input),
+                location: current.increaseChar(),
+            });
+        }
+
+        function tryParseExternal(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+            if(!start) {
+                return internals.noResultFound();
+            }
+
+            if(input.length < 3) {
+                return internals.noResultFound();
+            }
+
+            const open = input[0] as Token;
+            const atom = input[1] as Token;
+
+            if(open.type !== 'token - open parenthesis') {
+                return internals.noResultFound();
+            }
+
+            if(atom.type !== 'token - atom' || atom.text !== 'external') {
+                return internals.noResultFound();
+            }
+
+            input = trimArray(2, input);
+            depth++;
+
+            const parser = internals.createArrayParser(trySubParseLoadable, tryParseClose);
+            const parsed = parser.parse(input, current.increaseChar());
+
+            if(!parsed.success) {
+                return parsed;
+            }
+
+            const [result, leftovers] = parsed.value;
+
+            if(0 === result.length) {
+                return util.fail(`External command at ${open.location} does not contain any section information.`, open.location.documentPath);
+            }
+
+            return util.ok({
+                type: 'parse group result',
+                subResult: result.map(r => { return { type: 'keep', keptValue: r }; }),
+                rest: leftovers.remaining,
+                location: leftovers.location,
+            })
+        }
+
+        const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseExternal);
         const parsed = parser.parse(toParse, starting);
 
         if(!parsed.success) {

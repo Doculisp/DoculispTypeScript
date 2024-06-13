@@ -231,6 +231,33 @@ describe('ast', () => {
         
                     verifyAsJson(result);
                 });
+
+                test('should parse external', () => {
+                    const contents = `
+(section-meta
+    (title Doculisp a short description)
+    (external
+        (section ./doculisp.md)
+        (section ./section-meta.md)
+    )
+)`;
+
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+
+                    verifyAsJson(result);
+                });
+
+                test('should not parse external without section information', () => {
+                    const contents = `
+(section-meta
+    (title Doculisp a short description)
+    (external)
+)`;
+
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+
+                    verifyAsJson(result);
+                });
             });
         });
     });

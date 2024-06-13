@@ -21,6 +21,7 @@ export interface ITitle extends ILocationSortable {
 export interface ILoad extends ILocationSortable {
     readonly type: 'ast-load';
     readonly path: string;
+    readonly sectionLabel: string;
     readonly document: ISectionWriter | false;
 }
 
