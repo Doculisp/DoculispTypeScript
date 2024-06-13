@@ -9,6 +9,14 @@ function headerize(depth: number, value: string): string {
     return `${id} ${value} ${id}`;
 }
 
+function trimArray<T>(length: number, values: T[]): T[] {
+    for (let index = 0; index < length; index++) {
+        values.shift();
+    }
+
+    return values;
+}
+
 function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
     return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], AstPart> {
         let depth = 0;
@@ -36,13 +44,11 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             //Possible error: (section-meta (section-meta (title something)))
             depth++;
             start = open.location;
-            input.shift();
-            input.shift();
 
             return util.ok({
                 type: 'discard',
                 location: current.increaseChar(),
-                rest: input,
+                rest: trimArray(2, input),
             });
         }
 
@@ -72,11 +78,6 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
                 return internals.noResultFound();
             }
 
-            input.shift();
-            input.shift();
-            input.shift();
-            input.shift();
-
             const link = (
                 linkText ? 
                 linkText :
@@ -99,7 +100,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
 
             return util.ok({
                 type: 'discard',
-                rest: input,
+                rest: trimArray(4, input),
                 location: current.increaseChar(),
             });
         }
@@ -148,14 +149,9 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
                 title = n;
             }
 
-            input.shift();
-            input.shift();
-            input.shift();
-            input.shift();
-
             return util.ok({
                 type: 'discard',
-                rest: input,
+                rest: trimArray(4, input),
                 location: current.increaseChar(),
             });
         }
@@ -206,13 +202,9 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             }
 
             subTitleText = text;
-            input.shift();
-            input.shift();
-            input.shift();
-
             return util.ok({
                 type: 'discard',
-                rest: input,
+                rest: trimArray(4, input),
                 location: open.location,
             });
         }
@@ -233,11 +225,10 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             }
 
             depth--;
-            input.shift();
 
             return util.ok({
                 type: 'discard',
-                rest: input,
+                rest: trimArray(1, input),
                 location: current.increaseChar(),
             });
         }
@@ -303,11 +294,6 @@ function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], AstP
             return util.fail(`Header at ${open.location.toString()} has invalid syntax.`, open.location.documentPath);
         }
 
-        input.shift();
-        input.shift();
-        input.shift();
-        input.shift();
-
         const part: AstPart = {
             type: 'ast-header',
             depthCount: atom.text.length + open.location.documentDepth,
@@ -319,7 +305,7 @@ function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], AstP
             type: 'parse result',
             subResult: part,
             location: current.increaseChar(),
-            rest: input,
+            rest: trimArray(4, input),
         });
     }
 }
@@ -328,7 +314,6 @@ function isText(internals: IInternals, util: IUtil): HandleValue<Token[], AstPar
     return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
         const token: Token = input[0] as Token;
         if(token.type === 'token - text') {
-            input.shift();
             return util.ok({
                 type: 'parse result',
                 subResult: {
@@ -337,7 +322,7 @@ function isText(internals: IInternals, util: IUtil): HandleValue<Token[], AstPar
                     value: token.text,
                 },
                 location: current.increaseChar(),
-                rest: input
+                rest: trimArray(1, input),
             });
         }
         return internals.noResultFound();
