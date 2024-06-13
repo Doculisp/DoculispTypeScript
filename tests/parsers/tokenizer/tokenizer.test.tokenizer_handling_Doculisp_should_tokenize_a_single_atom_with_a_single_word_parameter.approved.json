@@ -2,8 +2,8 @@
   "success": true,
   "value": {
     "projectLocation": {
-      "documentDepth": 0,
-      "documentIndex": 0,
+      "documentDepth": 5,
+      "documentIndex": 5,
       "documentPath": "Z:/parameter.md"
     },
     "tokens": [

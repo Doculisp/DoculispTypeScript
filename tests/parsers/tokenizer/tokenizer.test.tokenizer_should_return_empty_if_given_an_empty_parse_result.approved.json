@@ -2,8 +2,8 @@
   "success": true,
   "value": {
     "projectLocation": {
-      "documentDepth": 0,
-      "documentIndex": 0,
+      "documentDepth": 4,
+      "documentIndex": 8,
       "documentPath": "c:/empty/readme.md"
     },
     "tokens": []

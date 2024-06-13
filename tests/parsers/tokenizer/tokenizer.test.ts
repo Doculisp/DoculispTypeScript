@@ -37,7 +37,7 @@ describe('tokenizer', () => {
 
     test('should return empty if given an empty parse result', () => {
         const parseResult: Result<DocumentMap> = ok({
-            projectLocation: { documentPath: 'c:/empty/readme.md', documentDepth: 0, documentIndex: 0 },
+            projectLocation: { documentPath: 'c:/empty/readme.md', documentDepth: 4, documentIndex: 8 },
             parts: [],
         });
 
@@ -48,7 +48,7 @@ describe('tokenizer', () => {
 
     test('should tokenize text as text', () => {
         const parseResult: Result<DocumentMap> = ok({
-            projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
+            projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 6, documentIndex: 8 },
             parts: [
                 {
                     type: 'text',
@@ -66,7 +66,7 @@ describe('tokenizer', () => {
     describe('handling Doculisp', () => {
         test('should tokenize an empty comment', () => {
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 1, documentIndex: 5 },
                 parts: [
                     {
                         type: 'lisp',
@@ -84,7 +84,7 @@ describe('tokenizer', () => {
         test('should tokenize an single atom', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 2, documentIndex: 7 },
                 parts: [
                     {
                         type: 'lisp',
@@ -102,7 +102,7 @@ describe('tokenizer', () => {
         test('should tokenize an single atom with space after atom', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 3, documentIndex: 7 },
                 parts: [
                     {
                         type: 'lisp',
@@ -120,7 +120,7 @@ describe('tokenizer', () => {
         test('should tokenize an single atom with new line after atom', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 7, documentIndex: 4 },
                 parts: [
                     {
                         type: 'lisp',
@@ -138,7 +138,7 @@ describe('tokenizer', () => {
         test('should tokenize an single atom containing only numbers', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2 );
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 4, documentIndex: 6 },
                 parts: [
                     {
                         type: 'lisp',
@@ -156,7 +156,7 @@ describe('tokenizer', () => {
         test('should tokenize an single atom with hyphen and underscore', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 7, documentIndex: 7 },
                 parts: [
                     {
                         type: 'lisp',
@@ -175,7 +175,7 @@ describe('tokenizer', () => {
             const start: ILocation = util.location('Z:/parameter.md', 0, 0, 1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'Z:/parameter.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'Z:/parameter.md', documentDepth: 5, documentIndex: 5 },
                 parts: [
                     {
                         type: 'lisp',
@@ -195,7 +195,7 @@ describe('tokenizer', () => {
             const start: ILocation = util.location('Z:/parameter.md', 0, 0, 1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'Z:/parameter.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'Z:/parameter.md', documentDepth: 8, documentIndex: 1 },
                 parts: [
                     {
                         type: 'lisp',
@@ -215,7 +215,7 @@ describe('tokenizer', () => {
             const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
 
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'A:/main.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'A:/main.md', documentDepth: 7, documentIndex: 7 },
                 parts: [
                     {
                         type: 'lisp',
@@ -238,7 +238,7 @@ describe('tokenizer', () => {
             const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
 
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: { documentPath: 'A:/main.md', documentDepth: 0, documentIndex: 0 },
+                projectLocation: { documentPath: 'A:/main.md', documentDepth: 7, documentIndex: 1 },
                 parts: [
                     {
                         type: 'lisp',
