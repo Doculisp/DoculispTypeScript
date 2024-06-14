@@ -137,6 +137,37 @@ describe('ast', () => {
         });
 
         describe('section-meta', () => {
+            test('should handle all subparts put together out of order', () => {
+                const contents = `
+(section-meta
+(link doculisp_is_)
+(external
+    (Section ./structure.md)
+    (Section ./doculisp.md)
+)
+(title Doculisp is ✨)
+)`;
+
+                const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+
+                verifyAsJson(result);
+            });
+
+//             test('should not parse a section-meta that contains a section-meta', () => {
+//                 const content = `
+// (section-meta
+//     (section-meta
+//         (title A Subtitle?)
+//     )
+//     (title The Document)
+// )
+// `;
+                
+//                 const result = toResult(content, buildLocation('A:/malformed/file.dlisp', 1, 7));
+
+//                 verifyAsJson(result);
+//             });
+
             describe('title', () => {
                 test('should parse a title', () => {
                     const contents = `
@@ -159,7 +190,9 @@ describe('ast', () => {
             
                     verifyAsJson(result);
                 });
+            });
 
+            describe('link', () => {
                 test('should parse the link', () => {
                     const contents = `
 (section-meta
@@ -195,7 +228,9 @@ describe('ast', () => {
                             
                     verifyAsJson(result);
                 });
+            });
 
+            describe('subtitle', () => {
                 test('should parse the subtitle command', () => {
                     const contents = `
 (section-meta
@@ -231,7 +266,9 @@ describe('ast', () => {
         
                     verifyAsJson(result);
                 });
+            });
 
+            describe('external', () => {
                 test('should parse external', () => {
                     const contents = `
 (section-meta
@@ -268,22 +305,6 @@ describe('ast', () => {
         (Section ./structure.md)
         (Section ./doculisp.md)
     )
-)`;
-
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
-
-                    verifyAsJson(result);
-                });
-
-                test('should handle them all put together out of order', () => {
-                    const contents = `
-(section-meta
-    (link doculisp_is_)
-    (external
-        (Section ./structure.md)
-        (Section ./doculisp.md)
-    )
-    (title Doculisp is ✨)
 )`;
 
                     const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
