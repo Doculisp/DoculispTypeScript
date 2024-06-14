@@ -44,6 +44,7 @@ export type StepParse<TParse, TResult> = IParseStepForward<TParse> & (ISubParseG
 export type StringStepParse<T> = StepParse<string, T>;
 
 export type StepParseResult<TParse, TResult> = Result<StepParse<TParse, TResult> | false | 'stop'>;
+export type DiscardedResult<TParse> = Result<(IParseStepForward<TParse> & IDiscardResult) | false | 'stop'>
 
 export type StringStepParseResult<T> = StepParseResult<string, T>;
 

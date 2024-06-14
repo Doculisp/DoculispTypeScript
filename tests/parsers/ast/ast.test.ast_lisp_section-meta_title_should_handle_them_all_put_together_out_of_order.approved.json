@@ -20,7 +20,16 @@
           "link": "#doculisp_is_",
           "title": "Doculisp is ✨",
           "type": "ast-title"
-        },
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 4,
+        "documentPath": "main.dlisp",
+        "line": 1
+      },
+      "external": [
         {
           "document": false,
           "documentOrder": {
@@ -48,13 +57,6 @@
           "type": "ast-load"
         }
       ],
-      "documentOrder": {
-        "char": 1,
-        "documentDepth": 1,
-        "documentIndex": 4,
-        "documentPath": "main.dlisp",
-        "line": 1
-      },
       "type": "ast-section"
     }
   }

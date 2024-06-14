@@ -27,6 +27,7 @@
         "documentPath": "T:/ext/only.md",
         "line": 1
       },
+      "external": [],
       "type": "ast-section"
     }
   }

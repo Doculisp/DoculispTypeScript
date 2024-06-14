@@ -22,7 +22,7 @@ export interface ILoad extends ILocationSortable {
     readonly type: 'ast-load';
     readonly path: string;
     readonly sectionLabel: string;
-    readonly document: ISectionWriter | false;
+    document: ISectionWriter | false;
 }
 
 export type AstBulletStyle = 
@@ -46,11 +46,12 @@ export interface IHeader extends ILocationSortable {
     readonly text: string;
 };
 
-export type AstPart = IWrite | ITitle | ILoad | ITableOfContents | IHeader;
+export type AstPart = IWrite | ITitle | ITableOfContents | IHeader;
 
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'ast-section';
     readonly ast: AstPart[];
+    readonly external: ILoad[];
 };
 
 export interface IEmptyAst {

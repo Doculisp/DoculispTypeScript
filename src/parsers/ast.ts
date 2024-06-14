@@ -1,7 +1,7 @@
 import { AstPart, IAst, IAstParser, ILoad, ITitle } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { ILocation, IUtil, Result } from "../types.general";
-import { HandleValue, IInternals, StepParseResult } from "../types.internal";
+import { DiscardedResult, HandleValue, IInternals, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
 function headerize(depth: number, value: string): string {
@@ -17,7 +17,7 @@ function trimArray<T>(length: number, values: T[]): T[] {
     return values;
 }
 
-function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
+function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): HandleValue<Token[], AstPart> {
     return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], AstPart> {
         let depth = 0;
         let start: ILocation | undefined;
@@ -213,7 +213,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             });
         }
 
-        function tryParseClose(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+        function tryParseClose(input: Token[], current: ILocation): DiscardedResult<Token[]> {
             if(!start || depth < 1) {
                 return internals.noResultFound();
             }
@@ -287,7 +287,7 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             });
         }
 
-        function tryParseExternal(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+        function tryParseExternal(input: Token[], current: ILocation): DiscardedResult<Token[]> {
             if(!start) {
                 return internals.noResultFound();
             }
@@ -310,25 +310,27 @@ function isSectionMeta(internals: IInternals, util: IUtil): HandleValue<Token[],
             input = trimArray(2, input);
             depth++;
 
-            const parser = internals.createArrayParser(trySubParseLoadable, tryParseClose);
+            const parser = internals.createArrayParser<Token, ILoad>(trySubParseLoadable, tryParseClose);
             const parsed = parser.parse(input, current.increaseChar());
 
             if(!parsed.success) {
                 return parsed;
             }
 
-            const [result, leftovers] = parsed.value;
+            const [rawResult, leftovers] = parsed.value;
+            const result = rawResult as ILoad[];
 
             if(0 === result.length) {
                 return util.fail(`External command at ${open.location} does not contain any section information.`, open.location.documentPath);
             }
 
+            result.forEach(r => external.push(r));
+
             return util.ok({
-                type: 'parse group result',
-                subResult: result.map(r => { return { type: 'keep', keptValue: r }; }),
+                type: 'discard',
                 rest: leftovers.remaining,
-                location: leftovers.location,
-            })
+                location: current.increaseChar(),
+            });
         }
 
         const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseExternal);
@@ -432,7 +434,8 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
         parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
-                const parser = internals.createArrayParser(isText(internals, util), isHeader(internals, util), isSectionMeta(internals, util));
+                const external: ILoad[] = [];
+                const parser = internals.createArrayParser(isText(internals, util), isHeader(internals, util), isSectionMeta(internals, util, external));
                 const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 1, 1));
                 
                 if(parsed.success) {
@@ -445,6 +448,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                                 type: 'ast-section',
                                 ast: result,
                                 documentOrder: util.toLocation(document.projectLocation, 1, 1),
+                                external,
                             },
                         });
                     }
