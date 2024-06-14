@@ -41,7 +41,14 @@ function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): H
                 return internals.noResultFound();
             }
 
-            //Possible error: (section-meta (section-meta (title something)))
+            if(start && 0 < depth) {
+                return util.fail(`A nested Section-Meta command at ${open.location}.`, open.location.documentPath);
+            }
+
+            if(start) {
+                return util.fail(`A second Section-Meta command was detected at ${open.location}`, open.location.documentPath);
+            }
+
             depth++;
             start = open.location;
 

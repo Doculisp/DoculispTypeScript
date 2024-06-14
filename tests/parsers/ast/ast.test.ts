@@ -153,20 +153,36 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-//             test('should not parse a section-meta that contains a section-meta', () => {
-//                 const content = `
-// (section-meta
-//     (section-meta
-//         (title A Subtitle?)
-//     )
-//     (title The Document)
-// )
-// `;
+            test('should not parse a section-meta that contains a section-meta', () => {
+                const content = `
+(section-meta
+    (section-meta
+        (title A Subtitle?)
+    )
+    (title The Document)
+)
+`;
                 
-//                 const result = toResult(content, buildLocation('A:/malformed/file.dlisp', 1, 7));
+                const result = toResult(content, buildLocation('A:/malformed/file.dlisp', 1, 7));
 
-//                 verifyAsJson(result);
-//             });
+                verifyAsJson(result);
+            });
+
+            test('should not parse a second section-meta in a file', () => {
+                const content = `
+(section-meta
+    (title My Section)
+)
+
+(section-meta
+    (title A tale of two sections)
+)
+`;
+
+                const result = toResult(content, buildLocation('./two/sections.dlisp', 3, 2));
+
+                verifyAsJson(result);
+            });
 
             describe('title', () => {
                 test('should parse a title', () => {
