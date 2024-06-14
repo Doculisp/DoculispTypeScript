@@ -1,0 +1,5 @@
+{
+  "documentPath": "../main.dlisp",
+  "message": "Section command must come before the Content command at {\"path\":\"../main.dlisp\",\"line\":2,\"char\":1}",
+  "success": false
+}

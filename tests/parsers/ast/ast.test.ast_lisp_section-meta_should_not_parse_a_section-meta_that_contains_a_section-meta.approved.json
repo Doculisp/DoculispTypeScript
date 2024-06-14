@@ -1,5 +1,5 @@
 {
   "documentPath": "A:/malformed/file.dlisp",
-  "message": "A nested Section-Meta command at {\"path\":\"A:/malformed/file.dlisp\",\"line\":2,\"char\":5}.",
+  "message": "A nested Section-Meta command at {\"path\":\"A:/malformed/file.dlisp\",\"line\":3,\"char\":5}.",
   "success": false
 }

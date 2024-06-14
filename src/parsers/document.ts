@@ -595,7 +595,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
 
         const parser = 
             isDoculispFile ?
-            parserBuilder.createStringParser(partParsers.isDoculisp(true)) :
+            parserBuilder.createStringParser(partParsers.isDiscardedWhiteSpace(), partParsers.isDoculisp(true)) :
             parserBuilder.createStringParser(
                 partParsers.isDiscardedWhiteSpace(), 
                 partParsers.isMultiline(), 

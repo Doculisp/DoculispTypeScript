@@ -4,493 +4,499 @@ import { ILocation, IUtil, Result } from "../types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
-function headerize(depth: number, value: string): string {
-    const id = ''.padStart(depth, '#');
-    return `${id} ${value} ${id}`;
-}
-
-function trimArray<T>(length: number, values: T[]): T[] {
-    for (let index = 0; index < length; index++) {
-        values.shift();
+function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
+    let hasSection: boolean = false;
+    function headerize(depth: number, value: string): string {
+        const id = ''.padStart(depth, '#');
+        return `${id} ${value} ${id}`;
     }
 
-    return values;
-}
-
-function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): HandleValue<Token[], ITitle> {
-    return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], ITitle> {
-        let depth = 0;
-        let start: ILocation | undefined;
-        let linkText: string | false = false;
-        let subTitleText: string | false = false;
-        let title: ITitle | false = false;
-
-        function tryParseSectionMeta(input: Token[], current: ILocation): DiscardedResult<Token[]> {
-            if(input.length < 2) {
-                return internals.noResultFound();
-            }
-
-            const open = input[0] as Token;
-            const atom = input[1] as Token;
-
-            if(open.type !== 'token - open parenthesis') {
-                return internals.noResultFound();
-            }
-
-            if(atom.type !== 'token - atom' || atom.text !== 'section-meta') {
-                return internals.noResultFound();
-            }
-
-            if(start && 0 < depth) {
-                return util.fail(`A nested Section-Meta command at ${open.location}.`, open.location.documentPath);
-            }
-
-            if(start) {
-                return util.fail(`A second Section-Meta command was detected at ${open.location}`, open.location.documentPath);
-            }
-
-            depth++;
-            start = open.location;
-
-            return util.ok({
-                type: 'discard',
-                location: current.increaseChar(),
-                rest: trimArray(2, input),
-            });
+    function trimArray<T>(length: number, values: T[]): T[] {
+        for (let index = 0; index < length; index++) {
+            values.shift();
         }
 
-        function tryParseTitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {
-            if(!start) {
-                return internals.noResultFound();
-            }
+        return values;
+    }
 
-            if(input.length < 3) {
-                return internals.noResultFound();
-            }
+    function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): HandleValue<Token[], ITitle> {
+        return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], ITitle> {
+            let depth = 0;
+            let start: ILocation | undefined;
+            let linkText: string | false = false;
+            let subTitleText: string | false = false;
+            let title: ITitle | false = false;
 
-            const open = input[0] as Token;
-            const atom = input[1] as Token;
-            const param = input[2] as Token;
-
-            if(open.type !== 'token - open parenthesis') {
-                return internals.noResultFound();
-            }
-
-            if(atom.type !== 'token - atom' || atom.text !== 'title') {
-                return internals.noResultFound();
-            }
-
-            if(param.type !== 'token - parameter') {
-                return util.fail(`Title at ${open.location.toString()} does not contain title text.`, open.location.documentPath);
-            }
-
-            const close = input[3] as Token;
-            if(close.type !== 'token - close parenthesis') {
-                return internals.noResultFound();
-            }
-
-            const link = (
-                linkText ? 
-                linkText :
-                '#' + param.text.toLocaleLowerCase().replaceAll(' ', '_'));
-
-            const label = headerize(open.location.documentDepth, param.text);
-            const subtitle: string | undefined = 
-                subTitleText ?
-                subTitleText :
-                undefined;
-
-            title = {
-                type: 'ast-title',
-                title: param.text,
-                subtitle,
-                label,
-                link,
-                documentOrder: start,
-            };
-
-            return util.ok({
-                type: 'discard',
-                rest: trimArray(4, input),
-                location: current.increaseChar(),
-            });
-        }
-
-        function tryParseLink(input: Token[], current: ILocation): DiscardedResult<Token[]> {
-            if(!start) {
-                return internals.noResultFound();
-            }
-
-            if(input.length < 3) {
-                return internals.noResultFound();
-            }
-
-            const open = input[0] as Token;
-            const link = input[1] as Token;
-            const param = input[2] as Token;
-
-            if(open.type !== 'token - open parenthesis') {
-                return internals.noResultFound();
-            }
-
-            if(link.type !== 'token - atom' || link.text !== 'link') {
-                return internals.noResultFound()
-            }
-
-            if(param.type !== 'token - parameter') {
-                return util.fail(`the Link Command at ${open.location.toString()} does not have a link text.`, open.location.documentPath);
-            }
-
-            const close = input[3] as Token;
-            if(close.type !== 'token - close parenthesis') {
-                return internals.noResultFound();
-            }
-
-            linkText = '#' + param.text;
-
-            if(title) {
-                const n: ITitle = {
-                    type: 'ast-title',
-                    label: title.label,
-                    title: title.title,
-                    link: linkText,
-                    documentOrder: title.documentOrder,
+            function tryParseSectionMeta(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+                if(input.length < 2) {
+                    return internals.noResultFound();
                 }
 
-                title = n;
+                const open = input[0] as Token;
+                const atom = input[1] as Token;
+
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                if(atom.type !== 'token - atom' || atom.text !== 'section-meta') {
+                    return internals.noResultFound();
+                }
+
+                if(start && 0 < depth) {
+                    return util.fail(`A nested Section-Meta command at ${open.location}.`, open.location.documentPath);
+                }
+
+                if(start) {
+                    return util.fail(`A second Section-Meta command was detected at ${open.location}`, open.location.documentPath);
+                }
+
+                depth++;
+                start = open.location;
+
+                return util.ok({
+                    type: 'discard',
+                    location: current.increaseChar(),
+                    rest: trimArray(2, input),
+                });
             }
 
-            return util.ok({
-                type: 'discard',
-                rest: trimArray(4, input),
-                location: current.increaseChar(),
-            });
-        }
+            function tryParseTitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+                if(!start) {
+                    return internals.noResultFound();
+                }
 
-        function tryParseSubtitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {
-            if(!start) {
-                return internals.noResultFound();
-            }
+                if(input.length < 3) {
+                    return internals.noResultFound();
+                }
 
-            if(input.length < 4) {
-                return internals.noResultFound();
-            }
+                const open = input[0] as Token;
+                const atom = input[1] as Token;
+                const param = input[2] as Token;
 
-            const open = input[0] as Token;
-            const atom = input[1] as Token;
-            const param = input[2] as Token;
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
 
-            if(open.type !== 'token - open parenthesis') {
-                return internals.noResultFound();
-            }
+                if(atom.type !== 'token - atom' || atom.text !== 'title') {
+                    return internals.noResultFound();
+                }
 
-            if(atom.type !== 'token - atom' || atom.text !== 'subtitle') {
-                return internals.noResultFound();
-            }
+                if(param.type !== 'token - parameter') {
+                    return util.fail(`Title at ${open.location.toString()} does not contain title text.`, open.location.documentPath);
+                }
 
-            if(param.type !== 'token - parameter') {
-                return util.fail(`The Subtitle command at ${open.location} does not contain subtitle text.`, open.location.documentPath);
-            }
+                const close = input[3] as Token;
+                if(close.type !== 'token - close parenthesis') {
+                    return internals.noResultFound();
+                }
 
-            const close = input[3] as Token;
-            if(close.type !== 'token - close parenthesis') {
-                return internals.noResultFound();
-            }
+                const link = (
+                    linkText ? 
+                    linkText :
+                    '#' + param.text.toLocaleLowerCase().replaceAll(' ', '_'));
 
-            const text = headerize(starting.documentDepth + 2, param.text);
+                const label = headerize(open.location.documentDepth, param.text);
+                const subtitle: string | undefined = 
+                    subTitleText ?
+                    subTitleText :
+                    undefined;
 
-            if(title) {
-                const nt: ITitle = {
+                title = {
                     type: 'ast-title',
-                    title: title.title,
-                    subtitle: text,
-                    label: title.label,
-                    link: title.link,
-                    documentOrder: title.documentOrder,
+                    title: param.text,
+                    subtitle,
+                    label,
+                    link,
+                    documentOrder: start,
                 };
 
-                title = nt;
+                return util.ok({
+                    type: 'discard',
+                    rest: trimArray(4, input),
+                    location: current.increaseChar(),
+                });
             }
 
-            subTitleText = text;
-            return util.ok({
-                type: 'discard',
-                rest: trimArray(4, input),
-                location: current.increaseChar(),
-            });
-        }
+            function tryParseLink(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+                if(!start) {
+                    return internals.noResultFound();
+                }
 
-        function tryParseClose(input: Token[], current: ILocation): DiscardedResult<Token[]> {
-            if(!start || depth < 1) {
-                return internals.noResultFound();
+                if(input.length < 3) {
+                    return internals.noResultFound();
+                }
+
+                const open = input[0] as Token;
+                const link = input[1] as Token;
+                const param = input[2] as Token;
+
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                if(link.type !== 'token - atom' || link.text !== 'link') {
+                    return internals.noResultFound()
+                }
+
+                if(param.type !== 'token - parameter') {
+                    return util.fail(`the Link Command at ${open.location.toString()} does not have a link text.`, open.location.documentPath);
+                }
+
+                const close = input[3] as Token;
+                if(close.type !== 'token - close parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                linkText = '#' + param.text;
+
+                if(title) {
+                    const n: ITitle = {
+                        type: 'ast-title',
+                        label: title.label,
+                        title: title.title,
+                        link: linkText,
+                        documentOrder: title.documentOrder,
+                    }
+
+                    title = n;
+                }
+
+                return util.ok({
+                    type: 'discard',
+                    rest: trimArray(4, input),
+                    location: current.increaseChar(),
+                });
             }
 
-            if(input.length < 1) {
-                return internals.noResultFound();
+            function tryParseSubtitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+                if(!start) {
+                    return internals.noResultFound();
+                }
+
+                if(input.length < 4) {
+                    return internals.noResultFound();
+                }
+
+                const open = input[0] as Token;
+                const atom = input[1] as Token;
+                const param = input[2] as Token;
+
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                if(atom.type !== 'token - atom' || atom.text !== 'subtitle') {
+                    return internals.noResultFound();
+                }
+
+                if(param.type !== 'token - parameter') {
+                    return util.fail(`The Subtitle command at ${open.location} does not contain subtitle text.`, open.location.documentPath);
+                }
+
+                const close = input[3] as Token;
+                if(close.type !== 'token - close parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                const text = headerize(starting.documentDepth + 2, param.text);
+
+                if(title) {
+                    const nt: ITitle = {
+                        type: 'ast-title',
+                        title: title.title,
+                        subtitle: text,
+                        label: title.label,
+                        link: title.link,
+                        documentOrder: title.documentOrder,
+                    };
+
+                    title = nt;
+                }
+
+                subTitleText = text;
+                return util.ok({
+                    type: 'discard',
+                    rest: trimArray(4, input),
+                    location: current.increaseChar(),
+                });
             }
 
-            const close = input[0] as Token;
+            function tryParseClose(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+                if(!start || depth < 1) {
+                    return internals.noResultFound();
+                }
 
-            if(close.type !== 'token - close parenthesis') {
-                return internals.noResultFound();
+                if(input.length < 1) {
+                    return internals.noResultFound();
+                }
+
+                const close = input[0] as Token;
+
+                if(close.type !== 'token - close parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                depth--;
+
+                return util.ok({
+                    type: 'discard',
+                    rest: trimArray(1, input),
+                    location: current.increaseChar(),
+                });
             }
 
-            depth--;
+            function trySubParseLoadable(input: Token[], current: ILocation): StepParseResult<Token[], ILoad> {
+                if(!start) {
+                    return internals.noResultFound();
+                }
 
-            return util.ok({
-                type: 'discard',
-                rest: trimArray(1, input),
-                location: current.increaseChar(),
-            });
-        }
+                if(depth < 2) {
+                    return internals.noResultFound();
+                }
 
-        function trySubParseLoadable(input: Token[], current: ILocation): StepParseResult<Token[], ILoad> {
-            if(!start) {
-                return internals.noResultFound();
+                if(input.length < 4) {
+                    return internals.noResultFound();
+                }
+
+                const open = input[0] as Token;
+                const atom = input[1] as Token;
+                const param = input[2] as Token;
+
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                if(atom.type !== 'token - atom') {
+                    return internals.noResultFound();
+                }
+
+                if(param.type !== 'token - parameter') {
+                    return util.fail(`Section command named "${atom.text}" at ${open.location} does not have a section title.`, open.location.documentPath);
+                }
+
+                const close = input[3] as Token;
+                if(close.type !== 'token - close parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                const load: ILoad = {
+                    type: 'ast-load',
+                    sectionLabel: atom.text,
+                    path: param.text,
+                    documentOrder: open.location,
+                    document: false,
+                }
+
+                return util.ok({
+                    type: 'parse result',
+                    subResult: load,
+                    rest: trimArray(4, input),
+                    location: current.increaseChar(),
+                });
             }
 
-            if(depth < 2) {
-                return internals.noResultFound();
+            function tryParseExternal(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+                if(!start) {
+                    return internals.noResultFound();
+                }
+
+                if(input.length < 3) {
+                    return internals.noResultFound();
+                }
+
+                const open = input[0] as Token;
+                const atom = input[1] as Token;
+
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                if(atom.type !== 'token - atom' || atom.text !== 'external') {
+                    return internals.noResultFound();
+                }
+
+                input = trimArray(2, input);
+                depth++;
+
+                const parser = internals.createArrayParser<Token, ILoad>(trySubParseLoadable, tryParseClose);
+                const parsed = parser.parse(input, current.increaseChar());
+
+                if(!parsed.success) {
+                    return parsed;
+                }
+
+                const [rawResult, leftovers] = parsed.value;
+                const result = rawResult as ILoad[];
+
+                if(0 === result.length) {
+                    return util.fail(`External command at ${open.location} does not contain any section information.`, open.location.documentPath);
+                }
+
+                result.forEach(r => external.push(r));
+
+                return util.ok({
+                    type: 'discard',
+                    rest: leftovers.remaining,
+                    location: current.increaseChar(),
+                });
             }
 
-            if(input.length < 4) {
-                return internals.noResultFound();
-            }
-
-            const open = input[0] as Token;
-            const atom = input[1] as Token;
-            const param = input[2] as Token;
-
-            if(open.type !== 'token - open parenthesis') {
-                return internals.noResultFound();
-            }
-
-            if(atom.type !== 'token - atom') {
-                return internals.noResultFound();
-            }
-
-            if(param.type !== 'token - parameter') {
-                return util.fail(`Section command named "${atom.text}" at ${open.location} does not have a section title.`, open.location.documentPath);
-            }
-
-            const close = input[3] as Token;
-            if(close.type !== 'token - close parenthesis') {
-                return internals.noResultFound();
-            }
-
-            const load: ILoad = {
-                type: 'ast-load',
-                sectionLabel: atom.text,
-                path: param.text,
-                documentOrder: open.location,
-                document: false,
-            }
-
-            return util.ok({
-                type: 'parse result',
-                subResult: load,
-                rest: trimArray(4, input),
-                location: current.increaseChar(),
-            });
-        }
-
-        function tryParseExternal(input: Token[], current: ILocation): DiscardedResult<Token[]> {
-            if(!start) {
-                return internals.noResultFound();
-            }
-
-            if(input.length < 3) {
-                return internals.noResultFound();
-            }
-
-            const open = input[0] as Token;
-            const atom = input[1] as Token;
-
-            if(open.type !== 'token - open parenthesis') {
-                return internals.noResultFound();
-            }
-
-            if(atom.type !== 'token - atom' || atom.text !== 'external') {
-                return internals.noResultFound();
-            }
-
-            input = trimArray(2, input);
-            depth++;
-
-            const parser = internals.createArrayParser<Token, ILoad>(trySubParseLoadable, tryParseClose);
-            const parsed = parser.parse(input, current.increaseChar());
+            const parser = internals.createArrayParser<Token, AstPart>(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseExternal);
+            const parsed = parser.parse(toParse, starting);
 
             if(!parsed.success) {
                 return parsed;
             }
 
-            const [rawResult, leftovers] = parsed.value;
-            const result = rawResult as ILoad[];
-
-            if(0 === result.length) {
-                return util.fail(`External command at ${open.location} does not contain any section information.`, open.location.documentPath);
-            }
-
-            result.forEach(r => external.push(r));
-
-            return util.ok({
-                type: 'discard',
-                rest: leftovers.remaining,
-                location: current.increaseChar(),
-            });
-        }
-
-        const parser = internals.createArrayParser<Token, AstPart>(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseExternal);
-        const parsed = parser.parse(toParse, starting);
-
-        if(!parsed.success) {
-            return parsed;
-        }
-
-        if(!start) {
-            return internals.noResultFound();
-        }
-
-        const [_result, leftovers] = parsed.value;
-
-        if(!title) {
-            return util.fail(`section-meta atom at ${start.toString()} must contain at least a title.`, starting.documentPath);
-        }
-
-        return util.ok({
-            type: 'parse result',
-            subResult: title,
-            rest: leftovers.remaining,
-            location: leftovers.location,
-        });
-    };
-}
-
-function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
-    return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-        if(input.length < 3) {
-            return internals.noResultFound();
-        }
-
-        let open = input[0] as Token;
-        let atom = input[1] as Token;
-        let param = input[2] as Token;
-
-        if(open.type !== 'token - open parenthesis') {
-            return internals.noResultFound();
-        }
-
-        if(atom.type !== 'token - atom' || !atom.text.startsWith('#')) {
-            return internals.noResultFound();
-        }
-
-        if(param.type !== 'token - parameter') {
-            return util.fail(`Header at ${open.location.toString()} has no header text.`, open.location.documentPath);
-        }
-
-        let close = input[3] as Token;
-        if(close.type !== 'token - close parenthesis') {
-            return util.fail(`Header at ${open.location.toString()} has unexpected character at ${close.location.toString()}`, close.location.documentPath);
-        }
-
-        const match: string = (atom.text.match(/#+/) as any)[0];
-
-        if(match.length !== atom.text.length) {
-            return util.fail(`Header at ${open.location.toString()} has invalid syntax.`, open.location.documentPath);
-        }
-
-        const part: AstPart = {
-            type: 'ast-header',
-            depthCount: atom.text.length + open.location.documentDepth,
-            text: param.text,
-            documentOrder: open.location,
-        };
-
-        return util.ok({
-            type: 'parse result',
-            subResult: part,
-            location: current.increaseChar(),
-            rest: trimArray(4, input),
-        });
-    }
-}
-
-function isText(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
-    return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-        const token: Token = input[0] as Token;
-        if(token.type === 'token - text') {
-            return util.ok({
-                type: 'parse result',
-                subResult: {
-                    type: 'ast-write',
-                    documentOrder: token.location,
-                    value: token.text,
-                },
-                location: current.increaseChar(),
-                rest: trimArray(1, input),
-            });
-        }
-        return internals.noResultFound();
-    }
-}
-
-function isContent(internals: IInternals, util: IUtil, externals: readonly ILoad[]) : HandleValue<Token[], AstPart> {
-    return function (toParse: Token[], starting: ILocation): StepParseResult<Token[], AstPart> {
-        function tryParseContent(input: Token[], current: ILocation) : StepParseResult<Token[], IContentLocation> {
-            if(input.length < 2) {
+            if(!start) {
                 return internals.noResultFound();
             }
 
-            const open = input[0] as Token;
-            const atom = input[1] as Token;
+            const [_result, leftovers] = parsed.value;
+
+            if(!title) {
+                return util.fail(`section-meta atom at ${start.toString()} must contain at least a title.`, starting.documentPath);
+            }
+
+            hasSection = true;
+            return util.ok({
+                type: 'parse result',
+                subResult: title,
+                rest: leftovers.remaining,
+                location: leftovers.location,
+            });
+        };
+    }
+
+    function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
+        return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+            if(input.length < 3) {
+                return internals.noResultFound();
+            }
+
+            let open = input[0] as Token;
+            let atom = input[1] as Token;
+            let param = input[2] as Token;
 
             if(open.type !== 'token - open parenthesis') {
                 return internals.noResultFound();
             }
 
-            if(atom.type !== 'token - atom' || atom.text !== 'content') {
+            if(atom.type !== 'token - atom' || !atom.text.startsWith('#')) {
                 return internals.noResultFound();
             }
-            
-            const close = input[2] as Token;
 
-            const depth = 
-                close.type === 'token - close parenthesis' ?
-                3 :
-                2;
+            if(param.type !== 'token - parameter') {
+                return util.fail(`Header at ${open.location.toString()} has no header text.`, open.location.documentPath);
+            }
+
+            let close = input[3] as Token;
+            if(close.type !== 'token - close parenthesis') {
+                return util.fail(`Header at ${open.location.toString()} has unexpected character at ${close.location.toString()}`, close.location.documentPath);
+            }
+
+            const match: string = (atom.text.match(/#+/) as any)[0];
+
+            if(match.length !== atom.text.length) {
+                return util.fail(`Header at ${open.location.toString()} has invalid syntax.`, open.location.documentPath);
+            }
+
+            const part: AstPart = {
+                type: 'ast-header',
+                depthCount: atom.text.length + open.location.documentDepth,
+                text: param.text,
+                documentOrder: open.location,
+            };
 
             return util.ok({
                 type: 'parse result',
-                subResult: { 
-                    type: 'ast-content',
-                    documentOrder: open.location,
-                },
-                rest: trimArray(depth, input),
+                subResult: part,
                 location: current.increaseChar(),
+                rest: trimArray(4, input),
             });
         }
+    }
 
-        const parser = internals.createArrayParser(tryParseContent);
-        const parsed = parser.parse(toParse, starting);
-
-        if(!parsed.success) {
-            return parsed;
+    function isText(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
+        return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+            const token: Token = input[0] as Token;
+            if(token.type === 'token - text') {
+                return util.ok({
+                    type: 'parse result',
+                    subResult: {
+                        type: 'ast-write',
+                        documentOrder: token.location,
+                        value: token.text,
+                    },
+                    location: current.increaseChar(),
+                    rest: trimArray(1, input),
+                });
+            }
+            return internals.noResultFound();
         }
+    }
 
-        const [parts, leftovers] = parsed.value;
+    function isContent(internals: IInternals, util: IUtil, externals: readonly ILoad[]) : HandleValue<Token[], AstPart> {
+        return function (toParse: Token[], starting: ILocation): StepParseResult<Token[], AstPart> {
+            function tryParseContent(input: Token[], current: ILocation) : StepParseResult<Token[], IContentLocation> {
+                if(input.length < 2) {
+                    return internals.noResultFound();
+                }
 
-        const result: IKeeper<AstPart>[] = parts.map(r => { return { type: 'keep', keptValue: r }; });
+                const open = input[0] as Token;
+                const atom = input[1] as Token;
 
-        return util.ok({
-            type: 'parse group result',
-            subResult: result,
-            rest: leftovers.remaining,
-            location: leftovers.location,
-        });
-    };
-}
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
 
-function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
+                if(atom.type !== 'token - atom' || atom.text !== 'content') {
+                    return internals.noResultFound();
+                }
+                
+                const close = input[2] as Token;
+
+                const depth = 
+                    close.type === 'token - close parenthesis' ?
+                    3 :
+                    2;
+
+                return util.ok({
+                    type: 'parse result',
+                    subResult: { 
+                        type: 'ast-content',
+                        documentOrder: open.location,
+                    },
+                    rest: trimArray(depth, input),
+                    location: current.increaseChar(),
+                });
+            }
+
+            const parser = internals.createArrayParser(tryParseContent);
+            const parsed = parser.parse(toParse, starting);
+
+            if(!parsed.success) {
+                return parsed;
+            }
+
+            const [parts, leftovers] = parsed.value;
+
+            if(!hasSection) {
+                return util.fail(`Section command must come before the Content command at ${(parts[0] as AstPart).documentOrder}`, starting.documentPath);
+            }
+
+            const result: IKeeper<AstPart>[] = parts.map(r => { return { type: 'keep', keptValue: r }; });
+
+            return util.ok({
+                type: 'parse group result',
+                subResult: result,
+                rest: leftovers.remaining,
+                location: leftovers.location,
+            });
+        };
+    }
+
     return {
         parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){

@@ -347,6 +347,23 @@ describe('ast', () => {
 
                 verifyAsJson(result);
             });
+
+            test('should not parse the content if it is before the section-meta', () => {
+                const text = `
+(content)
+
+(section-meta
+    (title Using Content)
+    (external
+        (Section ./HelloContent.md)
+    )
+)
+`;
+
+                const result = toResult(text, buildLocation('../main.dlisp', 4, 2));
+
+                verifyAsJson(result);
+            });
         })
     });
 });
