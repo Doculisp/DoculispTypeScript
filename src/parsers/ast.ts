@@ -1,7 +1,7 @@
-import { AstPart, IAst, IAstParser, ILoad, ITitle } from "../types.ast";
+import { AstPart, IAst, IAstParser, IContentLocation, ILoad, ITitle } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { ILocation, IUtil, Result } from "../types.general";
-import { DiscardedResult, HandleValue, IInternals, StepParseResult } from "../types.internal";
+import { DiscardedResult, HandleValue, IInternals, IKeeper, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
 function headerize(depth: number, value: string): string {
@@ -434,13 +434,75 @@ function isText(internals: IInternals, util: IUtil): HandleValue<Token[], AstPar
     }
 }
 
+function isContent(internals: IInternals, util: IUtil, externals: readonly ILoad[]) : HandleValue<Token[], AstPart> {
+    return function (toParse: Token[], starting: ILocation): StepParseResult<Token[], AstPart> {
+        function tryParseContent(input: Token[], current: ILocation) : StepParseResult<Token[], IContentLocation> {
+            if(input.length < 2) {
+                return internals.noResultFound();
+            }
+
+            const open = input[0] as Token;
+            const atom = input[1] as Token;
+
+            if(open.type !== 'token - open parenthesis') {
+                return internals.noResultFound();
+            }
+
+            if(atom.type !== 'token - atom' || atom.text !== 'content') {
+                return internals.noResultFound();
+            }
+            
+            const close = input[2] as Token;
+
+            const depth = 
+                close.type === 'token - close parenthesis' ?
+                3 :
+                2;
+
+            return util.ok({
+                type: 'parse result',
+                subResult: { 
+                    type: 'ast-content',
+                    documentOrder: open.location,
+                },
+                rest: trimArray(depth, input),
+                location: current.increaseChar(),
+            });
+        }
+
+        const parser = internals.createArrayParser(tryParseContent);
+        const parsed = parser.parse(toParse, starting);
+
+        if(!parsed.success) {
+            return parsed;
+        }
+
+        const [parts, leftovers] = parsed.value;
+
+        const result: IKeeper<AstPart>[] = parts.map(r => { return { type: 'keep', keptValue: r }; });
+
+        return util.ok({
+            type: 'parse group result',
+            subResult: result,
+            rest: leftovers.remaining,
+            location: leftovers.location,
+        });
+    };
+}
+
 function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
     return {
         parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
                 const external: ILoad[] = [];
-                const parser = internals.createArrayParser(isText(internals, util), isHeader(internals, util), isSectionMeta(internals, util, external));
+                const parser = 
+                    internals.createArrayParser(
+                        isText(internals, util),
+                        isHeader(internals, util),
+                        isSectionMeta(internals, util, external),
+                        isContent(internals, util, external),
+                    );
                 const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 1, 1));
                 
                 if(parsed.success) {

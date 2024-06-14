@@ -46,7 +46,11 @@ export interface IHeader extends ILocationSortable {
     readonly text: string;
 };
 
-export type AstPart = IWrite | ITitle | ITableOfContents | IHeader;
+export interface IContentLocation extends ILocationSortable {
+    readonly type: 'ast-content'
+}
+
+export type AstPart = IWrite | ITitle | ITableOfContents | IContentLocation | IHeader;
 
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'ast-section';
