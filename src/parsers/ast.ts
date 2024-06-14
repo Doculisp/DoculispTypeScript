@@ -17,15 +17,15 @@ function trimArray<T>(length: number, values: T[]): T[] {
     return values;
 }
 
-function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): HandleValue<Token[], AstPart> {
-    return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], AstPart> {
+function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): HandleValue<Token[], ITitle> {
+    return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], ITitle> {
         let depth = 0;
         let start: ILocation | undefined;
         let linkText: string | false = false;
         let subTitleText: string | false = false;
         let title: ITitle | false = false;
 
-        function tryParseSectionMeta(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+        function tryParseSectionMeta(input: Token[], current: ILocation): DiscardedResult<Token[]> {
             if(input.length < 2) {
                 return internals.noResultFound();
             }
@@ -52,7 +52,7 @@ function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): H
             });
         }
 
-        function tryParseTitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+        function tryParseTitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {
             if(!start) {
                 return internals.noResultFound();
             }
@@ -109,7 +109,7 @@ function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): H
             });
         }
 
-        function tryParseLink(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+        function tryParseLink(input: Token[], current: ILocation): DiscardedResult<Token[]> {
             if(!start) {
                 return internals.noResultFound();
             }
@@ -160,7 +160,7 @@ function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): H
             });
         }
 
-        function tryParseSubtitle(input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+        function tryParseSubtitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {
             if(!start) {
                 return internals.noResultFound();
             }
@@ -209,7 +209,7 @@ function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): H
             return util.ok({
                 type: 'discard',
                 rest: trimArray(4, input),
-                location: open.location,
+                location: current.increaseChar(),
             });
         }
 
@@ -333,7 +333,7 @@ function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): H
             });
         }
 
-        const parser = internals.createArrayParser(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseExternal);
+        const parser = internals.createArrayParser<Token, AstPart>(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseExternal);
         const parsed = parser.parse(toParse, starting);
 
         if(!parsed.success) {
@@ -344,17 +344,15 @@ function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): H
             return internals.noResultFound();
         }
 
-        const [result, leftovers] = parsed.value;
+        const [_result, leftovers] = parsed.value;
 
         if(!title) {
             return util.fail(`section-meta atom at ${start.toString()} must contain at least a title.`, starting.documentPath);
         }
 
-        result.unshift(title);
-
         return util.ok({
-            type: 'parse group result',
-            subResult: result.map(r => { return { type: 'keep', keptValue: r }; }),
+            type: 'parse result',
+            subResult: title,
             rest: leftovers.remaining,
             location: leftovers.location,
         });
