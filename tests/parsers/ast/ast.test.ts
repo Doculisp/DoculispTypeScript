@@ -364,6 +364,20 @@ describe('ast', () => {
 
                 verifyAsJson(result);
             });
+
+            test('should not parse the content location when there are no externals', () => {
+                const text = `
+(section-meta
+    (title Using Content)
+)
+
+(content)
+`;
+
+                const result = toResult(text, buildLocation('../main.dlisp', 2, 7));
+
+                verifyAsJson(result);
+            });
         })
     });
 });

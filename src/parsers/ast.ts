@@ -486,6 +486,10 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 return util.fail(`Section command must come before the Content command at ${(parts[0] as AstPart).documentOrder}`, starting.documentPath);
             }
 
+            if(0 === externals.length) {
+                return util.fail(`Section command at ${(parts[0] as AstPart).documentOrder} needs the section-meta command to have external links.`, starting.documentPath);
+            }
+
             const result: IKeeper<AstPart>[] = parts.map(r => { return { type: 'keep', keptValue: r }; });
 
             return util.ok({

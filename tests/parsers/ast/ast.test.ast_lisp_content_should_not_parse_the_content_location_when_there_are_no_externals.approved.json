@@ -1,0 +1,5 @@
+{
+  "documentPath": "../main.dlisp",
+  "message": "Section command at {\"path\":\"../main.dlisp\",\"line\":6,\"char\":1} needs the section-meta command to have external links.",
+  "success": false
+}
