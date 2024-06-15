@@ -3,8 +3,8 @@
   "value": {
     "projectLocation": {
       "documentDepth": 2,
-      "documentIndex": 7,
-      "documentPath": "../main.dlisp"
+      "documentIndex": 1,
+      "documentPath": "./itty.dlisp"
     },
     "section": {
       "ast": [
@@ -12,21 +12,32 @@
           "documentOrder": {
             "char": 1,
             "documentDepth": 2,
-            "documentIndex": 7,
-            "documentPath": "../main.dlisp",
+            "documentIndex": 1,
+            "documentPath": "./itty.dlisp",
             "line": 2
           },
-          "label": "## Using Content ##",
-          "link": "#using_content",
-          "title": "Using Content",
+          "label": "## Sing Me a Song ##",
+          "link": "#sing_me_a_song",
+          "title": "Sing Me a Song",
           "type": "ast-title"
+        },
+        {
+          "bulletStyle": "bulleted",
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "./itty.dlisp",
+            "line": 9
+          },
+          "type": "ast-toc"
         },
         {
           "documentOrder": {
             "char": 2,
             "documentDepth": 2,
-            "documentIndex": 7,
-            "documentPath": "../main.dlisp",
+            "documentIndex": 1,
+            "documentPath": "./itty.dlisp",
             "line": 9
           },
           "type": "ast-content"
@@ -35,8 +46,8 @@
       "documentOrder": {
         "char": 1,
         "documentDepth": 2,
-        "documentIndex": 7,
-        "documentPath": "../main.dlisp",
+        "documentIndex": 1,
+        "documentPath": "./itty.dlisp",
         "line": 1
       },
       "external": [
@@ -45,12 +56,12 @@
           "documentOrder": {
             "char": 9,
             "documentDepth": 2,
-            "documentIndex": 7,
-            "documentPath": "../main.dlisp",
+            "documentIndex": 1,
+            "documentPath": "./itty.dlisp",
             "line": 5
           },
-          "path": "./HelloContent.md",
-          "sectionLabel": "Section",
+          "path": "./songs.dlisp",
+          "sectionLabel": "Chapter",
           "type": "ast-load"
         }
       ],

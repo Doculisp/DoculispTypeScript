@@ -378,6 +378,40 @@ describe('ast', () => {
 
                 verifyAsJson(result);
             });
+
+            test('should parse a table of contents', () => {
+                const text = `
+(section-meta
+    (title Sing Me a Song)
+    (external
+        (Chapter ./sleep.md)
+    )
+)
+
+(content (toc))
+`;
+
+                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+
+                verifyAsJson(result);
+            });
+
+            test('should parse a table of contents with bullet style', () => {
+                const text = `
+(section-meta
+    (title Sing Me a Song)
+    (external
+        (Chapter ./songs.dlisp)
+    )
+)
+
+(content (toc bulleted))
+`;
+
+                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+
+                verifyAsJson(result);
+            });
         })
     });
 });

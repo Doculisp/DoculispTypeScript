@@ -36,7 +36,6 @@ export type AstBulletStyle =
 
 export interface ITableOfContents extends ILocationSortable {
     readonly type: 'ast-toc';
-    readonly sectionTitles: ITitle[];
     readonly bulletStyle: AstBulletStyle;
 };
 

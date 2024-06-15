@@ -1,4 +1,4 @@
-import { AstPart, IAst, IAstParser, IContentLocation, ILoad, ITitle } from "../types.ast";
+import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { ILocation, IUtil, Result } from "../types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, StepParseResult } from "../types.internal";
@@ -439,6 +439,8 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 
     function isContent(internals: IInternals, util: IUtil, externals: readonly ILoad[]) : HandleValue<Token[], AstPart> {
         return function (toParse: Token[], starting: ILocation): StepParseResult<Token[], AstPart> {
+            let tocLoc: ILocation = undefined as any;
+            let depth: number = 0;
             function tryParseContent(input: Token[], current: ILocation) : StepParseResult<Token[], IContentLocation> {
                 if(input.length < 2) {
                     return internals.noResultFound();
@@ -457,23 +459,103 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 
                 const close = input[2] as Token;
 
-                const depth = 
+                const length = 
                     close.type === 'token - close parenthesis' ?
                     3 :
                     2;
+
+                if(length < 3) {
+                    depth++;
+                }
+
+                tocLoc = open.location;
 
                 return util.ok({
                     type: 'parse result',
                     subResult: { 
                         type: 'ast-content',
-                        documentOrder: open.location,
+                        documentOrder: atom.location,
                     },
-                    rest: trimArray(depth, input),
+                    rest: trimArray(length, input),
                     location: current.increaseChar(),
                 });
             }
 
-            const parser = internals.createArrayParser(tryParseContent);
+            function tryParseClose(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+                if(input.length < 1) {
+                    return internals.noResultFound();
+                }
+
+                if(0 === depth) {
+                    return internals.noResultFound();
+                }
+
+                const close = input[0] as Token;
+
+                if(close.type !== 'token - close parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                depth--;
+
+                return util.ok({
+                    type: 'discard',
+                    rest: trimArray(1, input),
+                    location: current.increaseChar(),
+                });
+            }
+
+            function tryParseToc(input: Token[], current: ILocation): StepParseResult<Token[], ITableOfContents> {
+                if(input.length < 2) {
+                    return internals.noResultFound();
+                }
+
+                if(0 === depth) {
+                    return internals.noResultFound();
+                }
+
+                const open = input[0] as Token;
+                const atom = input[1] as Token;
+
+                if(open.type !== 'token - open parenthesis') {
+                    return internals.noResultFound();
+                }
+
+                if(atom.type !== 'token - atom' || atom.text !== 'toc') {
+                    return internals.noResultFound();
+                }
+
+                const third = input[2] as Token;
+                let lenght = 2;
+                let style: AstBulletStyle = 'no-table';
+
+                if(third.type === 'token - close parenthesis') {
+                    lenght++;
+                }
+
+                if(third.type === 'token - parameter') {
+                    lenght += 2;
+                    style = third.text as AstBulletStyle;
+
+                    const close = input[3] as Token;
+                    if(close.type !== 'token - close parenthesis') {
+                        return internals.noResultFound();
+                    }
+                }
+
+                return util.ok({
+                    type: 'parse result',
+                    subResult: {
+                        type: 'ast-toc',
+                        bulletStyle: style,
+                        documentOrder: tocLoc,
+                    },
+                    rest: trimArray(lenght, input),
+                    location: current.increaseChar(),
+                });
+            }
+
+            const parser = internals.createArrayParser<Token, AstPart>(tryParseContent, tryParseToc, tryParseClose);
             const parsed = parser.parse(toParse, starting);
 
             if(!parsed.success) {
@@ -490,7 +572,14 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 return util.fail(`Section command at ${(parts[0] as AstPart).documentOrder} needs the section-meta command to have external links.`, starting.documentPath);
             }
 
-            const result: IKeeper<AstPart>[] = parts.map(r => { return { type: 'keep', keptValue: r }; });
+            if(0 === parts.length) {
+                return internals.noResultFound();
+            }
+
+            const result: IKeeper<AstPart>[] = 
+                parts.
+                    sort((a, b) => a.documentOrder.compare(b.documentOrder) * -1).
+                    map(r => { return { type: 'keep', keptValue: r }; });
 
             return util.ok({
                 type: 'parse group result',
