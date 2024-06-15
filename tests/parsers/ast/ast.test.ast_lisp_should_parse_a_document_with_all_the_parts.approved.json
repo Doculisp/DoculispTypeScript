@@ -1,0 +1,161 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 4,
+      "documentIndex": 7,
+      "documentPath": "./_main.dlisp"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 2
+          },
+          "label": "#### Doculisp ####",
+          "link": "#doculisp",
+          "title": "Doculisp",
+          "type": "ast-title"
+        },
+        {
+          "depthCount": 6,
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 15
+          },
+          "text": "An introduction to Doculisp",
+          "type": "ast-header"
+        },
+        {
+          "bulletStyle": "numbered-labeled",
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 17
+          },
+          "type": "ast-toc"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 17
+          },
+          "type": "ast-content"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 4,
+        "documentIndex": 7,
+        "documentPath": "./_main.dlisp",
+        "line": 1
+      },
+      "external": [
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 5
+          },
+          "path": "./structure.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 6
+          },
+          "path": "./doculisp.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 7
+          },
+          "path": "./section-meta.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 8
+          },
+          "path": "./content.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 9
+          },
+          "path": "./headings.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 10
+          },
+          "path": "./comment.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 11
+          },
+          "path": "./keywords.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        }
+      ],
+      "type": "ast-section"
+    }
+  }
+}

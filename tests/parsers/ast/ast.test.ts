@@ -136,6 +136,31 @@ describe('ast', () => {
             verifyAsJson(result);
         });
 
+        test('should parse a document with all the parts', () => {
+            const text = `
+(section-meta
+    (title Doculisp)
+    (external
+        (Section ./structure.md)
+        (Section ./doculisp.md)
+        (Section ./section-meta.md)
+        (Section ./content.md)
+        (Section ./headings.md)
+        (Section ./comment.md)
+        (Section ./keywords.md)
+    )
+)
+
+(## An introduction to Doculisp)
+
+(content (toc numbered-labeled))
+`;
+
+            const result = toResult(text, buildLocation('./_main.dlisp', 4, 7));
+
+            verifyAsJson(result);
+        });
+
         describe('section-meta', () => {
             test('should handle all subparts put together out of order', () => {
                 const contents = `
