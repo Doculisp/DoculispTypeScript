@@ -1,4 +1,4 @@
-import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle } from "../types.ast";
+import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { ILocation, IUtil, Result } from "../types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types.internal";
@@ -545,6 +545,10 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     if(close.type !== 'token - close parenthesis') {
                         return internals.noResultFound();
                     }
+                }
+
+                if(!bulletStyles.includes(style)) {
+                    return util.fail(`Toc command at ${open.location} is given unknown bullet style of "${style}"\n exceptable styles are [ ${bulletStyles.map(b => '"' + b + '"').join(", ")} ]`, open.location.documentPath);
                 }
 
                 const step: IParseStepForward<Token[]> = {
