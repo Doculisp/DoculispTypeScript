@@ -27,7 +27,7 @@ describe('tokenizer', () => {
         fail = util.fail;
     });
 
-    test('should fail if document parsing failed', () => {
+    it('should fail if document parsing failed', () => {
         const parseResult = fail('This document did not parse', 'X:/non-exist.dlisp') as Result<DocumentMap>;
 
         const result = tokenizer(parseResult);
@@ -35,7 +35,7 @@ describe('tokenizer', () => {
         verifyAsJson(result);
     });
 
-    test('should return empty if given an empty parse result', () => {
+    it('should return empty if given an empty parse result', () => {
         const parseResult: Result<DocumentMap> = ok({
             projectLocation: { documentPath: 'c:/empty/readme.md', documentDepth: 4, documentIndex: 8 },
             parts: [],
@@ -46,7 +46,7 @@ describe('tokenizer', () => {
         verifyAsJson(result);
     });
 
-    test('should tokenize text as text', () => {
+    it('should tokenize text as text', () => {
         const parseResult: Result<DocumentMap> = ok({
             projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 6, documentIndex: 8 },
             parts: [
@@ -64,7 +64,7 @@ describe('tokenizer', () => {
     });
 
     describe('handling Doculisp', () => {
-        test('should tokenize an empty comment', () => {
+        it('should tokenize an empty comment', () => {
             let parseResult: Result<DocumentMap> = ok({
                 projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 1, documentIndex: 5 },
                 parts: [
@@ -81,7 +81,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
         
-        test('should tokenize an single atom', () => {
+        it('should tokenize an single atom', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 2, documentIndex: 7 },
@@ -99,7 +99,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
         
-        test('should tokenize an single atom with space after atom', () => {
+        it('should tokenize an single atom with space after atom', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 3, documentIndex: 7 },
@@ -117,7 +117,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
         
-        test('should tokenize an single atom with new line after atom', () => {
+        it('should tokenize an single atom with new line after atom', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 7, documentIndex: 4 },
@@ -135,7 +135,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
         
-        test('should tokenize an single atom containing only numbers', () => {
+        it('should tokenize an single atom containing only numbers', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2 );
             let parseResult: Result<DocumentMap> = ok({
                 projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 4, documentIndex: 6 },
@@ -153,7 +153,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
         
-        test('should tokenize an single atom with hyphen and underscore', () => {
+        it('should tokenize an single atom with hyphen and underscore', () => {
             const start: ILocation = util.location('D:/comments/simple.md', 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
                 projectLocation: { documentPath: 'D:/comments/simple.md', documentDepth: 7, documentIndex: 7 },
@@ -171,7 +171,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
 
-        test('should tokenize a single atom with a single word parameter', () => {
+        it('should tokenize a single atom with a single word parameter', () => {
             const start: ILocation = util.location('Z:/parameter.md', 0, 0, 1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
@@ -191,7 +191,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
 
-        test('should tokenize a single atom with a multi word parameter', () => {
+        it('should tokenize a single atom with a multi word parameter', () => {
             const start: ILocation = util.location('Z:/parameter.md', 0, 0, 1, 13);
 
             let parseResult: Result<DocumentMap> = ok({
@@ -211,7 +211,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
 
-        test('should handle nested lisp', () => {
+        it('should handle nested lisp', () => {
             const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
 
             let parseResult: Result<DocumentMap> = ok({
@@ -234,7 +234,7 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
 
-        test('should handle comment with nested lisp', () => {
+        it('should handle comment with nested lisp', () => {
             const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
 
             let parseResult: Result<DocumentMap> = ok({

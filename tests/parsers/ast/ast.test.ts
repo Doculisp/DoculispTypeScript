@@ -47,7 +47,7 @@ describe('ast', () => {
     });
 
     describe('basic functionality', () => {
-        test('should return failure if given failure', () => {
+        it('should return failure if given failure', () => {
             const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
     
             const result = parser.parse(failure);
@@ -55,7 +55,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
     
-        test('should return an empty ast if there was no tokens', () => {
+        it('should return an empty ast if there was no tokens', () => {
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: buildLocation('A:/empty/doc.md', 4, 10),
                 tokens: []
@@ -66,7 +66,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
     
-        test('should parse a text token', () => {
+        it('should parse a text token', () => {
             const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,
@@ -84,7 +84,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
     
-        test('should parse multiple text tokens', () => {
+        it('should parse multiple text tokens', () => {
             const projectLocation = buildLocation('T:/ext/only.md', 4, 8);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,
@@ -109,7 +109,7 @@ describe('ast', () => {
     });
 
     describe('lisp', () => {
-        test('should simple lisp tokens', () => {
+        it('should simple lisp tokens', () => {
             const contents = `<!--
 (dl (# My heading))
 -->`;
@@ -118,7 +118,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
     
-        test('should not parse a bad header', () => {
+        it('should not parse a bad header', () => {
             const contents = `<!--
 (dl (#head My heading))
 -->`;
@@ -127,7 +127,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
     
-        test('should not parse a header without a parameter', () => {
+        it('should not parse a header without a parameter', () => {
             const contents = `<!--
 (dl (#))
 -->`;
@@ -136,7 +136,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
 
-        test('should parse a document with all the parts', () => {
+        it('should parse a document with all the parts', () => {
             const text = `
 (section-meta
     (title Doculisp)
@@ -162,7 +162,7 @@ describe('ast', () => {
         });
 
         describe('section-meta', () => {
-            test('should handle all subparts put together out of order', () => {
+            it('should handle all subparts put together out of order', () => {
                 const contents = `
 (section-meta
 (link doculisp_is_)
@@ -178,7 +178,7 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            test('should not parse a section-meta that contains a section-meta', () => {
+            it('should not parse a section-meta that contains a section-meta', () => {
                 const content = `
 (section-meta
     (section-meta
@@ -193,7 +193,7 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            test('should not parse a second section-meta in a file', () => {
+            it('should not parse a second section-meta in a file', () => {
                 const content = `
 (section-meta
     (title My Section)
@@ -210,7 +210,7 @@ describe('ast', () => {
             });
 
             describe('title', () => {
-                test('should parse a title', () => {
+                it('should parse a title', () => {
                     const contents = `
 (section-meta
     (title My Cool Document)
@@ -221,7 +221,7 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
             
-                test('should not parse a title without a parameter', () => {
+                it('should not parse a title without a parameter', () => {
                     const contents = `
 (section-meta
     (title)
@@ -234,7 +234,7 @@ describe('ast', () => {
             });
 
             describe('link', () => {
-                test('should parse the link', () => {
+                it('should parse the link', () => {
                     const contents = `
 (section-meta
     (title My cool title✨)
@@ -246,7 +246,7 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                test('should parse the link if it comes before the title', () => {
+                it('should parse the link if it comes before the title', () => {
                     const contents = `
 (section-meta
     (link my_cool_title)
@@ -258,7 +258,7 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                test('should not parse a link with no parameter', () => {
+                it('should not parse a link with no parameter', () => {
                     const contents = `
 (section-meta
     (link)
@@ -272,7 +272,7 @@ describe('ast', () => {
             });
 
             describe('subtitle', () => {
-                test('should parse the subtitle command', () => {
+                it('should parse the subtitle command', () => {
                     const contents = `
 (section-meta
     (title My cool title)
@@ -284,7 +284,7 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                test('should parse the subtitle before title command', () => {
+                it('should parse the subtitle before title command', () => {
                     const contents = `
 (section-meta
     (subtitle This is information)
@@ -296,7 +296,7 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                test('should not parse a subtitle without a parameter', () => {
+                it('should not parse a subtitle without a parameter', () => {
                     const contents = `
 (section-meta
     (title My cool title)
@@ -310,7 +310,7 @@ describe('ast', () => {
             });
 
             describe('external', () => {
-                test('should parse external', () => {
+                it('should parse external', () => {
                     const contents = `
 (section-meta
     (title Doculisp a short description)
@@ -325,7 +325,7 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                test('should not parse external without section information', () => {
+                it('should not parse external without section information', () => {
                     const contents = `
 (section-meta
     (title Doculisp a short description)
@@ -337,7 +337,7 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                test('should handle them all put together', () => {
+                it('should handle them all put together', () => {
                     const contents = `
 (section-meta
     (title Doculisp is ✨)
@@ -356,7 +356,7 @@ describe('ast', () => {
         });
 
         describe('content', () => {
-            test('should parse the content location', () => {
+            it('should parse the content location', () => {
                 const text = `
 (section-meta
     (title Using Content)
@@ -373,7 +373,7 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            test('should not parse the content if it is before the section-meta', () => {
+            it('should not parse the content if it is before the section-meta', () => {
                 const text = `
 (content)
 
@@ -390,7 +390,7 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            test('should not parse the content location when there are no externals', () => {
+            it('should not parse the content location when there are no externals', () => {
                 const text = `
 (section-meta
     (title Using Content)
@@ -404,7 +404,7 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            test('should parse a table of contents', () => {
+            it('should parse a table of contents', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
@@ -421,7 +421,7 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            test('should parse a table of contents with bullet style', () => {
+            it('should parse a table of contents with bullet style', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)

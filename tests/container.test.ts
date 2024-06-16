@@ -14,15 +14,15 @@ describe('the registry', () => {
         testable = environment.buildTestable();
     });
 
-    test('should create a testable version for tests', () => {
+    it('should create a testable version for tests', () => {
         expect(testable).not.toBe(environment);
     });
 
-    test('should throw an exception when building something that has not been registered', () => {
+    it('should throw an exception when building something that has not been registered', () => {
         expect(() => testable.build('bad module')).toThrow('No module called "bad module" registered');
     });
 
-    test('should restoreAll replaced modules', () => {
+    it('should restoreAll replaced modules', () => {
         let fnOne = jest.fn()
         let fnTwo = jest.fn()
         let fnThree = jest.fn();
@@ -54,7 +54,7 @@ describe('the registry', () => {
         expect(fnThree).toHaveBeenCalled();
     });
 
-    test('should return a list of all registered modules.', () => {
+    it('should return a list of all registered modules.', () => {
         const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         let holding = [];
         const numberOfNames = getRandomNumber(12);
@@ -91,14 +91,14 @@ describe('the registry', () => {
         });
     });
 
-    test('should be able to build a default node package', () => {
+    it('should be able to build a default node package', () => {
         let fst = testable.build('fs');
 
         expect(fst.constants.X_OK).toBe(fs.constants.X_OK);
     });
 
     describe('has a register method that', () => {
-        test('should register an item and call its function when built', () => {
+        it('should register an item and call its function when built', () => {
             let fn = jest.fn();
             const expected = { value: 'hello' };
             let registerable: IRegisterable = {
@@ -113,7 +113,7 @@ describe('the registry', () => {
             expect(result).toBe(expected);
         });
     
-        test('should build dependencies of registered item', () => {
+        it('should build dependencies of registered item', () => {
             let fnBlue = jest.fn();
             let fnOrange = jest.fn();
     
@@ -152,7 +152,7 @@ describe('the registry', () => {
             expect(orangeResult).toBe(orangeValue);
         });
     
-        test('should detect recursive dependencies', () => {
+        it('should detect recursive dependencies', () => {
             let blue: IRegisterable = {
                 builder: function blue() {},
                 name: 'blue',
@@ -172,7 +172,7 @@ describe('the registry', () => {
             expect(() => { testable.build('orange'); }).toThrow('Circular dependencies between ("orange" => "blue" => ["orange"])');
         });
     
-        test('should show a chain when circular dependency is not obvious.', () => {
+        it('should show a chain when circular dependency is not obvious.', () => {
             let blue: IRegisterable = {
                 builder: function blue() {},
                 name: 'blue',
@@ -205,7 +205,7 @@ describe('the registry', () => {
             expect(() => { testable.build('orange'); }).toThrow('Circular dependencies between ("orange" => "blue" => "green" => ["orange", "blue"])');
         });
 
-        test('should call builder function each time the item is built.', () => {
+        it('should call builder function each time the item is built.', () => {
             let fn = jest.fn();
             let registerable: IRegisterable = {
                 builder: function cat() { fn(); return {}; },
@@ -222,7 +222,7 @@ describe('the registry', () => {
             expect(fn).toHaveBeenCalledTimes(iterationCnt);
         });
     
-        test('should not call the builder function more then once if the registerable claims to be a singleton.', () => {
+        it('should not call the builder function more then once if the registerable claims to be a singleton.', () => {
             let fn = jest.fn();
             let registerable: IRegisterable = {
                 builder: function cat() { fn(); return {}; },
@@ -242,7 +242,7 @@ describe('the registry', () => {
     });
 
     describe('has a registerValue method that', () => {
-        test('should not allow registering two modules with the same name', () => {
+        it('should not allow registering two modules with the same name', () => {
             let blue: IRegisterable = {
                 builder: function blue() {},
                 name: 'blue',
@@ -257,7 +257,7 @@ describe('the registry', () => {
             expect(() => { testable.register(orange); }).toThrow('Module named "blue" already registered.');
         });
     
-        test('should allow for the registration of a value with a name property', () => {
+        it('should allow for the registration of a value with a name property', () => {
             const expected = {
                 name: 'expectedThing',
                 getValue: () => 44,
@@ -270,13 +270,13 @@ describe('the registry', () => {
             expect(result).toBe(expected);
         });
     
-        test('should not allow for registration of value without name prop or provided name', () => {
+        it('should not allow for registration of value without name prop or provided name', () => {
             const value = { word: 'hello' };
     
             expect(() => { testable.registerValue(value); }).toThrow('Most provide a name as a property or a parameter when registering a value as a module.');
         });
     
-        test('should allow value to be registered when given a name parameter.', () => {
+        it('should allow value to be registered when given a name parameter.', () => {
             const expected = 44;
     
             testable.registerValue(expected, 'fortyFour');
@@ -286,7 +286,7 @@ describe('the registry', () => {
             expect(result).toBe(expected);
         });
 
-        test('when given a name parameter and an object with a name it should take the parameter.', () => {
+        it('when given a name parameter and an object with a name it should take the parameter.', () => {
             const expected = {
                 name: 'expectedThing',
                 getValue: () => 44,
@@ -302,7 +302,7 @@ describe('the registry', () => {
     });
 
     describe('has a registerBuilder method that', () =>{
-        test('should call the builder when build is called.', () => {
+        it('should call the builder when build is called.', () => {
             let fn = jest.fn();
             function neon(...args: any[]){ fn(...args);  return 'blue'; }
 
@@ -314,11 +314,11 @@ describe('the registry', () => {
             expect(result).toBe('blue');
         });
 
-        test('should fail registration if function does not have name and no name is provided.', () => {
+        it('should fail registration if function does not have name and no name is provided.', () => {
             expect(() => { testable.registerBuilder(() => 'black', []); }).toThrow('Must provide a name on the function or as a parameter to register a builder.');
         });
 
-        test('should register the builder by the name parameter if provided.', () => {
+        it('should register the builder by the name parameter if provided.', () => {
             let fn = jest.fn();
             function neon(...args: any[]){ fn(...args);  return 65; }
 
@@ -331,7 +331,7 @@ describe('the registry', () => {
             expect(() => { testable.build('neon'); }).toThrow('No module called "neon" registered');
         });
 
-        test('should build the dependencies when built', () => {
+        it('should build the dependencies when built', () => {
             let redValue = {
                 red: true
             }
@@ -369,7 +369,7 @@ describe('the registry', () => {
             expect(result).toBe(greenValue);
         });
 
-        test('should call the builder function once if it is a singleton.', () => {
+        it('should call the builder function once if it is a singleton.', () => {
             let fn = jest.fn();
             function borg() { fn(); return {}; }
 
@@ -383,7 +383,7 @@ describe('the registry', () => {
             expect(fn).toHaveBeenCalledTimes(1);
         });
 
-        test('should call the builder multiple times if not a singleton.', () => {
+        it('should call the builder multiple times if not a singleton.', () => {
             let fn = jest.fn();
             function borg() { fn(); return {}; }
 
@@ -399,19 +399,19 @@ describe('the registry', () => {
     });
 
     describe('when handling replacement', () => {
-        test('should not support replacement if not a testable.', () => {
+        it('should not support replacement if not a testable.', () => {
             expect(environment.supportsReplace()).toBe(false);
         });
     
-        test('should support replacement if it is a testable', () => {
+        it('should support replacement if it is a testable', () => {
             expect(testable.supportsReplace()).toBe(true);
         });
 
-        test('should not allow you to replace a module if it is not testable.', () => {
+        it('should not allow you to replace a module if it is not testable.', () => {
             // TODO: need a real module to test this.
         });
 
-        test('should allow you to replace a module if it is testable', () => {
+        it('should allow you to replace a module if it is testable', () => {
             let fn = jest.fn();
             let registerable: IRegisterable = {
                 builder: function getNumberTest() { fn(); return 'no number' },
@@ -427,7 +427,7 @@ describe('the registry', () => {
             expect(result).toBe('no number');
         });
 
-        test('should not let you replace a module that has not been registered', () => {
+        it('should not let you replace a module that has not been registered', () => {
             let registerable: IRegisterable = {
                 builder: function getNumberTest() { },
                 name: 'getNumberTest',
@@ -436,7 +436,7 @@ describe('the registry', () => {
             expect(() => { testable.replace(registerable); }).toThrow('Cannot replace module "getNumberTest" as it has not been registered.');
         });
 
-        test('should not let you replace a module that has been replaced', () => {
+        it('should not let you replace a module that has been replaced', () => {
             let registerable: IRegisterable = {
                 builder: function replaced() { },
                 name: 'replaced',
@@ -458,7 +458,7 @@ describe('the registry', () => {
             expect(() => testable.replace(bRegisterable)).toThrow('Cannot replace module "replaced" as it has not been registered.');
         });
 
-        test('should allow you to replace a non singleton with a singleton', () => {
+        it('should allow you to replace a non singleton with a singleton', () => {
             let original: IRegisterable = {
                 builder: function original() {},
                 name: 'original',
@@ -482,7 +482,7 @@ describe('the registry', () => {
             expect(fn).toHaveBeenCalledTimes(1);
         });
 
-        test('should allow the replacement of a singleton with non singleton.', () => {
+        it('should allow the replacement of a singleton with non singleton.', () => {
             let origValue = { some: 'original' };
             let registerable: IRegisterable = {
                 builder: function blah() { return origValue; },
@@ -512,7 +512,7 @@ describe('the registry', () => {
     });
 
     describe('has a restore method that', () => {
-        test('call original method when replacement is restored.', () => {
+        it('call original method when replacement is restored.', () => {
             const origValue = { original: true };
             let fnOrig = jest.fn();
             let registerable: IRegisterable = {
@@ -539,7 +539,7 @@ describe('the registry', () => {
             expect(result).toBe(origValue);
         });
 
-        test('uses cached value when restored', () => {
+        it('uses cached value when restored', () => {
             const origValue = { original: true };
             let registerable: IRegisterable = {
                 builder: function toDo() { return origValue; },
@@ -569,7 +569,7 @@ describe('the registry', () => {
     });
 
     describe('has a replaceBuilder method that', () => {
-        test('should replace a module with a builder function', () => {
+        it('should replace a module with a builder function', () => {
             let origFn = jest.fn();
             let registerable: IRegisterable = {
                 builder: function bang() { origFn(); },
@@ -588,7 +588,7 @@ describe('the registry', () => {
             expect(fakeFn).toHaveBeenCalled();
         });
 
-        test('should not allow you to replace using an anonymous function without using the name parameter.', () => {
+        it('should not allow you to replace using an anonymous function without using the name parameter.', () => {
             let registerable: IRegisterable = {
                 builder: function bang() { },
                 name: 'bang',
@@ -599,7 +599,7 @@ describe('the registry', () => {
             expect(() => { testable.replaceBuilder(() => {}, []); }).toThrow('Must provide a name either on the passed method or parameter to replace builder.');
         });
 
-        test('should allow replacement with anonymous function if name is passed', () => {
+        it('should allow replacement with anonymous function if name is passed', () => {
             let origFn = jest.fn();
             let registerable: IRegisterable = {
                 builder: () => { origFn(); },
@@ -617,7 +617,7 @@ describe('the registry', () => {
             expect(fakeFn).toHaveBeenCalled();
         });
 
-        test('should allow for dependencies on replacement builder', () => {
+        it('should allow for dependencies on replacement builder', () => {
             testable.registerBuilder(() => {}, [], 'cyan');
             let fnPurple = jest.fn()
             testable.registerBuilder(() => { fnPurple(); }, [], 'purple');
@@ -629,7 +629,7 @@ describe('the registry', () => {
             expect(fnPurple).toHaveBeenCalled();
         });
 
-        test('should replace a non singleton with a singleton', () => {
+        it('should replace a non singleton with a singleton', () => {
             let origFn = jest.fn();
             testable.registerBuilder(() => { origFn(); return {}; }, [], 'teal');
 
@@ -647,7 +647,7 @@ describe('the registry', () => {
     });
 
     describe('has a replaceValue method that', () => {
-        test('should replace a module with a value', () => {
+        it('should replace a module with a value', () => {
             let origFn = jest.fn();
             testable.registerBuilder(() => { origFn() ;return { original: false }; }, [], 'red');
             let expected = { original: false, name: 'red'};
@@ -659,13 +659,13 @@ describe('the registry', () => {
             expect(result).toBe(expected);
         });
 
-        test('should not allow a replacement with no name attribute or name parameter', () => {
+        it('should not allow a replacement with no name attribute or name parameter', () => {
             testable.registerBuilder(() => {}, [], 'grey');
 
             expect(() => testable.replaceValue({ orange: 'jam' })).toThrow('Cannot replace value unless it has a name property or the name is passed as a parameter.');
         });
 
-        test('should allow replacement of module when name is passed as a parameter', () => {
+        it('should allow replacement of module when name is passed as a parameter', () => {
             testable.registerBuilder(() => { return { isGrey: true } }, [], 'grey');
             const expected = { isGrey: false };
             testable.replaceValue(expected, 'grey');
@@ -677,7 +677,7 @@ describe('the registry', () => {
     });
 
     describe('has replacePackageBuilder method that', () => {
-        test('should replace fs', () => {
+        it('should replace fs', () => {
             const fakeFs = { is: 'not fs' };
             function fs () { return fakeFs; }
             testable.replacePackageBuilder(fs);
@@ -687,16 +687,16 @@ describe('the registry', () => {
             expect(result).toBe(fakeFs);
         });
 
-        test('should not allow replacement of anonymous function if no name is given as a parameter', () => {
+        it('should not allow replacement of anonymous function if no name is given as a parameter', () => {
             expect(() => testable.replacePackageBuilder(() => { return {}; })).toThrow('Must provide a name either on the passed method or parameter to replace package builder.')
         });
 
-        test('should allow replacement of anonymous function if name is give as a parameter', () => {
+        it('should allow replacement of anonymous function if name is give as a parameter', () => {
             const fakePath = { isNot: 'a path' };
             testable.replacePackageBuilder(() => { return fakePath; }, 'path');
         });
 
-        test('should allow for a package to be replaced with a singleton', () => {
+        it('should allow for a package to be replaced with a singleton', () => {
             const fakeBuffer = { iAm: 'not a buffer' };
             let fakeFn = jest.fn();
             testable.replacePackageBuilder(() => { fakeFn(); return fakeBuffer; }, 'buffer', true);
@@ -711,7 +711,7 @@ describe('the registry', () => {
     });
 
     describe('has replacePackageValue method that', () => {
-        test('should replace a package with a value.', () => {
+        it('should replace a package with a value.', () => {
             const expected = { real: 'you kidding me', name: 'child_process' };
             testable.replacePackageValue(expected);
 
@@ -720,11 +720,11 @@ describe('the registry', () => {
             expect(result).toBe(expected);
         });
 
-        test('should not replace a package with value that does not have a name if no name is provided as a parameter.', () => {
+        it('should not replace a package with value that does not have a name if no name is provided as a parameter.', () => {
             expect(() => testable.replacePackageValue({ bad: true })).toThrow('Cannot replace package with value unless it has a name property or the name is passed as a parameter.')
         });
 
-        test('should allow for a value without a name property if the name is passed as a parameter.', () => {
+        it('should allow for a value without a name property if the name is passed as a parameter.', () => {
             const fakeCrypto = { secure: 'Nope!' };
             testable.replacePackageValue(fakeCrypto, 'crypto');
 

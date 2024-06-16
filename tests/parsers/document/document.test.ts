@@ -19,25 +19,25 @@ describe('document', () => {
         parse = environment.buildAs<DocumentParser>('documentParse');
     });
 
-    test('should not allow a document with a zero depth.', () => {
+    it('should not allow a document with a zero depth.', () => {
         const result = parse('hello', { documentPath: 'C:/my_document.md', documentDepth: 0, documentIndex: 6 });
         
         verifyAsJson(result);
     });
 
-    test('should not allow a document with a negative depth.', () => {
+    it('should not allow a document with a negative depth.', () => {
         const result = parse('hello', { documentPath: 'C:/my_document.md', documentDepth: -1, documentIndex: 6 });
         
         verifyAsJson(result);
     });
 
-    test('should not allow a document with a zero index.', () => {
+    it('should not allow a document with a zero index.', () => {
         const result = parse('', { documentPath: 'C:/my_document.md', documentDepth: 4, documentIndex: 0 });
         
         verifyAsJson(result);
     });
 
-    test('should not allow a document with a negative index.', () => {
+    it('should not allow a document with a negative index.', () => {
         const result = parse('', { documentPath: 'C:/my_document.md', documentDepth: 4, documentIndex: -1 });
         
         verifyAsJson(result);
@@ -45,41 +45,41 @@ describe('document', () => {
 
     describe('parsing markup', () => {
         describe('text', () => {
-            test('should successfully parse an empty string', () => {
+            it('should successfully parse an empty string', () => {
                 const result = parse('', { documentPath: 'C:/my_document.md', documentDepth: 4, documentIndex: 8 });
         
                 verifyAsJson(result);
             });
         
-            test('should parse a simple text of "hello"', () => {
+            it('should parse a simple text of "hello"', () => {
                 const result = parse('hello', { documentPath: 'C:/my_document.md', documentDepth: 3, documentIndex: 6 });
         
                 verifyAsJson(result);
             });
     
-            test('should parse text of "blow fish"', () => {
+            it('should parse text of "blow fish"', () => {
                 const result = parse('blow fish', { documentPath: 'C:/my_document.md', documentDepth: 7, documentIndex: 2});
                 verifyAsJson(result);
             });
     
-            test('should parse text of " blow fish"', () => {
+            it('should parse text of " blow fish"', () => {
                 const result = parse(' blow fish', { documentPath: 'C:/my_document.md', documentDepth: 4, documentIndex: 6 });
                 verifyAsJson(result);
             });
     
-            test('should parse text of " blow fish "', () => {
+            it('should parse text of " blow fish "', () => {
                 const result = parse(' blow fish ', { documentPath: 'C:/my_document.md', documentDepth: 7, documentIndex: 1 });
                 verifyAsJson(result);
             });
     
-            test('should parse text of "   \\r\\n blow fish"', () => {
+            it('should parse text of "   \\r\\n blow fish"', () => {
                 const result = parse('   \r\n blow fish', { documentPath: 'C:/my_document.md', documentDepth: 1, documentIndex: 8 });
                 verifyAsJson(result);
             });
         });
 
         describe('html comments', () => {
-            test('should not parse html comments', () => {
+            it('should not parse html comments', () => {
                 const md = `<!-- This is a comment -->hello bro`.trim();
     
                 const result = parse(md, { documentPath: 'C:/readme.md', documentDepth: 5, documentIndex: 2 })
@@ -87,7 +87,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should not parse html but preserve new line counts comments', () => {
+            it('should not parse html but preserve new line counts comments', () => {
                 const md = `<!--
     This is a comment
     -->
@@ -99,7 +99,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should not parse html comments in the middle of text.', () => {
+            it('should not parse html comments in the middle of text.', () => {
                 const md = `hello
     <!-- need stuff here -->
     
@@ -110,7 +110,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should parse html comments inside an inline code block', () => {
+            it('should parse html comments inside an inline code block', () => {
                 const md = '`<!-- an example html comment -->`';
     
                 const result = parse(md, { documentPath: 'C:/html/inline.md', documentDepth: 5, documentIndex: 3 });
@@ -118,7 +118,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should parse html comments inside a multiline code block', () => {
+            it('should parse html comments inside a multiline code block', () => {
                 const md = `An example of an markdown document with html comments:
     \`\`\`markdown
     # A document
@@ -135,7 +135,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail to parse if html comment is not closed', () => {
+            it('should fail to parse if html comment is not closed', () => {
                 let md = `<!--
     Hello
     World
@@ -146,7 +146,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail if inline code block does not close', () => {
+            it('should fail if inline code block does not close', () => {
                 let md = '`let b = 7';
     
                 const result = parse(md, { documentPath: 'C:/bad/noCloseInline.md', documentDepth: 8, documentIndex: 4 });
@@ -154,7 +154,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail to parse an inline code block with a line break', () => {
+            it('should fail to parse an inline code block with a line break', () => {
                 let md = `\`let a = 0;
     let b = a;
     \``;
@@ -164,7 +164,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
     
-            test('should fail to parse a multiline code block that does not close', () => {
+            it('should fail to parse a multiline code block that does not close', () => {
                 let md = '```\nlet a = "hello;\nlet b = "world"\nconsole.log(a + " " + b);\n';
     
                 const result = parse(md, { documentPath: 'C:/bad/examples/multiline.md', documentDepth: 2, documentIndex: 7 });
@@ -174,7 +174,7 @@ describe('document', () => {
         });
     
         describe('Doculisp', () => {
-            test('should parse a doculisp block at top of file', () => {
+            it('should parse a doculisp block at top of file', () => {
                 const md = '<!-- (dl (# header)) -->';
     
                 const result = parse(md, { documentPath: '_main.md', documentDepth: 3, documentIndex: 7 });
@@ -182,7 +182,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
             
-            test('should parse a doculisp block in the middle of file', () => {
+            it('should parse a doculisp block in the middle of file', () => {
             const md = '# Title\r\nsome text about title\r\n<!--\r\nSome lisp: (dl (# two)) -->\r\nMickey Mouse Hotline.';
     
                 const result = parse(md, { documentPath: '_main.md', documentDepth: 7, documentIndex: 5 });
@@ -190,7 +190,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
 
-            test('should parse lisp outside an html tag as text', () => {
+            it('should parse lisp outside an html tag as text', () => {
                 const md = '(# Heading) Hello Doculisp';
 
                 const result = parse(md, { documentPath: 'documentExample.md', documentDepth: 3, documentIndex: 4 });
@@ -198,7 +198,7 @@ describe('document', () => {
                 verifyAsJson(result);
             });
 
-            test('should parse Doculisplisp outside an html tag as text', () => {
+            it('should parse Doculisplisp outside an html tag as text', () => {
                 const md = '(dl (# Heading)) Hello Doculisp';
 
                 const result = parse(md, { documentPath: 'documentExample2.md', documentDepth: 8, documentIndex: 8 });
@@ -209,7 +209,7 @@ describe('document', () => {
     });
 
     describe('parsing .dlisp files', () => {
-        test('should handle a correctly formatted file', () => {
+        it('should handle a correctly formatted file', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)
@@ -232,7 +232,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test('should fail to parse a file that contains a dl atom', () => {
+        it('should fail to parse a file that contains a dl atom', () => {
             let dlisp = `(dl
 (section-meta
     (title Doculisp)
@@ -246,7 +246,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test('should handle a file with parentheses that do not close', () => {
+        it('should handle a file with parentheses that do not close', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)
@@ -263,7 +263,7 @@ describe('document', () => {
             verifyAsJson(result);
         });
 
-        test('should handle a file with to many parenthesis', () => {
+        it('should handle a file with to many parenthesis', () => {
             let dlisp = `(content (toc numbered-labeled)) )`;
 
             let result = parse(dlisp, { documentPath: 'C:/main.dlisp', documentDepth: 5, documentIndex: 8 });
