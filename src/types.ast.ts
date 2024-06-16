@@ -34,6 +34,16 @@ export type AstBulletStyle =
     'bulleted' |
     'bulleted-labeled';
 
+export const bulletStyles: ReadonlyArray<AstBulletStyle> = [
+    'no-table',
+    'unlabeled',
+    'labeled',
+    'numbered',
+    'numbered-labeled',
+    'bulleted',
+    'bulleted-labeled',
+];
+
 export interface ITableOfContents extends ILocationSortable {
     readonly type: 'ast-toc';
     readonly bulletStyle: AstBulletStyle;

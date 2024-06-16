@@ -1,0 +1,5 @@
+{
+  "documentPath": "./itty.dlisp",
+  "message": "Content at {\"path\":\"./itty.dlisp\",\"line\":9,\"char\":1} contains unknown sub command at {\"path\":\"./itty.dlisp\",\"line\":9,\"char\":10}",
+  "success": false
+}

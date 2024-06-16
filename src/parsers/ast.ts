@@ -521,8 +521,12 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                if(atom.type !== 'token - atom' || atom.text !== 'toc') {
+                if(atom.type !== 'token - atom') {
                     return internals.noResultFound();
+                }
+
+                if(atom.text !== 'toc'){
+                    return util.fail(`Content at ${tocLoc} contains unknown sub command at ${open.location}`, open.location.documentPath);
                 }
 
                 const third = input[2] as Token;

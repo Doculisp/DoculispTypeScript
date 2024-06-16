@@ -445,6 +445,22 @@ describe('ast', () => {
 
                 verifyAsJson(result);
             });
+
+            it('should not parse a content whith a sub command other then toc', () => {
+                const text = `
+(section-meta
+    (title Sing Me a Song)
+    (external
+        (Chapter ./songs.dlisp)
+    )
+)
+
+(content (# Incorrect))
+`;
+                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+
+                verifyAsJson(result);
+            });
         })
     });
 });
