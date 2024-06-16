@@ -22,7 +22,7 @@
           "type": "ast-title"
         },
         {
-          "bulletStyle": "labeled",
+          "bulletStyle": "unlabeled",
           "documentOrder": {
             "char": 1,
             "documentDepth": 2,
@@ -60,7 +60,7 @@
             "documentPath": "./itty.dlisp",
             "line": 5
           },
-          "path": "./sleep.md",
+          "path": "./songs.dlisp",
           "sectionLabel": "Chapter",
           "type": "ast-load"
         }

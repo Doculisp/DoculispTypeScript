@@ -1,7 +1,7 @@
 import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle } from "../types.ast";
 import { IRegisterable } from "../types.containers";
 import { ILocation, IUtil, Result } from "../types.general";
-import { DiscardedResult, HandleValue, IInternals, IKeeper, StepParseResult } from "../types.internal";
+import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types.internal";
 import { Token, TokenizedDocument } from "../types.tokens";
 
 function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
@@ -527,7 +527,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 
                 const third = input[2] as Token;
                 let lenght = 2;
-                let style: AstBulletStyle = 'no-table';
+                let style: AstBulletStyle = 'labeled';
 
                 if(third.type === 'token - close parenthesis') {
                     lenght++;
@@ -543,16 +543,29 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     }
                 }
 
-                return util.ok({
-                    type: 'parse result',
-                    subResult: {
-                        type: 'ast-toc',
-                        bulletStyle: style,
-                        documentOrder: tocLoc,
-                    },
-                    rest: trimArray(lenght, input),
+                const step: IParseStepForward<Token[]> = {
                     location: current.increaseChar(),
-                });
+                    rest: trimArray(lenght, input),
+                }
+
+                if(style === 'no-table') {
+                    return util.ok(
+                        internals.buildStepParse(step, {
+                            type: 'discard'
+                        })
+                    );
+                }
+
+                return util.ok(
+                    internals.buildStepParse(step, {
+                        type: 'parse result',
+                        subResult: {
+                            type: 'ast-toc',
+                            bulletStyle: style,
+                            documentOrder: tocLoc,
+                        }
+                    })
+                );
             }
 
             const parser = internals.createArrayParser<Token, AstPart>(tryParseContent, tryParseToc, tryParseClose);

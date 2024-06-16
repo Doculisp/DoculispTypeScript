@@ -421,7 +421,15 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            it('should parse a table of contents with bullet style', () => {
+            it.each([
+                'no-table',
+                'unlabeled',
+                'labeled',
+                'numbered',
+                'numbered-labeled',
+                'bulleted',
+                'bulleted-labeled',
+            ])('should parse a table of contents with bullet style of %s', (bulletType: string) => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
@@ -430,7 +438,7 @@ describe('ast', () => {
     )
 )
 
-(content (toc bulleted))
+(content (toc ${bulletType}))
 `;
 
                 const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));

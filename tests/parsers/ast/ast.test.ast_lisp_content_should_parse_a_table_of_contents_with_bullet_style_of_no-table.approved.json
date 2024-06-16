@@ -22,17 +22,6 @@
           "type": "ast-title"
         },
         {
-          "bulletStyle": "labeled",
-          "documentOrder": {
-            "char": 1,
-            "documentDepth": 2,
-            "documentIndex": 1,
-            "documentPath": "./itty.dlisp",
-            "line": 9
-          },
-          "type": "ast-toc"
-        },
-        {
           "documentOrder": {
             "char": 2,
             "documentDepth": 2,
@@ -60,7 +49,7 @@
             "documentPath": "./itty.dlisp",
             "line": 5
           },
-          "path": "./sleep.md",
+          "path": "./songs.dlisp",
           "sectionLabel": "Chapter",
           "type": "ast-load"
         }
