@@ -1,0 +1,17 @@
+---- DOCUMENT ----
+
+{"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md"}
+
+Hello World!
+
+---- TOKENIZER ----
+
+ {"success":true,"value":{"parts":[{"location":{"char":1,"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md","line":1},"text":"Hello Document!","type":"text"}],"projectLocation":{"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md"}}}
+
+---- AST ---
+
+{"success":true,"value":{"projectLocation":{"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md"},"tokens":[{"location":{"char":1,"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md","line":1},"text":"Hello Tokenizer!","type":"token - text"}]}}
+
+--- Grand Result ----
+
+{"success":true,"value":{"projectLocation":{"char":1,"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md","line":1},"section":{"ast":[{"documentOrder":{"char":1,"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md","line":1},"type":"ast-write","value":"Hello AST!"}],"documentOrder":{"char":1,"documentDepth":1,"documentIndex":1,"documentPath":"./enchilada.md","line":1},"external":[],"type":"ast-section"}}}
