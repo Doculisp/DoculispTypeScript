@@ -249,7 +249,7 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
 
     return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
         if(!documentMap.success) {
-            return util.fail(documentMap.message, documentMap.documentPath);
+            return documentMap;
         }
         
         const documentPath = documentMap.value.projectLocation.documentPath;
