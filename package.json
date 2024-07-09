@@ -27,7 +27,7 @@
     "@types/jest": "^29.2.6",
     "@types/node": "^20.12.12",
     "all-contributors-cli": "^6.24.0",
-    "approvals": "^7.1.1",
+    "approvals": "^7.1.2",
     "booklisp": "^2.0.0",
     "jest": "^29.3.1",
     "nyc": "^15.1.0",
