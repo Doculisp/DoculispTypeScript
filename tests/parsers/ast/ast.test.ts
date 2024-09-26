@@ -307,6 +307,16 @@ describe('ast', () => {
         
                     verifyAsJson(result);
                 });
+
+                it('should not parse a subtitle without a title', () => {
+                    const contents = `
+(section-meta
+    (subtitle A cool work of art)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                    verifyAsJson(result);
+                })
             });
 
             describe('external', () => {
