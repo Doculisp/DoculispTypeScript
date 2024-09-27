@@ -1,0 +1,145 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "_main.dlisp"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.dlisp",
+            "line": 2
+          },
+          "label": "# Main Multiple Sub Documents #",
+          "link": "#main_multiple_sub_documents",
+          "title": "Main Multiple Sub Documents",
+          "type": "ast-title"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.dlisp",
+            "line": 10
+          },
+          "type": "ast-content"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "_main.dlisp",
+        "line": 1
+      },
+      "external": [
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "A:/subA.md",
+                  "line": 2
+                },
+                "label": "## Sub A ##",
+                "link": "#sub_a",
+                "title": "Sub A",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "A:/subA.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "Sub document A text."
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "A:/subA.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.dlisp",
+            "line": 5
+          },
+          "path": "A:/subA.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "B:/subB.md",
+                  "line": 2
+                },
+                "label": "## Sub B ##",
+                "link": "#sub_b",
+                "title": "Sub B",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "B:/subB.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "Sub document B text."
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 2,
+              "documentPath": "B:/subB.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.dlisp",
+            "line": 6
+          },
+          "path": "B:/subB.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        }
+      ],
+      "type": "ast-section"
+    }
+  }
+}

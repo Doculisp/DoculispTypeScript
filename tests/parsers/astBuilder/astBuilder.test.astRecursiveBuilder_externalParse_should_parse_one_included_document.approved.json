@@ -1,0 +1,107 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "C:/_main.dlisp"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "C:/_main.dlisp",
+            "line": 2
+          },
+          "label": "# Main Document #",
+          "link": "#main_document",
+          "title": "Main Document",
+          "type": "ast-title"
+        },
+        {
+          "bulletStyle": "numbered-labeled",
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "C:/_main.dlisp",
+            "line": 9
+          },
+          "type": "ast-toc"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "C:/_main.dlisp",
+            "line": 9
+          },
+          "type": "ast-content"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "C:/_main.dlisp",
+        "line": 1
+      },
+      "external": [
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "C:/sub.md",
+                  "line": 2
+                },
+                "label": "## Fist Sub-Document ##",
+                "link": "#fist_sub-document",
+                "title": "Fist Sub-Document",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "C:/sub.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "Hello world!"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "C:/sub.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "C:/_main.dlisp",
+            "line": 5
+          },
+          "path": "C:/sub.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        }
+      ],
+      "type": "ast-section"
+    }
+  }
+}

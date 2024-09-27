@@ -1,0 +1,147 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "_main.md"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.md",
+            "line": 2
+          },
+          "label": "# Top Level Document #",
+          "link": "#top_level_document",
+          "title": "Top Level Document",
+          "type": "ast-title"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.md",
+            "line": 11
+          },
+          "type": "ast-write",
+          "value": "Hello World!\n\n(content)"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "_main.md",
+        "line": 1
+      },
+      "external": [
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./child.md",
+                  "line": 2
+                },
+                "label": "## A Child Document ##",
+                "link": "#a_child_document",
+                "title": "A Child Document",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./child.md",
+                  "line": 12
+                },
+                "type": "ast-write",
+                "value": "Hi Dad!\n\n(content)"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "./child.md",
+              "line": 1
+            },
+            "external": [
+              {
+                "document": {
+                  "ast": [
+                    {
+                      "documentOrder": {
+                        "char": 1,
+                        "documentDepth": 3,
+                        "documentIndex": 1,
+                        "documentPath": "C:/grand.md",
+                        "line": 2
+                      },
+                      "label": "### A Grandchild Document ###",
+                      "link": "#a_grandchild_document",
+                      "title": "A Grandchild Document",
+                      "type": "ast-title"
+                    },
+                    {
+                      "documentOrder": {
+                        "char": 1,
+                        "documentDepth": 3,
+                        "documentIndex": 1,
+                        "documentPath": "C:/grand.md",
+                        "line": 9
+                      },
+                      "type": "ast-write",
+                      "value": "Hi gramps!"
+                    }
+                  ],
+                  "documentOrder": {
+                    "char": 1,
+                    "documentDepth": 3,
+                    "documentIndex": 1,
+                    "documentPath": "C:/grand.md",
+                    "line": 1
+                  },
+                  "external": [],
+                  "type": "ast-section"
+                },
+                "documentOrder": {
+                  "char": 13,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./child.md",
+                  "line": 5
+                },
+                "path": "C:/grand.md",
+                "sectionLabel": "GrandChild",
+                "type": "ast-load"
+              }
+            ],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 13,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.md",
+            "line": 5
+          },
+          "path": "./child.md",
+          "sectionLabel": "Child",
+          "type": "ast-load"
+        }
+      ],
+      "type": "ast-section"
+    }
+  }
+}
