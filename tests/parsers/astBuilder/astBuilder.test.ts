@@ -8,7 +8,7 @@ import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
 import { DocumentParser } from "../../../src/types.document";
 import { TokenFunction } from "../../../src/types.tokens";
-import { IFileHandler } from "../../../src/types.fileHandler";
+import { IFileLoader } from "../../../src/types.fileHandler";
 
 function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
     return {
@@ -20,11 +20,13 @@ function buildLocation(path: string, depth: number, index: number) : IProjectLoc
 
 describe('astRecursiveBuilder', () => {
     let environment: ITestableContainer = undefined as any;
-    let builder: IAstBuilder = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
+
+    let util: IUtil = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
-    let util: IUtil = undefined as any;
+
+    let builder: IAstBuilder = undefined as any;
     let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
     let toResult: (path: string) => Result<IAst> = undefined as any
     let pathToResult: IDictionary<Result<string>> = undefined as any;
@@ -35,12 +37,13 @@ describe('astRecursiveBuilder', () => {
 
     beforeEach(() => {
         environment = container.buildTestable();
+        
         util = environment.buildAs<IUtil>('util');
         ok = util.ok;
         fail = util.fail;
 
         pathToResult = {};
-        const fileHandler: IFileHandler = {
+        const fileHandler: IFileLoader = {
             load(path: string): Result<string> {
                 const result = pathToResult[path];
                 if(result) {
