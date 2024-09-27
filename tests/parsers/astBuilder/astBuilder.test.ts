@@ -8,7 +8,7 @@ import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
 import { DocumentParser } from "../../../src/types.document";
 import { TokenFunction } from "../../../src/types.tokens";
-import { IFileLoader } from "../../../src/types.fileLoader";
+import { IFileHandler } from "../../../src/types.fileHandler";
 
 function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
     return {
@@ -40,7 +40,7 @@ describe('astRecursiveBuilder', () => {
         fail = util.fail;
 
         pathToResult = {};
-        const fileLoader: IFileLoader = {
+        const fileHandler: IFileHandler = {
             load(path: string): Result<string> {
                 const result = pathToResult[path];
                 if(result) {
@@ -51,7 +51,7 @@ describe('astRecursiveBuilder', () => {
             }
         };
 
-        environment.replaceBuilder(() => fileLoader, [], 'fileLoader', true);
+        environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
 
         builder = environment.buildAs<IAstBuilder>('astBuilder');
         let document = environment.buildAs<DocumentParser>('documentParse');

@@ -2,14 +2,14 @@ import { IAst, IAstParser, ISectionWriter } from "../types.ast";
 import { IAstBuilder } from "../types.astBuilder";
 import { IRegisterable } from "../types.containers";
 import { DocumentParser } from "../types.document";
-import { IFileLoader } from "../types.fileLoader";
+import { IFileHandler } from "../types.fileHandler";
 import { IProjectLocation, IUtil, Result } from "../types.general";
 import { TokenFunction } from "../types.tokens";
 
-function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileLoader: IFileLoader) : IAstBuilder {
+function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler) : IAstBuilder {
 
     function _parse(path: string, location: IProjectLocation): Result<IAst> {
-        const fileMaybe = fileLoader.load(path);
+        const fileMaybe = fileHandler.load(path);
         if(!fileMaybe.success) {
             return fileMaybe;
         }
@@ -81,10 +81,10 @@ function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: Docum
 }
 
 const astBuilder : IRegisterable = {
-    builder: (util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileLoader: IFileLoader) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileLoader),
+    builder: (util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler),
     name: 'astBuilder',
     singleton: true,
-    dependencies: ['util', 'astParse', 'documentParse', 'tokenizer', 'fileLoader']
+    dependencies: ['util', 'astParse', 'documentParse', 'tokenizer', 'fileHandler']
 };
 
 export {

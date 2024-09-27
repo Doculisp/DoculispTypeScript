@@ -1,9 +1,9 @@
 import { IRegisterable } from "./types.containers";
-import { IFileLoader } from "./types.fileLoader";
+import { IFileHandler } from "./types.fileHandler";
 
 import { IUtil, Result } from "./types.general";
 
-function buildLoader(util: IUtil, fs: any): IFileLoader {
+function buildLoader(util: IUtil, fs: any): IFileHandler {
     function load(path: string): Result<string> {
         try {
             const value: string = fs.readFileSync(path, {encoding: 'utf8'});
@@ -20,7 +20,7 @@ function buildLoader(util: IUtil, fs: any): IFileLoader {
 
 const loader: IRegisterable = {
     builder: (util: IUtil, fs: any) => buildLoader(util, fs),
-    name: 'fileLoader',
+    name: 'fileHandler',
     dependencies: ['util', 'fs'],
     singleton: true
 };
