@@ -1,0 +1,167 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "./_main.dlisp"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "./_main.dlisp",
+            "line": 2
+          },
+          "label": "# The True Root #",
+          "link": "#the_true_root",
+          "title": "The True Root",
+          "type": "ast-title"
+        },
+        {
+          "bulletStyle": "labeled",
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "./_main.dlisp",
+            "line": 9
+          },
+          "type": "ast-toc"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "./_main.dlisp",
+            "line": 9
+          },
+          "type": "ast-content"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "./_main.dlisp",
+        "line": 1
+      },
+      "external": [
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./childDoc.md",
+                  "line": 3
+                },
+                "label": "## The Child to Bare ##",
+                "link": "#the_child_to_bare",
+                "title": "The Child to Bare",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./childDoc.md",
+                  "line": 12
+                },
+                "type": "ast-write",
+                "value": "hello from the child"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./childDoc.md",
+                  "line": 14
+                },
+                "type": "ast-content"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "./childDoc.md",
+              "line": 1
+            },
+            "external": [
+              {
+                "document": {
+                  "ast": [
+                    {
+                      "documentOrder": {
+                        "char": 1,
+                        "documentDepth": 3,
+                        "documentIndex": 1,
+                        "documentPath": "./grandchild.md",
+                        "line": 3
+                      },
+                      "label": "### The GRoot of all Docs ###",
+                      "link": "#the_groot_of_all_docs",
+                      "title": "The GRoot of all Docs",
+                      "type": "ast-title"
+                    },
+                    {
+                      "documentOrder": {
+                        "char": 1,
+                        "documentDepth": 3,
+                        "documentIndex": 1,
+                        "documentPath": "./grandchild.md",
+                        "line": 10
+                      },
+                      "type": "ast-write",
+                      "value": "Hello from the grand child"
+                    }
+                  ],
+                  "documentOrder": {
+                    "char": 1,
+                    "documentDepth": 3,
+                    "documentIndex": 1,
+                    "documentPath": "./grandchild.md",
+                    "line": 1
+                  },
+                  "external": [],
+                  "type": "ast-section"
+                },
+                "documentOrder": {
+                  "char": 13,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./childDoc.md",
+                  "line": 6
+                },
+                "path": "./grandchild.md",
+                "sectionLabel": "Chip",
+                "type": "ast-load"
+              }
+            ],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "./_main.dlisp",
+            "line": 5
+          },
+          "path": "./childDoc.md",
+          "sectionLabel": "Block",
+          "type": "ast-load"
+        }
+      ],
+      "type": "ast-section"
+    }
+  }
+}

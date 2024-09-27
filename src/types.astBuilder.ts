@@ -1,7 +1,7 @@
 import { IAst } from "./types.ast";
-import { IProjectLocation, Result } from "./types.general";
+import { Result } from "./types.general";
 
 export interface IAstBuilder {
-    parse(target: Result<{ text: string; projectLocation: IProjectLocation; }>): Result<IAst>;
+    parse(path: string): Result<IAst>;
     parseExternals(ast: Result<IAst>): Result<IAst>;
 }

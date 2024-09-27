@@ -26,7 +26,7 @@ describe('astRecursiveBuilder', () => {
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
     let util: IUtil = undefined as any;
     let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
-    //let toResult: (target:Result<{text: string, projectLocation: IProjectLocation}>) => Result<IAst> = undefined as any
+    let toResult: (path: string) => Result<IAst> = undefined as any
     let pathToResult: IDictionary<Result<string>> = undefined as any;
 
     beforeAll(() => {
@@ -65,9 +65,9 @@ describe('astRecursiveBuilder', () => {
             return builder.parseExternals(ast);
         };
 
-        // toResult = (target:Result<{text: string, projectLocation: IProjectLocation}>) => {
-        //     return builder.parse(target);
-        // };
+        toResult = (path: string) => {
+            return builder.parse(path);
+        };
     });
 
     describe('externalParse', () => {
@@ -227,6 +227,82 @@ Hello World!
 `;
 
             const result = toExternalResult(doc, buildLocation('_main.md', 1, 1));
+            verifyAsJson(result);
+        });
+    });
+
+    describe('parse', () => {
+        it('should return file error if there is one', () => {
+            const docPath = 'C:/bad.md';
+
+            const expectedResult = fail('baad file', docPath);
+
+            pathToResult[docPath] = expectedResult;
+
+            const result = toResult(docPath);
+            expect(result).toBe(expectedResult);
+        });
+
+        it('should parse an empty file', () => {
+            const doc = '';
+            const docPath = 'empty.md';
+            
+            pathToResult[docPath] = ok(doc);
+
+            const result = toResult(docPath);
+            verifyAsJson(result);
+        });
+
+        it('should parse a document with a child and grand child', () => {
+            const grandChildPath = './grandchild.md'
+            const grandchild = `
+<!--
+(dl
+    (section-meta
+        (title The GRoot of all Docs)
+    )
+)
+-->
+
+Hello from the grand child
+`;
+
+            const childPath = './childDoc.md'
+            const child = `
+<!--
+(dl
+    (section-meta
+        (title The Child to Bare)
+        (external
+            (Chip ${grandChildPath})
+        )
+    )
+)
+-->
+hello from the child
+
+<!-- (dl (content)) -->
+`;
+
+            pathToResult[grandChildPath] = ok(grandchild);
+            pathToResult[childPath] = ok(child);
+
+            const docPath = './_main.dlisp';
+            const doc = `
+(section-meta
+    (title The True Root)
+    (external
+        (Block ${childPath})
+    )
+)
+
+(content (toc))
+`;
+
+            pathToResult[docPath] = ok(doc);
+
+            const result = toResult(docPath);
+
             verifyAsJson(result);
         });
     });

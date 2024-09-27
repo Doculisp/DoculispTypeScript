@@ -8,8 +8,21 @@ import { TokenFunction } from "../types.tokens";
 
 function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileLoader: IFileLoader) : IAstBuilder {
 
-    function parse(target: Result<{ text: string; projectLocation: IProjectLocation; }>): Result<IAst> {
-        throw new Error("Not Yet Implemented");
+    function _parse(path: string, location: IProjectLocation): Result<IAst> {
+        const fileMaybe = fileLoader.load(path);
+        if(!fileMaybe.success) {
+            return fileMaybe;
+        }
+
+        const documentResult = documentParse(fileMaybe.value, location);
+        const tokens = tokenizer(documentResult);
+        const ast = astParse.parse(tokens);
+
+        return parseExternals(ast);
+    }
+
+    function parse(path: string): Result<IAst> {
+        return _parse(path, { documentDepth: 1, documentIndex: 1, documentPath: path });
     }
 
     function parseSection(ast: ISectionWriter): Result<ISectionWriter> {
@@ -24,16 +37,7 @@ function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: Docum
                 continue;
             }
 
-            const documentTextMaybe = fileLoader.load(load.path);
-            if(!documentTextMaybe.success) {
-                return documentTextMaybe;
-            }
-
-            const documentText = documentTextMaybe.value;
-
-            const documentResult = documentParse(documentText, { documentDepth: ast.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path });
-            const tokenResult = tokenizer(documentResult);
-            const astResult = astParse.parse(tokenResult);
+            const astResult = _parse(load.path, { documentDepth: ast.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path});
             if(!astResult.success) {
                 return astResult;
             }
@@ -43,19 +47,13 @@ function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: Docum
                 continue;
             }
 
-            const sectionMaybe = parseSection(astDocument.section);
-            if(!sectionMaybe.success) {
-                return sectionMaybe;
-            }
-
-            load.document = sectionMaybe.value;
+            load.document = astDocument.section;
         }
 
         return util.ok(ast);
     }
 
     function parseExternals(astResult: Result<IAst>): Result<IAst> {
-
         if(!astResult.success) {
             return astResult;
         }
