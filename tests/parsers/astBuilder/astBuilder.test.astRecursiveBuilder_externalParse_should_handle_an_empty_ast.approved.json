@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "C:/_main.dlisp"
+    },
+    "section": {
+      "type": "ast-empty"
+    }
+  }
+}

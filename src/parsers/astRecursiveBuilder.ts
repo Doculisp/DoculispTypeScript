@@ -1,16 +1,16 @@
 import { IAst } from "../types.ast";
 import { IAstBuilder } from "../types.astBuilder";
 import { IRegisterable } from "../types.containers";
-import { IProjectLocation, Result } from "../types.general";
+import { IProjectLocation, IUtil, Result } from "../types.general";
 
-function buildAstBuilder() : IAstBuilder {
+function buildAstBuilder(util: IUtil) : IAstBuilder {
 
     function parse(target: Result<{ text: string; projectLocation: IProjectLocation; }>): Result<IAst> {
         throw new Error("Not Yet Implemented");
     }
 
     function parseExternals(ast: Result<IAst>): Result<IAst> {
-        throw new Error("Not Yet Implemented");
+        return ast;
     }
 
     return {
@@ -20,10 +20,10 @@ function buildAstBuilder() : IAstBuilder {
 }
 
 const astBuilder : IRegisterable = {
-    builder: () => buildAstBuilder(),
+    builder: (util: IUtil) => buildAstBuilder(util),
     name: 'astBuilder',
     singleton: true,
-    dependencies: ['documentParse', 'tokenizer', 'astParse']
+    dependencies: ['util', 'documentParse', 'tokenizer', 'astParse']
 };
 
 export {

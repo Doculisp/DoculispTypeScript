@@ -17,7 +17,7 @@ function buildLocation(path: string, depth: number, index: number) : IProjectLoc
     };
 }
 
-describe.skip('astRecursiveBuilder', () => {
+describe('astRecursiveBuilder', () => {
     let environment: ITestableContainer = undefined as any;
     let builder: IAstBuilder = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
