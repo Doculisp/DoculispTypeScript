@@ -22,6 +22,104 @@ function findModules(container: IContainer) {
     });
 }
 
+class TreeNode {
+    _parent: TreeNode[];
+    _children: TreeNode[];
+    _value: string;
+
+    constructor();
+    constructor(value: string);
+    constructor(value: string, parent: TreeNode);
+    constructor(value: string = '<{tree-root}>', parent?: TreeNode) {
+        this._parent = [];
+        this._children = [];
+        if(parent) {
+            this._parent[0] = parent;
+        }
+
+        this._value = value;
+    }
+
+    containsParent(name: string, trace: string[] = []): string[] | false {
+        if(!this._parent) {
+            return false;
+        }
+
+        for (let index = 0; index < this._parent.length; index++) {
+            const t: string[] = [];
+            trace.forEach(item => t[t.length] = item);
+            const found = this._parent[index]?.check(name, t);
+            if(found) {
+                return found;
+            }
+        }
+
+        return false;
+    }
+
+    check(name: string, trace: string[] = []): string[] | false {
+        if(trace.length === 0) {
+            trace.push(name);
+        }
+        trace.push(this._value);
+        if(this._value === name) {
+            return trace;
+        }
+        
+        return this.containsParent(name, trace);
+    }
+
+    find(name: string, checked: string[] = []): TreeNode | false {
+        if(checked.includes(this._value)) {
+            return false;
+        }
+
+        if(this._value === name) {
+            return this;
+        }
+
+        checked[checked.length] = this._value;
+
+        for (let index = 0; index < this._parent.length; index++) {
+            const found = this._parent[index]?.find(name, checked);
+            if(found) {
+                return found;
+            }
+        }
+
+        for (let index = 0; index < this._children.length; index++) {
+            const found = this._children[index]?.find(name, checked);
+            if(found) {
+                return found;
+            }
+        }
+
+        return false;
+    }
+
+    _addChild(node: TreeNode) {
+        this._children[this._children.length] = node;
+    }
+
+    _addParent(node: TreeNode) {
+        this._parent[this._parent.length] = node;
+    }
+
+    addChild(name: string): TreeNode {
+        const found = this.find(name);
+
+        if(found) {
+            found._addParent(this)
+            this._addChild(this);
+            return found;
+        }
+
+        const node = new TreeNode(name, this);
+        this._addChild(node);
+        return node;
+    }
+}
+
 class Container implements ITestableContainer {
     _registry: IDictionary<IRegisterable> = {};
     _replacements: IDictionary<IRegisterable> = {};
@@ -93,7 +191,7 @@ class Container implements ITestableContainer {
         return this;
     }
 
-    _build<T>(moduleName: string, modules: string[]): Valid<T> {
+    _build<T>(moduleName: string, modules: string[], tree: TreeNode): Valid<T> {
         let moduleBuilder = this._replacements[moduleName];
         let replaced = true;
         if (!moduleBuilder) {
@@ -124,19 +222,17 @@ class Container implements ITestableContainer {
             return this._cache[moduleName];
         }
 
-        let recursive = 
-            moduleBuilder.dependencies?.filter(name => modules.includes(name)) ?? [];
+        const recursive = tree.check(moduleName);
+
+        if (recursive) {
+            let recursiveModules = recursive.reverse().map(name => `"${name}"`).join(' => ');
+            throw new Error(`Circular dependencies between (${recursiveModules})`);
+        }
 
         modules[modules.length] = moduleName;
 
-        if (0 < recursive.length) {
-            let moduleNames = modules.map(name => `"${name}"`).join(' => ');
-            let recursiveModules = recursive.map(name => `"${name}"`).join(', ');
-            throw new Error(`Circular dependencies between (${moduleNames} => [${recursiveModules}])`);
-        }
-
         let dependencies: Valid<any>[] = 
-            moduleBuilder.dependencies?.map((name) => this._build(name, modules)) ?? [];
+            moduleBuilder.dependencies?.map((name) => this._build(name, modules, tree.addChild(moduleName))) ?? [];
 
         let result: Valid<T> = moduleBuilder.builder.apply(moduleBuilder.builder, dependencies);
 
@@ -153,11 +249,11 @@ class Container implements ITestableContainer {
     }
     
     build(moduleName: string): Valid<any> {
-        return this._build<any>(moduleName, []);
+        return this._build<any>(moduleName, [], new TreeNode());
     }
     
     buildAs<T>(moduleName: string): Valid<T> {
-        return this._build<T>(moduleName, []);
+        return this._build<T>(moduleName, [], new TreeNode());
     }
     
     buildTestable(): ITestableContainer {

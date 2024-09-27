@@ -169,40 +169,7 @@ describe('the registry', () => {
                 register(blue).
                 register(orange);
     
-            expect(() => { testable.build('orange'); }).toThrow('Circular dependencies between ("orange" => "blue" => ["orange"])');
-        });
-    
-        it('should show a chain when circular dependency is not obvious.', () => {
-            let blue: IRegisterable = {
-                builder: function blue() {},
-                name: 'blue',
-                dependencies: ['green'],
-            };
-
-            let orange: IRegisterable = {
-                builder: function orange() {},
-                name: 'orange',
-                dependencies: ['blue'],
-            };
-
-            let green: IRegisterable = {
-                builder: function green() {},
-                name: 'green',
-                dependencies: ['orange', 'blue']
-            };
-
-            let purple: IRegisterable = {
-                builder: function purple() {},
-                name: 'purple',
-            };
-    
-            testable.
-                register(blue).
-                register(orange).
-                register(green).
-                register(purple);
-    
-            expect(() => { testable.build('orange'); }).toThrow('Circular dependencies between ("orange" => "blue" => "green" => ["orange", "blue"])');
+            expect(() => { testable.build('orange'); }).toThrow('Circular dependencies between ("orange" => "blue" => "orange")');
         });
 
         it('should call builder function each time the item is built.', () => {
@@ -220,6 +187,44 @@ describe('the registry', () => {
             }
     
             expect(fn).toHaveBeenCalledTimes(iterationCnt);
+        });
+
+        it('should not find multiple common dependencies as circular', () => {
+            const orangeValue = {
+                value: 32,
+                text: 'orange'
+            };
+            
+            let blue: IRegisterable = {
+                builder: function blue() {},
+                name: 'blue',
+                dependencies: ['purple'],
+            };
+
+            let orange: IRegisterable = {
+                builder: function orange() { return orangeValue; },
+                name: 'orange',
+                dependencies: ['blue', 'green'],
+            };
+
+            let green: IRegisterable = {
+                builder: function green() {},
+                name: 'green',
+                dependencies: ['purple']
+            };
+
+            let purple: IRegisterable = {
+                builder: function purple() {},
+                name: 'purple',
+            };
+    
+            testable.
+                register(purple).
+                register(green).
+                register(blue).
+                register(orange);
+    
+            expect(testable.build('orange')).toBe(orangeValue);
         });
     
         it('should not call the builder function more then once if the registerable claims to be a singleton.', () => {
