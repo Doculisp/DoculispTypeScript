@@ -585,16 +585,16 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 
             const [parts, leftovers] = parsed.value;
 
+            if(0 === parts.length) {
+                return internals.noResultFound();
+            }
+            
             if(!hasSection) {
                 return util.fail(`Section command must come before the Content command at ${(parts[0] as AstPart).documentOrder}`, starting.documentPath);
             }
 
             if(0 === externals.length) {
                 return util.fail(`Section command at ${(parts[0] as AstPart).documentOrder} needs the section-meta command to have external links.`, starting.documentPath);
-            }
-
-            if(0 === parts.length) {
-                return internals.noResultFound();
             }
 
             const result: IKeeper<AstPart>[] = 
@@ -657,7 +657,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 const astParser: IRegisterable = {
     builder: (internals: IInternals, util: IUtil) => buildAstParser(internals, util),
     name: 'astParse',
-    singleton: true,
+    singleton: false,
     dependencies: ['internals', 'util']
 };
 
