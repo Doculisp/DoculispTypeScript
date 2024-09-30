@@ -1,0 +1,314 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 6,
+      "documentPath": "./documentation/comment.md"
+    },
+    "tokens": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 2
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 2
+        },
+        "text": "section-meta",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 3
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 10,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 3
+        },
+        "text": "title",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 16,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 3
+        },
+        "text": "Comment Block",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 29,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 3
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 4
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 9
+        },
+        "text": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 147,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 9
+        },
+        "text": "`*`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 151,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 9
+        },
+        "text": "just after an open parenthisis and end when the block and all its subblocks are closed.\r\n\r\nExample:",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 13
+        },
+        "text": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (external\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 29
+        },
+        "text": "In this example the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 21,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 29
+        },
+        "text": "`section-meta`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 36,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 29
+        },
+        "text": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.\r\n\r\nxample:",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 33
+        },
+        "text": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (*external\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (*section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 49
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 49
+        },
+        "text": "#",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 49
+        },
+        "text": "Nested Comments",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 24,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 49
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "In this example the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 21,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "`section-meta`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 36,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "and all its subblocks are commented out. However when you uncomment",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 104,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "`section-meta`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 119,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "then the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 128,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "`external`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 139,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "block will be commented out. When you uncomment that block, then the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 208,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "`section ./comment.md`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 231,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "block will be commented out.",
+        "type": "token - text"
+      }
+    ]
+  }
+}

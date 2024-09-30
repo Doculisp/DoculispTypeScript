@@ -1,0 +1,173 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 5,
+      "documentPath": "./documentation/headings.md"
+    },
+    "tokens": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 2
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 2
+        },
+        "text": "section-meta",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 3
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 10,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 3
+        },
+        "text": "title",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 16,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 3
+        },
+        "text": "Dynamic Headings",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 32,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 3
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 4
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 9
+        },
+        "text": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 149,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 9
+        },
+        "text": "`(#`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 154,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 9
+        },
+        "text": "block, or dynamic headinlg block.\r\n\r\nThe dynamic heading block works differently then other blocks. The number of",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 78,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 11
+        },
+        "text": "`#`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 82,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 11
+        },
+        "text": "signs determins how far it is beneith the current sub/section heading.\r\n\r\nExample",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 15
+        },
+        "text": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Maths an intro)\r\n        (external\r\n            (section ./add.md)\r\n            (section ./subtract.md)\r\n            (section ./muliply.md)\r\n            (section ./divide.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n\r\n<!-- (# Summary) -->\r\n\r\nA cool summary of maths.\r\n\r\n<!-- (## Resons For Document) -->\r\n\r\nAn explination why to have the document.\r\n\r\n\r\n<!-- (dl (content (toc unlabled))) -->\r\n```",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 42
+        },
+        "text": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3.\r\n\r\nHowever if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 48
+        },
+        "text": "Currently, the maximum heading depth recognized by Markdown is H6. However Doculisp will not restrict you to that depth. If the total depth is more then H6 you may get unexpected results.",
+        "type": "token - text"
+      }
+    ]
+  }
+}

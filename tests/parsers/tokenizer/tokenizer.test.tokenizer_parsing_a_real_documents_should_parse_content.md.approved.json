@@ -1,0 +1,248 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 4,
+      "documentPath": "./documentation/content.md"
+    },
+    "tokens": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 2
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 2
+        },
+        "text": "section-meta",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 3
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 10,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 3
+        },
+        "text": "title",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 16,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 3
+        },
+        "text": "Content Block",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 29,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 3
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 4
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 9
+        },
+        "text": "The content block signifies where to build the document from the external documents. This block has only one optional subblock.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 11
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 11
+        },
+        "text": "#",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 11
+        },
+        "text": "Table of Contents",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 26,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 11
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 13
+        },
+        "text": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.\r\n\r\nThe structure of the table of contents is",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 43,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": "`(toc)`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 51,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": "there is an optional parameter that can have one of the following values:\r\n\r\n* no-table\r\n* unlabeled\r\n* labeled\r\n* numbered\r\n* numbered-labeled\r\n* bulleted\r\n* bulleted-labeled\r\n\r\nExamples",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 27
+        },
+        "text": "```doculisp\r\n(contents (toc))\r\n```\r\n\r\n```doculisp\r\n(contents (toc bulleted-labeled))\r\n```",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 35
+        },
+        "text": "Any of the options with",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 25,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 35
+        },
+        "text": "`labled`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 34,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 35
+        },
+        "text": "on it will use the name of the subsection.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 37
+        },
+        "text": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (external\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 50
+        },
+        "text": "The table of contents would contain a line that looked like:",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 52
+        },
+        "text": "```markdown\r\n* Chapter: [An Introduction](#an-introduction)\r\n```",
+        "type": "token - text"
+      }
+    ]
+  }
+}

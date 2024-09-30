@@ -1,0 +1,466 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 1,
+      "documentPath": "./documentation/structure.md"
+    },
+    "tokens": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 2
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 2
+        },
+        "text": "section-meta",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 3
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 10,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 3
+        },
+        "text": "title",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 16,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 3
+        },
+        "text": "Basic Structure",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 31,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 3
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 4
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 9
+        },
+        "text": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 162,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 9
+        },
+        "text": "`(`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 166,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 9
+        },
+        "text": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 375,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 9
+        },
+        "text": "`)`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 378,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 9
+        },
+        "text": ".\r\n\r\nEven the Doculisp main block follows this.\r\n\r\nExample",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 15
+        },
+        "text": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Basic Structure)\r\n    )\r\n)\r\n-->\r\n```",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "The first block is the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 24,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "`dl`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 29,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "block. In it",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 42,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "`dl`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 47,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "is the atom. It contains the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 76,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "`section-meta`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 91,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "sub-block.  That block has the atom",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 127,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "`section-meta`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 142,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "followed by a further sub block. The last sub block is the",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 201,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "`title`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 209,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "sub block. In it",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 226,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "`title`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 234,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "is the atom and",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 250,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "`Basic Structure`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 268,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "is the parameter.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 27
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 27
+        },
+        "text": "#",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 27
+        },
+        "text": "Parameter",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 18,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 27
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 29
+        },
+        "text": "A parameter is a string of characters that contains no line advancement (",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 74,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 29
+        },
+        "text": "`\\r`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 79,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 29
+        },
+        "text": "or",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 82,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 29
+        },
+        "text": "`\\n`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 86,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 29
+        },
+        "text": ") character and no parentheses (unless escaped). A parameter has a max length of 255 characters.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 31
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 31
+        },
+        "text": "#",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 31
+        },
+        "text": "Visual Explanation",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 27,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 31
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 33
+        },
+        "text": "```doculisp\r\n(atom)\r\n(atom parameter)\r\n(atom (atom2))\r\n(atom (atom2 second parameter))\r\n```",
+        "type": "token - text"
+      }
+    ]
+  }
+}
