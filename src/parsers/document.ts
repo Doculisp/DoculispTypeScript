@@ -200,10 +200,12 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     function isInline(): HandleStringValue<DocumentPart> {
         return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let opened: boolean = false;
+            let hasOpened: boolean = false;
     
             function tryParseInLine(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithInlineMarker.test(input)) {
                     opened = !opened;
+                    hasOpened = hasOpened || opened;
     
                     const parsed: string = (input.match(doesIt.startWithInlineMarker) as any)[0];
                     const rest = input.slice(parsed.length);
@@ -220,7 +222,12 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
                 if(doesIt.startWithWhiteSpace.test(input)) {
-                    let doesItStartWithNewLine = /^\r|\n/;
+                    if(!opened) {
+                        return internals.stopFindingResults();
+                    }
+        
+                    let doesItStartWithNewLine = /^(\r|\n)/;
+                    
                     if(doesItStartWithNewLine.test(input)) {
                         return util.fail(`Inline code block at ${starting.toString()} contains a new line before closing.`, projectLocation.documentPath);
                     }
@@ -251,8 +258,16 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     location: current.increaseChar(1),
                 });
             }
+
+            function tryEnd()  {
+                if(hasOpened && !opened) {
+                    return internals.stopFindingResults();
+                }
+
+                return internals.noResultFound();
+            }
     
-            const parser = internals.createStringParser(tryParseInLine, tryParseWhiteSpace, tryParseWord);
+            const parser = internals.createStringParser(tryEnd, tryParseInLine, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, starting);
     
             if(parsed.success) {

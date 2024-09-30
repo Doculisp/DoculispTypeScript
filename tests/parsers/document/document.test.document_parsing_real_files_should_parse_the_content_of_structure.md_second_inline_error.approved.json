@@ -1,0 +1,243 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 2
+        },
+        "text": "(section-meta\n        (title Basic Structure)\n    )",
+        "type": "lisp"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 9
+        },
+        "text": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 162,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 9
+        },
+        "text": "`(`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 166,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 9
+        },
+        "text": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 375,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 9
+        },
+        "text": "`)`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 378,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 9
+        },
+        "text": ".\n\nEven the Doculisp main block follows this.\n\nExample",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 15
+        },
+        "text": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Basic Structure)\n    )\n)\n-->\n```",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "The first block is the",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 24,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "`dl`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 29,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "block. In it",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 42,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "`dl`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 47,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "is the atom. It contains the",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 76,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "`section-meta`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 91,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "sub-block.  That block has the atom",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 127,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "`section-meta`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 142,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "followed by a further sub block. The last sub block is the",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 201,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "`title`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 209,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "sub block. In it",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 226,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "`title`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 234,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "is the atom and",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 250,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 25
+        },
+        "text": "`Basic Structure`",
+        "type": "text"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 1,
+      "documentPath": "./structure.md"
+    }
+  }
+}

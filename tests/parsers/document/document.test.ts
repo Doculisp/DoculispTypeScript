@@ -271,4 +271,52 @@ describe('document', () => {
             verifyAsJson(result);
         });
     });
+
+    describe('parsing real files', () => {
+        it('should parse the content of structure.md first inline error', () =>{
+            const result = parse(`<!--
+(dl
+    (section-meta
+        (title Basic Structure)
+    )
+)
+-->
+
+The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses \`(\`
+`, { documentPath: './structure.md', documentDepth: 2, documentIndex: 1 });
+        
+        verifyAsJson(result);
+        });
+
+        it('should parse the content of structure.md second inline error', () =>{
+            const result = parse(`<!--
+(dl
+    (section-meta
+        (title Basic Structure)
+    )
+)
+-->
+
+The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses \`(\` followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses \`)\`.
+
+Even the Doculisp main block follows this.
+
+Example
+
+\`\`\`markdown
+<!--
+(dl
+    (section-meta
+        (title Basic Structure)
+    )
+)
+-->
+\`\`\`
+
+The first block is the \`dl\` block. In it \`dl\` is the atom. It contains the \`section-meta\` sub-block.  That block has the atom \`section-meta\` followed by a further sub block. The last sub block is the \`title\` sub block. In it \`title\` is the atom and \`Basic Structure\`
+`, { documentPath: './structure.md', documentDepth: 2, documentIndex: 1 });
+        
+        verifyAsJson(result);
+        });
+    });
 });

@@ -1,0 +1,45 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 2
+        },
+        "text": "(section-meta\n        (title Basic Structure)\n    )",
+        "type": "lisp"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 9
+        },
+        "text": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 162,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./structure.md",
+          "line": 9
+        },
+        "text": "`(`",
+        "type": "text"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 1,
+      "documentPath": "./structure.md"
+    }
+  }
+}
