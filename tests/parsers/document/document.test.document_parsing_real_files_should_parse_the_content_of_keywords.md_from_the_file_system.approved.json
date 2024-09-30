@@ -1,0 +1,375 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 2
+        },
+        "text": "(section-meta\n        (title Key Atoms by Depth)\n    )",
+        "type": "lisp"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 9
+        },
+        "text": "Here is a list of all the key atoms by depth:\n\n* markdown\n*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 12
+        },
+        "text": "`dl`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 13
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 13
+        },
+        "text": "`section-meta`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
+        "text": "`title`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 15,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
+        "text": "text\n      *",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": "`*`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
+        "text": "`subtitle`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 18,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
+        "text": "text\n      *",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": "`*`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
+        "text": "`link`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 14,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
+        "text": "text\n      *",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": "`*`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 20
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 20
+        },
+        "text": "`external`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 21
+        },
+        "text": "* name path\n      *",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": "`*`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 23
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 23
+        },
+        "text": "`*`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 24
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 24
+        },
+        "text": "`content`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
+        "text": "`toc`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 13,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
+        "text": "bullet style\n  *",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 26
+        },
+        "text": "`#`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 26
+        },
+        "text": "text\n  *",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 27
+        },
+        "text": "`*`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 28
+        },
+        "text": "*",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 28
+        },
+        "text": "`*`",
+        "type": "text"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 7,
+      "documentPath": "./documentation/keywords.md"
+    }
+  }
+}

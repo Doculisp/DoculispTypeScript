@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.dlisp",
+          "line": 1
+        },
+        "text": "(section-meta\r\n    (title Doculisp)\r\n    (external\r\n        (Section ./structure.md)\r\n        (Section ./doculisp.md)\r\n        (Section ./section-meta.md)\r\n        (Section ./content.md)\r\n        (Section ./headings.md)\r\n        (Section ./comment.md)\r\n        (Section ./keywords.md)\r\n    )\r\n)\r\n\r\n(content (toc numbered-labeled))",
+        "type": "lisp"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "./documentation/_main.dlisp"
+    }
+  }
+}

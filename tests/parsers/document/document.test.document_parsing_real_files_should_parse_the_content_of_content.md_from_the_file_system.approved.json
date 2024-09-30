@@ -1,0 +1,155 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 2
+        },
+        "text": "(section-meta\r\n        (title Content Block)\r\n    )",
+        "type": "lisp"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 9
+        },
+        "text": "The content block signifies where to build the document from the external documents. This block has only one optional subblock.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 11
+        },
+        "text": "(# Table of Contents)",
+        "type": "lisp"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 13
+        },
+        "text": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.\r\n\r\nThe structure of the table of contents is",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 43,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": "`(toc)`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 51,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": "there is an optional parameter that can have one of the following values:\r\n\r\n* no-table\r\n* unlabeled\r\n* labeled\r\n* numbered\r\n* numbered-labeled\r\n* bulleted\r\n* bulleted-labeled\r\n\r\nExamples",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 27
+        },
+        "text": "```doculisp\r\n(contents (toc))\r\n```\r\n\r\n```doculisp\r\n(contents (toc bulleted-labeled))\r\n```",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 35
+        },
+        "text": "Any of the options with",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 25,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 35
+        },
+        "text": "`labled`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 34,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 35
+        },
+        "text": "on it will use the name of the subsection.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 37
+        },
+        "text": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (external\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 50
+        },
+        "text": "The table of contents would contain a line that looked like:",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 52
+        },
+        "text": "```markdown\r\n* Chapter: [An Introduction](#an-introduction)\r\n```",
+        "type": "text"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 4,
+      "documentPath": "./documentation/content.md"
+    }
+  }
+}

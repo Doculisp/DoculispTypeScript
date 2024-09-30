@@ -1,9 +1,11 @@
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
 import { ITestableContainer } from "../../../src/types.containers";
-import { DocumentParser } from "../../../src/types.document";
+import { DocumentMap, DocumentParser } from "../../../src/types.document";
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
+import fs from 'fs';
+import { IProjectLocation, Result } from "../../../src/types.general";
 
 describe('document', () => {
     let environment: ITestableContainer = undefined as any;
@@ -317,6 +319,58 @@ The first block is the \`dl\` block. In it \`dl\` is the atom. It contains the \
 `, { documentPath: './structure.md', documentDepth: 2, documentIndex: 1 });
         
         verifyAsJson(result);
+        });
+
+        function getContent(fileName: string, depth: number, index: number): Result<DocumentMap> {
+            const path: string = `./documentation/${fileName}`;
+            const location: IProjectLocation = {
+                documentDepth: depth,
+                documentIndex: index,
+                documentPath: path,
+            };
+
+            const content = parse(fs.readFileSync(path, { encoding: 'utf8' }), location);
+            return content;
+        }
+
+        it('should parse the content of structure.md from the file system', () => {
+            const result = getContent('structure.md', 2, 1);
+            verifyAsJson(result);
+        });
+
+        it('should parse the content of doculisp.md from the file system', () => {
+            const result = getContent('doculisp.md', 2, 2);
+            verifyAsJson(result);
+        });
+
+        it('should parse the content of section-meta.md from the file system', () => {
+            const result = getContent('section-meta.md', 2, 3);
+            verifyAsJson(result);
+        });
+
+        it('should parse the content of content.md from the file system', () => {
+            const result = getContent('content.md', 2, 4);
+            verifyAsJson(result);
+        });
+
+        it('should parse the content of headings.md from the file system', () => {
+            const result = getContent('headings.md', 2, 5);
+            verifyAsJson(result);
+        });
+
+        it('should parse the content of comment.md from the file system', () => {
+            const result = getContent('comment.md', 2, 6);
+            verifyAsJson(result);
+        });
+
+        it('should parse the content of keywords.md from the file system', () => {
+            const result = getContent('keywords.md', 2, 7);
+            verifyAsJson(result);
+        });
+
+        it('should parse the content of _main.dlisp from the file system', () => {
+            const result = getContent('_main.dlisp', 1, 1);
+            verifyAsJson(result);
         });
     });
 });
