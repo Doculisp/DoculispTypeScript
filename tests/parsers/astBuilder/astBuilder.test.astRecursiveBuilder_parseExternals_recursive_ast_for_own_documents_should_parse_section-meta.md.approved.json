@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 3,
+      "documentPath": "documentation\\section-meta.md"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 2
+          },
+          "label": "## Section Meta Block ##",
+          "link": "#section_meta_block",
+          "title": "Section Meta Block",
+          "type": "ast-title"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external.\n\nExample"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (external\n        (section ./doculisp.md)\n    )\n)\n```"
+        },
+        {
+          "depthCount": 3,
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 22
+          },
+          "text": "Title \\(required\\",
+          "type": "ast-header"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 2,
+        "documentIndex": 3,
+        "documentPath": "documentation\\section-meta.md",
+        "line": 1
+      },
+      "external": [],
+      "type": "ast-section"
+    }
+  }
+}

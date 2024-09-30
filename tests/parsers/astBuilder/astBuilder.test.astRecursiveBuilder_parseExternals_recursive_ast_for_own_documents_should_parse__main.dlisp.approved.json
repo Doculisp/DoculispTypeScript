@@ -1,0 +1,1506 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "documentation\\_main.dlisp"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 1
+          },
+          "label": "# Doculisp #",
+          "link": "#doculisp",
+          "title": "Doculisp",
+          "type": "ast-title"
+        },
+        {
+          "bulletStyle": "numbered-labeled",
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 14
+          },
+          "type": "ast-toc"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 14
+          },
+          "type": "ast-content"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "documentation\\_main.dlisp",
+        "line": 1
+      },
+      "external": [
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 2
+                },
+                "label": "## Basic Structure ##",
+                "link": "#basic_structure",
+                "title": "Basic Structure",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses"
+              },
+              {
+                "documentOrder": {
+                  "char": 162,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "`(`"
+              },
+              {
+                "documentOrder": {
+                  "char": 166,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses"
+              },
+              {
+                "documentOrder": {
+                  "char": 375,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "`)`"
+              },
+              {
+                "documentOrder": {
+                  "char": 378,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": ".\r\n\r\nEven the Doculisp main block follows this.\r\n\r\nExample"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Basic Structure)\r\n    )\r\n)\r\n-->\r\n```"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "The first block is the"
+              },
+              {
+                "documentOrder": {
+                  "char": 24,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`dl`"
+              },
+              {
+                "documentOrder": {
+                  "char": 29,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "block. In it"
+              },
+              {
+                "documentOrder": {
+                  "char": 42,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`dl`"
+              },
+              {
+                "documentOrder": {
+                  "char": 47,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "is the atom. It contains the"
+              },
+              {
+                "documentOrder": {
+                  "char": 76,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`section-meta`"
+              },
+              {
+                "documentOrder": {
+                  "char": 91,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "sub-block.  That block has the atom"
+              },
+              {
+                "documentOrder": {
+                  "char": 127,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`section-meta`"
+              },
+              {
+                "documentOrder": {
+                  "char": 142,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "followed by a further sub block. The last sub block is the"
+              },
+              {
+                "documentOrder": {
+                  "char": 201,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`title`"
+              },
+              {
+                "documentOrder": {
+                  "char": 209,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "sub block. In it"
+              },
+              {
+                "documentOrder": {
+                  "char": 226,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`title`"
+              },
+              {
+                "documentOrder": {
+                  "char": 234,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "is the atom and"
+              },
+              {
+                "documentOrder": {
+                  "char": 250,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`Basic Structure`"
+              },
+              {
+                "documentOrder": {
+                  "char": 268,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "is the parameter."
+              },
+              {
+                "depthCount": 3,
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 27
+                },
+                "text": "Parameter",
+                "type": "ast-header"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "A parameter is a string of characters that contains no line advancement ("
+              },
+              {
+                "documentOrder": {
+                  "char": 74,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "`\\r`"
+              },
+              {
+                "documentOrder": {
+                  "char": 79,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "or"
+              },
+              {
+                "documentOrder": {
+                  "char": 82,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "`\\n`"
+              },
+              {
+                "documentOrder": {
+                  "char": 86,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": ") character and no parentheses (unless escaped). A parameter has a max length of 255 characters."
+              },
+              {
+                "depthCount": 3,
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 31
+                },
+                "text": "Visual Explanation",
+                "type": "ast-header"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 33
+                },
+                "type": "ast-write",
+                "value": "```doculisp\r\n(atom)\r\n(atom parameter)\r\n(atom (atom2))\r\n(atom (atom2 second parameter))\r\n```"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "./structure.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 4
+          },
+          "path": "./structure.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 2
+                },
+                "label": "## Doculisp Master Block ##",
+                "link": "#doculisp_master_block",
+                "title": "Doculisp Master Block",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "All doculisp is contained in an outer doculisp block. That block starts with"
+              },
+              {
+                "documentOrder": {
+                  "char": 78,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "`(dl`"
+              },
+              {
+                "documentOrder": {
+                  "char": 84,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "followed by a white space. This doculisp block must be contained in an html comment.\r\n\r\nExample"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Doculisp)\r\n        (external\r\n            (section ./doculisp.md)\r\n        )\r\n    )\r\n\r\n    (content (toc numbered-labled))\r\n)\r\n-->\r\n```"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 28
+                },
+                "type": "ast-write",
+                "value": "You will notice that in this example the doculisp contains 2 main blocks, however it is valid for the Doculisp block to contain more or less. Even zero other blocks."
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 2,
+              "documentPath": "./doculisp.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 5
+          },
+          "path": "./doculisp.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 2
+                },
+                "label": "## Section Meta Block ##",
+                "link": "#section_meta_block",
+                "title": "Section Meta Block",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external.\n\nExample"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (external\n        (section ./doculisp.md)\n    )\n)\n```"
+              },
+              {
+                "depthCount": 3,
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 22
+                },
+                "text": "Title \\(required\\",
+                "type": "ast-header"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 3,
+              "documentPath": "./section-meta.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 6
+          },
+          "path": "./section-meta.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 2
+                },
+                "label": "## Content Block ##",
+                "link": "#content_block",
+                "title": "Content Block",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "The content block signifies where to build the document from the external documents. This block has only one optional subblock."
+              },
+              {
+                "depthCount": 3,
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 11
+                },
+                "text": "Table of Contents",
+                "type": "ast-header"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.\r\n\r\nThe structure of the table of contents is"
+              },
+              {
+                "documentOrder": {
+                  "char": 43,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "`(toc)`"
+              },
+              {
+                "documentOrder": {
+                  "char": 51,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "there is an optional parameter that can have one of the following values:\r\n\r\n* no-table\r\n* unlabeled\r\n* labeled\r\n* numbered\r\n* numbered-labeled\r\n* bulleted\r\n* bulleted-labeled\r\n\r\nExamples"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 27
+                },
+                "type": "ast-write",
+                "value": "```doculisp\r\n(contents (toc))\r\n```\r\n\r\n```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 35
+                },
+                "type": "ast-write",
+                "value": "Any of the options with"
+              },
+              {
+                "documentOrder": {
+                  "char": 25,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 35
+                },
+                "type": "ast-write",
+                "value": "`labled`"
+              },
+              {
+                "documentOrder": {
+                  "char": 34,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 35
+                },
+                "type": "ast-write",
+                "value": "on it will use the name of the subsection."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 37
+                },
+                "type": "ast-write",
+                "value": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (external\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 50
+                },
+                "type": "ast-write",
+                "value": "The table of contents would contain a line that looked like:"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 52
+                },
+                "type": "ast-write",
+                "value": "```markdown\r\n* Chapter: [An Introduction](#an-introduction)\r\n```"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 4,
+              "documentPath": "./content.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 7
+          },
+          "path": "./content.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 2
+                },
+                "label": "## Dynamic Headings ##",
+                "link": "#dynamic_headings",
+                "title": "Dynamic Headings",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the"
+              },
+              {
+                "documentOrder": {
+                  "char": 149,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "`(#`"
+              },
+              {
+                "documentOrder": {
+                  "char": 154,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "block, or dynamic headinlg block.\r\n\r\nThe dynamic heading block works differently then other blocks. The number of"
+              },
+              {
+                "documentOrder": {
+                  "char": 78,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "`#`"
+              },
+              {
+                "documentOrder": {
+                  "char": 82,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "signs determins how far it is beneith the current sub/section heading.\r\n\r\nExample"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Maths an intro)\r\n        (external\r\n            (section ./add.md)\r\n            (section ./subtract.md)\r\n            (section ./muliply.md)\r\n            (section ./divide.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n\r\n<!-- (# Summary) -->\r\n\r\nA cool summary of maths.\r\n\r\n<!-- (## Resons For Document) -->\r\n\r\nAn explination why to have the document.\r\n\r\n\r\n<!-- (dl (content (toc unlabled))) -->\r\n```"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 42
+                },
+                "type": "ast-write",
+                "value": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3.\r\n\r\nHowever if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 48
+                },
+                "type": "ast-write",
+                "value": "Currently, the maximum heading depth recognized by Markdown is H6. However Doculisp will not restrict you to that depth. If the total depth is more then H6 you may get unexpected results."
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 5,
+              "documentPath": "./headings.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 8
+          },
+          "path": "./headings.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 2
+                },
+                "label": "## Comment Block ##",
+                "link": "#comment_block",
+                "title": "Comment Block",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics"
+              },
+              {
+                "documentOrder": {
+                  "char": 147,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              },
+              {
+                "documentOrder": {
+                  "char": 151,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "just after an open parenthisis and end when the block and all its subblocks are closed.\r\n\r\nExample:"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (external\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "In this example the"
+              },
+              {
+                "documentOrder": {
+                  "char": 21,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "`section-meta`"
+              },
+              {
+                "documentOrder": {
+                  "char": 36,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.\r\n\r\nxample:"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 33
+                },
+                "type": "ast-write",
+                "value": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (*external\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (*section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```"
+              },
+              {
+                "depthCount": 3,
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 49
+                },
+                "text": "Nested Comments",
+                "type": "ast-header"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "In this example the"
+              },
+              {
+                "documentOrder": {
+                  "char": 21,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "`section-meta`"
+              },
+              {
+                "documentOrder": {
+                  "char": 36,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "and all its subblocks are commented out. However when you uncomment"
+              },
+              {
+                "documentOrder": {
+                  "char": 104,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "`section-meta`"
+              },
+              {
+                "documentOrder": {
+                  "char": 119,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "then the"
+              },
+              {
+                "documentOrder": {
+                  "char": 128,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "`external`"
+              },
+              {
+                "documentOrder": {
+                  "char": 139,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "block will be commented out. When you uncomment that block, then the"
+              },
+              {
+                "documentOrder": {
+                  "char": 208,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "`section ./comment.md`"
+              },
+              {
+                "documentOrder": {
+                  "char": 231,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "block will be commented out."
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 6,
+              "documentPath": "./comment.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 9
+          },
+          "path": "./comment.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 2
+                },
+                "label": "## Key Atoms by Depth ##",
+                "link": "#key_atoms_by_depth",
+                "title": "Key Atoms by Depth",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "Here is a list of all the key atoms by depth:\n\n* markdown\n*"
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 12
+                },
+                "type": "ast-write",
+                "value": "`dl`"
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "`section-meta`"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": "`title`"
+              },
+              {
+                "documentOrder": {
+                  "char": 15,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": "text\n      *"
+              },
+              {
+                "documentOrder": {
+                  "char": 9,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": "`subtitle`"
+              },
+              {
+                "documentOrder": {
+                  "char": 18,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": "text\n      *"
+              },
+              {
+                "documentOrder": {
+                  "char": 9,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": "`link`"
+              },
+              {
+                "documentOrder": {
+                  "char": 14,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": "text\n      *"
+              },
+              {
+                "documentOrder": {
+                  "char": 9,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": "`external`"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": "* name path\n      *"
+              },
+              {
+                "documentOrder": {
+                  "char": 9,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 24
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 24
+                },
+                "type": "ast-write",
+                "value": "`content`"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "`toc`"
+              },
+              {
+                "documentOrder": {
+                  "char": 13,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "bullet style\n  *"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 26
+                },
+                "type": "ast-write",
+                "value": "`#`"
+              },
+              {
+                "documentOrder": {
+                  "char": 9,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 26
+                },
+                "type": "ast-write",
+                "value": "text\n  *"
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 27
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 28
+                },
+                "type": "ast-write",
+                "value": "*"
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 28
+                },
+                "type": "ast-write",
+                "value": "`*`"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 7,
+              "documentPath": "./keywords.md",
+              "line": 1
+            },
+            "external": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 10
+          },
+          "path": "./keywords.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        }
+      ],
+      "type": "ast-section"
+    }
+  }
+}

@@ -1,0 +1,357 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 1,
+      "documentPath": "documentation\\structure.md"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 2
+          },
+          "label": "## Basic Structure ##",
+          "link": "#basic_structure",
+          "title": "Basic Structure",
+          "type": "ast-title"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses"
+        },
+        {
+          "documentOrder": {
+            "char": 162,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "`(`"
+        },
+        {
+          "documentOrder": {
+            "char": 166,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses"
+        },
+        {
+          "documentOrder": {
+            "char": 375,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "`)`"
+        },
+        {
+          "documentOrder": {
+            "char": 378,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": ".\r\n\r\nEven the Doculisp main block follows this.\r\n\r\nExample"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Basic Structure)\r\n    )\r\n)\r\n-->\r\n```"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "The first block is the"
+        },
+        {
+          "documentOrder": {
+            "char": 24,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "`dl`"
+        },
+        {
+          "documentOrder": {
+            "char": 29,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "block. In it"
+        },
+        {
+          "documentOrder": {
+            "char": 42,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "`dl`"
+        },
+        {
+          "documentOrder": {
+            "char": 47,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "is the atom. It contains the"
+        },
+        {
+          "documentOrder": {
+            "char": 76,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "`section-meta`"
+        },
+        {
+          "documentOrder": {
+            "char": 91,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "sub-block.  That block has the atom"
+        },
+        {
+          "documentOrder": {
+            "char": 127,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "`section-meta`"
+        },
+        {
+          "documentOrder": {
+            "char": 142,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "followed by a further sub block. The last sub block is the"
+        },
+        {
+          "documentOrder": {
+            "char": 201,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "`title`"
+        },
+        {
+          "documentOrder": {
+            "char": 209,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "sub block. In it"
+        },
+        {
+          "documentOrder": {
+            "char": 226,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "`title`"
+        },
+        {
+          "documentOrder": {
+            "char": 234,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "is the atom and"
+        },
+        {
+          "documentOrder": {
+            "char": 250,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "`Basic Structure`"
+        },
+        {
+          "documentOrder": {
+            "char": 268,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "is the parameter."
+        },
+        {
+          "depthCount": 3,
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 27
+          },
+          "text": "Parameter",
+          "type": "ast-header"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "A parameter is a string of characters that contains no line advancement ("
+        },
+        {
+          "documentOrder": {
+            "char": 74,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "`\\r`"
+        },
+        {
+          "documentOrder": {
+            "char": 79,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "or"
+        },
+        {
+          "documentOrder": {
+            "char": 82,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "`\\n`"
+        },
+        {
+          "documentOrder": {
+            "char": 86,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": ") character and no parentheses (unless escaped). A parameter has a max length of 255 characters."
+        },
+        {
+          "depthCount": 3,
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 31
+          },
+          "text": "Visual Explanation",
+          "type": "ast-header"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 33
+          },
+          "type": "ast-write",
+          "value": "```doculisp\r\n(atom)\r\n(atom parameter)\r\n(atom (atom2))\r\n(atom (atom2 second parameter))\r\n```"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 2,
+        "documentIndex": 1,
+        "documentPath": "documentation\\structure.md",
+        "line": 1
+      },
+      "external": [],
+      "type": "ast-section"
+    }
+  }
+}

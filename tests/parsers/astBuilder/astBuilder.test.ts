@@ -9,10 +9,12 @@ import { container } from "../../../src/container";
 import { DocumentParser } from "../../../src/types.document";
 import { TokenFunction } from "../../../src/types.tokens";
 import { IFileLoader } from "../../../src/types.fileHandler";
+import path from 'path';
+import fs from 'fs';
 
-function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
+function buildLocation(filePath: string, depth: number, index: number) : IProjectLocation {
     return {
-        documentPath: path,
+        documentPath: filePath,
         documentDepth: depth,
         documentIndex: index,
     };
@@ -28,7 +30,7 @@ describe('astRecursiveBuilder', () => {
 
     let builder: IAstBuilder = undefined as any;
     let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
-    let toResult: (path: string) => Result<IAst> = undefined as any
+    let toResult: (filePath: string) => Result<IAst> = undefined as any
     let pathToResult: IDictionary<Result<string>> = undefined as any;
 
     beforeAll(() => {
@@ -44,17 +46,17 @@ describe('astRecursiveBuilder', () => {
 
         pathToResult = {};
         const fileHandler: IFileLoader = {
-            load(path: string): Result<string> {
-                const result = pathToResult[path];
+            load(filePath: string): Result<string> {
+                const result = pathToResult[filePath];
                 if(result) {
                     return result;
                 }
 
-                return util.fail(`path has not been setup.`, path);
+                return util.fail(`filePath has not been setup.`, filePath);
             }
         };
 
-        environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
+        environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
 
         builder = environment.buildAs<IAstBuilder>('astBuilder');
         let document = environment.buildAs<DocumentParser>('documentParse');
@@ -68,8 +70,8 @@ describe('astRecursiveBuilder', () => {
             return builder.parseExternals(ast);
         };
 
-        toResult = (path: string) => {
-            return builder.parse(path);
+        toResult = (filePath: string) => {
+            return builder.parse(filePath);
         };
     });
 
@@ -92,7 +94,7 @@ describe('astRecursiveBuilder', () => {
             const doc = `<!--
 (dl
     (section-meta
-        (title A journey down a bad path)
+        (title A journey down a bad filePath)
         (external
             (Section ${badPath})
         )
@@ -306,6 +308,82 @@ hello from the child
 
             const result = toResult(docPath);
 
+            verifyAsJson(result);
+        });
+    });
+
+    describe('parseExternals recursive ast for own documents', () => {
+        beforeEach(() => {
+            environment = null as any;
+            environment = container.buildTestable();
+
+            const fileHandler: IFileLoader = {
+                load(rawFilePath: string): Result<string> {
+                    const filePath = path.join('./documentation/', rawFilePath);
+                    return ok(fs.readFileSync(filePath, { encoding: 'utf8' }));
+                }
+            };
+
+            environment.restoreAll();
+            environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
+
+            builder = environment.buildAs<IAstBuilder>('astBuilder');
+            let document = environment.buildAs<DocumentParser>('documentParse');
+            let tokenizer = environment.buildAs<TokenFunction>('tokenizer');
+            let astParser = environment.buildAs<IAstParser>('astParse');
+
+            toExternalResult = (text: string, projectLocation: IProjectLocation) => {
+                const docResult = document(text, projectLocation);
+                const tokens = tokenizer(docResult);
+                const ast = astParser.parse(tokens);
+                return builder.parseExternals(ast);
+            };
+        });
+
+        function getContents(fileName: string, depth: number, index: number): Result<IAst> {
+            const filePath = path.join('./documentation/', fileName);
+            const location = buildLocation(filePath, depth, index);
+            const content = fs.readFileSync(filePath, { encoding: 'utf8' });
+            return toExternalResult(content, location);
+        }
+
+        it('should parse structure.md', () => {
+            const result = getContents('structure.md', 2, 1);
+            verifyAsJson(result);
+        });
+
+        it('should parse doculisp.md', () => {
+            const result = getContents('doculisp.md', 2, 2);
+            verifyAsJson(result);
+        });
+
+        it('should parse section-meta.md', () => {
+            const result = getContents('section-meta.md', 2, 3);
+            verifyAsJson(result);
+        });
+
+        it('should parse content.md', () => {
+            const result = getContents('content.md', 2, 4);
+            verifyAsJson(result);
+        });
+
+        it('should parse headings.md', () => {
+            const result = getContents('headings.md', 2, 5);
+            verifyAsJson(result);
+        });
+
+        it('should parse comment.md', () => {
+            const result = getContents('comment.md', 2, 6);
+            verifyAsJson(result);
+        });
+
+        it('should parse keywords.md', () => {
+            const result = getContents('keywords.md', 2, 6);
+            verifyAsJson(result);
+        });
+
+        it('should parse _main.dlisp', () => {
+            const result = getContents('_main.dlisp', 1, 1);
             verifyAsJson(result);
         });
     });

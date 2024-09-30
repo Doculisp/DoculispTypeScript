@@ -1,0 +1,169 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 4,
+      "documentPath": "documentation\\content.md"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 2
+          },
+          "label": "## Content Block ##",
+          "link": "#content_block",
+          "title": "Content Block",
+          "type": "ast-title"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "The content block signifies where to build the document from the external documents. This block has only one optional subblock."
+        },
+        {
+          "depthCount": 3,
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 11
+          },
+          "text": "Table of Contents",
+          "type": "ast-header"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.\r\n\r\nThe structure of the table of contents is"
+        },
+        {
+          "documentOrder": {
+            "char": 43,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": "`(toc)`"
+        },
+        {
+          "documentOrder": {
+            "char": 51,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": "there is an optional parameter that can have one of the following values:\r\n\r\n* no-table\r\n* unlabeled\r\n* labeled\r\n* numbered\r\n* numbered-labeled\r\n* bulleted\r\n* bulleted-labeled\r\n\r\nExamples"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 27
+          },
+          "type": "ast-write",
+          "value": "```doculisp\r\n(contents (toc))\r\n```\r\n\r\n```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 35
+          },
+          "type": "ast-write",
+          "value": "Any of the options with"
+        },
+        {
+          "documentOrder": {
+            "char": 25,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 35
+          },
+          "type": "ast-write",
+          "value": "`labled`"
+        },
+        {
+          "documentOrder": {
+            "char": 34,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 35
+          },
+          "type": "ast-write",
+          "value": "on it will use the name of the subsection."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 37
+          },
+          "type": "ast-write",
+          "value": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (external\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 50
+          },
+          "type": "ast-write",
+          "value": "The table of contents would contain a line that looked like:"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 52
+          },
+          "type": "ast-write",
+          "value": "```markdown\r\n* Chapter: [An Introduction](#an-introduction)\r\n```"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 2,
+        "documentIndex": 4,
+        "documentPath": "documentation\\content.md",
+        "line": 1
+      },
+      "external": [],
+      "type": "ast-section"
+    }
+  }
+}

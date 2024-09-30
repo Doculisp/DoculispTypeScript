@@ -1,0 +1,235 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 6,
+      "documentPath": "documentation\\comment.md"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 2
+          },
+          "label": "## Comment Block ##",
+          "link": "#comment_block",
+          "title": "Comment Block",
+          "type": "ast-title"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics"
+        },
+        {
+          "documentOrder": {
+            "char": 147,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "`*`"
+        },
+        {
+          "documentOrder": {
+            "char": 151,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "just after an open parenthisis and end when the block and all its subblocks are closed.\r\n\r\nExample:"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (external\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "In this example the"
+        },
+        {
+          "documentOrder": {
+            "char": 21,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "`section-meta`"
+        },
+        {
+          "documentOrder": {
+            "char": 36,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.\r\n\r\nxample:"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 33
+          },
+          "type": "ast-write",
+          "value": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (*external\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (*section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```"
+        },
+        {
+          "depthCount": 3,
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 49
+          },
+          "text": "Nested Comments",
+          "type": "ast-header"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "In this example the"
+        },
+        {
+          "documentOrder": {
+            "char": 21,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "`section-meta`"
+        },
+        {
+          "documentOrder": {
+            "char": 36,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "and all its subblocks are commented out. However when you uncomment"
+        },
+        {
+          "documentOrder": {
+            "char": 104,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "`section-meta`"
+        },
+        {
+          "documentOrder": {
+            "char": 119,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "then the"
+        },
+        {
+          "documentOrder": {
+            "char": 128,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "`external`"
+        },
+        {
+          "documentOrder": {
+            "char": 139,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "block will be commented out. When you uncomment that block, then the"
+        },
+        {
+          "documentOrder": {
+            "char": 208,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "`section ./comment.md`"
+        },
+        {
+          "documentOrder": {
+            "char": 231,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "block will be commented out."
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 2,
+        "documentIndex": 6,
+        "documentPath": "documentation\\comment.md",
+        "line": 1
+      },
+      "external": [],
+      "type": "ast-section"
+    }
+  }
+}
