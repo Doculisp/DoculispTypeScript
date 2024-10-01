@@ -1,3 +1,4 @@
+import { IAst, IAstParser } from "../src/types.ast";
 import { IContainer, ITestableContainer } from "../src/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types.document";
 import { IProjectLocation, Result } from "../src/types.general";
@@ -37,6 +38,10 @@ function buildTokenResultParser(environment: ITestableContainer): TokenFunction 
     return environment.buildAs<TokenFunction>('tokenizer');
 }
 
+function buildAstParser(environment: ITestableContainer): IAstParser {
+    return environment.buildAs<IAstParser>('astParse');
+}
+
 function documentResultBuilder(container: IContainer): DocumentParser {
     return builder(container, () => {}, environment => {
         return buildDocumentParser(environment);
@@ -52,11 +57,29 @@ function tokenResultParserBuilder(container: IContainer, setup: (environment: IT
 function tokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
     return builder(container, setup, environment => {
         return function (text: string, location: IProjectLocation): Result<TokenizedDocument> {
-            const docParser = buildDocumentParser(environment);
+            const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
             const tokenParser = buildTokenResultParser(environment);
     
-            return map(wrapDocumentParser(docParser, text, location), tokenParser)();
+            return map(docParser, tokenParser)();
         };
+    });
+}
+
+function astParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstParser {
+    return builder(container, setup, environment => {
+        return buildAstParser(environment);
+    });
+}
+
+function astResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
+    return builder(container, setup, environment => {
+        return function (text: string, location: IProjectLocation): Result<IAst> {
+            const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
+            const tokenParser = buildTokenResultParser(environment);
+            const astParser = buildAstParser(environment);
+
+            return map(map(docParser, tokenParser), astParser.parse)();
+        }
     });
 }
 
@@ -64,6 +87,8 @@ const testable = {
     documentResultBuilder,
     tokenResultParserBuilder,
     tokenResultBuilder,
+    astParserBuilder,
+    astResultBuilder,
 };
 
 export { testable };

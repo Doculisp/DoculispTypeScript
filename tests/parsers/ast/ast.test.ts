@@ -4,16 +4,12 @@ import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { container } from "../../../src/container";
-import { ITestableContainer } from "../../../src/types.containers";
 import { IAst, IAstParser } from '../../../src/types.ast'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
-import { TokenFunction, TokenizedDocument } from "../../../src/types.tokens";
-import { DocumentParser } from "../../../src/types.document";
-import { buildLocation } from "../../testHelpers";
+import { TokenizedDocument } from "../../../src/types.tokens";
+import { buildLocation, testable } from "../../testHelpers";
 
 describe('ast', () => {
-    let environment: ITestableContainer = undefined as any;
-    let parser: IAstParser = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
@@ -25,23 +21,24 @@ describe('ast', () => {
     });
 
     beforeEach(() => {
-        environment = container.buildTestable();
-        parser = environment.buildAs<IAstParser>('astParse');
-        util = environment.buildAs<IUtil>('util');
-        let document = environment.buildAs<DocumentParser>('documentParse');
-        let tokenizer = environment.buildAs<TokenFunction>('tokenizer');
-
-        toResult = (text: string, projectLocation: IProjectLocation) => {
-            const docResult = document(text, projectLocation);
-            const tokens = tokenizer(docResult);
-            return parser.parse(tokens);
-        };
+        toResult = testable.astResultBuilder(container, environment => {
+            util = environment.buildAs<IUtil>('util');
+        });
         
         ok = util.ok;
         fail = util.fail;
     });
 
     describe('basic functionality', () => {
+        let parser: IAstParser = undefined as any;
+
+        beforeEach(() => {
+            util = null as any;
+            parser = testable.astParserBuilder(container, environment => {
+                util = environment.buildAs<IUtil>('util');
+            });
+        });
+
         it('should return failure if given failure', () => {
             const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
     
