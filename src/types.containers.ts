@@ -1,5 +1,9 @@
 export type Valid<T> = T extends undefined | null ? never : T;
 
+export interface IContainerId {
+    readonly id: number;
+}
+
 export interface IRegisterable {
     readonly builder: (...args: any[]) => Valid<any>;
     readonly name: string;
@@ -7,13 +11,13 @@ export interface IRegisterable {
     readonly singleton?: boolean;
 }
 
-export interface IDependencyManager {
+export interface IDependencyManager extends IContainerId {
     build(moduleName: string): Valid<any>;
     buildAs<T>(moduleName: string): Valid<T>;
     getModuleList(): string[];
 }
 
-export interface IDependencyContainer {
+export interface IDependencyContainer extends IContainerId {
     register(registerable: IRegisterable): IContainer;
     registerValue(value: any, name?: string): IContainer;
     registerBuilder(fn: (...args: Valid<any>[]) => Valid<any>, dependencies: string[], name?: string, singleton?: boolean): IContainer;
@@ -21,6 +25,7 @@ export interface IDependencyContainer {
 }
 
 export interface IContainer extends IDependencyManager, IDependencyContainer {
+    isTestable: boolean;
 }
 
 export interface ITestableContainer extends IContainer {

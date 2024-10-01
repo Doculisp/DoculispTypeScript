@@ -126,6 +126,7 @@ class Container implements ITestableContainer {
     _cache: IDictionary<Valid<any>> = {};
     _repCache: IDictionary<Valid<any>> = {};
     _testable = false;
+    _id: number;
 
     constructor();
     constructor(registry: IDictionary<IRegisterable>);
@@ -138,6 +139,8 @@ class Container implements ITestableContainer {
         else {
             findModules(this);
         }
+
+        this._id = Math.random();
     }
 
     _hasKey(registry: IDictionary<IRegisterable>, key: string): boolean {
@@ -149,8 +152,9 @@ class Container implements ITestableContainer {
         if (this._hasKey(registry, key)) {
             throw new Error(`Module named "${key}" already registered.`);
         }
+
         registry[key] = registerable;
-        return this
+        return this;
     }
 
     register(registerable: IRegisterable): ITestableContainer {
@@ -292,7 +296,7 @@ class Container implements ITestableContainer {
             singleton: !!singleton,
         };
         
-        return this._replace(registerable);// 
+        return this._replace(registerable);
     }
     
     replaceValue(value: any, name?: string | undefined): ITestableContainer {
@@ -342,6 +346,14 @@ class Container implements ITestableContainer {
     getModuleList(): string[] {
         const keys = Object.keys(this._registry);
         return Object.assign([], keys);
+    }
+
+    get id(): number {
+        return this._id;
+    }
+
+    get isTestable(): boolean {
+        return this._testable;
     }
 }
 

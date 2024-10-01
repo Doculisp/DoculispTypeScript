@@ -3,40 +3,37 @@ import fs from 'fs';
 import { Options } from "approvals/lib/Core/Options";
 import { IDictionary, ITestableContainer } from "../../../src/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
-import { IAst, IAstParser } from "../../../src/types.ast";
+import { IAst } from "../../../src/types.ast";
 import { IAstBuilder } from "../../../src/types.astBuilder";
 import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
-import { DocumentParser } from "../../../src/types.document";
-import { TokenFunction } from "../../../src/types.tokens";
 import { IFileLoader } from "../../../src/types.fileHandler";
-import { buildLocation } from '../../testHelpers';
+import { buildLocation, testable } from '../../testHelpers';
 
 describe('astRecursiveBuilder', () => {
-    let environment: ITestableContainer = undefined as any;
+    // let environment: ITestableContainer = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
 
     let util: IUtil = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
-    let builder: IAstBuilder = undefined as any;
-    let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
-    let toResult: (filePath: string) => Result<IAst> = undefined as any
+    // let builder: IAstBuilder = undefined as any;
     let pathToResult: IDictionary<Result<string>> = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
     });
 
-    beforeEach(() => {
-        environment = container.buildTestable();
-        
+    function setup(environment: ITestableContainer) {
+        util = null as any;
         util = environment.buildAs<IUtil>('util');
+
         ok = util.ok;
         fail = util.fail;
 
+        pathToResult = null as any;
         pathToResult = {};
         const fileHandler: IFileLoader = {
             load(filePath: string): Result<string> {
@@ -50,31 +47,23 @@ describe('astRecursiveBuilder', () => {
         };
 
         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
-
-        builder = environment.buildAs<IAstBuilder>('astBuilder');
-        let document = environment.buildAs<DocumentParser>('documentParse');
-        let tokenizer = environment.buildAs<TokenFunction>('tokenizer');
-        let astParser = environment.buildAs<IAstParser>('astParse');
-
-        toExternalResult = (text: string, projectLocation: IProjectLocation) => {
-            const docResult = document(text, projectLocation);
-            const tokens = tokenizer(docResult);
-            const ast = astParser.parse(tokens);
-            return builder.parseExternals(ast);
-        };
-
-        toResult = (filePath: string) => {
-            return builder.parse(filePath);
-        };
-    });
+    }
 
     describe('externalParse', () => {
+        let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
+
+        beforeEach(() => {
+            toExternalResult = testable.astRecursiveExternalResultBuilder(container, setup);
+        });
+
         it('should handle an empty ast', () => {
             const result = toExternalResult("", buildLocation('C:/_main.dlisp', 1, 1));
             verifyAsJson(result);
         });
 
         it('should return an error if given an error', () => {
+            const builder: IAstBuilder = testable.astRecursiveParserBuilder(container, setup);
+
             const expectedResult = fail('This is a failure', 'M:/y/pah.md');
             expect(builder.parseExternals(expectedResult)).toBe(expectedResult);
         });
@@ -230,6 +219,12 @@ Hello World!
     });
 
     describe('parse', () => {
+        let toResult: (filePath: string) => Result<IAst> = undefined as any
+
+        beforeEach(() => {
+            toResult = testable.astRecursiveResultBuilder(container, setup);
+        });
+
         it('should return file error if there is one', () => {
             const docPath = 'C:/bad.md';
 
@@ -306,31 +301,24 @@ hello from the child
     });
 
     describe('parseExternals recursive ast for own documents', () => {
+        let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
         beforeEach(() => {
-            environment = null as any;
-            environment = container.buildTestable();
+            toExternalResult = testable.astRecursiveExternalResultBuilder(container, environment => {
+                util = null as any;
+                util = environment.buildAs<IUtil>('util');
 
-            const fileHandler: IFileLoader = {
-                load(rawFilePath: string): Result<string> {
-                    const filePath = path.join('./documentation/', rawFilePath);
-                    return ok(fs.readFileSync(filePath, { encoding: 'utf8' }));
-                }
-            };
+                ok = util.ok;
+                fail = util.fail;
 
-            environment.restoreAll();
-            environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
-
-            builder = environment.buildAs<IAstBuilder>('astBuilder');
-            let document = environment.buildAs<DocumentParser>('documentParse');
-            let tokenizer = environment.buildAs<TokenFunction>('tokenizer');
-            let astParser = environment.buildAs<IAstParser>('astParse');
-
-            toExternalResult = (text: string, projectLocation: IProjectLocation) => {
-                const docResult = document(text, projectLocation);
-                const tokens = tokenizer(docResult);
-                const ast = astParser.parse(tokens);
-                return builder.parseExternals(ast);
-            };
+                const fileHandler: IFileLoader = {
+                    load(rawFilePath: string): Result<string> {
+                        const filePath = path.join('./documentation/', rawFilePath);
+                        return ok(fs.readFileSync(filePath, { encoding: 'utf8' }));
+                    }
+                };
+                
+                environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
+            });
         });
 
         function getContents(fileName: string, depth: number, index: number): Result<IAst> {
