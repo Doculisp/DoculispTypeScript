@@ -22,7 +22,7 @@ describe('tokenizer', () => {
     });
 
     beforeEach(() => {
-        tokenizer = testable.token.resultParserBuilder(container, (environment: ITestableContainer) => {
+        tokenizer = testable.token.parserBuilder(container, (environment: ITestableContainer) => {
             util = environment.buildAs<IUtil>('util');
         });
 
