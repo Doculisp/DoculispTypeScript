@@ -53,7 +53,7 @@ describe('astRecursiveBuilder', () => {
         let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
 
         beforeEach(() => {
-            toExternalResult = testable.astRecursiveExternalResultBuilder(container, setup);
+            toExternalResult = testable.recursiveAst.externalResultBuilder(container, setup);
         });
 
         it('should handle an empty ast', () => {
@@ -62,7 +62,7 @@ describe('astRecursiveBuilder', () => {
         });
 
         it('should return an error if given an error', () => {
-            const builder: IAstBuilder = testable.astRecursiveParserBuilder(container, setup);
+            const builder: IAstBuilder = testable.recursiveAst.parserBuilder(container, setup);
 
             const expectedResult = fail('This is a failure', 'M:/y/pah.md');
             expect(builder.parseExternals(expectedResult)).toBe(expectedResult);
@@ -222,7 +222,7 @@ Hello World!
         let toResult: (filePath: string) => Result<IAst> = undefined as any
 
         beforeEach(() => {
-            toResult = testable.astRecursiveResultBuilder(container, setup);
+            toResult = testable.recursiveAst.resultBuilder(container, setup);
         });
 
         it('should return file error if there is one', () => {
@@ -303,7 +303,7 @@ hello from the child
     describe('parseExternals recursive ast for own documents', () => {
         let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
         beforeEach(() => {
-            toExternalResult = testable.astRecursiveExternalResultBuilder(container, environment => {
+            toExternalResult = testable.recursiveAst.externalResultBuilder(container, environment => {
                 util = null as any;
                 util = environment.buildAs<IUtil>('util');
 

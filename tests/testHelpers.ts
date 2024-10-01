@@ -141,9 +141,11 @@ const testable = {
         parserBuilder: astParserBuilder,
         resultBuilder: astResultBuilder,
     },
-    astRecursiveParserBuilder,
-    astRecursiveResultBuilder,
-    astRecursiveExternalResultBuilder,
+    recursiveAst: {
+        parserBuilder: astRecursiveParserBuilder,
+        resultBuilder: astRecursiveResultBuilder,
+        externalResultBuilder: astRecursiveExternalResultBuilder,
+    },
 };
 
 export { testable };
