@@ -90,12 +90,16 @@ function astRecursiveResultBuilder(container: IContainer, setup: (environment: I
     });
 }
 
+function rawTokenResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<TokenizedDocument> {
+    const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
+    const tokenParser = buildTokenResultParser(environment);
+
+    return map(docParser, tokenParser);
+}
+
 function tokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
     return textToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
-        const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
-        const tokenParser = buildTokenResultParser(environment);
-
-        return map(docParser, tokenParser)(); 
+        return rawTokenResultBuilder(environment, text, location)(); 
     });
 }
 
