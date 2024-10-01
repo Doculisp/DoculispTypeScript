@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
@@ -7,16 +9,7 @@ import { IAst, IAstParser } from '../../../src/types.ast'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
 import { TokenFunction, TokenizedDocument } from "../../../src/types.tokens";
 import { DocumentParser } from "../../../src/types.document";
-import fs from 'fs';
-import path from 'path';
-
-function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
-    return {
-        documentPath: path,
-        documentDepth: depth,
-        documentIndex: index,
-    };
-}
+import { buildLocation } from "../../testHelpers";
 
 describe('ast', () => {
     let environment: ITestableContainer = undefined as any;
