@@ -30,6 +30,14 @@ function builder<T>(container: IContainer, setup: (environment: ITestableContain
     return buildIt(environment);
 }
 
+function textToResultBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer, text: string, location: IProjectLocation) => T): (text: string, location: IProjectLocation) => T {
+    return builder(container, setup, environment => {
+        return function(text: string, location: IProjectLocation): T {
+            return buildIt(environment, text, location);
+        }
+    });
+}
+
 function buildDocumentParser(environment: ITestableContainer): DocumentParser {
     return environment.buildAs<DocumentParser>('documentParse');
 }
@@ -55,13 +63,11 @@ function tokenResultParserBuilder(container: IContainer, setup: (environment: IT
 }
 
 function tokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
-    return builder(container, setup, environment => {
-        return function (text: string, location: IProjectLocation): Result<TokenizedDocument> {
-            const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
-            const tokenParser = buildTokenResultParser(environment);
-    
-            return map(docParser, tokenParser)();
-        };
+    return textToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
+        const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
+        const tokenParser = buildTokenResultParser(environment);
+
+        return map(docParser, tokenParser)(); 
     });
 }
 
