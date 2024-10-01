@@ -133,8 +133,10 @@ const testable = {
     document: {
         resultBuilder: documentResultBuilder,
     },
-    tokenResultParserBuilder,
-    tokenResultBuilder,
+    token: {
+        resultParserBuilder: tokenResultParserBuilder,
+        resultBuilder: tokenResultBuilder,
+    },
     astParserBuilder,
     astResultBuilder,
     astRecursiveParserBuilder,

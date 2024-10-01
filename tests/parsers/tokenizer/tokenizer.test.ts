@@ -22,7 +22,7 @@ describe('tokenizer', () => {
     });
 
     beforeEach(() => {
-        tokenizer = testable.tokenResultParserBuilder(container, (environment: ITestableContainer) => {
+        tokenizer = testable.token.resultParserBuilder(container, (environment: ITestableContainer) => {
             util = environment.buildAs<IUtil>('util');
         });
 
@@ -267,7 +267,7 @@ describe('tokenizer', () => {
         let toResult: (text: string, location: IProjectLocation) => Result<TokenizedDocument> = undefined as any;
 
         beforeEach(() => {
-            toResult = testable.tokenResultBuilder(container, (environment: ITestableContainer) => {
+            toResult = testable.token.resultBuilder(container, (environment: ITestableContainer) => {
                 util = environment.buildAs<IUtil>('util');
             });
         });
