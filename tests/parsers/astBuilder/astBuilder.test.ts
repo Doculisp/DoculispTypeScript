@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'fs';
 import { Options } from "approvals/lib/Core/Options";
 import { IDictionary, ITestableContainer } from "../../../src/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
@@ -9,16 +11,7 @@ import { container } from "../../../src/container";
 import { DocumentParser } from "../../../src/types.document";
 import { TokenFunction } from "../../../src/types.tokens";
 import { IFileLoader } from "../../../src/types.fileHandler";
-import path from 'path';
-import fs from 'fs';
-
-function buildLocation(filePath: string, depth: number, index: number) : IProjectLocation {
-    return {
-        documentPath: filePath,
-        documentDepth: depth,
-        documentIndex: index,
-    };
-}
+import { buildLocation } from '../../testHelpers';
 
 describe('astRecursiveBuilder', () => {
     let environment: ITestableContainer = undefined as any;
