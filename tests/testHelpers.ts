@@ -44,22 +44,20 @@ function documentResultBuilder(container: IContainer): DocumentParser {
 }
 
 function tokenResultParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): TokenFunction {
-    const environment: ITestableContainer = container.buildTestable();
-    setup(environment);
-
-    return buildTokenResultParser(environment);
+    return builder(container, setup, environment => {
+        return buildTokenResultParser(environment);
+    });
 }
 
 function tokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
-    const environment: ITestableContainer = container.buildTestable();
-    setup(environment);
-
-    return function (text: string, location: IProjectLocation): Result<TokenizedDocument> {
-        const docParser = buildDocumentParser(environment);
-        const tokenParser = buildTokenResultParser(environment);
-
-        return map(wrapDocumentParser(docParser, text, location), tokenParser)();
-    }
+    return builder(container, setup, environment => {
+        return function (text: string, location: IProjectLocation): Result<TokenizedDocument> {
+            const docParser = buildDocumentParser(environment);
+            const tokenParser = buildTokenResultParser(environment);
+    
+            return map(wrapDocumentParser(docParser, text, location), tokenParser)();
+        };
+    });
 }
 
 const testable = {
