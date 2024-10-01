@@ -1,15 +1,13 @@
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
-import { ITestableContainer } from "../../../src/types.containers";
 import { DocumentMap, DocumentParser } from "../../../src/types.document";
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import fs from 'fs';
 import { IProjectLocation, Result } from "../../../src/types.general";
-import { buildLocation } from "../../testHelpers";
+import { buildLocation, testableDocumentResultBuilder } from "../../testHelpers";
 
 describe('document', () => {
-    let environment: ITestableContainer = undefined as any;
     let parse: DocumentParser = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
 
@@ -18,8 +16,7 @@ describe('document', () => {
     });
 
     beforeEach(() => {
-        environment = container.buildTestable();
-        parse = environment.buildAs<DocumentParser>('documentParse');
+        parse = testableDocumentResultBuilder(container);
     });
 
     it('should not allow a document with a zero depth.', () => {
