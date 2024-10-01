@@ -137,8 +137,10 @@ const testable = {
         resultParserBuilder: tokenResultParserBuilder,
         resultBuilder: tokenResultBuilder,
     },
-    astParserBuilder,
-    astResultBuilder,
+    ast: {
+        parserBuilder: astParserBuilder,
+        resultBuilder: astResultBuilder,
+    },
     astRecursiveParserBuilder,
     astRecursiveResultBuilder,
     astRecursiveExternalResultBuilder,

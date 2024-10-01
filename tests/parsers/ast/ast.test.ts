@@ -21,7 +21,7 @@ describe('ast', () => {
     });
 
     beforeEach(() => {
-        toResult = testable.astResultBuilder(container, environment => {
+        toResult = testable.ast.resultBuilder(container, environment => {
             util = environment.buildAs<IUtil>('util');
         });
         
@@ -34,7 +34,7 @@ describe('ast', () => {
 
         beforeEach(() => {
             util = null as any;
-            parser = testable.astParserBuilder(container, environment => {
+            parser = testable.ast.parserBuilder(container, environment => {
                 util = environment.buildAs<IUtil>('util');
             });
         });
