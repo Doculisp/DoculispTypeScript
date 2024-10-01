@@ -5,7 +5,7 @@ import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import fs from 'fs';
 import { IProjectLocation, Result } from "../../../src/types.general";
-import { buildLocation, testableDocumentResultBuilder } from "../../testHelpers";
+import { buildLocation, testable } from "../../testHelpers";
 
 describe('document', () => {
     let parse: DocumentParser = undefined as any;
@@ -16,7 +16,7 @@ describe('document', () => {
     });
 
     beforeEach(() => {
-        parse = testableDocumentResultBuilder(container);
+        parse = testable.documentResultBuilder(container);
     });
 
     it('should not allow a document with a zero depth.', () => {

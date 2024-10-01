@@ -16,11 +16,21 @@ export function buildLocation(path: string, depth: number, index: number) : IPro
 //     }
 // }
 
-export function testableDocumentResultBuilder(container: IContainer): DocumentParser {
-    const environment: ITestableContainer = container.buildTestable();
-
+function buildDocumentParser(environment: ITestableContainer) {
     return function(text: string, location: IProjectLocation): Result<DocumentMap> {
         const documentParser: DocumentParser = environment.buildAs<DocumentParser>('documentParse');
         return documentParser(text, location);
     }
 }
+
+export function documentResultBuilder(container: IContainer): DocumentParser {
+    const environment: ITestableContainer = container.buildTestable();
+
+    return buildDocumentParser(environment);
+}
+
+const testable = {
+    documentResultBuilder,
+};
+
+export { testable };
