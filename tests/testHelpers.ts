@@ -130,7 +130,9 @@ function astRecursiveExternalResultBuilder(container: IContainer, setup: (enviro
 }
 
 const testable = {
-    documentResultBuilder,
+    document: {
+        resultBuilder: documentResultBuilder,
+    },
     tokenResultParserBuilder,
     tokenResultBuilder,
     astParserBuilder,

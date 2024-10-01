@@ -16,7 +16,7 @@ describe('document', () => {
     });
 
     beforeEach(() => {
-        parse = testable.documentResultBuilder(container);
+        parse = testable.document.resultBuilder(container);
     });
 
     it('should not allow a document with a zero depth.', () => {
