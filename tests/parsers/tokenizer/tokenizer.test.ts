@@ -5,12 +5,12 @@ import { Options } from "approvals/lib/Core/Options";
 import { ITestableContainer } from "../../../src/types.containers";
 import { TokenFunction, TokenizedDocument } from '../../../src/types.tokens';
 import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
-import { DocumentMap, DocumentParser } from "../../../src/types.document";
+import { DocumentMap } from "../../../src/types.document";
 import fs from 'fs';
-import { buildLocation } from "../../testHelpers";
+import { buildLocation, testable } from "../../testHelpers";
 
 describe('tokenizer', () => {
-    let environment: ITestableContainer = undefined as any;
+    // let environment: ITestableContainer = undefined as any;
     let tokenizer: TokenFunction = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
@@ -22,9 +22,10 @@ describe('tokenizer', () => {
     });
 
     beforeEach(() => {
-        environment = container.buildTestable();
-        tokenizer = environment.buildAs<TokenFunction>('tokenizer');
-        util = environment.buildAs<IUtil>('util');
+        tokenizer = testable.tokenResultParserBuilder(container, (environment: ITestableContainer) => {
+            util = environment.buildAs<IUtil>('util');
+        });
+
         ok = util.ok;
         fail = util.fail;
     });
@@ -266,12 +267,9 @@ describe('tokenizer', () => {
         let toResult: (text: string, location: IProjectLocation) => Result<TokenizedDocument> = undefined as any;
 
         beforeEach(() => {
-            const docParse: DocumentParser = environment.buildAs<DocumentParser>('documentParse');
-
-            toResult = (text: string, location: IProjectLocation): Result<TokenizedDocument> => {
-                const doc = docParse(text, location);
-                return tokenizer(doc);
-            }
+            toResult = testable.tokenResultBuilder(container, (environment: ITestableContainer) => {
+                util = environment.buildAs<IUtil>('util');
+            });
         });
 
         function getFileContent(fileName: string, depth: number, index: number): Result<TokenizedDocument> {
