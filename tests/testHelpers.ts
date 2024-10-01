@@ -104,6 +104,13 @@ function rawAstResultBuilder(environment: ITestableContainer, text: string, loca
     return map(tokenResultParser, astParser.parse);
 }
 
+function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IAst> {
+    const astResultParser = rawAstResultBuilder(environment, text, location);
+    const astRecursiveBuilder = buildRecursiveAstParser(environment);
+
+    return map(astResultParser, astRecursiveBuilder.parseExternals);
+}
+
 function tokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
     return textToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawTokenResultBuilder(environment, text, location)(); 
@@ -118,12 +125,7 @@ function astResultBuilder(container: IContainer, setup: (environment: ITestableC
 
 function astRecursiveExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
     return textToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
-        const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
-        const tokenParser = buildTokenResultParser(environment);
-        const astParser = buildAstParser(environment);
-        const astRecursiveBuilder = buildRecursiveAstParser(environment);
-
-        return map(map(map(docParser, tokenParser), astParser.parse), astRecursiveBuilder.parseExternals)();
+        return rawAstRecursiveExternalResultBuilder(environment, text, location)();
     });
 }
 
