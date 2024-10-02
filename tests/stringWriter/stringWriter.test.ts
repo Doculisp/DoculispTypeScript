@@ -100,6 +100,29 @@ describe('stringWriter', () => {
                 
                         verifyMarkdownResult(result);
                     });
+                    
+                    it('should write the title at different depth', () => {
+                        const contents = `
+(section-meta
+    (title My Cool Document)
+)
+`;
+                        const result = toResult(contents, buildLocation('main.dlisp', 2, 1));
+                
+                        verifyMarkdownResult(result);
+                    });
+                    
+                    it('should write the title and subtitle', () => {
+                        const contents = `
+(section-meta
+    (title My Cool Document)
+    (subtitle A very nice document)
+)
+`;
+                        const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                
+                        verifyMarkdownResult(result);
+                    });
                 });
             });
         });

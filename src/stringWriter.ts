@@ -48,7 +48,16 @@ function writeAstWrite(astWrite: IWrite) : string {
 }
 
 function writeAstTitle(astTitle: ITitle): string {
-    return astTitle.label;
+    const sb = new StringBuilder();
+
+    sb.add(astTitle.label);
+
+    if(astTitle.subtitle) {
+        sb.addLine();
+        sb.addLine(astTitle.subtitle);
+    }
+
+    return sb.toString();
 }
 
 function buildWriter(util: IUtil) : IStringWriter {
