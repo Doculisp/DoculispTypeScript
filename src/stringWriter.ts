@@ -113,6 +113,12 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
         }
     }
 
+    function writeBulleted(appender: (append: (text: string) => void, title: string, linkText: string, label?: string) => void): (sb: StringBuilder, title: string, linkText: string, label: string) => void {
+        return function(sb: StringBuilder, title: string, linkText: string, label: string): void {
+            appender(text => sb.add(`* ${text}`), title, linkText, label);
+        }
+    }
+
     function writeTable(loads: ILoad[], addRow: (sb: StringBuilder, title: string, linkText: string, label: string) => void): string {
         const sb = new StringBuilder();
 
@@ -159,6 +165,9 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
 
         case 'numbered-labeled':
             return writeTable(loads, writeNumbered(useLabel));
+
+        case 'bulleted':
+            return writeTable(loads, writeBulleted(ignoreLabel));
     
         default:
             return `>>>> ${toc.bulletStyle} <<<<\n`;
