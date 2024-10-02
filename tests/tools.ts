@@ -3,7 +3,6 @@ import { verifyAsJson, verify } from "approvals/lib/Providers/Jest/JestApprovals
 import { Config } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 
-
 export function order<T>(thing: T): T {
     if(!thing) { return thing; }
 
@@ -40,8 +39,10 @@ function verifyJsonObject(data: any, options?: Options): void {
     verifyAsJson(order(data), options);
 }
 
-function verifyObject(sut: any, options?: Options): void {
-    verify(sut, options);
+function verifyMarkdownObject(text: string, options?: Options): void {
+  options = options || new Options();
+  options = options.forFile().withFileExtention(".md");
+  verify(text, options);
 }
 
 export function getVerifier(configure: (overrideOptions?: Partial<Config> | undefined) => Config): ((data: any, options?: Options) => void) {
@@ -49,9 +50,7 @@ export function getVerifier(configure: (overrideOptions?: Partial<Config> | unde
         reporters: [new JestReporter()],
     });
 
-    return function(data: any, options?: Options): void {
-        verifyAsJson(order(data), options);
-    };
+    return verifyJsonObject;
 }
 
 export function getVerifiers(configure: (overrideOptions?: Partial<Config> | undefined) => Config) {
@@ -62,6 +61,6 @@ export function getVerifiers(configure: (overrideOptions?: Partial<Config> | und
     
     return {
         verifyAsJson: verifyJsonObject,
-        verify: verifyObject,
+        verifyMarkdown: verifyMarkdownObject,
     };
 };

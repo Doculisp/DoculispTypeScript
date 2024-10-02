@@ -8,14 +8,14 @@ import { container } from "../../src/container";
 
 describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
-    let verify: (sut: any, options?: Options) => void;
+    let verifyMarkdown: (sut: any, options?: Options) => void;
     let resultBuilder: (text: string, location: IProjectLocation) => Result<string> = null as any;
     // let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
     function verifyTextResult(textMaybe: Result<string>, options?: Options): void {
         if(textMaybe.success) {
-            verify(textMaybe.value, options);
+            verifyMarkdown(textMaybe.value, options);
         }
         else {
             verifyAsJson(textMaybe, options);
@@ -25,7 +25,7 @@ describe('stringWriter', () => {
     beforeAll(() => {
         const verifiers =  getVerifiers(configure);
         verifyAsJson = verifiers.verifyAsJson;
-        verify = verifiers.verify;
+        verifyMarkdown = verifiers.verifyMarkdown;
     });
 
     beforeEach(() => {
