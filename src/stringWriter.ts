@@ -89,12 +89,22 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
         return null;
     }
 
-    function writeLink(sb: StringBuilder, title: string, linkText: string, label?: string): void {
+    function writeLink(append: (text: string) => void, title: string, linkText: string, label?: string): void {
         let lblText = '';
         if(!!label) {
             lblText = `${label}: `;
         }
-        sb.addLine(`[${lblText}${title}](${linkText})`);
+        append(`[${lblText}${title}](${linkText})`);
+    }
+
+    function ignoreLabel(append: (text: string) => void, title: string, linkText: string, label?: string): void {
+        return writeLink(append, title, linkText);
+    }
+
+    function useAppendLine(appender: (append: (text: string) => void, title: string, linkText: string, label?: string) => void): (sb: StringBuilder, title: string, linkText: string, label: string) => void {
+        return function(sb: StringBuilder, title: string, linkText: string, label: string): void {
+            appender(text => sb.addLine(text), title, linkText, label);
+        }
     }
 
     function writeTable(loads: ILoad[], addRow: (sb: StringBuilder, title: string, linkText: string, label: string) => void): string {
@@ -131,16 +141,12 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
         return sb.toString();
     }
 
-    function ignoreLabel(sb: StringBuilder, title: string, linkText: string, label?: string) {
-        return writeLink(sb, title, linkText);
-    }
-
     switch (toc.bulletStyle) {
         case 'labeled':
-            return writeTable(loads, writeLink);
+            return writeTable(loads, useAppendLine(writeLink));
 
         case 'unlabeled':
-            return writeTable(loads, ignoreLabel);
+            return writeTable(loads, useAppendLine(ignoreLabel));
     
         default:
             return `>>>> ${toc.bulletStyle} <<<<\n`;
