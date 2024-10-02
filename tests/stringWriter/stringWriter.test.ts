@@ -1,7 +1,7 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
-import { IProjectLocation } from "../../src/types.general";
+import { IFail, IProjectLocation, IUtil } from "../../src/types.general";
 import { Result } from "../../src/types.general";
 import { buildLocation, testable } from "../testHelpers";
 import { container } from "../../src/container";
@@ -10,13 +10,15 @@ describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verify: (sut: any, options?: Options) => void;
     let resultBuilder: (text: string, location: IProjectLocation) => Result<string> = null as any;
+    // let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
+    let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
     function verifyTextResult(textMaybe: Result<string>, options?: Options): void {
         if(textMaybe.success) {
-            verify(textMaybe.value);
+            verify(textMaybe.value, options);
         }
         else {
-            verifyAsJson(textMaybe);
+            verifyAsJson(textMaybe, options);
         }
     }
 
@@ -27,13 +29,36 @@ describe('stringWriter', () => {
     });
 
     beforeEach(() => {
-        resultBuilder = testable.stringWriter.resultBuilder(container);
+        // ok = null as any;
+        fail = null as any;
+
+        resultBuilder = testable.stringWriter.resultBuilder(container, environment => {
+            const util: IUtil = environment.buildAs<IUtil>('util');
+            // ok = util.ok;
+            fail = util.fail;
+        });
+    });
+
+    describe('basic functionality', () => {
+        it('should not write an error', () => {
+            const expectedResult = fail('Some failure', 'S:/ome/path.md');
+            const writer = testable.stringWriter.writer(container);
+            const result = writer.writeAst(expectedResult);
+
+            expect(result).toBe(expectedResult);
+        });
     });
 
     describe('writing markup', () => {
         describe('text block', () => {
             it('should successfully write an empty string', () => {
                 const result = resultBuilder('', buildLocation('C:/my_document.md', 4, 8));
+
+                verifyTextResult(result);
+            });
+
+            it.skip('should write a simple text of "hello"', () =>{
+                const result = resultBuilder('hello', buildLocation('C:/my_document.md', 3, 6));
 
                 verifyTextResult(result);
             });

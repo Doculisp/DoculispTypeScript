@@ -4,7 +4,11 @@ import { IUtil, Result } from "./types.general";
 import { IStringWriter } from "./types.stringWriter";
 
 function buildWriter(util: IUtil) : IStringWriter {
-    function writeAst(_astMaybe: Result<IAst>): Result<string> {
+    function writeAst(astMaybe: Result<IAst>): Result<string> {
+        if(!astMaybe.success) {
+            return astMaybe;
+        }
+        
         return util.ok('');
     }
 
