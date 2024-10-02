@@ -1,4 +1,4 @@
-import { IAst, IHeader, ITitle, IWrite } from "./types.ast";
+import { IAst, IHeader, ILoad, ISectionWriter, ITitle, IWrite } from "./types.ast";
 import { IRegisterable } from "./types.containers";
 import { ILocation, IUtil, Result } from "./types.general";
 import { IStringWriter } from "./types.stringWriter";
@@ -34,6 +34,14 @@ class StringBuilder {
     toString(): string {
         return this._lines.join('\n');
     }
+
+    get length(): number {
+        let i = 0;
+
+        this._lines.forEach(l => i += l.length);
+
+        return i + this._lines.length - 1;
+    }
 }
 
 function newLine(previousLocation: ILocation, currentLocation: ILocation): boolean {
@@ -65,6 +73,74 @@ function writeAstHeader(astHeader: IHeader): string {
     return `${headMarker} ${astHeader.text} ${headMarker}`;
 }
 
+function writeContent(util: IUtil, loads: ILoad[]): string {
+    const sb = new StringBuilder();
+
+    for (let index = 0; index < loads.length; index++) {
+        const element = loads[index];
+        if(!element) {
+            continue;
+        }
+
+        if(!element.document) {
+            continue;
+        }
+
+        const doc = element.document;
+        let previous: ILocation = doc.documentOrder;
+
+        sb.add(writeSection(util, previous, doc));
+    }
+
+    return sb.toString().trim();
+}
+
+function writeSection(util: IUtil, previous: ILocation, section: ISectionWriter): string {
+    const sb = new StringBuilder();
+    let previousType = '';
+
+    for (let index = 0; index < section.ast.length; index++) {
+        const element = section.ast[index];
+        if(!element) {
+            continue;
+        }
+
+        if(newLine(previous, element.documentOrder)) {
+            sb.addLine();
+        }
+
+        if(previousType !== 'ast-write' || element.type !== 'ast-write') {
+            sb.addLine();
+        }
+
+        switch (element.type) {
+            case 'ast-write':
+                sb.add(writeAstWrite(element));
+                break;
+
+            case 'ast-title':
+                sb.add(writeAstTitle(element));
+                break;
+
+            case 'ast-header':
+                sb.add(writeAstHeader(element));
+                break;
+
+            case 'ast-content':
+                sb.add(writeContent(util, section.external));
+                break;
+        
+            default:
+                break;
+        }
+
+        previousType = element.type;
+        previous = element.documentOrder;
+    }
+
+    return sb.toString();
+}
+
 function buildWriter(util: IUtil) : IStringWriter {
     function writeAst(astMaybe: Result<IAst>): Result<string> {
         if(!astMaybe.success) {
@@ -81,43 +157,8 @@ function buildWriter(util: IUtil) : IStringWriter {
         sb.addLine('<!-- Generated Document do not edit! -->');
 
         let previous: ILocation = util.location('', -1, -1, -1, -1);
-        let previousType = '';
-
-        for (let index = 0; index < section.ast.length; index++) {
-            const element = section.ast[index];
-            if(!element) {
-                continue;
-            }
-
-            if(newLine(previous, element.documentOrder)) {
-                sb.addLine();
-            }
-
-            if(previousType !== 'ast-write' || element.type !== 'ast-write') {
-                sb.addLine();
-            }
-
-            switch (element.type) {
-                case 'ast-write':
-                    sb.add(writeAstWrite(element));
-                    break;
-
-                case 'ast-title':
-                    sb.add(writeAstTitle(element));
-                    break;
-
-                case 'ast-header':
-                    sb.add(writeAstHeader(element));
-                    break;
-            
-                default:
-                    break;
-            }
-
-            previousType = element.type;
-            previous = element.documentOrder;
-        }
-
+        sb.addLine(writeSection(util, previous, section));
+        
         sb.addLine();
         sb.addLine('<!-- Generated Document do not edit! -->');
         return util.ok(sb.toString());

@@ -4,13 +4,14 @@ import { getVerifiers } from "../tools";
 import { IFail, IProjectLocation, IUtil } from "../../src/types.general";
 import { Result } from "../../src/types.general";
 import { buildLocation, testable } from "../testHelpers";
+import { IFileHandler } from "../../src/types.fileHandler";
 import { container } from "../../src/container";
+import { IDictionary } from "../../src/types.containers";
 
 describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
-    // let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
     function verifyMarkdownResult(textMaybe: Result<string>, options?: Options): void {
@@ -29,7 +30,6 @@ describe('stringWriter', () => {
     });
 
     beforeEach(() => {
-        // ok = null as any;
         fail = null as any;
 
         toResult = testable.stringWriter.resultBuilder(container, environment => {
@@ -154,6 +154,75 @@ This is the end
 
                     const result = toResult(doc, buildLocation('./_main.md', 1, 1));
 
+                    verifyMarkdownResult(result);
+                });
+            });
+
+            describe('sub documents', () => {
+                let files: IDictionary<Result<string>> = undefined as any;
+                let ok: (value: any) => Result<any> = undefined as any;
+
+                function addFile(path: string, body: string): void {
+                    files[path] = ok(body);
+                }
+
+                beforeEach(() => {
+                    files = {};
+
+                    toResult = testable.stringWriter.resultBuilder(container, environment => {
+                        const util: IUtil = environment.buildAs<IUtil>('util');
+                        ok = util.ok;
+                        const fileHandler: IFileHandler = {
+                            load: function(path: string): Result<string> {
+                                const r = files[path];
+                                if(r) {
+                                    return r;
+                                }
+
+                                return fail('path not yet setup', path);
+                            },
+                            write: undefined as any,
+                        };
+
+                        environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
+                    });
+                });
+
+                it('should write the contents of a sub document', () => {
+                    const subPath = './sub.md'
+                    const subDocument = `
+<!--
+(dl
+    (section-meta
+        (title My Sub Section)
+    )
+)
+-->
+
+This sub section rocks!
+`;
+
+                    addFile(subPath, subDocument);
+
+                    const path = './_main.md';
+                    const doc = `
+<!--
+(dl
+    (section-meta
+        (title Me and my sub section)
+        (external
+            (Section ${subPath})
+        )
+    )
+)
+-->
+
+a truly divided tail.
+
+<!-- (dl (content)) -->
+`;
+
+                    const result = toResult(doc, buildLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
             });
