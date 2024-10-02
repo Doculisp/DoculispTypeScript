@@ -9,7 +9,7 @@ import { container } from "../../src/container";
 describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
-    let resultBuilder: (text: string, location: IProjectLocation) => Result<string> = null as any;
+    let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
     // let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
@@ -32,7 +32,7 @@ describe('stringWriter', () => {
         // ok = null as any;
         fail = null as any;
 
-        resultBuilder = testable.stringWriter.resultBuilder(container, environment => {
+        toResult = testable.stringWriter.resultBuilder(container, environment => {
             const util: IUtil = environment.buildAs<IUtil>('util');
             // ok = util.ok;
             fail = util.fail;
@@ -52,19 +52,19 @@ describe('stringWriter', () => {
     describe('writing markup', () => {
         describe('text block', () => {
             it('should successfully write an empty string', () => {
-                const result = resultBuilder('', buildLocation('C:/my_document.md', 4, 8));
+                const result = toResult('', buildLocation('C:/my_document.md', 4, 8));
 
                 verifyMarkdownResult(result);
             });
 
             it('should write a simple text of "hello"', () =>{
-                const result = resultBuilder('hello', buildLocation('C:/my_document.md', 3, 6));
+                const result = toResult('hello', buildLocation('C:/my_document.md', 3, 6));
 
                 verifyMarkdownResult(result);
             });
 
             it('should write text of "blow fish"', () => {
-                const result = resultBuilder('blow fish', buildLocation('C:/my_document.md', 7, 2));
+                const result = toResult('blow fish', buildLocation('C:/my_document.md', 7, 2));
 
                 verifyMarkdownResult(result);
             });
@@ -81,9 +81,26 @@ describe('stringWriter', () => {
     ## Sub section title
 \`\`\`
 `;
-                const result = resultBuilder(md, buildLocation('C:/markdown/multiline.md', 4, 3));
+                const result = toResult(md, buildLocation('C:/markdown/multiline.md', 4, 3));
     
                 verifyMarkdownResult(result);
+            });
+        });
+
+        describe('lisp blocks', () => {
+            describe('section-meta', () => {
+                describe('title', () => {
+                    it('should write the title', () => {
+                        const contents = `
+(section-meta
+    (title My Cool Document)
+)
+`;
+                        const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                
+                        verifyMarkdownResult(result);
+                    });
+                });
             });
         });
     });

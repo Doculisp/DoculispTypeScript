@@ -1,4 +1,4 @@
-import { IAst, IWrite } from "./types.ast";
+import { IAst, ITitle, IWrite } from "./types.ast";
 import { IRegisterable } from "./types.containers";
 import { ILocation, IUtil, Result } from "./types.general";
 import { IStringWriter } from "./types.stringWriter";
@@ -47,6 +47,10 @@ function writeAstWrite(astWrite: IWrite) : string {
     return astWrite.value;
 }
 
+function writeAstTitle(astTitle: ITitle): string {
+    return astTitle.label;
+}
+
 function buildWriter(util: IUtil) : IStringWriter {
     function writeAst(astMaybe: Result<IAst>): Result<string> {
         if(!astMaybe.success) {
@@ -75,10 +79,17 @@ function buildWriter(util: IUtil) : IStringWriter {
                 sb.addLine();
             }
 
-            console.log(`\`${sb.toString()}\``)
+            switch (element.type) {
+                case 'ast-write':
+                    sb.add(writeAstWrite(element));
+                    break;
 
-            if(element.type === 'ast-write') {
-                sb.add(writeAstWrite(element));
+                case 'ast-title':
+                    sb.add(writeAstTitle(element));
+                    break;
+            
+                default:
+                    break;
             }
 
             previous = element.documentOrder;
