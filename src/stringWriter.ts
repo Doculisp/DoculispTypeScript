@@ -230,6 +230,9 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
             if(0 < sb.lineLength){
                 sb.add(' ');
             }
+            else {
+                sb.addLine();
+            }
         }
         else {
             sb.addLine();
