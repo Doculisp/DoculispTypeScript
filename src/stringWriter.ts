@@ -1,4 +1,4 @@
-import { IAst, IHeader, ILoad, ISectionWriter, ITitle, IWrite } from "./types.ast";
+import { AstPart, IAst, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "./types.ast";
 import { IRegisterable } from "./types.containers";
 import { ILocation, IUtil, Result } from "./types.general";
 import { IStringWriter } from "./types.stringWriter";
@@ -73,7 +73,59 @@ function writeAstHeader(astHeader: IHeader): string {
     return `${headMarker} ${astHeader.text} ${headMarker}`;
 }
 
-function writeContent(util: IUtil, loads: ILoad[]): string {
+function writeLabeledToc(loads: ILoad[]): string {
+    function findTitle(ast: AstPart[]): ITitle | null {
+        for (let index = 0; index < ast.length; index++) {
+            const element = ast[index];
+            if(!element) {
+                continue;
+            }
+
+            if(element.type === 'ast-title') {
+                return element;
+            }
+        }
+
+        return null;
+    }
+
+    const sb = new StringBuilder();
+
+    for (let index = 0; index < loads.length; index++) {
+        const element = loads[index];
+        if(!element) {
+            continue;
+        }
+
+        if(!element.document) {
+            continue;
+        }
+
+        const doc = element.document;
+        const title = findTitle(doc.ast);
+
+        if(!title) {
+            continue;
+        }
+
+        if(0 < sb.length) {
+            sb.addLine();
+        }
+        sb.addLine(`[${element.sectionLabel}: ${title.title}](${title.link})`);
+    }
+    
+    if(0 < sb.length) {
+        sb.addLine();
+    }
+    
+    return sb.toString();
+}
+
+function writeTableOfContents(_toc: ITableOfContents, loads: ILoad[]): string {
+    return writeLabeledToc(loads);
+}
+
+function writeContent(loads: ILoad[]): string {
     const sb = new StringBuilder();
 
     for (let index = 0; index < loads.length; index++) {
@@ -89,13 +141,13 @@ function writeContent(util: IUtil, loads: ILoad[]): string {
         const doc = element.document;
         let previous: ILocation = doc.documentOrder;
 
-        sb.add(writeSection(util, previous, doc));
+        sb.add(writeSection(previous, doc));
     }
 
     return sb.toString().trim();
 }
 
-function writeSection(util: IUtil, previous: ILocation, section: ISectionWriter): string {
+function writeSection(previous: ILocation, section: ISectionWriter): string {
     const sb = new StringBuilder();
     let previousType = '';
 
@@ -127,7 +179,11 @@ function writeSection(util: IUtil, previous: ILocation, section: ISectionWriter)
                 break;
 
             case 'ast-content':
-                sb.add(writeContent(util, section.external));
+                sb.add(writeContent(section.external));
+                break;
+
+            case 'ast-toc':
+                sb.add(writeTableOfContents(element, section.external));
                 break;
         
             default:
@@ -157,7 +213,7 @@ function buildWriter(util: IUtil) : IStringWriter {
         sb.addLine('<!-- Generated Document do not edit! -->');
 
         let previous: ILocation = util.location('', -1, -1, -1, -1);
-        sb.addLine(writeSection(util, previous, section));
+        sb.addLine(writeSection(previous, section));
         
         sb.addLine();
         sb.addLine('<!-- Generated Document do not edit! -->');

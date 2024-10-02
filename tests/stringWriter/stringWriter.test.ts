@@ -225,6 +225,44 @@ a truly divided tail.
                     const result = toResult(doc, buildLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
+
+                it('should write the table of contents', () => {
+                    const subPath = './sub.md'
+                    const subDocument = `
+<!--
+(dl
+    (section-meta
+        (title My Sub Section)
+    )
+)
+-->
+
+This sub section rocks!
+`;
+
+                    addFile(subPath, subDocument);
+
+                    const path = './_main.md';
+                    const doc = `
+<!--
+(dl
+    (section-meta
+        (title Me and my sub section)
+        (external
+            (Section ${subPath})
+        )
+    )
+)
+-->
+
+a truly divided tail.
+
+<!-- (dl (content (toc))) -->
+`;
+
+                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    verifyMarkdownResult(result);
+                });
             });
         });
     });
