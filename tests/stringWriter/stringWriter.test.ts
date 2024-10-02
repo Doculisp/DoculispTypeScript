@@ -13,7 +13,7 @@ describe('stringWriter', () => {
     // let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
 
-    function verifyTextResult(textMaybe: Result<string>, options?: Options): void {
+    function verifyMarkdownResult(textMaybe: Result<string>, options?: Options): void {
         if(textMaybe.success) {
             verifyMarkdown(textMaybe.value, options);
         }
@@ -54,13 +54,19 @@ describe('stringWriter', () => {
             it('should successfully write an empty string', () => {
                 const result = resultBuilder('', buildLocation('C:/my_document.md', 4, 8));
 
-                verifyTextResult(result);
+                verifyMarkdownResult(result);
             });
 
             it('should write a simple text of "hello"', () =>{
                 const result = resultBuilder('hello', buildLocation('C:/my_document.md', 3, 6));
 
-                verifyTextResult(result);
+                verifyMarkdownResult(result);
+            });
+
+            it('should write text of "blow fish"', () => {
+                const result = resultBuilder('blow fish', buildLocation('C:/my_document.md', 7, 2));
+
+                verifyMarkdownResult(result);
             });
         });
     });
