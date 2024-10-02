@@ -1,9 +1,9 @@
+import fs from 'fs';
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
-import { DocumentMap, DocumentParser } from "../../../src/types.document";
-import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
-import fs from 'fs';
+import { getVerifier } from "../../tools";
+import { DocumentMap, DocumentParser } from "../../../src/types.document";
 import { IProjectLocation, Result } from "../../../src/types.general";
 import { buildLocation, testable } from "../../testHelpers";
 

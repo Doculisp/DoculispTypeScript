@@ -4,6 +4,7 @@ import { IContainer, ITestableContainer } from "../src/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types.document";
 import { IProjectLocation, Result } from "../src/types.general";
 import { TokenFunction, TokenizedDocument } from "../src/types.tokens";
+import { IStringWriter } from "../src/types.stringWriter"
 
 export function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
     return {
@@ -41,6 +42,10 @@ function buildRecursiveAstParser(environment: ITestableContainer) : IAstBuilder 
     return environment.buildAs<IAstBuilder>('astBuilder');
 }
 
+function buildStringWriter(environment: ITestableContainer): IStringWriter {
+    return environment.buildAs<IStringWriter>('stringWriter');
+}
+
 function rawTokenResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<TokenizedDocument> {
     const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
     const tokenParser = buildTokenResultParser(environment);
@@ -60,6 +65,13 @@ function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, t
     const astRecursiveBuilder = buildRecursiveAstParser(environment);
 
     return map(astResultParser, astRecursiveBuilder.parseExternals);
+}
+
+function rawStringWriterResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<string> {
+    const astRecursiveBuilder = rawAstRecursiveExternalResultBuilder(environment, text, location);
+    const stringWriter = buildStringWriter(environment);
+
+    return map(astRecursiveBuilder, stringWriter.writeAst);
 }
 
 function newBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer) => T): T {
@@ -129,6 +141,18 @@ function newAstRecursiveExternalResultBuilder(container: IContainer, setup: (env
     });
 }
 
+function newStringWriterBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IStringWriter {
+    return newBuilder(container, setup, environment => {
+        return buildStringWriter(environment);
+    });
+}
+
+function newStringWriterResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<string> {
+    return newTextToResultBuilder(container, setup, (environment, text, location) => {
+        return rawStringWriterResultBuilder(environment, text, location)();
+    });
+}
+
 const testable = {
     document: {
         resultBuilder: newDocumentResultBuilder,
@@ -145,6 +169,10 @@ const testable = {
         parserBuilder: newAstRecursiveParserBuilder,
         resultBuilder: newAstRecursiveResultBuilder,
         externalResultBuilder: newAstRecursiveExternalResultBuilder,
+    },
+    stringWriter: {
+        writer: newStringWriterBuilder,
+        resultBuilder: newStringWriterResultBuilder,
     },
 };
 
