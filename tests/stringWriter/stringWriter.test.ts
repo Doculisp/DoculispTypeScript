@@ -57,7 +57,7 @@ describe('stringWriter', () => {
                 verifyTextResult(result);
             });
 
-            it.skip('should write a simple text of "hello"', () =>{
+            it('should write a simple text of "hello"', () =>{
                 const result = resultBuilder('hello', buildLocation('C:/my_document.md', 3, 6));
 
                 verifyTextResult(result);
