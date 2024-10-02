@@ -227,12 +227,12 @@ a truly divided tail.
                 });
 
                 it('should write the table of contents', () => {
-                    const subPath = './sub.md'
-                    const subDocument = `
+                    const subPath1 = './sub.md'
+                    const subDocument1 = `
 <!--
 (dl
     (section-meta
-        (title My Sub Section)
+        (title My First Sub Section)
     )
 )
 -->
@@ -240,16 +240,29 @@ a truly divided tail.
 This sub section rocks!
 `;
 
-                    addFile(subPath, subDocument);
+                    const subPath2 = './second.md';
+                    const subDocument2 = `
+<!--
+(dl
+    (section-meta
+        (title My second Sub Section)
+    )
+)
+-->
+`;
+
+                    addFile(subPath1, subDocument1);
+                    addFile(subPath2, subDocument2);
 
                     const path = './_main.md';
                     const doc = `
 <!--
 (dl
     (section-meta
-        (title Me and my sub section)
+        (title Me and my sub sections)
         (external
-            (Section ${subPath})
+            (Section ${subPath1})
+            (Block ${subPath2})
         )
     )
 )

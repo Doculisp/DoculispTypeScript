@@ -117,7 +117,7 @@ function writeLabeledToc(loads: ILoad[]): string {
     if(0 < sb.length) {
         sb.addLine();
     }
-    
+
     return sb.toString();
 }
 
@@ -140,6 +140,10 @@ function writeContent(loads: ILoad[]): string {
 
         const doc = element.document;
         let previous: ILocation = doc.documentOrder;
+
+        if(0 < sb.length) {
+            sb.addLine();
+        }
 
         sb.add(writeSection(previous, doc));
     }
