@@ -327,6 +327,57 @@ a truly divided tail.
                     const result = toResult(doc, buildLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
+
+                it('should write the numbered table of contents', () => {
+                    const subPath1 = './sub.md'
+                    const subDocument1 = `
+<!--
+(dl
+    (section-meta
+        (title My First Sub Section)
+    )
+)
+-->
+
+This sub section rocks!
+`;
+
+                    const subPath2 = './second.md';
+                    const subDocument2 = `
+<!--
+(dl
+    (section-meta
+        (title My second Sub Section)
+    )
+)
+-->
+`;
+
+                    addFile(subPath1, subDocument1);
+                    addFile(subPath2, subDocument2);
+
+                    const path = './_main.md';
+                    const doc = `
+<!--
+(dl
+    (section-meta
+        (title Me and my sub sections)
+        (external
+            (Section ${subPath1})
+            (Block ${subPath2})
+        )
+    )
+)
+-->
+
+a truly divided tail.
+
+<!-- (dl (content (toc numbered))) -->
+`;
+
+                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    verifyMarkdownResult(result);
+                });
             });
         });
     });
