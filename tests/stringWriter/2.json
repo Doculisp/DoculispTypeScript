@@ -1,0 +1,11 @@
+{
+    "type": "ast-write",
+    "documentOrder": {
+        "_documentPath": "C:/markdown/multiline.md",
+        "_documentDepth": 4,
+        "_documentIndex": 3,
+        "_line": 2,
+        "_char": 1
+    },
+    "value": "```markdown\n    # A document\n    \n    <!-- this need\n    a summary\n    -->\n    \n    ## Sub section title\n```"
+}

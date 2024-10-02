@@ -1,0 +1,11 @@
+{
+    "type": "ast-write",
+    "documentOrder": {
+        "_documentPath": "C:/markdown/multiline.md",
+        "_documentDepth": 4,
+        "_documentIndex": 3,
+        "_line": 1,
+        "_char": 1
+    },
+    "value": "An example of an markdown document with html comments:"
+}

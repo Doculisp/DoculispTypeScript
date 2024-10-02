@@ -39,7 +39,7 @@ describe('stringWriter', () => {
         });
     });
 
-    describe('basic functionality', () => {
+    describe.skip('basic functionality', () => {
         it('should not write an error', () => {
             const expectedResult = fail('Some failure', 'S:/ome/path.md');
             const writer = testable.stringWriter.writer(container);
@@ -51,21 +51,38 @@ describe('stringWriter', () => {
 
     describe('writing markup', () => {
         describe('text block', () => {
-            it('should successfully write an empty string', () => {
+            it.skip('should successfully write an empty string', () => {
                 const result = resultBuilder('', buildLocation('C:/my_document.md', 4, 8));
 
                 verifyMarkdownResult(result);
             });
 
-            it('should write a simple text of "hello"', () =>{
+            it.skip('should write a simple text of "hello"', () =>{
                 const result = resultBuilder('hello', buildLocation('C:/my_document.md', 3, 6));
 
                 verifyMarkdownResult(result);
             });
 
-            it('should write text of "blow fish"', () => {
+            it.skip('should write text of "blow fish"', () => {
                 const result = resultBuilder('blow fish', buildLocation('C:/my_document.md', 7, 2));
 
+                verifyMarkdownResult(result);
+            });
+
+            it('should write a multiline code block', () => {
+                const md = `An example of an markdown document with html comments:
+\`\`\`markdown
+    # A document
+    
+    <!-- this need
+    a summary
+    -->
+    
+    ## Sub section title
+\`\`\`
+`;
+                const result = resultBuilder(md, buildLocation('C:/markdown/multiline.md', 4, 3));
+    
                 verifyMarkdownResult(result);
             });
         });

@@ -39,7 +39,7 @@ class StringBuilder {
 function newLine(previousLocation: ILocation, currentLocation: ILocation): boolean {
     return !(
         previousLocation.documentPath === currentLocation.documentPath
-        || previousLocation.line === currentLocation.line
+        && previousLocation.line === currentLocation.line
     );
 }
 
@@ -73,7 +73,9 @@ function buildWriter(util: IUtil) : IStringWriter {
 
             if(newLine(previous, element.documentOrder)) {
                 sb.addLine();
-            }            
+            }
+
+            console.log(`\`${sb.toString()}\``)
 
             if(element.type === 'ast-write') {
                 sb.add(writeAstWrite(element));
