@@ -73,7 +73,7 @@ function writeAstHeader(astHeader: IHeader): string {
     return `${headMarker} ${astHeader.text} ${headMarker}`;
 }
 
-function writeLabeledToc(loads: ILoad[]): string {
+function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
     function findTitle(ast: AstPart[]): ITitle | null {
         for (let index = 0; index < ast.length; index++) {
             const element = ast[index];
@@ -89,40 +89,63 @@ function writeLabeledToc(loads: ILoad[]): string {
         return null;
     }
 
-    const sb = new StringBuilder();
-
-    for (let index = 0; index < loads.length; index++) {
-        const element = loads[index];
-        if(!element) {
-            continue;
+    function writeLink(sb: StringBuilder, title: string, linkText: string, label?: string): void {
+        let lblText = '';
+        if(!!label) {
+            lblText = `${label}: `;
         }
+        sb.addLine(`[${lblText}${title}](${linkText})`);
+    }
 
-        if(!element.document) {
-            continue;
+    function writeTable(loads: ILoad[], addRow: (sb: StringBuilder, title: string, linkText: string, label: string) => void): string {
+        const sb = new StringBuilder();
+
+        for (let index = 0; index < loads.length; index++) {
+            const element = loads[index];
+            if(!element) {
+                continue;
+            }
+    
+            if(!element.document) {
+                continue;
+            }
+    
+            const doc = element.document;
+            const title = findTitle(doc.ast);
+    
+            if(!title) {
+                continue;
+            }
+    
+            if(0 < sb.length) {
+                sb.addLine();
+            }
+
+            addRow(sb, title.title, title.link, element.sectionLabel);
         }
-
-        const doc = element.document;
-        const title = findTitle(doc.ast);
-
-        if(!title) {
-            continue;
-        }
-
+        
         if(0 < sb.length) {
             sb.addLine();
         }
-        sb.addLine(`[${element.sectionLabel}: ${title.title}](${title.link})`);
+    
+        return sb.toString();
+    }
+
+    function ignoreLabel(sb: StringBuilder, title: string, linkText: string, label?: string) {
+        return writeLink(sb, title, linkText);
+    }
+
+    switch (toc.bulletStyle) {
+        case 'labeled':
+            return writeTable(loads, writeLink);
+
+        case 'unlabeled':
+            return writeTable(loads, ignoreLabel);
+    
+        default:
+            return `>>>> ${toc.bulletStyle} <<<<\n`;
     }
     
-    if(0 < sb.length) {
-        sb.addLine();
-    }
-
-    return sb.toString();
-}
-
-function writeTableOfContents(_toc: ITableOfContents, loads: ILoad[]): string {
-    return writeLabeledToc(loads);
 }
 
 function writeContent(loads: ILoad[]): string {
