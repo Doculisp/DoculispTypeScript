@@ -99,7 +99,7 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
         return useLabel(append, title, linkText);
     }
 
-    function useAppendLine(appender: (append: (text: string) => void, title: string, linkText: string, label?: string) => void): (sb: StringBuilder, title: string, linkText: string, label: string) => void {
+    function writeRawLink(appender: (append: (text: string) => void, title: string, linkText: string, label?: string) => void): (sb: StringBuilder, title: string, linkText: string, label: string) => void {
         return function(sb: StringBuilder, title: string, linkText: string, label: string): void {
             appender(text => sb.addLine(text), title, linkText, label);
         }
@@ -155,10 +155,10 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
 
     switch (toc.bulletStyle) {
         case 'labeled':
-            return writeTable(loads, useAppendLine(useLabel));
+            return writeTable(loads, writeRawLink(useLabel));
 
         case 'unlabeled':
-            return writeTable(loads, useAppendLine(ignoreLabel));
+            return writeTable(loads, writeRawLink(ignoreLabel));
 
         case 'numbered':
             return writeTable(loads, writeNumbered(ignoreLabel));
@@ -168,6 +168,9 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
 
         case 'bulleted':
             return writeTable(loads, writeBulleted(ignoreLabel));
+
+        case 'bulleted-labeled':
+            return writeTable(loads, writeBulleted(useLabel));
     
         default:
             return `>>>> ${toc.bulletStyle} <<<<\n`;
