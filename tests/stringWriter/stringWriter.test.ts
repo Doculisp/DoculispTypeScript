@@ -125,6 +125,38 @@ describe('stringWriter', () => {
                     });
                 });
             });
+
+            describe('dynamic header', () => {
+                it('should write the dynamic header', () => {
+                    const doc = `
+<!--
+(dl
+    (section-meta
+        (title The use of dynamic headers)
+    )
+)
+-->
+
+Here is how you would use the header.
+
+<!-- (dl (# First Header)) -->
+
+to which I write my word.
+
+<!-- (dl (## Sub-Header)) -->
+
+More words to put to it.
+
+<!-- (dl (# Second Header)) -->
+
+This is the end
+`;
+
+                    const result = toResult(doc, buildLocation('./_main.md', 1, 1));
+
+                    verifyMarkdownResult(result);
+                });
+            });
         });
     });
 });

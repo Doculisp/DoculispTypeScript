@@ -1,4 +1,4 @@
-import { IAst, ITitle, IWrite } from "./types.ast";
+import { IAst, IHeader, ITitle, IWrite } from "./types.ast";
 import { IRegisterable } from "./types.containers";
 import { ILocation, IUtil, Result } from "./types.general";
 import { IStringWriter } from "./types.stringWriter";
@@ -60,6 +60,11 @@ function writeAstTitle(astTitle: ITitle): string {
     return sb.toString();
 }
 
+function writeAstHeader(astHeader: IHeader): string {
+    const headMarker = '#'.repeat(astHeader.depthCount);
+    return `${headMarker} ${astHeader.text} ${headMarker}`;
+}
+
 function buildWriter(util: IUtil) : IStringWriter {
     function writeAst(astMaybe: Result<IAst>): Result<string> {
         if(!astMaybe.success) {
@@ -74,9 +79,9 @@ function buildWriter(util: IUtil) : IStringWriter {
         const section = astMaybe.value.section;
 
         sb.addLine('<!-- Generated Document do not edit! -->');
-        sb.addLine();
 
         let previous: ILocation = util.location('', -1, -1, -1, -1);
+        let previousType = '';
 
         for (let index = 0; index < section.ast.length; index++) {
             const element = section.ast[index];
@@ -88,6 +93,10 @@ function buildWriter(util: IUtil) : IStringWriter {
                 sb.addLine();
             }
 
+            if(previousType !== 'ast-write' || element.type !== 'ast-write') {
+                sb.addLine();
+            }
+
             switch (element.type) {
                 case 'ast-write':
                     sb.add(writeAstWrite(element));
@@ -96,11 +105,16 @@ function buildWriter(util: IUtil) : IStringWriter {
                 case 'ast-title':
                     sb.add(writeAstTitle(element));
                     break;
+
+                case 'ast-header':
+                    sb.add(writeAstHeader(element));
+                    break;
             
                 default:
                     break;
             }
 
+            previousType = element.type;
             previous = element.documentOrder;
         }
 
