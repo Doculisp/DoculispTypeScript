@@ -39,7 +39,7 @@ describe('stringWriter', () => {
         });
     });
 
-    describe.skip('basic functionality', () => {
+    describe('basic functionality', () => {
         it('should not write an error', () => {
             const expectedResult = fail('Some failure', 'S:/ome/path.md');
             const writer = testable.stringWriter.writer(container);
@@ -51,19 +51,19 @@ describe('stringWriter', () => {
 
     describe('writing markup', () => {
         describe('text block', () => {
-            it.skip('should successfully write an empty string', () => {
+            it('should successfully write an empty string', () => {
                 const result = resultBuilder('', buildLocation('C:/my_document.md', 4, 8));
 
                 verifyMarkdownResult(result);
             });
 
-            it.skip('should write a simple text of "hello"', () =>{
+            it('should write a simple text of "hello"', () =>{
                 const result = resultBuilder('hello', buildLocation('C:/my_document.md', 3, 6));
 
                 verifyMarkdownResult(result);
             });
 
-            it.skip('should write text of "blow fish"', () => {
+            it('should write text of "blow fish"', () => {
                 const result = resultBuilder('blow fish', buildLocation('C:/my_document.md', 7, 2));
 
                 verifyMarkdownResult(result);
