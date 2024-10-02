@@ -7,6 +7,8 @@ import { buildLocation, testable } from "../testHelpers";
 import { IFileHandler } from "../../src/types.fileHandler";
 import { container } from "../../src/container";
 import { IDictionary } from "../../src/types.containers";
+import path from "path";
+import fs from 'fs';
 
 describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -531,6 +533,37 @@ a truly divided tail.
                     const result = toResult(doc, buildLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
+            });
+
+        });
+
+        describe.skip('own documentation', () => {
+            beforeEach(() => {
+                toResult = testable.stringWriter.resultBuilder(container, environment => {
+                    const util: IUtil = environment.buildAs<IUtil>('util');
+
+                    const fileHandler: IFileHandler = {
+                        load: function(filePath: string): Result<string> {
+                            let p = path.join('./documentation/', filePath);
+                            try {
+                                return util.ok(fs.readFileSync(p, { encoding: 'utf8' }));
+                            } catch (error) {
+                                return fail(`${error}`, p);
+                            }
+                        },
+                        write: undefined as any,
+                    };
+
+                    environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
+                });
+            });
+
+            it('should write the whole of its own documentation', () => {
+                const filePath = './documentation/_main.dlisp';
+                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+
+                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                verifyMarkdownResult(result);
             });
         });
     });

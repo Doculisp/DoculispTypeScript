@@ -42,6 +42,14 @@ class StringBuilder {
 
         return i + this._lines.length - 1;
     }
+
+    get lineLength(): number {
+        if(this._lines.length < 1) {
+            return 0;
+        }
+
+        return this._lines[this._lines.length - 1]?.length || 0;
+    }
 }
 
 function newLine(previousLocation: ILocation, currentLocation: ILocation): boolean {
@@ -218,7 +226,12 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
             sb.addLine();
         }
 
-        if(previousType !== 'ast-write' || element.type !== 'ast-write') {
+        if(previousType === 'ast-write' && element.type === 'ast-write') {
+            if(0 < sb.lineLength){
+                sb.add(' ');
+            }
+        }
+        else {
             sb.addLine();
         }
 
