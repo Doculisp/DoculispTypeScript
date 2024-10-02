@@ -1,5 +1,5 @@
 import { JestReporter } from "approvals/lib/Providers/Jest/JestReporter";
-import { verifyAsJson } from "approvals/lib/Providers/Jest/JestApprovals";
+import { verifyAsJson, verify } from "approvals/lib/Providers/Jest/JestApprovals";
 import { Config } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 
@@ -36,6 +36,14 @@ export function order<T>(thing: T): T {
     return ret;
 }
 
+function verifyJsonObject(data: any, options?: Options): void {
+    verifyAsJson(order(data), options);
+}
+
+function verifyObject(sut: any, options?: Options): void {
+    verify(sut, options);
+}
+
 export function getVerifier(configure: (overrideOptions?: Partial<Config> | undefined) => Config): ((data: any, options?: Options) => void) {
     configure({
         reporters: [new JestReporter()],
@@ -45,3 +53,15 @@ export function getVerifier(configure: (overrideOptions?: Partial<Config> | unde
         verifyAsJson(order(data), options);
     };
 }
+
+export function getVerifiers(configure: (overrideOptions?: Partial<Config> | undefined) => Config) {
+    configure({
+        reporters: [new JestReporter()],
+    });
+
+    
+    return {
+        verifyAsJson: verifyJsonObject,
+        verify: verifyObject,
+    };
+};
