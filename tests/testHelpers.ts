@@ -25,25 +25,6 @@ function wrapDocumentParser(parser: DocumentParser, text: string, location: IPro
     }
 }
 
-function builder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer) => T): T {
-    if(container.isTestable) {
-        throw new Error('Must not be a testable container');
-    }
-
-    const environment: ITestableContainer = container.buildTestable();
-    environment.restoreAll();
-    setup(environment);
-    return buildIt(environment);
-}
-
-function textToResultBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer, text: string, location: IProjectLocation) => T): (text: string, location: IProjectLocation) => T {
-    return builder(container, setup, environment => {
-        return function(text: string, location: IProjectLocation): T {
-            return buildIt(environment, text, location);
-        }
-    });
-}
-
 function buildDocumentParser(environment: ITestableContainer): DocumentParser {
     return environment.buildAs<DocumentParser>('documentParse');
 }
@@ -58,36 +39,6 @@ function buildAstParser(environment: ITestableContainer): IAstParser {
 
 function buildRecursiveAstParser(environment: ITestableContainer) : IAstBuilder {
     return environment.buildAs<IAstBuilder>('astBuilder');
-}
-
-function documentResultBuilder(container: IContainer): DocumentParser {
-    return builder(container, () => {}, environment => {
-        return buildDocumentParser(environment);
-    });
-}
-
-function tokenResultParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): TokenFunction {
-    return builder(container, setup, environment => {
-        return buildTokenResultParser(environment);
-    });
-}
-
-function astParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstParser {
-    return builder(container, setup, environment => {
-        return buildAstParser(environment);
-    });
-}
-
-function astRecursiveParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstBuilder {
-    return builder(container, setup, environment => {
-        return buildRecursiveAstParser(environment);
-    });
-}
-
-function astRecursiveResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<IAst> {
-    return builder(container, setup, environment => {
-        return buildRecursiveAstParser(environment).parse;
-    });
 }
 
 function rawTokenResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<TokenizedDocument> {
@@ -111,40 +62,89 @@ function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, t
     return map(astResultParser, astRecursiveBuilder.parseExternals);
 }
 
-function tokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
-    return textToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
+function newBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer) => T): T {
+    if(container.isTestable) {
+        throw new Error('Must not be a testable container');
+    }
+
+    const environment: ITestableContainer = container.buildTestable();
+    environment.restoreAll();
+    setup(environment);
+    return buildIt(environment);
+}
+
+function newTextToResultBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, builderFunction: (environment: ITestableContainer, text: string, location: IProjectLocation) => T): (text: string, location: IProjectLocation) => T {
+    return newBuilder(container, setup, environment => {
+        return function(text: string, location: IProjectLocation): T {
+            return builderFunction(environment, text, location);
+        }
+    });
+}
+
+function newDocumentResultBuilder(container: IContainer): DocumentParser {
+    return newBuilder(container, () => {}, environment => {
+        return buildDocumentParser(environment);
+    });
+}
+
+function newTokenResultParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): TokenFunction {
+    return newBuilder(container, setup, environment => {
+        return buildTokenResultParser(environment);
+    });
+}
+
+function newAstParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstParser {
+    return newBuilder(container, setup, environment => {
+        return buildAstParser(environment);
+    });
+}
+
+function newAstRecursiveParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstBuilder {
+    return newBuilder(container, setup, environment => {
+        return buildRecursiveAstParser(environment);
+    });
+}
+
+function newAstRecursiveResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<IAst> {
+    return newBuilder(container, setup, environment => {
+        return buildRecursiveAstParser(environment).parse;
+    });
+}
+
+function newTokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
+    return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawTokenResultBuilder(environment, text, location)(); 
     });
 }
 
-function astResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
-    return textToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
+function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
+    return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstResultBuilder(environment, text, location)();
     });
 }
 
-function astRecursiveExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
-    return textToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
+function newAstRecursiveExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
+    return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstRecursiveExternalResultBuilder(environment, text, location)();
     });
 }
 
 const testable = {
     document: {
-        resultBuilder: documentResultBuilder,
+        resultBuilder: newDocumentResultBuilder,
     },
     token: {
-        parserBuilder: tokenResultParserBuilder,
-        resultBuilder: tokenResultBuilder,
+        parserBuilder: newTokenResultParserBuilder,
+        resultBuilder: newTokenResultBuilder,
     },
     ast: {
-        parserBuilder: astParserBuilder,
-        resultBuilder: astResultBuilder,
+        parserBuilder: newAstParserBuilder,
+        resultBuilder: newAstResultBuilder,
     },
     recursiveAst: {
-        parserBuilder: astRecursiveParserBuilder,
-        resultBuilder: astRecursiveResultBuilder,
-        externalResultBuilder: astRecursiveExternalResultBuilder,
+        parserBuilder: newAstRecursiveParserBuilder,
+        resultBuilder: newAstRecursiveResultBuilder,
+        externalResultBuilder: newAstRecursiveExternalResultBuilder,
     },
 };
 
