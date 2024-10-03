@@ -14,7 +14,7 @@ function createMap(projectLocation: IProjectLocation, parts: DocumentPart[]): Do
 
 type ParesBuilder = {
     isDiscardedWhiteSpace(): HandleStringValue<DocumentPart>;
-    isKeptWhiteSpace(): HandleStringValue<string>;
+    isKeptWhiteSpace(): HandleStringValue<DocumentPart>;
     isMultiline() : HandleStringValue<DocumentPart>;
     isInline(): HandleStringValue<DocumentPart>;
     isDoculisp(isOpen?: boolean): HandleStringValue<DocumentPart>;
@@ -45,16 +45,17 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         }
     }
 
-    function doesItStartWithKeep(startsWith: RegExp, incrementor: (current: ILocation, foundLength: number) => ILocation): HandleStringValue<string> {
-        return function (input:string, current: ILocation): StringStepParseResult<string> {
+    function doesItStartWithKeep(startsWith: RegExp, incrementor: (current: ILocation, foundLength: number) => ILocation): HandleStringValue<DocumentPart> {
+        return function (input:string, current: ILocation): StringStepParseResult<DocumentPart> {
             if(startsWith.test(input)) {
                 const parsed: string = (input.match(startsWith) as any)[0];
                 const rest = input.slice(parsed.length);
+                const location = incrementor(current, parsed.length);
                 return util.ok({
                     type: 'parse result',
-                    subResult: parsed,
+                    subResult: { location: location, text: parsed, type: 'text' },
                     rest,
-                    location: incrementor(current, parsed.length),
+                    location: location,
                 });
             }
             return internals.noResultFound();
@@ -88,8 +89,8 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         }
     }
 
-    function isKeptWhiteSpace(): HandleStringValue<string> {
-        return function (input: string, current: ILocation): StringStepParseResult<string> {
+    function isKeptWhiteSpace(): HandleStringValue<DocumentPart> {
+        return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
             const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l.increaseLine());
             const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l.increaseLine());
             const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, l => l.increaseLine());
@@ -117,7 +118,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(1 === result.length) {
                     return util.ok(internals.buildStepParse(step, {
                         type: 'parse result',
-                        subResult: result[0] as string
+                        subResult: result[0] as DocumentPart,
                     }));
                 }
     
@@ -135,18 +136,19 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         return function(toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let opened: boolean = false;
     
-            function tryParseMultiline(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseMultiline(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithMultilineMarker.test(input)) {
                     opened = !opened;
     
                     const parsed: string = (input.match(doesIt.startWithMultilineMarker) as any)[0];
                     const rest = input.slice(parsed.length);
+                    const location = current.increaseChar(parsed.length);
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: parsed,
+                        subResult: { location: location, text: parsed, type: 'text' },
                         rest,
-                        location: current.increaseChar(parsed.length),
+                        location: location,
                     });
                 }
                 return internals.noResultFound();
@@ -154,19 +156,20 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             const tryParseWhiteSpace = isKeptWhiteSpace();
     
-            function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseWord(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(!opened) {
                     return internals.stopFindingResults();
                 }
     
                 const parsed = input.charAt(0);
                 const rest = input.slice(1);
+                const location = current.increaseChar(1);
     
                 return util.ok({
                     type: 'parse result',
-                    subResult: parsed,
+                    subResult: { location: location, text: parsed, type: 'text' },
                     rest,
-                    location: current.increaseChar(1),
+                    location: location,
                 });
             }
     
@@ -182,7 +185,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return internals.noResultFound();
                 }
     
-                const result = peaces.join('').trim();
+                const result = peaces.map(p => p.text).join('').trim();
                 const rest = leftover.remaining;
                 
                 return util.ok({
@@ -304,7 +307,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let depth = isOpen ? 1 : 0;
             isOpen = false;
-            function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
                         return util.fail(`Doculisp Block at ${starting.toString()} contains an embedded doculisp block at ${starting.toString()}.`, projectLocation.documentPath);
@@ -323,35 +326,37 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 return internals.noResultFound();
             }
     
-            function tryParseLispOpen(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseLispOpen(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(depth === 0) return internals.noResultFound();
     
                 if(doesIt.startWithOpenLisp.test(input)) {
                     const parsed: string = (input.match(doesIt.startWithOpenLisp) as any)[0];
                     const rest = input.slice(parsed.length);
+                    const location = current.increaseChar(parsed.length);
                     depth++;
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: parsed,
+                        subResult: { location: location, text: parsed, type: 'text' },
                         rest,
-                        location: current.increaseChar(parsed.length),
+                        location: location,
                     });
                 }
     
                 return internals.noResultFound();
             }
     
-            function tryParseLispClose(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseLispClose(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(depth === 0) return internals.noResultFound();
                 
                 if(doesIt.startsWithCloseLisp.test(input)) {
                     const parsed: string = (input.match(doesIt.startsWithCloseLisp) as any)[0];
                     const rest = input.slice(parsed.length);
+                    const location = current.increaseChar(parsed.length);
     
                     const step: IStringParseStepForward = {
                         rest,
-                        location: current.increaseChar(parsed.length),
+                        location: location,
                     };
     
                     depth--;
@@ -364,29 +369,30 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok(internals.buildStepParse(step, {
                         type: 'parse result',
-                        subResult: parsed,
+                        subResult: { location: location, text: parsed, type: 'text' },
                     }));
                 }
                 return internals.noResultFound();
             }
     
-            function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseWord(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(0 < depth){
                     const parsed = input.charAt(0);
                     const rest = input.slice(1);
+                    const location = current.increaseChar(parsed.length);
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: parsed,
+                        subResult: { location: location, text: parsed, type: 'text' },
                         rest,
-                        location: current.increaseChar(parsed.length),
+                        location: location,
                     });
                 }
     
                 return internals.stopFindingResults();
             }
     
-            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(0 < depth){
                     const tryParseWhiteSpace = isKeptWhiteSpace();
                     return tryParseWhiteSpace(input, current);
@@ -417,7 +423,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     }));
                 }
     
-                let result = parts.join('').trim();
+                let result = parts.map(p => p.text).join('').trim();
                 return util.ok(internals.buildStepParse(step, {
                     type: 'parse result',
                     subResult: { location: starting, type: 'lisp', text: result },
@@ -537,7 +543,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
 
     function isWord(): HandleStringValue<DocumentPart> {
         return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
-            function tryParseEndParse(input: string, _current: ILocation): StringStepParseResult<string> {
+            function tryParseEndParse(input: string, _current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithOpenComment.test(input)) {
                     return internals.stopFindingResults()
                 }
@@ -549,16 +555,18 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             const tryParseWhiteSpace = isKeptWhiteSpace();
     
-            function tryParseWord(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseWord(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 const startsWithWord = /^\S/;
                 if(startsWithWord.test(input)) {
                     const parsed = input.charAt(0);
                     const rest = input.slice(1);
+                    const location = current.increaseChar(1);
+
                     return util.ok({
                         type: 'parse result',
-                        subResult: parsed,
+                        subResult: { location: location, text: parsed, type: 'text' },
                         rest,
-                        location: current.increaseChar(1),
+                        location: location,
                     });
                 }
                 return internals.noResultFound();
@@ -573,7 +581,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return internals.noResultFound();
                 }
     
-                const result = parts.join('').trim();
+                const result = parts.map(p => p.text).join('').trim();
                 return util.ok({
                     type: 'parse result',
                     subResult: { type: 'text', text: result, location: starting },
