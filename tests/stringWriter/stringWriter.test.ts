@@ -537,7 +537,7 @@ a truly divided tail.
 
         });
 
-        describe.skip('own documentation', () => {
+        describe('own documentation', () => {
             beforeEach(() => {
                 toResult = testable.stringWriter.resultBuilder(container, environment => {
                     const util: IUtil = environment.buildAs<IUtil>('util');
@@ -558,7 +558,15 @@ a truly divided tail.
                 });
             });
 
-            it('should write the whole of its own documentation', () => {
+            it('should write the structure part of its own documentation', () => {
+                const filePath = './documentation/structure.md';
+                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+
+                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                verifyMarkdownResult(result);
+            });
+
+            it.skip('should write the whole of its own documentation', () => {
                 const filePath = './documentation/_main.dlisp';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
