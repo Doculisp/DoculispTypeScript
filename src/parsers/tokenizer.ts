@@ -225,21 +225,22 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
         }
     
         function tokenizeParameter(input: string, current: ILocation): StringStepParseResult<Token> {
-            let doesItStartWithParameter = /^[^\)\s]+[^\)]*/;
+            let doesItStartWithParameter = /^([^\s\(\)\\]+|\\\)|\\\(|\\\w|\\\\)+([^\(\)\\]+|\\\)|\\\(|\\\w|\\\\)*/;
             if(doesItStartWithParameter.test(input) && !isToken) {
                 let parameterValue: string = (input.match(doesItStartWithParameter) as any)[0];
-    
+                let paramLength = parameterValue.length;
+                
                 let atom: Token = {
                     type: 'token - parameter',
-                    text: parameterValue.trim(),
+                    text: parameterValue.trim().replace('\\(', '(').replace('\\)', ')'),
                     location: current,
                 };
     
                 return util.ok({
                     type: 'parse result',
                     subResult: atom,
-                    rest: input.slice(parameterValue.length),
-                    location: current.increaseChar(parameterValue.length),
+                    rest: input.slice(paramLength),
+                    location: current.increaseChar(paramLength),
                 });
             }
     

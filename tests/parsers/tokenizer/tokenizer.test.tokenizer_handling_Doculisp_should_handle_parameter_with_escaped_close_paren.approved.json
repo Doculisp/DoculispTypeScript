@@ -1,0 +1,54 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 7,
+      "documentIndex": 1,
+      "documentPath": "A:/main.md"
+    },
+    "tokens": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
+          "line": 2
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
+          "line": 2
+        },
+        "text": "title",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 8,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
+          "line": 2
+        },
+        "text": "The elusive )",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 22,
+          "documentDepth": 0,
+          "documentIndex": 0,
+          "documentPath": "A:/main.md",
+          "line": 2
+        },
+        "type": "token - close parenthesis"
+      }
+    ]
+  }
+}

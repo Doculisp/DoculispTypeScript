@@ -131,18 +131,8 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 22
         },
-        "text": "Title \\(required\\",
+        "text": "Title (required)",
         "type": "token - parameter"
-      },
-      {
-        "location": {
-          "char": 26,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 22
-        },
-        "type": "token - close parenthesis"
       },
       {
         "location": {

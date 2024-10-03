@@ -261,6 +261,44 @@ describe('tokenizer', () => {
 
             verifyAsJson(result);
         });
+
+        it('should handle parameter with escaped open paren', () => {
+            const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
+
+            let parseResult: Result<DocumentMap> = ok({
+                projectLocation: buildLocation('A:/main.md', 7, 1),
+                parts: [
+                    {
+                        type: 'lisp',
+                        location: start,
+                        text: "(title The elusive \\())",
+                    }
+                ]
+            });
+
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
+
+        it('should handle parameter with escaped close paren', () => {
+            const start: ILocation = util.location('A:/main.md', 0, 0, 2, 1);
+
+            let parseResult: Result<DocumentMap> = ok({
+                projectLocation: buildLocation('A:/main.md', 7, 1),
+                parts: [
+                    {
+                        type: 'lisp',
+                        location: start,
+                        text: "(title The elusive \\))",
+                    }
+                ]
+            });
+
+            const result = tokenizer(parseResult);
+
+            verifyAsJson(result);
+        });
     });
 
     describe('parsing a real documents', () => {

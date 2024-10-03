@@ -81,7 +81,82 @@ Example
 )
 ```
 
-### Title \(required\ ###
+### Title (required) ###
+
+This is the only sub block required for the `section-meta` block. The title is followed by a title that ends at a `)` . Every thing following the white space after the word title and until a new line or a close parenthesis is the title.
+
+### Link ###
+
+This is the first optional sub block for the `section-meta` block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.
+
+Example
+
+```doculisp
+(section-meta
+    (title Doculisp is awesome ✨)
+    (link doculisp_is_awesome_)
+)
+```
+
+### Subtitle ###
+
+Subtitle creates a heading that is two levels of heading less then the title directly beneath the title.
+
+### External ###
+
+This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea.
+
+Example
+
+```doculisp
+(section-meta
+    (title Doculisp a short description)
+    (external
+        (section ./doculisp.md)
+        (section ./section-meta.md)
+    )
+)
+```
+
+#### Sub-Sections ####
+
+The `external` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)` .
+
+You can add a space (
+
+` ` ) to a name by adding a `-` to the name.
+
+Example
+
+```doculisp
+(external
+    (chapter
+        ./information/one.md
+    )
+)
+```
+
+This will create a sub-section called `chapter` that is built using the file `./information/one.md` .
+
+Example
+
+```doculisp
+(external
+    (sub-section ./one.md)
+)
+```
+
+This will create a subsection called `sub section` that is built using the file `./one.md` .
+
+```doculisp
+(external (section ./two.md))
+```
+
+This will create a subsection called `section` that is built using the file `./two.md` .
+
+### Exception to the Rule ###
+
+Comment block breaks this rule slightly. The astrict character is a special character that cause all atoms that start with to be treated as a comment, and all parameters and sub blocks to be ignored.
 
 ## Content Block ##
 
