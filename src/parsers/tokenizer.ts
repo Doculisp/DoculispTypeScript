@@ -43,7 +43,7 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 });
             }
     
-            if(doesIt.startWithLinuxNewline.test(input)) {
+            if(doesIt.startWithAnyNewline.test(input)) {
                 const newLine = (input.match(doesIt.startWithLinuxNewline) as any)[0] as string;
                 input = input.slice(newLine.length);
                 return util.ok({
@@ -53,18 +53,8 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 });
             }
     
-            if(doesIt.startWithMacsNewline.test(input)) {
-                const newLine = (input.match(doesIt.startWithMacsNewline) as any)[0] as string;
-                input = input.slice(newLine.length);
-                return util.ok({
-                    type: 'discard',
-                    rest: input,
-                    location: current.increaseLine(),
-                });
-            }
-    
-            if(doesIt.startWithWhiteSpace.test(input)) {
-                const space = (input.match(doesIt.startWithWhiteSpace) as any)[0] as string;
+            if(doesIt.startWithNonNewLineWhiteSpace.test(input)) {
+                const space = (input.match(doesIt.startWithNonNewLineWhiteSpace) as any)[0] as string;
                 input = input.slice(space.length);
                 return util.ok({
                     type: 'discard',

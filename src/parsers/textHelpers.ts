@@ -2,10 +2,12 @@ import { IRegisterable } from "../types.containers";
 import { IDocumentSearches, ILispSearches, Searcher } from "../types.textHelpers";
 
 const documentSearches: IDocumentSearches = {
-    startWithWhiteSpace: /^\s/,
+    startWithNonNewLineWhiteSpace: /^[^\S\r\n]/, // /^\s/,
+    startWithAnyWhiteSpace: /^\s/,
     startWithWindowsNewline: /^\r\n/,
     startWithMacsNewline: /^\r/,
     startWithLinuxNewline: /^\n/,
+    startWithAnyNewline: /^[\r\n]/,
     startWithOpenComment: /^<!--/,
     startWithCloseComment: /^-->/,
     startWithInlineMarker: /^`/,

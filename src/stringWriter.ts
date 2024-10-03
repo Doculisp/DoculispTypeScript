@@ -227,11 +227,13 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
         }
 
         if(previousType === 'ast-write' && element.type === 'ast-write') {
-            if(0 < sb.lineLength){
-                sb.add(' ');
-            }
-            else {
+            if(previous.documentPath !== element.documentOrder.documentPath
+               || (previous.line + 2) <= element.documentOrder.line
+               || (element.documentOrder.line + 2) <= previous.line
+            ) {
                 sb.addLine();
+            } else if (0 < sb.lineLength) {
+                sb.add(' ');
             }
         }
         else {

@@ -7,10 +7,12 @@ export interface IMarkupSearches {
 };
 
 export interface IWhiteSpaceSearches {
-    readonly startWithWhiteSpace: RegExp;
+    readonly startWithNonNewLineWhiteSpace: RegExp;
+    readonly startWithAnyWhiteSpace: RegExp;
     readonly startWithWindowsNewline: RegExp;
     readonly startWithMacsNewline: RegExp;
     readonly startWithLinuxNewline: RegExp;
+    readonly startWithAnyNewline: RegExp;
 };
 
 export interface ILispSearches extends IWhiteSpaceSearches {

@@ -24,7 +24,7 @@ type ParesBuilder = {
 
 function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSearches, internals: IInternals, util: IUtil): ParesBuilder {
     function isStopParsingWhiteSpace(input: string, _current: ILocation): Result<'stop' | false> {
-        const regex = /\S+/;
+        const regex = /^\S+/;
         if(regex.test(input)) {
             return internals.stopFindingResults();
         }
@@ -67,7 +67,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l.increaseLine());
             const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, l => l.increaseLine());
             const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l.increaseLine());
-            const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithWhiteSpace, (l, f) => l.increaseChar(f));
+            const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithNonNewLineWhiteSpace, (l, f) => l.increaseChar(f));
     
             const whiteSpaceParser = createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
             const parsed = whiteSpaceParser.parse(input, current);
@@ -93,7 +93,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l.increaseLine());
             const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l.increaseLine());
             const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, l => l.increaseLine());
-            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithWhiteSpace, (l, f) => l.increaseChar(f));
+            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithNonNewLineWhiteSpace, (l, f) => l.increaseChar(f));
     
             const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
             const parsed = parser.parse(input, current);
@@ -219,20 +219,26 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 }
                 return internals.noResultFound();
             }
-    
-            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
-                if(doesIt.startWithWhiteSpace.test(input)) {
+
+            function tryParseNewLine(input: string, current: ILocation): StringStepParseResult<string> {
+                if(doesIt.startWithAnyNewline.test(input)){
                     if(!opened) {
                         return internals.stopFindingResults();
                     }
-        
-                    let doesItStartWithNewLine = /^(\r|\n)/;
-                    
-                    if(doesItStartWithNewLine.test(input)) {
-                        return util.fail(`Inline code block at ${starting.toString()} contains a new line before closing.`, projectLocation.documentPath);
+
+                    return util.fail(`Inline code block at ${starting.toString()} contains a new line before closing.`, projectLocation.documentPath);
+                }
+
+                return internals.noResultFound();
+            }
+    
+            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<string> {
+                if(doesIt.startWithNonNewLineWhiteSpace.test(input)) {
+                    if(!opened) {
+                        return internals.stopFindingResults();
                     }
     
-                    const parsed: string = (input.match(doesIt.startWithWhiteSpace) as any)[0];
+                    const parsed: string = (input.match(doesIt.startWithNonNewLineWhiteSpace) as any)[0];
                     const rest = input.slice(parsed.length);
                     return util.ok({
                         type: 'parse result',
@@ -267,7 +273,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 return internals.noResultFound();
             }
     
-            const parser = internals.createStringParser(tryEnd, tryParseInLine, tryParseWhiteSpace, tryParseWord);
+            const parser = internals.createStringParser(tryEnd, tryParseInLine, tryParseNewLine, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, starting);
     
             if(parsed.success) {
@@ -461,7 +467,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             }
     
             function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
-                if(opened && doesIt.startWithWhiteSpace.test(input)) {
+                if(opened && doesIt.startWithAnyWhiteSpace.test(input)) {
                     return stripWhiteSpace(input, current);
                 }
                 return internals.noResultFound();

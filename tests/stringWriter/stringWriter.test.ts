@@ -73,6 +73,7 @@ describe('stringWriter', () => {
 
             it('should write a multiline code block', () => {
                 const md = `An example of an markdown document with html comments:
+
 \`\`\`markdown
     # A document
     
@@ -600,6 +601,14 @@ a truly divided tail.
 
             it('should write the comment part of its own documentation', () => {
                 const filePath = './documentation/comment.md';
+                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+
+                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                verifyMarkdownResult(result);
+            });
+
+            it('should write the keywords part of its own documentation', () => {
+                const filePath = './documentation/keywords.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
