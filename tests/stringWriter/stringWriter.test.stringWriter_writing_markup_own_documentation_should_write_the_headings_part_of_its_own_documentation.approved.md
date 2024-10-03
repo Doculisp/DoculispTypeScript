@@ -1,14 +1,12 @@
-<!--
-(dl
-    (section-meta
-        (title Dynamic Headings)
-    )
-)
--->
+<!-- Generated Document do not edit! -->
+
+# Dynamic Headings #
 
 Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the `(#` block, or dynamic headinlg block.
 
-The dynamic heading block works differently then other blocks. The number of `#` signs determins how far it is beneith the current sub/section heading.
+The dynamic heading block works differently then other blocks. The number of
+
+`#` signs determins how far it is beneith the current sub/section heading.
 
 Example
 
@@ -43,6 +41,8 @@ If this example was the top level document, then the title of the document, Head
 
 However if this document reprended a subsection directly under the Title, then "Maths an intro" would be Heading 2, "Summary" heading 3, and "Reasons For Document" would be Heading 4.
 
-<!-- (dl (# Max Heading Depth)) -->
+## Max Heading Depth ##
 
 Currently, the maximum heading depth recognized by Markdown is H6. However Doculisp will not restrict you to that depth. If the total depth is more then H6 you may get unexpected results.
+
+<!-- Generated Document do not edit! -->

@@ -76,7 +76,7 @@
           "documentPath": "./documentation/headings.md",
           "line": 15
         },
-        "text": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Maths an intro)\r\n        (external\r\n            (section ./add.md)\r\n            (section ./subtract.md)\r\n            (section ./muliply.md)\r\n            (section ./divide.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n\r\n<!-- (# Summary) -->\r\n\r\nA cool summary of maths.\r\n\r\n<!-- (## Resons For Document) -->\r\n\r\nAn explination why to have the document.\r\n\r\n\r\n<!-- (dl (content (toc unlabled))) -->\r\n```",
+        "text": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Maths an intro)\r\n        (external\r\n            (section ./add.md)\r\n            (section ./subtract.md)\r\n            (section ./muliply.md)\r\n            (section ./divide.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n\r\n<!-- (dl (# Summary)) -->\r\n\r\nA cool summary of maths.\r\n\r\n<!-- (dl (## Resons For Document)) -->\r\n\r\nAn explination why to have the document.\r\n\r\n\r\n<!-- (dl (content (toc unlabled))) -->\r\n```",
         "type": "text"
       },
       {
@@ -89,6 +89,17 @@
         },
         "text": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3.\r\n\r\nHowever if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4.",
         "type": "text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 46
+        },
+        "text": "(# Max Heading Depth)",
+        "type": "lisp"
       },
       {
         "location": {
