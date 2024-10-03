@@ -598,6 +598,14 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
+            it('should write the comment part of its own documentation', () => {
+                const filePath = './documentation/comment.md';
+                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+
+                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                verifyMarkdownResult(result);
+            });
+
             it.skip('should write the whole of its own documentation', () => {
                 const filePath = './documentation/_main.dlisp';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
