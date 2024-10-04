@@ -65,7 +65,29 @@
           "documentPath": "./documentation/structure.md",
           "line": 9
         },
-        "text": ".\r\n\r\nEven the Doculisp main block follows this.\r\n\r\nExample",
+        "text": ".",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 11
+        },
+        "text": "Even the Doculisp main block follows this.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 13
+        },
+        "text": "Example",
         "type": "text"
       },
       {

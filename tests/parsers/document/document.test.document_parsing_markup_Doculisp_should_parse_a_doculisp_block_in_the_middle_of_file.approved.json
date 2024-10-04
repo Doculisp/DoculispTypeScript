@@ -10,7 +10,18 @@
           "documentPath": "_main.md",
           "line": 1
         },
-        "text": "# Title\r\nsome text about title",
+        "text": "# Title",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 7,
+          "documentIndex": 5,
+          "documentPath": "_main.md",
+          "line": 2
+        },
+        "text": "some text about title",
         "type": "text"
       },
       {

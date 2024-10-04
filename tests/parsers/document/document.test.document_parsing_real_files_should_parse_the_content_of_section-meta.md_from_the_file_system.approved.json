@@ -21,7 +21,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 9
         },
-        "text": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external.\n\nExample",
+        "text": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 11
+        },
+        "text": "Example",
         "type": "text"
       },
       {
@@ -142,7 +153,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 28
         },
-        "text": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.\n\nExample",
+        "text": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 30
+        },
+        "text": "Example",
         "type": "text"
       },
       {
@@ -197,7 +219,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 45
         },
-        "text": "This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea.\n\nExample",
+        "text": "This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 47
+        },
+        "text": "Example",
         "type": "text"
       },
       {
@@ -296,7 +329,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 61
         },
-        "text": ".\n\nYou can add a space (",
+        "text": ".",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 63
+        },
+        "text": "You can add a space (",
         "type": "text"
       },
       {
@@ -340,7 +384,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 63
         },
-        "text": "to the name.\n\nExample",
+        "text": "to the name.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 65
+        },
+        "text": "Example",
         "type": "text"
       },
       {
@@ -406,7 +461,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 75
         },
-        "text": ".\n\nExample",
+        "text": ".",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 77
+        },
+        "text": "Example",
         "type": "text"
       },
       {

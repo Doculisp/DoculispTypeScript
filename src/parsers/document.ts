@@ -553,7 +553,22 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 return internals.noResultFound();
             }
     
-            const tryParseWhiteSpace = isKeptWhiteSpace();
+            function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
+                if(doesIt.startWithNonNewLineWhiteSpace.test(input)) {
+                    const parsed: string = (input.match(doesIt.startWithNonNewLineWhiteSpace) as any)[0];
+                    const rest = input.slice(parsed.length);
+                    const location = current.increaseChar(parsed.length);
+    
+                    return util.ok({
+                        type: 'parse result',
+                        subResult: { location: location, text: parsed, type: 'text' },
+                        rest,
+                        location: location,
+                    });
+                }
+
+                return internals.noResultFound();
+            }
     
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 const startsWithWord = /^\S/;

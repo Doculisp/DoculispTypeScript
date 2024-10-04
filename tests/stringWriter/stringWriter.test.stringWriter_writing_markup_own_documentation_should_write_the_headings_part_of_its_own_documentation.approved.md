@@ -4,9 +4,7 @@
 
 Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the `(#` block, or dynamic headinlg block.
 
-The dynamic heading block works differently then other blocks. The number of
-
-`#` signs determins how far it is beneith the current sub/section heading.
+The dynamic heading block works differently then other blocks. The number of `#` signs determins how far it is beneith the current sub/section heading.
 
 Example
 

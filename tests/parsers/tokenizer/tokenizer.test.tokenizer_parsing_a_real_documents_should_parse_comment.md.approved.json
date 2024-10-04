@@ -110,7 +110,18 @@
           "documentPath": "./documentation/comment.md",
           "line": 9
         },
-        "text": "just after an open parenthisis and end when the block and all its subblocks are closed.\r\n\r\nExample:",
+        "text": "just after an open parenthisis and end when the block and all its subblocks are closed.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 11
+        },
+        "text": "Example:",
         "type": "token - text"
       },
       {
@@ -154,7 +165,18 @@
           "documentPath": "./documentation/comment.md",
           "line": 29
         },
-        "text": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.\r\n\r\nxample:",
+        "text": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 31
+        },
+        "text": "xample:",
         "type": "token - text"
       },
       {

@@ -110,7 +110,18 @@
           "documentPath": "./documentation/doculisp.md",
           "line": 9
         },
-        "text": "followed by a white space. This doculisp block must be contained in an html comment.\r\n\r\nExample",
+        "text": "followed by a white space. This doculisp block must be contained in an html comment.",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 2,
+          "documentPath": "./documentation/doculisp.md",
+          "line": 11
+        },
+        "text": "Example",
         "type": "token - text"
       },
       {

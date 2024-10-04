@@ -88,7 +88,29 @@
           "documentPath": "./documentation/keywords.md",
           "line": 9
         },
-        "text": "Here is a list of all the key atoms by depth:\n\n* markdown\n*",
+        "text": "Here is a list of all the key atoms by depth:",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 11
+        },
+        "text": "* markdown",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 12
+        },
+        "text": "*",
         "type": "token - text"
       },
       {
@@ -154,7 +176,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 14
         },
-        "text": "text\n      *",
+        "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": "*",
         "type": "token - text"
       },
       {
@@ -198,7 +231,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 16
         },
-        "text": "text\n      *",
+        "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": "*",
         "type": "token - text"
       },
       {
@@ -242,7 +286,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 18
         },
-        "text": "text\n      *",
+        "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": "*",
         "type": "token - text"
       },
       {
@@ -286,7 +341,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 21
         },
-        "text": "* name path\n      *",
+        "text": "* name path",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": "*",
         "type": "token - text"
       },
       {
@@ -374,7 +440,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 25
         },
-        "text": "bullet style\n  *",
+        "text": "bullet style",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 26
+        },
+        "text": "*",
         "type": "token - text"
       },
       {
@@ -396,7 +473,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 26
         },
-        "text": "text\n  *",
+        "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 27
+        },
+        "text": "*",
         "type": "token - text"
       },
       {

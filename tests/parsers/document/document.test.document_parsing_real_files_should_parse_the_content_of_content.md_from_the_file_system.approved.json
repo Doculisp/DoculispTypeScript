@@ -43,7 +43,18 @@
           "documentPath": "./documentation/content.md",
           "line": 13
         },
-        "text": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.\r\n\r\nThe structure of the table of contents is",
+        "text": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": "The structure of the table of contents is",
         "type": "text"
       },
       {
@@ -65,7 +76,95 @@
           "documentPath": "./documentation/content.md",
           "line": 15
         },
-        "text": "there is an optional parameter that can have one of the following values:\r\n\r\n* no-table\r\n* unlabeled\r\n* labeled\r\n* numbered\r\n* numbered-labeled\r\n* bulleted\r\n* bulleted-labeled\r\n\r\nExamples",
+        "text": "there is an optional parameter that can have one of the following values:",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 17
+        },
+        "text": "* no-table",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 18
+        },
+        "text": "* unlabeled",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 19
+        },
+        "text": "* labeled",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 20
+        },
+        "text": "* numbered",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 21
+        },
+        "text": "* numbered-labeled",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 22
+        },
+        "text": "* bulleted",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 23
+        },
+        "text": "* bulleted-labeled",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 25
+        },
+        "text": "Examples",
         "type": "text"
       },
       {
