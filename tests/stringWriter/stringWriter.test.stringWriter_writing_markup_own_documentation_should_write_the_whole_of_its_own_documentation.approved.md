@@ -93,7 +93,7 @@ Example
 
 ```doculisp
 (section-meta
-    (title Doculisp is awesome ?)
+    (title Doculisp is awesome ✨)
     (link doculisp_is_awesome_)
 )
 ```
@@ -120,7 +120,7 @@ Example
 
 #### Sub-Sections ####
 
-The `external` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a varible name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)`.
+The `external` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)`.
 
 You can add a space (` `) to a name by adding a `-` to the name.
 
@@ -228,11 +228,11 @@ Example
 )
 -->
 
-<!-- (# Summary) -->
+<!-- (dl (# Summary)) -->
 
 A cool summary of maths.
 
-<!-- (## Resons For Document) -->
+<!-- (dl (## Resons For Document)) -->
 
 An explination why to have the document.
 
@@ -243,6 +243,8 @@ An explination why to have the document.
 If this example was the top level document, then the title of the document, Heading 1, would be "Maths an intro". "Summray" would then be created as a Heading 2, and  "Resons For Document" as Heading 3.
 
 However if this document reprended a subsection directly under the Title, then "Maths an intro" would be Heading 2, "Summary" heading 3, and "Reasons For Document" would be Heading 4.
+
+### Max Heading Depth ###
 
 Currently, the maximum heading depth recognized by Markdown is H6. However Doculisp will not restrict you to that depth. If the total depth is more then H6 you may get unexpected results.
 
@@ -299,18 +301,19 @@ Here is a list of all the key atoms by depth:
 * markdown
 * `dl`
   * `section-meta`
-    * `title`
+    * `title` text
       * `*`
-    * `subtitle`
+    * `subtitle` text
       * `*`
-    * `link`
+    * `link` text
       * `*`
     * `external`
+      * name path
       * `*`
     * `*`
   * `content`
-    * `toc`
-  * `#`
+    * `toc` bullet style
+  * `#` text
   * `*`
 * `*`
 
