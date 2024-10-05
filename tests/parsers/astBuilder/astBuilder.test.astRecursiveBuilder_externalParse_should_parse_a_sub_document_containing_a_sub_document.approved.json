@@ -30,7 +30,18 @@
             "line": 11
           },
           "type": "ast-write",
-          "value": "Hello World!\n\n(content)"
+          "value": "Hello World!"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": "(content)"
         }
       ],
       "documentOrder": {
@@ -66,7 +77,18 @@
                   "line": 12
                 },
                 "type": "ast-write",
-                "value": "Hi Dad!\n\n(content)"
+                "value": "Hi Dad!"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./child.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": "(content)"
               }
             ],
             "documentOrder": {

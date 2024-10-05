@@ -88,7 +88,7 @@
           "documentPath": "./documentation/structure.md",
           "line": 9
         },
-        "text": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses",
+        "text": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses ",
         "type": "token - text"
       },
       {
@@ -110,7 +110,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 9
         },
-        "text": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 166,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 9
+        },
+        "text": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses ",
         "type": "token - text"
       },
       {
@@ -176,7 +187,7 @@
           "documentPath": "./documentation/structure.md",
           "line": 25
         },
-        "text": "The first block is the",
+        "text": "The first block is the ",
         "type": "token - text"
       },
       {
@@ -198,7 +209,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 25
         },
-        "text": "block. In it",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 29,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "block. In it ",
         "type": "token - text"
       },
       {
@@ -220,7 +242,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 25
         },
-        "text": "is the atom. It contains the",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 47,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "is the atom. It contains the ",
         "type": "token - text"
       },
       {
@@ -242,7 +275,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 25
         },
-        "text": "sub-block.  That block has the atom",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 91,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "sub-block.  That block has the atom ",
         "type": "token - text"
       },
       {
@@ -264,7 +308,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 25
         },
-        "text": "followed by a further sub block. The last sub block is the",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 142,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "followed by a further sub block. The last sub block is the ",
         "type": "token - text"
       },
       {
@@ -286,7 +341,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 25
         },
-        "text": "sub block. In it",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 209,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "sub block. In it ",
         "type": "token - text"
       },
       {
@@ -308,7 +374,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 25
         },
-        "text": "is the atom and",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 234,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": "is the atom and ",
         "type": "token - text"
       },
       {
@@ -320,6 +397,17 @@
           "line": 25
         },
         "text": "`Basic Structure`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 268,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 25
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -405,7 +493,18 @@
           "documentPath": "./documentation/structure.md",
           "line": 29
         },
-        "text": "or",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 79,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./documentation/structure.md",
+          "line": 29
+        },
+        "text": "or ",
         "type": "token - text"
       },
       {

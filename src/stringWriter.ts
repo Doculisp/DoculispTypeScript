@@ -233,7 +233,7 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
             ) {
                 sb.addLine();
             } else if (0 < sb.lineLength) {
-                sb.add(' ');
+                //sb.add(' ');
             }
         }
         else {

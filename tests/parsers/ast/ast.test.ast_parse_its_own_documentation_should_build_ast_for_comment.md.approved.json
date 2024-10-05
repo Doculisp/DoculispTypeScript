@@ -30,7 +30,7 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics"
+          "value": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics "
         },
         {
           "documentOrder": {
@@ -52,7 +52,29 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "just after an open parenthisis and end when the block and all its subblocks are closed.\r\n\r\nExample:"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 151,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "just after an open parenthisis and end when the block and all its subblocks are closed."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 11
+          },
+          "type": "ast-write",
+          "value": "Example:"
         },
         {
           "documentOrder": {
@@ -74,7 +96,7 @@
             "line": 29
           },
           "type": "ast-write",
-          "value": "In this example the"
+          "value": "In this example the "
         },
         {
           "documentOrder": {
@@ -96,7 +118,29 @@
             "line": 29
           },
           "type": "ast-write",
-          "value": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.\r\n\r\nxample:"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 36,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 31
+          },
+          "type": "ast-write",
+          "value": "xample:"
         },
         {
           "documentOrder": {
@@ -130,7 +174,7 @@
             "line": 51
           },
           "type": "ast-write",
-          "value": "In this example the"
+          "value": "In this example the "
         },
         {
           "documentOrder": {
@@ -152,7 +196,18 @@
             "line": 51
           },
           "type": "ast-write",
-          "value": "and all its subblocks are commented out. However when you uncomment"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 36,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "and all its subblocks are commented out. However when you uncomment "
         },
         {
           "documentOrder": {
@@ -174,7 +229,18 @@
             "line": 51
           },
           "type": "ast-write",
-          "value": "then the"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 119,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "then the "
         },
         {
           "documentOrder": {
@@ -196,7 +262,18 @@
             "line": 51
           },
           "type": "ast-write",
-          "value": "block will be commented out. When you uncomment that block, then the"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 139,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": "block will be commented out. When you uncomment that block, then the "
         },
         {
           "documentOrder": {
@@ -208,6 +285,17 @@
           },
           "type": "ast-write",
           "value": "`section ./comment.md`"
+        },
+        {
+          "documentOrder": {
+            "char": 231,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\comment.md",
+            "line": 51
+          },
+          "type": "ast-write",
+          "value": " "
         },
         {
           "documentOrder": {

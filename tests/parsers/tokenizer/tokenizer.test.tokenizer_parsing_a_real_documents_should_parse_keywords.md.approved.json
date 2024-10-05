@@ -110,7 +110,7 @@
           "documentPath": "./documentation/keywords.md",
           "line": 12
         },
-        "text": "*",
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -126,13 +126,35 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 13
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 3,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 13
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 13
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -148,13 +170,57 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 5,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 14
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -176,7 +242,73 @@
           "documentPath": "./documentation/keywords.md",
           "line": 14
         },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 15,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 14
+        },
         "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -187,7 +319,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 15
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 15
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -203,13 +346,57 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 5,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 16
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -231,7 +418,73 @@
           "documentPath": "./documentation/keywords.md",
           "line": 16
         },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 18,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 16
+        },
         "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -242,7 +495,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 17
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 17
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -258,13 +522,57 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 5,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 18
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -286,7 +594,73 @@
           "documentPath": "./documentation/keywords.md",
           "line": 18
         },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 14,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 18
+        },
         "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -297,7 +671,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 19
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 19
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -313,13 +698,57 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 5,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 20
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 20
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -335,6 +764,72 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 7,
           "documentDepth": 2,
           "documentIndex": 7,
@@ -346,13 +841,79 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 7,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 22
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 22
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -368,13 +929,57 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 23
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 23
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 23
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 5,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 23
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 23
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -390,13 +995,35 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 24
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 3,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 24
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 24
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -412,13 +1039,57 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
           "char": 5,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
           "line": 25
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -440,7 +1111,29 @@
           "documentPath": "./documentation/keywords.md",
           "line": 25
         },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 13,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 25
+        },
         "text": "bullet style",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 26
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -451,7 +1144,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 26
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 26
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -473,7 +1177,29 @@
           "documentPath": "./documentation/keywords.md",
           "line": 26
         },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 26
+        },
         "text": "text",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 27
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -484,7 +1210,18 @@
           "documentPath": "./documentation/keywords.md",
           "line": 27
         },
-        "text": "*",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "./documentation/keywords.md",
+          "line": 27
+        },
+        "text": "* ",
         "type": "token - text"
       },
       {
@@ -506,7 +1243,7 @@
           "documentPath": "./documentation/keywords.md",
           "line": 28
         },
-        "text": "*",
+        "text": "* ",
         "type": "token - text"
       },
       {

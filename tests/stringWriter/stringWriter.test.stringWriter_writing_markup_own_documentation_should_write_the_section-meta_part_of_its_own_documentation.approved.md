@@ -17,7 +17,7 @@ Example
 
 ## Title (required) ##
 
-This is the only sub block required for the `section-meta` block. The title is followed by a title that ends at a `)` . Every thing following the white space after the word title and until a new line or a close parenthesis is the title.
+This is the only sub block required for the `section-meta` block. The title is followed by a title that ends at a `)`. Every thing following the white space after the word title and until a new line or a close parenthesis is the title.
 
 ## Link ##
 
@@ -54,9 +54,9 @@ Example
 
 ### Sub-Sections ###
 
-The `external` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)` .
+The `external` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)`.
 
-You can add a space ( ` ` ) to a name by adding a `-` to the name.
+You can add a space (` `) to a name by adding a `-` to the name.
 
 Example
 
@@ -68,7 +68,7 @@ Example
 )
 ```
 
-This will create a sub-section called `chapter` that is built using the file `./information/one.md` .
+This will create a sub-section called `chapter` that is built using the file `./information/one.md`.
 
 Example
 
@@ -78,13 +78,13 @@ Example
 )
 ```
 
-This will create a subsection called `sub section` that is built using the file `./one.md` .
+This will create a subsection called `sub section` that is built using the file `./one.md`.
 
 ```doculisp
 (external (section ./two.md))
 ```
 
-This will create a subsection called `section` that is built using the file `./two.md` .
+This will create a subsection called `section` that is built using the file `./two.md`.
 
 ## Exception to the Rule ##
 

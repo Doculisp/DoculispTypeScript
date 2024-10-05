@@ -76,7 +76,7 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses"
+                "value": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses "
               },
               {
                 "documentOrder": {
@@ -98,7 +98,18 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 166,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses "
               },
               {
                 "documentOrder": {
@@ -120,7 +131,29 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": ".\r\n\r\nEven the Doculisp main block follows this.\r\n\r\nExample"
+                "value": "."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "Even the Doculisp main block follows this."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -142,7 +175,7 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "The first block is the"
+                "value": "The first block is the "
               },
               {
                 "documentOrder": {
@@ -164,7 +197,18 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "block. In it"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 29,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "block. In it "
               },
               {
                 "documentOrder": {
@@ -186,7 +230,18 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "is the atom. It contains the"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 47,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "is the atom. It contains the "
               },
               {
                 "documentOrder": {
@@ -208,7 +263,18 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "sub-block.  That block has the atom"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 91,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "sub-block.  That block has the atom "
               },
               {
                 "documentOrder": {
@@ -230,7 +296,18 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "followed by a further sub block. The last sub block is the"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 142,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "followed by a further sub block. The last sub block is the "
               },
               {
                 "documentOrder": {
@@ -252,7 +329,18 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "sub block. In it"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 209,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "sub block. In it "
               },
               {
                 "documentOrder": {
@@ -274,7 +362,18 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "is the atom and"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 234,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "is the atom and "
               },
               {
                 "documentOrder": {
@@ -286,6 +385,17 @@
                 },
                 "type": "ast-write",
                 "value": "`Basic Structure`"
+              },
+              {
+                "documentOrder": {
+                  "char": 268,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": " "
               },
               {
                 "documentOrder": {
@@ -341,7 +451,18 @@
                   "line": 29
                 },
                 "type": "ast-write",
-                "value": "or"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 79,
+                  "documentDepth": 2,
+                  "documentIndex": 1,
+                  "documentPath": "./structure.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "or "
               },
               {
                 "documentOrder": {
@@ -435,7 +556,7 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "All doculisp is contained in an outer doculisp block. That block starts with"
+                "value": "All doculisp is contained in an outer doculisp block. That block starts with "
               },
               {
                 "documentOrder": {
@@ -457,7 +578,29 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "followed by a white space. This doculisp block must be contained in an html comment.\r\n\r\nExample"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 84,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "followed by a white space. This doculisp block must be contained in an html comment."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 2,
+                  "documentPath": "./doculisp.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -528,7 +671,18 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external.\n\nExample"
+                "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -562,7 +716,7 @@
                   "line": 24
                 },
                 "type": "ast-write",
-                "value": "This is the only sub block required for the"
+                "value": "This is the only sub block required for the "
               },
               {
                 "documentOrder": {
@@ -584,7 +738,18 @@
                   "line": 24
                 },
                 "type": "ast-write",
-                "value": "block. The title is followed by a title that ends at a"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 60,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 24
+                },
+                "type": "ast-write",
+                "value": "block. The title is followed by a title that ends at a "
               },
               {
                 "documentOrder": {
@@ -629,7 +794,7 @@
                   "line": 28
                 },
                 "type": "ast-write",
-                "value": "This is the first optional sub block for the"
+                "value": "This is the first optional sub block for the "
               },
               {
                 "documentOrder": {
@@ -651,7 +816,29 @@
                   "line": 28
                 },
                 "type": "ast-write",
-                "value": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.\n\nExample"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 61,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 28
+                },
+                "type": "ast-write",
+                "value": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 30
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -708,7 +895,18 @@
                   "line": 45
                 },
                 "type": "ast-write",
-                "value": "This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea.\n\nExample"
+                "value": "This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 47
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -742,7 +940,7 @@
                   "line": 61
                 },
                 "type": "ast-write",
-                "value": "The"
+                "value": "The "
               },
               {
                 "documentOrder": {
@@ -764,7 +962,18 @@
                   "line": 61
                 },
                 "type": "ast-write",
-                "value": "block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 16,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 61
+                },
+                "type": "ast-write",
+                "value": "block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is "
               },
               {
                 "documentOrder": {
@@ -786,7 +995,18 @@
                   "line": 61
                 },
                 "type": "ast-write",
-                "value": "followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 273,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 61
+                },
+                "type": "ast-write",
+                "value": "followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in "
               },
               {
                 "documentOrder": {
@@ -808,7 +1028,18 @@
                   "line": 61
                 },
                 "type": "ast-write",
-                "value": ".\n\nYou can add a space ("
+                "value": "."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 63
+                },
+                "type": "ast-write",
+                "value": "You can add a space ("
               },
               {
                 "documentOrder": {
@@ -830,7 +1061,7 @@
                   "line": 63
                 },
                 "type": "ast-write",
-                "value": ") to a name by adding a"
+                "value": ") to a name by adding a "
               },
               {
                 "documentOrder": {
@@ -852,7 +1083,29 @@
                   "line": 63
                 },
                 "type": "ast-write",
-                "value": "to the name.\n\nExample"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 53,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 63
+                },
+                "type": "ast-write",
+                "value": "to the name."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 65
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -874,7 +1127,7 @@
                   "line": 75
                 },
                 "type": "ast-write",
-                "value": "This will create a sub-section called"
+                "value": "This will create a sub-section called "
               },
               {
                 "documentOrder": {
@@ -896,7 +1149,18 @@
                   "line": 75
                 },
                 "type": "ast-write",
-                "value": "that is built using the file"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 49,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 75
+                },
+                "type": "ast-write",
+                "value": "that is built using the file "
               },
               {
                 "documentOrder": {
@@ -918,7 +1182,18 @@
                   "line": 75
                 },
                 "type": "ast-write",
-                "value": ".\n\nExample"
+                "value": "."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 77
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -940,7 +1215,7 @@
                   "line": 85
                 },
                 "type": "ast-write",
-                "value": "This will create a subsection called"
+                "value": "This will create a subsection called "
               },
               {
                 "documentOrder": {
@@ -962,7 +1237,18 @@
                   "line": 85
                 },
                 "type": "ast-write",
-                "value": "that is built using the file"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 52,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 85
+                },
+                "type": "ast-write",
+                "value": "that is built using the file "
               },
               {
                 "documentOrder": {
@@ -1006,7 +1292,7 @@
                   "line": 91
                 },
                 "type": "ast-write",
-                "value": "This will create a subsection called"
+                "value": "This will create a subsection called "
               },
               {
                 "documentOrder": {
@@ -1028,7 +1314,18 @@
                   "line": 91
                 },
                 "type": "ast-write",
-                "value": "that is built using the file"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 48,
+                  "documentDepth": 2,
+                  "documentIndex": 3,
+                  "documentPath": "./section-meta.md",
+                  "line": 91
+                },
+                "type": "ast-write",
+                "value": "that is built using the file "
               },
               {
                 "documentOrder": {
@@ -1145,7 +1442,18 @@
                   "line": 13
                 },
                 "type": "ast-write",
-                "value": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.\r\n\r\nThe structure of the table of contents is"
+                "value": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "The structure of the table of contents is "
               },
               {
                 "documentOrder": {
@@ -1167,7 +1475,106 @@
                   "line": 15
                 },
                 "type": "ast-write",
-                "value": "there is an optional parameter that can have one of the following values:\r\n\r\n* no-table\r\n* unlabeled\r\n* labeled\r\n* numbered\r\n* numbered-labeled\r\n* bulleted\r\n* bulleted-labeled\r\n\r\nExamples"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 51,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "there is an optional parameter that can have one of the following values:"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": "* no-table"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": "* unlabeled"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": "* labeled"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": "* numbered"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": "* numbered-labeled"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": "* bulleted"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": "* bulleted-labeled"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "Examples"
               },
               {
                 "documentOrder": {
@@ -1178,7 +1585,18 @@
                   "line": 27
                 },
                 "type": "ast-write",
-                "value": "```doculisp\r\n(contents (toc))\r\n```\r\n\r\n```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
+                "value": "```doculisp\r\n(contents (toc))\r\n```"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 31
+                },
+                "type": "ast-write",
+                "value": "```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
               },
               {
                 "documentOrder": {
@@ -1189,7 +1607,7 @@
                   "line": 35
                 },
                 "type": "ast-write",
-                "value": "Any of the options with"
+                "value": "Any of the options with "
               },
               {
                 "documentOrder": {
@@ -1211,7 +1629,18 @@
                   "line": 35
                 },
                 "type": "ast-write",
-                "value": "on it will use the name of the subsection."
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 34,
+                  "documentDepth": 2,
+                  "documentIndex": 4,
+                  "documentPath": "./content.md",
+                  "line": 35
+                },
+                "type": "ast-write",
+                "value": "on it will use the name of the subsection. "
               },
               {
                 "documentOrder": {
@@ -1293,7 +1722,7 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the"
+                "value": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the "
               },
               {
                 "documentOrder": {
@@ -1315,7 +1744,29 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "block, or dynamic headinlg block.\r\n\r\nThe dynamic heading block works differently then other blocks. The number of"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 154,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "block, or dynamic headinlg block."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "The dynamic heading block works differently then other blocks. The number of "
               },
               {
                 "documentOrder": {
@@ -1337,7 +1788,29 @@
                   "line": 11
                 },
                 "type": "ast-write",
-                "value": "signs determins how far it is beneith the current sub/section heading.\r\n\r\nExample"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 82,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "signs determins how far it is beneith the current sub/section heading."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "Example"
               },
               {
                 "documentOrder": {
@@ -1359,7 +1832,18 @@
                   "line": 42
                 },
                 "type": "ast-write",
-                "value": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3.\r\n\r\nHowever if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4."
+                "value": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 5,
+                  "documentPath": "./headings.md",
+                  "line": 44
+                },
+                "type": "ast-write",
+                "value": "However if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4."
               },
               {
                 "depthCount": 3,
@@ -1431,7 +1915,7 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics"
+                "value": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics "
               },
               {
                 "documentOrder": {
@@ -1453,7 +1937,29 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "just after an open parenthisis and end when the block and all its subblocks are closed.\r\n\r\nExample:"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 151,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 9
+                },
+                "type": "ast-write",
+                "value": "just after an open parenthisis and end when the block and all its subblocks are closed."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "Example:"
               },
               {
                 "documentOrder": {
@@ -1475,7 +1981,7 @@
                   "line": 29
                 },
                 "type": "ast-write",
-                "value": "In this example the"
+                "value": "In this example the "
               },
               {
                 "documentOrder": {
@@ -1497,7 +2003,29 @@
                   "line": 29
                 },
                 "type": "ast-write",
-                "value": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.\r\n\r\nxample:"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 36,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 29
+                },
+                "type": "ast-write",
+                "value": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 31
+                },
+                "type": "ast-write",
+                "value": "xample:"
               },
               {
                 "documentOrder": {
@@ -1531,7 +2059,7 @@
                   "line": 51
                 },
                 "type": "ast-write",
-                "value": "In this example the"
+                "value": "In this example the "
               },
               {
                 "documentOrder": {
@@ -1553,7 +2081,18 @@
                   "line": 51
                 },
                 "type": "ast-write",
-                "value": "and all its subblocks are commented out. However when you uncomment"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 36,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "and all its subblocks are commented out. However when you uncomment "
               },
               {
                 "documentOrder": {
@@ -1575,7 +2114,18 @@
                   "line": 51
                 },
                 "type": "ast-write",
-                "value": "then the"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 119,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "then the "
               },
               {
                 "documentOrder": {
@@ -1597,7 +2147,18 @@
                   "line": 51
                 },
                 "type": "ast-write",
-                "value": "block will be commented out. When you uncomment that block, then the"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 139,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": "block will be commented out. When you uncomment that block, then the "
               },
               {
                 "documentOrder": {
@@ -1609,6 +2170,17 @@
                 },
                 "type": "ast-write",
                 "value": "`section ./comment.md`"
+              },
+              {
+                "documentOrder": {
+                  "char": 231,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./comment.md",
+                  "line": 51
+                },
+                "type": "ast-write",
+                "value": " "
               },
               {
                 "documentOrder": {
@@ -1668,7 +2240,29 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "Here is a list of all the key atoms by depth:\n\n* markdown\n*"
+                "value": "Here is a list of all the key atoms by depth:"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 11
+                },
+                "type": "ast-write",
+                "value": "* markdown"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 12
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1683,6 +2277,17 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 3,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1690,7 +2295,18 @@
                   "line": 13
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 13
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1705,6 +2321,39 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 5,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1712,7 +2361,18 @@
                   "line": 14
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1734,7 +2394,95 @@
                   "line": 14
                 },
                 "type": "ast-write",
-                "value": "text\n      *"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 15,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 14
+                },
+                "type": "ast-write",
+                "value": "text"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 15
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1749,6 +2497,39 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 5,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1756,7 +2537,18 @@
                   "line": 16
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1778,7 +2570,95 @@
                   "line": 16
                 },
                 "type": "ast-write",
-                "value": "text\n      *"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 18,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 16
+                },
+                "type": "ast-write",
+                "value": "text"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1793,6 +2673,39 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 5,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1800,7 +2713,18 @@
                   "line": 18
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1822,7 +2746,95 @@
                   "line": 18
                 },
                 "type": "ast-write",
-                "value": "text\n      *"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 14,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": "text"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1837,6 +2849,39 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 5,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1844,7 +2889,18 @@
                   "line": 20
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1859,6 +2915,61 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 7,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1866,7 +2977,95 @@
                   "line": 21
                 },
                 "type": "ast-write",
-                "value": "* name path\n      *"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": "* name path"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1881,6 +3080,39 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 5,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1888,7 +3120,18 @@
                   "line": 23
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1903,6 +3146,17 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 24
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 3,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1910,7 +3164,18 @@
                   "line": 24
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 24
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1925,6 +3190,39 @@
               },
               {
                 "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
                   "char": 5,
                   "documentDepth": 2,
                   "documentIndex": 7,
@@ -1932,7 +3230,18 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1954,7 +3263,51 @@
                   "line": 25
                 },
                 "type": "ast-write",
-                "value": "bullet style\n  *"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 13,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 25
+                },
+                "type": "ast-write",
+                "value": "bullet style"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 26
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 26
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 26
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1976,7 +3329,51 @@
                   "line": 26
                 },
                 "type": "ast-write",
-                "value": "text\n  *"
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 9,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 26
+                },
+                "type": "ast-write",
+                "value": "text"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 27
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 27
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 7,
+                  "documentPath": "./keywords.md",
+                  "line": 27
+                },
+                "type": "ast-write",
+                "value": "* "
               },
               {
                 "documentOrder": {
@@ -1998,7 +3395,7 @@
                   "line": 28
                 },
                 "type": "ast-write",
-                "value": "*"
+                "value": "* "
               },
               {
                 "documentOrder": {

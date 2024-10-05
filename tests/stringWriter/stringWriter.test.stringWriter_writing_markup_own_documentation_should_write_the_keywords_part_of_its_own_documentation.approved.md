@@ -18,7 +18,7 @@ Here is a list of all the key atoms by depth:
       * `*`
     * `*`
   * `content`
-    * `toc`  bullet style
+    * `toc` bullet style
   * `#` text
   * `*`
 * `*`

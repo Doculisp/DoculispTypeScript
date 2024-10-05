@@ -30,7 +30,29 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "Here is a list of all the key atoms by depth:\n\n* markdown\n*"
+          "value": "Here is a list of all the key atoms by depth:"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 11
+          },
+          "type": "ast-write",
+          "value": "* markdown"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 12
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -45,6 +67,17 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 3,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -52,7 +85,18 @@
             "line": 13
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -67,6 +111,39 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 14
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 14
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 14
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 5,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -74,7 +151,18 @@
             "line": 14
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 14
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -96,7 +184,95 @@
             "line": 14
           },
           "type": "ast-write",
-          "value": "text\n      *"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 15,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 14
+          },
+          "type": "ast-write",
+          "value": "text"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -111,6 +287,39 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 16
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 16
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 16
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 5,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -118,7 +327,18 @@
             "line": 16
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 16
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -140,7 +360,95 @@
             "line": 16
           },
           "type": "ast-write",
-          "value": "text\n      *"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 18,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 16
+          },
+          "type": "ast-write",
+          "value": "text"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -155,6 +463,39 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 18
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 18
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 18
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 5,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -162,7 +503,18 @@
             "line": 18
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 18
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -184,7 +536,95 @@
             "line": 18
           },
           "type": "ast-write",
-          "value": "text\n      *"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 14,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 18
+          },
+          "type": "ast-write",
+          "value": "text"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -199,6 +639,39 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 20
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 20
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 20
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 5,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -206,7 +679,18 @@
             "line": 20
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 20
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -221,6 +705,61 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 21
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 21
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 21
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 21
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 21
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 7,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -228,7 +767,95 @@
             "line": 21
           },
           "type": "ast-write",
-          "value": "* name path\n      *"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 21
+          },
+          "type": "ast-write",
+          "value": "* name path"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 7,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -243,6 +870,39 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 23
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 23
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 23
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 5,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -250,7 +910,18 @@
             "line": 23
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 23
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -265,6 +936,17 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 24
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 3,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -272,7 +954,18 @@
             "line": 24
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 24
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -287,6 +980,39 @@
         },
         {
           "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 4,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
             "char": 5,
             "documentDepth": 2,
             "documentIndex": 6,
@@ -294,7 +1020,18 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "*"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 5,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -316,7 +1053,51 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "bullet style\n  *"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 13,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "bullet style"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 26
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 26
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 26
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -338,7 +1119,51 @@
             "line": 26
           },
           "type": "ast-write",
-          "value": "text\n  *"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 26
+          },
+          "type": "ast-write",
+          "value": "text"
+        },
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 27
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 27
+          },
+          "type": "ast-write",
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 3,
+            "documentDepth": 2,
+            "documentIndex": 6,
+            "documentPath": "documentation\\keywords.md",
+            "line": 27
+          },
+          "type": "ast-write",
+          "value": "* "
         },
         {
           "documentOrder": {
@@ -360,7 +1185,7 @@
             "line": 28
           },
           "type": "ast-write",
-          "value": "*"
+          "value": "* "
         },
         {
           "documentOrder": {

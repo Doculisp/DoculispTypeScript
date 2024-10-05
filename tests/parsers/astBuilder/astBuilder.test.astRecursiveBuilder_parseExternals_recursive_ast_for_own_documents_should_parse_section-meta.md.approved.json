@@ -30,7 +30,18 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external.\n\nExample"
+          "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 11
+          },
+          "type": "ast-write",
+          "value": "Example"
         },
         {
           "documentOrder": {
@@ -64,7 +75,7 @@
             "line": 24
           },
           "type": "ast-write",
-          "value": "This is the only sub block required for the"
+          "value": "This is the only sub block required for the "
         },
         {
           "documentOrder": {
@@ -86,7 +97,18 @@
             "line": 24
           },
           "type": "ast-write",
-          "value": "block. The title is followed by a title that ends at a"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 60,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 24
+          },
+          "type": "ast-write",
+          "value": "block. The title is followed by a title that ends at a "
         },
         {
           "documentOrder": {
@@ -131,7 +153,7 @@
             "line": 28
           },
           "type": "ast-write",
-          "value": "This is the first optional sub block for the"
+          "value": "This is the first optional sub block for the "
         },
         {
           "documentOrder": {
@@ -153,7 +175,29 @@
             "line": 28
           },
           "type": "ast-write",
-          "value": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.\n\nExample"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 61,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 28
+          },
+          "type": "ast-write",
+          "value": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 30
+          },
+          "type": "ast-write",
+          "value": "Example"
         },
         {
           "documentOrder": {
@@ -210,7 +254,18 @@
             "line": 45
           },
           "type": "ast-write",
-          "value": "This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea.\n\nExample"
+          "value": "This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 47
+          },
+          "type": "ast-write",
+          "value": "Example"
         },
         {
           "documentOrder": {
@@ -244,7 +299,7 @@
             "line": 61
           },
           "type": "ast-write",
-          "value": "The"
+          "value": "The "
         },
         {
           "documentOrder": {
@@ -266,7 +321,18 @@
             "line": 61
           },
           "type": "ast-write",
-          "value": "block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 16,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 61
+          },
+          "type": "ast-write",
+          "value": "block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is "
         },
         {
           "documentOrder": {
@@ -288,7 +354,18 @@
             "line": 61
           },
           "type": "ast-write",
-          "value": "followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 273,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 61
+          },
+          "type": "ast-write",
+          "value": "followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in "
         },
         {
           "documentOrder": {
@@ -310,7 +387,18 @@
             "line": 61
           },
           "type": "ast-write",
-          "value": ".\n\nYou can add a space ("
+          "value": "."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 63
+          },
+          "type": "ast-write",
+          "value": "You can add a space ("
         },
         {
           "documentOrder": {
@@ -332,7 +420,7 @@
             "line": 63
           },
           "type": "ast-write",
-          "value": ") to a name by adding a"
+          "value": ") to a name by adding a "
         },
         {
           "documentOrder": {
@@ -354,7 +442,29 @@
             "line": 63
           },
           "type": "ast-write",
-          "value": "to the name.\n\nExample"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 53,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 63
+          },
+          "type": "ast-write",
+          "value": "to the name."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 65
+          },
+          "type": "ast-write",
+          "value": "Example"
         },
         {
           "documentOrder": {
@@ -376,7 +486,7 @@
             "line": 75
           },
           "type": "ast-write",
-          "value": "This will create a sub-section called"
+          "value": "This will create a sub-section called "
         },
         {
           "documentOrder": {
@@ -398,7 +508,18 @@
             "line": 75
           },
           "type": "ast-write",
-          "value": "that is built using the file"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 49,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 75
+          },
+          "type": "ast-write",
+          "value": "that is built using the file "
         },
         {
           "documentOrder": {
@@ -420,7 +541,18 @@
             "line": 75
           },
           "type": "ast-write",
-          "value": ".\n\nExample"
+          "value": "."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 77
+          },
+          "type": "ast-write",
+          "value": "Example"
         },
         {
           "documentOrder": {
@@ -442,7 +574,7 @@
             "line": 85
           },
           "type": "ast-write",
-          "value": "This will create a subsection called"
+          "value": "This will create a subsection called "
         },
         {
           "documentOrder": {
@@ -464,7 +596,18 @@
             "line": 85
           },
           "type": "ast-write",
-          "value": "that is built using the file"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 52,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 85
+          },
+          "type": "ast-write",
+          "value": "that is built using the file "
         },
         {
           "documentOrder": {
@@ -508,7 +651,7 @@
             "line": 91
           },
           "type": "ast-write",
-          "value": "This will create a subsection called"
+          "value": "This will create a subsection called "
         },
         {
           "documentOrder": {
@@ -530,7 +673,18 @@
             "line": 91
           },
           "type": "ast-write",
-          "value": "that is built using the file"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 48,
+            "documentDepth": 2,
+            "documentIndex": 3,
+            "documentPath": "documentation\\section-meta.md",
+            "line": 91
+          },
+          "type": "ast-write",
+          "value": "that is built using the file "
         },
         {
           "documentOrder": {

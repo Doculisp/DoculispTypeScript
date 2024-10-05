@@ -10,6 +10,17 @@
           "documentPath": "C:/my_document.md",
           "line": 1
         },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 4,
+          "documentIndex": 6,
+          "documentPath": "C:/my_document.md",
+          "line": 1
+        },
         "text": "blow fish",
         "type": "text"
       }

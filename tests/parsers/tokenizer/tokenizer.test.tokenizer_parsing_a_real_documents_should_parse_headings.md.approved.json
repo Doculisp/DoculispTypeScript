@@ -88,7 +88,7 @@
           "documentPath": "./documentation/headings.md",
           "line": 9
         },
-        "text": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the",
+        "text": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the ",
         "type": "token - text"
       },
       {
@@ -110,6 +110,17 @@
           "documentPath": "./documentation/headings.md",
           "line": 9
         },
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 154,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 9
+        },
         "text": "block, or dynamic headinlg block.",
         "type": "token - text"
       },
@@ -121,7 +132,7 @@
           "documentPath": "./documentation/headings.md",
           "line": 11
         },
-        "text": "The dynamic heading block works differently then other blocks. The number of",
+        "text": "The dynamic heading block works differently then other blocks. The number of ",
         "type": "token - text"
       },
       {
@@ -133,6 +144,17 @@
           "line": 11
         },
         "text": "`#`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 82,
+          "documentDepth": 2,
+          "documentIndex": 5,
+          "documentPath": "./documentation/headings.md",
+          "line": 11
+        },
+        "text": " ",
         "type": "token - text"
       },
       {

@@ -30,7 +30,7 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses"
+          "value": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses "
         },
         {
           "documentOrder": {
@@ -52,7 +52,18 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 166,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses "
         },
         {
           "documentOrder": {
@@ -74,7 +85,29 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": ".\r\n\r\nEven the Doculisp main block follows this.\r\n\r\nExample"
+          "value": "."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 11
+          },
+          "type": "ast-write",
+          "value": "Even the Doculisp main block follows this."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": "Example"
         },
         {
           "documentOrder": {
@@ -96,7 +129,7 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "The first block is the"
+          "value": "The first block is the "
         },
         {
           "documentOrder": {
@@ -118,7 +151,18 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "block. In it"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 29,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "block. In it "
         },
         {
           "documentOrder": {
@@ -140,7 +184,18 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "is the atom. It contains the"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 47,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "is the atom. It contains the "
         },
         {
           "documentOrder": {
@@ -162,7 +217,18 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "sub-block.  That block has the atom"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 91,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "sub-block.  That block has the atom "
         },
         {
           "documentOrder": {
@@ -184,7 +250,18 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "followed by a further sub block. The last sub block is the"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 142,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "followed by a further sub block. The last sub block is the "
         },
         {
           "documentOrder": {
@@ -206,7 +283,18 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "sub block. In it"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 209,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "sub block. In it "
         },
         {
           "documentOrder": {
@@ -228,7 +316,18 @@
             "line": 25
           },
           "type": "ast-write",
-          "value": "is the atom and"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 234,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "is the atom and "
         },
         {
           "documentOrder": {
@@ -240,6 +339,17 @@
           },
           "type": "ast-write",
           "value": "`Basic Structure`"
+        },
+        {
+          "documentOrder": {
+            "char": 268,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": " "
         },
         {
           "documentOrder": {
@@ -295,7 +405,18 @@
             "line": 29
           },
           "type": "ast-write",
-          "value": "or"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 79,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "documentation\\structure.md",
+            "line": 29
+          },
+          "type": "ast-write",
+          "value": "or "
         },
         {
           "documentOrder": {

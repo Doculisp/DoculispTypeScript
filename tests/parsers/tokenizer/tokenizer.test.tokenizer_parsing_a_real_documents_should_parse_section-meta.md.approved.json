@@ -163,7 +163,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 24
         },
-        "text": "This is the only sub block required for the",
+        "text": "This is the only sub block required for the ",
         "type": "token - text"
       },
       {
@@ -185,7 +185,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 24
         },
-        "text": "block. The title is followed by a title that ends at a",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 60,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 24
+        },
+        "text": "block. The title is followed by a title that ends at a ",
         "type": "token - text"
       },
       {
@@ -260,7 +271,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 28
         },
-        "text": "This is the first optional sub block for the",
+        "text": "This is the first optional sub block for the ",
         "type": "token - text"
       },
       {
@@ -272,6 +283,17 @@
           "line": 28
         },
         "text": "`section-meta`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 61,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 28
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -485,7 +507,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 61
         },
-        "text": "The",
+        "text": "The ",
         "type": "token - text"
       },
       {
@@ -507,7 +529,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 61
         },
-        "text": "block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 16,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 61
+        },
+        "text": "block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is ",
         "type": "token - text"
       },
       {
@@ -529,7 +562,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 61
         },
-        "text": "followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 273,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 61
+        },
+        "text": "followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in ",
         "type": "token - text"
       },
       {
@@ -584,7 +628,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 63
         },
-        "text": ") to a name by adding a",
+        "text": ") to a name by adding a ",
         "type": "token - text"
       },
       {
@@ -596,6 +640,17 @@
           "line": 63
         },
         "text": "`-`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 53,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 63
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -639,7 +694,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 75
         },
-        "text": "This will create a sub-section called",
+        "text": "This will create a sub-section called ",
         "type": "token - text"
       },
       {
@@ -661,7 +716,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 75
         },
-        "text": "that is built using the file",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 49,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 75
+        },
+        "text": "that is built using the file ",
         "type": "token - text"
       },
       {
@@ -716,7 +782,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 85
         },
-        "text": "This will create a subsection called",
+        "text": "This will create a subsection called ",
         "type": "token - text"
       },
       {
@@ -738,7 +804,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 85
         },
-        "text": "that is built using the file",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 52,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 85
+        },
+        "text": "that is built using the file ",
         "type": "token - text"
       },
       {
@@ -782,7 +859,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 91
         },
-        "text": "This will create a subsection called",
+        "text": "This will create a subsection called ",
         "type": "token - text"
       },
       {
@@ -804,7 +881,18 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 91
         },
-        "text": "that is built using the file",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 48,
+          "documentDepth": 2,
+          "documentIndex": 3,
+          "documentPath": "./documentation/section-meta.md",
+          "line": 91
+        },
+        "text": "that is built using the file ",
         "type": "token - text"
       },
       {

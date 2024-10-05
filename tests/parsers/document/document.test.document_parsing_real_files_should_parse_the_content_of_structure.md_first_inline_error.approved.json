@@ -21,7 +21,7 @@
           "documentPath": "./structure.md",
           "line": 9
         },
-        "text": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses",
+        "text": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses ",
         "type": "text"
       },
       {

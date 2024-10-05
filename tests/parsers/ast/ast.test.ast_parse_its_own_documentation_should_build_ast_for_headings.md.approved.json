@@ -30,7 +30,7 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the"
+          "value": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the "
         },
         {
           "documentOrder": {
@@ -52,7 +52,29 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "block, or dynamic headinlg block.\r\n\r\nThe dynamic heading block works differently then other blocks. The number of"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 154,
+            "documentDepth": 2,
+            "documentIndex": 5,
+            "documentPath": "documentation\\headings.md",
+            "line": 9
+          },
+          "type": "ast-write",
+          "value": "block, or dynamic headinlg block."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 5,
+            "documentPath": "documentation\\headings.md",
+            "line": 11
+          },
+          "type": "ast-write",
+          "value": "The dynamic heading block works differently then other blocks. The number of "
         },
         {
           "documentOrder": {
@@ -74,7 +96,29 @@
             "line": 11
           },
           "type": "ast-write",
-          "value": "signs determins how far it is beneith the current sub/section heading.\r\n\r\nExample"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 82,
+            "documentDepth": 2,
+            "documentIndex": 5,
+            "documentPath": "documentation\\headings.md",
+            "line": 11
+          },
+          "type": "ast-write",
+          "value": "signs determins how far it is beneith the current sub/section heading."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 5,
+            "documentPath": "documentation\\headings.md",
+            "line": 13
+          },
+          "type": "ast-write",
+          "value": "Example"
         },
         {
           "documentOrder": {
@@ -96,7 +140,18 @@
             "line": 42
           },
           "type": "ast-write",
-          "value": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3.\r\n\r\nHowever if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4."
+          "value": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 5,
+            "documentPath": "documentation\\headings.md",
+            "line": 44
+          },
+          "type": "ast-write",
+          "value": "However if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4."
         },
         {
           "depthCount": 3,

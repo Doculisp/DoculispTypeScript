@@ -4,6 +4,259 @@
     "parts": [
       {
         "location": {
+          "char": 2,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 8,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 10,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 11,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 12,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 13,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 14,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 15,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 16,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 17,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 18,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 19,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 20,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 21,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 22,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 23,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": "\t",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 24,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": "\t",
+        "type": "text"
+      },
+      {
+        "location": {
           "char": 24,
           "documentDepth": 8,
           "documentIndex": 3,
@@ -11,6 +264,237 @@
           "line": 4
         },
         "text": "hello bro",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 8,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 10,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 11,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 12,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 13,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 14,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 15,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 16,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 17,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 18,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 19,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 20,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 21,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 22,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 5
+        },
+        "text": " ",
         "type": "text"
       }
     ],

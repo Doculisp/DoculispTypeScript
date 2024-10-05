@@ -21,7 +21,7 @@
           "documentPath": "./documentation/doculisp.md",
           "line": 9
         },
-        "text": "All doculisp is contained in an outer doculisp block. That block starts with",
+        "text": "All doculisp is contained in an outer doculisp block. That block starts with ",
         "type": "text"
       },
       {
@@ -33,6 +33,17 @@
           "line": 9
         },
         "text": "`(dl`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 84,
+          "documentDepth": 2,
+          "documentIndex": 2,
+          "documentPath": "./documentation/doculisp.md",
+          "line": 9
+        },
+        "text": " ",
         "type": "text"
       },
       {

@@ -2,7 +2,7 @@
 
 # Basic Structure #
 
-The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses `(` followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses `)` .
+The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses `(` followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses `)`.
 
 Even the Doculisp main block follows this.
 
@@ -22,7 +22,7 @@ The first block is the `dl` block. In it `dl` is the atom. It contains the `sect
 
 ## Parameter ##
 
-A parameter is a string of characters that contains no line advancement ( `\r` or `\n` ) character and no parentheses (unless escaped). A parameter has a max length of 255 characters.
+A parameter is a string of characters that contains no line advancement (`\r` or `\n`) character and no parentheses (unless escaped). A parameter has a max length of 255 characters.
 
 ## Visual Explanation ##
 

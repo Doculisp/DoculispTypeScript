@@ -15,6 +15,50 @@
       },
       {
         "location": {
+          "char": 2,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 2
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 2
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 2
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 2
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
           "char": 5,
           "documentDepth": 4,
           "documentIndex": 3,
@@ -22,6 +66,50 @@
           "line": 2
         },
         "text": "```markdown\n    # A document\n    \n    <!-- this need\n    a summary\n    -->\n    \n    ## Sub section title\n    ```",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 11
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 11
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 11
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 11
+        },
+        "text": " ",
         "type": "text"
       }
     ],

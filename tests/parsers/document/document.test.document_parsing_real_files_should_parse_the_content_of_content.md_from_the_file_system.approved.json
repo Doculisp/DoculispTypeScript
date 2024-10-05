@@ -54,7 +54,7 @@
           "documentPath": "./documentation/content.md",
           "line": 15
         },
-        "text": "The structure of the table of contents is",
+        "text": "The structure of the table of contents is ",
         "type": "text"
       },
       {
@@ -66,6 +66,17 @@
           "line": 15
         },
         "text": "`(toc)`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 51,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": " ",
         "type": "text"
       },
       {
@@ -175,7 +186,18 @@
           "documentPath": "./documentation/content.md",
           "line": 27
         },
-        "text": "```doculisp\r\n(contents (toc))\r\n```\r\n\r\n```doculisp\r\n(contents (toc bulleted-labeled))\r\n```",
+        "text": "```doculisp\r\n(contents (toc))\r\n```",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 31
+        },
+        "text": "```doculisp\r\n(contents (toc bulleted-labeled))\r\n```",
         "type": "text"
       },
       {
@@ -186,7 +208,7 @@
           "documentPath": "./documentation/content.md",
           "line": 35
         },
-        "text": "Any of the options with",
+        "text": "Any of the options with ",
         "type": "text"
       },
       {
@@ -208,7 +230,18 @@
           "documentPath": "./documentation/content.md",
           "line": 35
         },
-        "text": "on it will use the name of the subsection.",
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 34,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 35
+        },
+        "text": "on it will use the name of the subsection. ",
         "type": "text"
       },
       {

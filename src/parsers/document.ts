@@ -14,6 +14,7 @@ function createMap(projectLocation: IProjectLocation, parts: DocumentPart[]): Do
 
 type ParesBuilder = {
     isDiscardedWhiteSpace(): HandleStringValue<DocumentPart>;
+    isDiscardedNewline(): HandleStringValue<DocumentPart>;
     isKeptWhiteSpace(): HandleStringValue<DocumentPart>;
     isMultiline() : HandleStringValue<DocumentPart>;
     isInline(): HandleStringValue<DocumentPart>;
@@ -59,6 +60,35 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 });
             }
             return internals.noResultFound();
+        }
+    }
+
+    function isDiscardedNewline(): HandleStringValue<DocumentPart> {
+        const createParser = internals.createStringParser<DocumentPart>;
+        return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
+            const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l.increaseLine());
+            const isNewline = doesItStartWithDiscarded(doesIt.startWithAnyNewline, l => l.increaseLine());
+
+            function stopParsing(): StringStepParseResult<DocumentPart> {
+                return internals.stopFindingResults();
+            }
+    
+            const whiteSpaceParser = createParser(isWindows, isNewline, stopParsing);
+            const parsed = whiteSpaceParser.parse(input, current);
+            if(parsed.success) {
+                const [_, leftovers] = parsed.value;
+                if(leftovers.remaining === input) {
+                    return internals.noResultFound();
+                } else {
+                    return util.ok({
+                        type: 'discard',
+                        rest: leftovers.remaining,
+                        location: leftovers.location,
+                    });
+                }
+            } else {
+                return parsed;
+            }
         }
     }
 
@@ -154,7 +184,12 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 return internals.noResultFound();
             }
     
-            const tryParseWhiteSpace = isKeptWhiteSpace();
+            function tryParseWhiteSpace(input: string, current: ILocation) {
+                if(!opened) {
+                    return internals.stopFindingResults();
+                }
+                return isKeptWhiteSpace()(input, current);
+            }
     
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(!opened) {
@@ -185,7 +220,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return internals.noResultFound();
                 }
     
-                const result = peaces.map(p => p.text).join('').trim();
+                const result = peaces.map(p => p.text).join(''); //.trim();
                 const rest = leftover.remaining;
                 
                 return util.ok({
@@ -596,7 +631,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return internals.noResultFound();
                 }
     
-                const result = parts.map(p => p.text).join('').trim();
+                const result = parts.map(p => p.text).join('');//.trimEnd();
                 return util.ok({
                     type: 'parse result',
                     subResult: { type: 'text', text: result, location: starting },
@@ -611,6 +646,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
     return {
         isDiscardedWhiteSpace,
+        isDiscardedNewline,
         isKeptWhiteSpace,
         isMultiline,
         isInline,
@@ -639,9 +675,10 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
 
         const parser = 
             isDoculispFile ?
-            parserBuilder.createStringParser(partParsers.isDiscardedWhiteSpace(), partParsers.isDoculisp(true)) :
+            parserBuilder.createStringParser(partParsers.isDiscardedNewline(), partParsers.isKeptWhiteSpace(), partParsers.isDoculisp(true)) :
             parserBuilder.createStringParser(
-                partParsers.isDiscardedWhiteSpace(), 
+                partParsers.isDiscardedNewline(),
+                partParsers.isKeptWhiteSpace(),
                 partParsers.isMultiline(), 
                 partParsers.isInline(), 
                 partParsers.isComment(), 

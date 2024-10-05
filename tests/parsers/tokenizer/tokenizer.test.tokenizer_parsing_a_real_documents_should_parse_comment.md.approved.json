@@ -88,7 +88,7 @@
           "documentPath": "./documentation/comment.md",
           "line": 9
         },
-        "text": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics",
+        "text": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics ",
         "type": "token - text"
       },
       {
@@ -100,6 +100,17 @@
           "line": 9
         },
         "text": "`*`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 151,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 9
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -143,7 +154,7 @@
           "documentPath": "./documentation/comment.md",
           "line": 29
         },
-        "text": "In this example the",
+        "text": "In this example the ",
         "type": "token - text"
       },
       {
@@ -155,6 +166,17 @@
           "line": 29
         },
         "text": "`section-meta`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 36,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 29
+        },
+        "text": " ",
         "type": "token - text"
       },
       {
@@ -240,7 +262,7 @@
           "documentPath": "./documentation/comment.md",
           "line": 51
         },
-        "text": "In this example the",
+        "text": "In this example the ",
         "type": "token - text"
       },
       {
@@ -262,7 +284,18 @@
           "documentPath": "./documentation/comment.md",
           "line": 51
         },
-        "text": "and all its subblocks are commented out. However when you uncomment",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 36,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "and all its subblocks are commented out. However when you uncomment ",
         "type": "token - text"
       },
       {
@@ -284,7 +317,18 @@
           "documentPath": "./documentation/comment.md",
           "line": 51
         },
-        "text": "then the",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 119,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "then the ",
         "type": "token - text"
       },
       {
@@ -306,7 +350,18 @@
           "documentPath": "./documentation/comment.md",
           "line": 51
         },
-        "text": "block will be commented out. When you uncomment that block, then the",
+        "text": " ",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 139,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": "block will be commented out. When you uncomment that block, then the ",
         "type": "token - text"
       },
       {
@@ -318,6 +373,17 @@
           "line": 51
         },
         "text": "`section ./comment.md`",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 231,
+          "documentDepth": 2,
+          "documentIndex": 6,
+          "documentPath": "./documentation/comment.md",
+          "line": 51
+        },
+        "text": " ",
         "type": "token - text"
       },
       {

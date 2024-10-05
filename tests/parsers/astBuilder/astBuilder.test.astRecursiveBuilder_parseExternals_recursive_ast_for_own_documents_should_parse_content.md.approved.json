@@ -53,7 +53,18 @@
             "line": 13
           },
           "type": "ast-write",
-          "value": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.\r\n\r\nThe structure of the table of contents is"
+          "value": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location."
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": "The structure of the table of contents is "
         },
         {
           "documentOrder": {
@@ -75,7 +86,106 @@
             "line": 15
           },
           "type": "ast-write",
-          "value": "there is an optional parameter that can have one of the following values:\r\n\r\n* no-table\r\n* unlabeled\r\n* labeled\r\n* numbered\r\n* numbered-labeled\r\n* bulleted\r\n* bulleted-labeled\r\n\r\nExamples"
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 51,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 15
+          },
+          "type": "ast-write",
+          "value": "there is an optional parameter that can have one of the following values:"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 17
+          },
+          "type": "ast-write",
+          "value": "* no-table"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 18
+          },
+          "type": "ast-write",
+          "value": "* unlabeled"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 19
+          },
+          "type": "ast-write",
+          "value": "* labeled"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 20
+          },
+          "type": "ast-write",
+          "value": "* numbered"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 21
+          },
+          "type": "ast-write",
+          "value": "* numbered-labeled"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 22
+          },
+          "type": "ast-write",
+          "value": "* bulleted"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 23
+          },
+          "type": "ast-write",
+          "value": "* bulleted-labeled"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 25
+          },
+          "type": "ast-write",
+          "value": "Examples"
         },
         {
           "documentOrder": {
@@ -86,7 +196,18 @@
             "line": 27
           },
           "type": "ast-write",
-          "value": "```doculisp\r\n(contents (toc))\r\n```\r\n\r\n```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
+          "value": "```doculisp\r\n(contents (toc))\r\n```"
+        },
+        {
+          "documentOrder": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 31
+          },
+          "type": "ast-write",
+          "value": "```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
         },
         {
           "documentOrder": {
@@ -97,7 +218,7 @@
             "line": 35
           },
           "type": "ast-write",
-          "value": "Any of the options with"
+          "value": "Any of the options with "
         },
         {
           "documentOrder": {
@@ -119,7 +240,18 @@
             "line": 35
           },
           "type": "ast-write",
-          "value": "on it will use the name of the subsection."
+          "value": " "
+        },
+        {
+          "documentOrder": {
+            "char": 34,
+            "documentDepth": 2,
+            "documentIndex": 4,
+            "documentPath": "documentation\\content.md",
+            "line": 35
+          },
+          "type": "ast-write",
+          "value": "on it will use the name of the subsection. "
         },
         {
           "documentOrder": {

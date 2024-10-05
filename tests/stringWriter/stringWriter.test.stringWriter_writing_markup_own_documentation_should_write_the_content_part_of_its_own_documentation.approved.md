@@ -28,7 +28,7 @@ Examples
 (contents (toc bulleted-labeled))
 ```
 
-Any of the options with `labled` on it will use the name of the subsection.
+Any of the options with `labled` on it will use the name of the subsection. 
 
 ```doculisp
 (dl
