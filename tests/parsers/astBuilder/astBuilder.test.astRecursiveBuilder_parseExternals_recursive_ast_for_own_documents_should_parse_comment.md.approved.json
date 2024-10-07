@@ -4,7 +4,7 @@
     "projectLocation": {
       "documentDepth": 2,
       "documentIndex": 6,
-      "documentPath": "documentation\\comment.md"
+      "documentPath": "comment.md"
     },
     "section": {
       "ast": [
@@ -13,7 +13,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 2
           },
           "label": "## Comment Block ##",
@@ -26,7 +26,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 9
           },
           "type": "ast-write",
@@ -37,7 +37,7 @@
             "char": 147,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 9
           },
           "type": "ast-write",
@@ -48,7 +48,7 @@
             "char": 151,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 9
           },
           "type": "ast-write",
@@ -59,7 +59,7 @@
             "char": 151,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 9
           },
           "type": "ast-write",
@@ -70,7 +70,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 11
           },
           "type": "ast-write",
@@ -81,7 +81,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 13
           },
           "type": "ast-write",
@@ -92,7 +92,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 29
           },
           "type": "ast-write",
@@ -103,7 +103,7 @@
             "char": 21,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 29
           },
           "type": "ast-write",
@@ -114,7 +114,7 @@
             "char": 36,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 29
           },
           "type": "ast-write",
@@ -125,7 +125,7 @@
             "char": 36,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 29
           },
           "type": "ast-write",
@@ -136,7 +136,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 31
           },
           "type": "ast-write",
@@ -147,7 +147,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 33
           },
           "type": "ast-write",
@@ -159,7 +159,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 49
           },
           "text": "Nested Comments",
@@ -170,7 +170,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -181,7 +181,7 @@
             "char": 21,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -192,7 +192,7 @@
             "char": 36,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -203,7 +203,7 @@
             "char": 36,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -214,7 +214,7 @@
             "char": 104,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -225,7 +225,7 @@
             "char": 119,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -236,7 +236,7 @@
             "char": 119,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -247,7 +247,7 @@
             "char": 128,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -258,7 +258,7 @@
             "char": 139,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -269,7 +269,7 @@
             "char": 139,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -280,7 +280,7 @@
             "char": 208,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -291,7 +291,7 @@
             "char": 231,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -302,7 +302,7 @@
             "char": 231,
             "documentDepth": 2,
             "documentIndex": 6,
-            "documentPath": "documentation\\comment.md",
+            "documentPath": "comment.md",
             "line": 51
           },
           "type": "ast-write",
@@ -313,7 +313,7 @@
         "char": 1,
         "documentDepth": 2,
         "documentIndex": 6,
-        "documentPath": "documentation\\comment.md",
+        "documentPath": "comment.md",
         "line": 1
       },
       "external": [],

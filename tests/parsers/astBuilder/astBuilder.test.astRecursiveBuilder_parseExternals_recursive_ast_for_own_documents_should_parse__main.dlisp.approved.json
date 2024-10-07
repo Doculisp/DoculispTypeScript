@@ -4,7 +4,7 @@
     "projectLocation": {
       "documentDepth": 1,
       "documentIndex": 1,
-      "documentPath": "documentation\\_main.dlisp"
+      "documentPath": "_main.dlisp"
     },
     "section": {
       "ast": [
@@ -13,7 +13,7 @@
             "char": 1,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 1
           },
           "label": "# Doculisp #",
@@ -27,7 +27,7 @@
             "char": 1,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 14
           },
           "type": "ast-toc"
@@ -37,7 +37,7 @@
             "char": 2,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 14
           },
           "type": "ast-content"
@@ -47,7 +47,7 @@
         "char": 1,
         "documentDepth": 1,
         "documentIndex": 1,
-        "documentPath": "documentation\\_main.dlisp",
+        "documentPath": "_main.dlisp",
         "line": 1
       },
       "external": [
@@ -524,7 +524,7 @@
             "char": 9,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 4
           },
           "path": "./structure.md",
@@ -639,7 +639,7 @@
             "char": 9,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 5
           },
           "path": "./doculisp.md",
@@ -1387,7 +1387,7 @@
             "char": 9,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 6
           },
           "path": "./section-meta.md",
@@ -1690,7 +1690,7 @@
             "char": 9,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 7
           },
           "path": "./content.md",
@@ -1883,7 +1883,7 @@
             "char": 9,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 8
           },
           "path": "./headings.md",
@@ -2208,7 +2208,7 @@
             "char": 9,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 9
           },
           "path": "./comment.md",
@@ -3423,7 +3423,7 @@
             "char": 9,
             "documentDepth": 1,
             "documentIndex": 1,
-            "documentPath": "documentation\\_main.dlisp",
+            "documentPath": "_main.dlisp",
             "line": 10
           },
           "path": "./keywords.md",

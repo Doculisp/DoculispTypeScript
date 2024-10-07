@@ -4,7 +4,7 @@
     "projectLocation": {
       "documentDepth": 2,
       "documentIndex": 1,
-      "documentPath": "documentation\\structure.md"
+      "documentPath": "structure.md"
     },
     "section": {
       "ast": [
@@ -13,7 +13,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 2
           },
           "label": "## Basic Structure ##",
@@ -26,7 +26,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 9
           },
           "type": "ast-write",
@@ -37,7 +37,7 @@
             "char": 162,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 9
           },
           "type": "ast-write",
@@ -48,7 +48,7 @@
             "char": 166,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 9
           },
           "type": "ast-write",
@@ -59,7 +59,7 @@
             "char": 166,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 9
           },
           "type": "ast-write",
@@ -70,7 +70,7 @@
             "char": 375,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 9
           },
           "type": "ast-write",
@@ -81,7 +81,7 @@
             "char": 378,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 9
           },
           "type": "ast-write",
@@ -92,7 +92,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 11
           },
           "type": "ast-write",
@@ -103,7 +103,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 13
           },
           "type": "ast-write",
@@ -114,7 +114,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 15
           },
           "type": "ast-write",
@@ -125,7 +125,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -136,7 +136,7 @@
             "char": 24,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -147,7 +147,7 @@
             "char": 29,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -158,7 +158,7 @@
             "char": 29,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -169,7 +169,7 @@
             "char": 42,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -180,7 +180,7 @@
             "char": 47,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -191,7 +191,7 @@
             "char": 47,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -202,7 +202,7 @@
             "char": 76,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -213,7 +213,7 @@
             "char": 91,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -224,7 +224,7 @@
             "char": 91,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -235,7 +235,7 @@
             "char": 127,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -246,7 +246,7 @@
             "char": 142,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -257,7 +257,7 @@
             "char": 142,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -268,7 +268,7 @@
             "char": 201,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -279,7 +279,7 @@
             "char": 209,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -290,7 +290,7 @@
             "char": 209,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -301,7 +301,7 @@
             "char": 226,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -312,7 +312,7 @@
             "char": 234,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -323,7 +323,7 @@
             "char": 234,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -334,7 +334,7 @@
             "char": 250,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -345,7 +345,7 @@
             "char": 268,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -356,7 +356,7 @@
             "char": 268,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 25
           },
           "type": "ast-write",
@@ -368,7 +368,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 27
           },
           "text": "Parameter",
@@ -379,7 +379,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 29
           },
           "type": "ast-write",
@@ -390,7 +390,7 @@
             "char": 74,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 29
           },
           "type": "ast-write",
@@ -401,7 +401,7 @@
             "char": 79,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 29
           },
           "type": "ast-write",
@@ -412,7 +412,7 @@
             "char": 79,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 29
           },
           "type": "ast-write",
@@ -423,7 +423,7 @@
             "char": 82,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 29
           },
           "type": "ast-write",
@@ -434,7 +434,7 @@
             "char": 86,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 29
           },
           "type": "ast-write",
@@ -446,7 +446,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 31
           },
           "text": "Visual Explanation",
@@ -457,7 +457,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 1,
-            "documentPath": "documentation\\structure.md",
+            "documentPath": "structure.md",
             "line": 33
           },
           "type": "ast-write",
@@ -468,7 +468,7 @@
         "char": 1,
         "documentDepth": 2,
         "documentIndex": 1,
-        "documentPath": "documentation\\structure.md",
+        "documentPath": "structure.md",
         "line": 1
       },
       "external": [],

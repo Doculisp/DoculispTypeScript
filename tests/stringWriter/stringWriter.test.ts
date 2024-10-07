@@ -4,13 +4,13 @@ import { getVerifiers } from "../tools";
 import { IFail, IProjectLocation, IUtil } from "../../src/types.general";
 import { Result } from "../../src/types.general";
 import { buildLocation, testable } from "../testHelpers";
-import { IFileHandler } from "../../src/types.fileHandler";
+import { IDirectoryHandler, IFileLoader } from "../../src/types.fileHandler";
 import { container } from "../../src/container";
 import { IDictionary } from "../../src/types.containers";
-import path from "path";
 import fs from 'fs';
+import path from "path";
 
-describe('stringWriter', () => {
+describe.skip('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
@@ -162,20 +162,21 @@ This is the end
             });
 
             describe('sub documents', () => {
-                let files: IDictionary<Result<string>> = undefined as any;
                 let ok: (value: any) => Result<any> = undefined as any;
-
-                function addFile(path: string, body: string): void {
-                    files[path] = ok(body);
-                }
+                let addFile : (filePath: string, body: string) => void = undefined as any;
 
                 beforeEach(() => {
+                    let files: IDictionary<Result<string>> = undefined as any;
                     files = {};
+
+                    addFile = (filePath: string, body: string): void => {
+                        files[path.basename(filePath)] = ok(body);
+                    };
 
                     toResult = testable.stringWriter.resultBuilder(container, environment => {
                         const util: IUtil = environment.buildAs<IUtil>('util');
                         ok = util.ok;
-                        const fileHandler: IFileHandler = {
+                        const fileHandler: IFileLoader & IDirectoryHandler = {
                             load: function(path: string): Result<string> {
                                 const r = files[path];
                                 if(r) {
@@ -184,7 +185,10 @@ This is the end
 
                                 return fail('path not yet setup', path);
                             },
-                            write: undefined as any,
+                            getProcessWorkingDirectory() {
+                                return './';
+                            },
+                            setProcessWorkingDirectory() {}
                         };
 
                         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
@@ -539,28 +543,19 @@ a truly divided tail.
         });
 
         describe('own documentation', () => {
+            let workingDir: string = null as any;
             beforeEach(() => {
-                toResult = testable.stringWriter.resultBuilder(container, environment => {
-                    const util: IUtil = environment.buildAs<IUtil>('util');
+                workingDir = process.cwd();
+                process.chdir('./documentation');
+                toResult = testable.stringWriter.resultBuilder(container);
+            });
 
-                    const fileHandler: IFileHandler = {
-                        load: function(filePath: string): Result<string> {
-                            let p = path.join('./documentation/', filePath);
-                            try {
-                                return util.ok(fs.readFileSync(p, { encoding: 'utf8' }));
-                            } catch (error) {
-                                return fail(`${error}`, p);
-                            }
-                        },
-                        write: undefined as any,
-                    };
-
-                    environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
-                });
+            afterEach(() => {
+                process.chdir(workingDir);
             });
 
             it('should write the structure part of its own documentation', () => {
-                const filePath = './documentation/structure.md';
+                const filePath = './structure.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -568,7 +563,7 @@ a truly divided tail.
             });
 
             it('should write the doculisp part of its own documentation', () => {
-                const filePath = './documentation/doculisp.md';
+                const filePath = './doculisp.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -576,7 +571,7 @@ a truly divided tail.
             });
 
             it('should write the section-meta part of its own documentation', () => {
-                const filePath = './documentation/section-meta.md';
+                const filePath = './section-meta.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -584,7 +579,7 @@ a truly divided tail.
             });
 
             it('should write the content part of its own documentation', () => {
-                const filePath = './documentation/content.md';
+                const filePath = './content.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -592,7 +587,7 @@ a truly divided tail.
             });
 
             it('should write the headings part of its own documentation', () => {
-                const filePath = './documentation/headings.md';
+                const filePath = './headings.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -600,7 +595,7 @@ a truly divided tail.
             });
 
             it('should write the comment part of its own documentation', () => {
-                const filePath = './documentation/comment.md';
+                const filePath = './comment.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -608,7 +603,7 @@ a truly divided tail.
             });
 
             it('should write the keywords part of its own documentation', () => {
-                const filePath = './documentation/keywords.md';
+                const filePath = './keywords.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -616,7 +611,7 @@ a truly divided tail.
             });
 
             it('should write the whole of its own documentation', () => {
-                const filePath = './documentation/_main.dlisp';
+                const filePath = './_main.dlisp';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));

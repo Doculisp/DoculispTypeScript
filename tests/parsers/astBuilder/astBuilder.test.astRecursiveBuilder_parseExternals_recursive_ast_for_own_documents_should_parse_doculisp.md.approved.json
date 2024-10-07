@@ -4,7 +4,7 @@
     "projectLocation": {
       "documentDepth": 2,
       "documentIndex": 2,
-      "documentPath": "documentation\\doculisp.md"
+      "documentPath": "doculisp.md"
     },
     "section": {
       "ast": [
@@ -13,7 +13,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 2
           },
           "label": "## Doculisp Master Block ##",
@@ -26,7 +26,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 9
           },
           "type": "ast-write",
@@ -37,7 +37,7 @@
             "char": 78,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 9
           },
           "type": "ast-write",
@@ -48,7 +48,7 @@
             "char": 84,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 9
           },
           "type": "ast-write",
@@ -59,7 +59,7 @@
             "char": 84,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 9
           },
           "type": "ast-write",
@@ -70,7 +70,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 11
           },
           "type": "ast-write",
@@ -81,7 +81,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 13
           },
           "type": "ast-write",
@@ -92,7 +92,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 2,
-            "documentPath": "documentation\\doculisp.md",
+            "documentPath": "doculisp.md",
             "line": 28
           },
           "type": "ast-write",
@@ -103,7 +103,7 @@
         "char": 1,
         "documentDepth": 2,
         "documentIndex": 2,
-        "documentPath": "documentation\\doculisp.md",
+        "documentPath": "doculisp.md",
         "line": 1
       },
       "external": [],

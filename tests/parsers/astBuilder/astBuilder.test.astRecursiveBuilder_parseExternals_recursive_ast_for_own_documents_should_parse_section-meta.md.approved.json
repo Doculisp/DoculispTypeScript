@@ -4,7 +4,7 @@
     "projectLocation": {
       "documentDepth": 2,
       "documentIndex": 3,
-      "documentPath": "documentation\\section-meta.md"
+      "documentPath": "section-meta.md"
     },
     "section": {
       "ast": [
@@ -13,7 +13,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 2
           },
           "label": "## Section Meta Block ##",
@@ -26,7 +26,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 9
           },
           "type": "ast-write",
@@ -37,7 +37,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 11
           },
           "type": "ast-write",
@@ -48,7 +48,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 13
           },
           "type": "ast-write",
@@ -60,7 +60,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 22
           },
           "text": "Title (required)",
@@ -71,7 +71,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 24
           },
           "type": "ast-write",
@@ -82,7 +82,7 @@
             "char": 45,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 24
           },
           "type": "ast-write",
@@ -93,7 +93,7 @@
             "char": 60,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 24
           },
           "type": "ast-write",
@@ -104,7 +104,7 @@
             "char": 60,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 24
           },
           "type": "ast-write",
@@ -115,7 +115,7 @@
             "char": 115,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 24
           },
           "type": "ast-write",
@@ -126,7 +126,7 @@
             "char": 118,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 24
           },
           "type": "ast-write",
@@ -138,7 +138,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 26
           },
           "text": "Link",
@@ -149,7 +149,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 28
           },
           "type": "ast-write",
@@ -160,7 +160,7 @@
             "char": 46,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 28
           },
           "type": "ast-write",
@@ -171,7 +171,7 @@
             "char": 61,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 28
           },
           "type": "ast-write",
@@ -182,7 +182,7 @@
             "char": 61,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 28
           },
           "type": "ast-write",
@@ -193,7 +193,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 30
           },
           "type": "ast-write",
@@ -204,7 +204,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 32
           },
           "type": "ast-write",
@@ -216,7 +216,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 39
           },
           "text": "Subtitle",
@@ -227,7 +227,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 41
           },
           "type": "ast-write",
@@ -239,7 +239,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 43
           },
           "text": "External",
@@ -250,7 +250,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 45
           },
           "type": "ast-write",
@@ -261,7 +261,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 47
           },
           "type": "ast-write",
@@ -272,7 +272,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 49
           },
           "type": "ast-write",
@@ -284,7 +284,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 59
           },
           "text": "Sub-Sections",
@@ -295,7 +295,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -306,7 +306,7 @@
             "char": 5,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -317,7 +317,7 @@
             "char": 16,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -328,7 +328,7 @@
             "char": 16,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -339,7 +339,7 @@
             "char": 269,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -350,7 +350,7 @@
             "char": 273,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -361,7 +361,7 @@
             "char": 273,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -372,7 +372,7 @@
             "char": 507,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -383,7 +383,7 @@
             "char": 510,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 61
           },
           "type": "ast-write",
@@ -394,7 +394,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 63
           },
           "type": "ast-write",
@@ -405,7 +405,7 @@
             "char": 22,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 63
           },
           "type": "ast-write",
@@ -416,7 +416,7 @@
             "char": 25,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 63
           },
           "type": "ast-write",
@@ -427,7 +427,7 @@
             "char": 49,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 63
           },
           "type": "ast-write",
@@ -438,7 +438,7 @@
             "char": 53,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 63
           },
           "type": "ast-write",
@@ -449,7 +449,7 @@
             "char": 53,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 63
           },
           "type": "ast-write",
@@ -460,7 +460,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 65
           },
           "type": "ast-write",
@@ -471,7 +471,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 67
           },
           "type": "ast-write",
@@ -482,7 +482,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 75
           },
           "type": "ast-write",
@@ -493,7 +493,7 @@
             "char": 39,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 75
           },
           "type": "ast-write",
@@ -504,7 +504,7 @@
             "char": 49,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 75
           },
           "type": "ast-write",
@@ -515,7 +515,7 @@
             "char": 49,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 75
           },
           "type": "ast-write",
@@ -526,7 +526,7 @@
             "char": 78,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 75
           },
           "type": "ast-write",
@@ -537,7 +537,7 @@
             "char": 100,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 75
           },
           "type": "ast-write",
@@ -548,7 +548,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 77
           },
           "type": "ast-write",
@@ -559,7 +559,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 79
           },
           "type": "ast-write",
@@ -570,7 +570,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 85
           },
           "type": "ast-write",
@@ -581,7 +581,7 @@
             "char": 38,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 85
           },
           "type": "ast-write",
@@ -592,7 +592,7 @@
             "char": 52,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 85
           },
           "type": "ast-write",
@@ -603,7 +603,7 @@
             "char": 52,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 85
           },
           "type": "ast-write",
@@ -614,7 +614,7 @@
             "char": 81,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 85
           },
           "type": "ast-write",
@@ -625,7 +625,7 @@
             "char": 91,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 85
           },
           "type": "ast-write",
@@ -636,7 +636,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 87
           },
           "type": "ast-write",
@@ -647,7 +647,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 91
           },
           "type": "ast-write",
@@ -658,7 +658,7 @@
             "char": 38,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 91
           },
           "type": "ast-write",
@@ -669,7 +669,7 @@
             "char": 48,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 91
           },
           "type": "ast-write",
@@ -680,7 +680,7 @@
             "char": 48,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 91
           },
           "type": "ast-write",
@@ -691,7 +691,7 @@
             "char": 77,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 91
           },
           "type": "ast-write",
@@ -702,7 +702,7 @@
             "char": 87,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 91
           },
           "type": "ast-write",
@@ -714,7 +714,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 93
           },
           "text": "Exception to the Rule",
@@ -725,7 +725,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 3,
-            "documentPath": "documentation\\section-meta.md",
+            "documentPath": "section-meta.md",
             "line": 95
           },
           "type": "ast-write",
@@ -736,7 +736,7 @@
         "char": 1,
         "documentDepth": 2,
         "documentIndex": 3,
-        "documentPath": "documentation\\section-meta.md",
+        "documentPath": "section-meta.md",
         "line": 1
       },
       "external": [],

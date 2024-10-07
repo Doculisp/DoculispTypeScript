@@ -74,6 +74,13 @@ function rawStringWriterResultBuilder(environment: ITestableContainer, text: str
     return map(astRecursiveBuilder, stringWriter.writeAst);
 }
 
+function rawStringWriterPathResultBuilder(environment: ITestableContainer, filePath: string): () => Result<string> {
+    const astRecursiveBuilder = buildRecursiveAstParser(environment);
+    const stringWriter = buildStringWriter(environment);
+
+    return map(() => astRecursiveBuilder.parse(filePath), stringWriter.writeAst);
+}
+
 function newBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer) => T): T {
     if(container.isTestable) {
         throw new Error('Must not be a testable container');
@@ -153,6 +160,15 @@ function newStringWriterResultBuilder(container: IContainer, setup: (environment
     });
 }
 
+function newStringWriterPathResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<string> {
+    return newBuilder(container, setup, (environment: ITestableContainer) => {
+        return (filePath: string): Result<string> => {
+            const astBuilder = rawStringWriterPathResultBuilder(environment, filePath);
+            return astBuilder();
+        };
+    });
+}
+
 const testable = {
     document: {
         resultBuilder: newDocumentResultBuilder,
@@ -172,6 +188,7 @@ const testable = {
     },
     stringWriter: {
         writer: newStringWriterBuilder,
+        pathParser: newStringWriterPathResultBuilder,
         resultBuilder: newStringWriterResultBuilder,
     },
 };

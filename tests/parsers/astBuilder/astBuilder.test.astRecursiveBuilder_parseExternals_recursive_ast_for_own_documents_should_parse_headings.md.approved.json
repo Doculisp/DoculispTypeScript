@@ -4,7 +4,7 @@
     "projectLocation": {
       "documentDepth": 2,
       "documentIndex": 5,
-      "documentPath": "documentation\\headings.md"
+      "documentPath": "headings.md"
     },
     "section": {
       "ast": [
@@ -13,7 +13,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 2
           },
           "label": "## Dynamic Headings ##",
@@ -26,7 +26,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 9
           },
           "type": "ast-write",
@@ -37,7 +37,7 @@
             "char": 149,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 9
           },
           "type": "ast-write",
@@ -48,7 +48,7 @@
             "char": 154,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 9
           },
           "type": "ast-write",
@@ -59,7 +59,7 @@
             "char": 154,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 9
           },
           "type": "ast-write",
@@ -70,7 +70,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 11
           },
           "type": "ast-write",
@@ -81,7 +81,7 @@
             "char": 78,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 11
           },
           "type": "ast-write",
@@ -92,7 +92,7 @@
             "char": 82,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 11
           },
           "type": "ast-write",
@@ -103,7 +103,7 @@
             "char": 82,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 11
           },
           "type": "ast-write",
@@ -114,7 +114,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 13
           },
           "type": "ast-write",
@@ -125,7 +125,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 15
           },
           "type": "ast-write",
@@ -136,7 +136,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 42
           },
           "type": "ast-write",
@@ -147,7 +147,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 44
           },
           "type": "ast-write",
@@ -159,7 +159,7 @@
             "char": 6,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 46
           },
           "text": "Max Heading Depth",
@@ -170,7 +170,7 @@
             "char": 1,
             "documentDepth": 2,
             "documentIndex": 5,
-            "documentPath": "documentation\\headings.md",
+            "documentPath": "headings.md",
             "line": 48
           },
           "type": "ast-write",
@@ -181,7 +181,7 @@
         "char": 1,
         "documentDepth": 2,
         "documentIndex": 5,
-        "documentPath": "documentation\\headings.md",
+        "documentPath": "headings.md",
         "line": 1
       },
       "external": [],

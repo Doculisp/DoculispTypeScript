@@ -52,7 +52,7 @@ class StringBuilder {
     }
 }
 
-function newLine(previousLocation: ILocation, currentLocation: ILocation): boolean {
+function isNewLine(previousLocation: ILocation, currentLocation: ILocation): boolean {
     return !(
         previousLocation.documentPath === currentLocation.documentPath
         && previousLocation.line === currentLocation.line
@@ -190,16 +190,16 @@ function writeContent(loads: ILoad[]): string {
     const sb = new StringBuilder();
 
     for (let index = 0; index < loads.length; index++) {
-        const element = loads[index];
-        if(!element) {
+        const load = loads[index];
+        if(!load) {
             continue;
         }
 
-        if(!element.document) {
+        if(!load.document) {
             continue;
         }
 
-        const doc = element.document;
+        const doc = load.document;
         let previous: ILocation = doc.documentOrder;
 
         if(0 < sb.length) {
@@ -217,19 +217,19 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
     let previousType = '';
 
     for (let index = 0; index < section.ast.length; index++) {
-        const element = section.ast[index];
-        if(!element) {
+        const ast = section.ast[index];
+        if(!ast) {
             continue;
         }
 
-        if(newLine(previous, element.documentOrder)) {
+        if(isNewLine(previous, ast.documentOrder)) {
             sb.addLine();
         }
 
-        if(previousType === 'ast-write' && element.type === 'ast-write') {
-            if(previous.documentPath !== element.documentOrder.documentPath
-               || (previous.line + 2) <= element.documentOrder.line
-               || (element.documentOrder.line + 2) <= previous.line
+        if(previousType === 'ast-write' && ast.type === 'ast-write') {
+            if(previous.documentPath !== ast.documentOrder.documentPath
+               || (previous.line + 2) <= ast.documentOrder.line
+               || (ast.documentOrder.line + 2) <= previous.line
             ) {
                 sb.addLine();
             } else if (0 < sb.lineLength) {
@@ -240,17 +240,17 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
             sb.addLine();
         }
 
-        switch (element.type) {
+        switch (ast.type) {
             case 'ast-write':
-                sb.add(writeAstWrite(element));
+                sb.add(writeAstWrite(ast));
                 break;
 
             case 'ast-title':
-                sb.add(writeAstTitle(element));
+                sb.add(writeAstTitle(ast));
                 break;
 
             case 'ast-header':
-                sb.add(writeAstHeader(element));
+                sb.add(writeAstHeader(ast));
                 break;
 
             case 'ast-content':
@@ -258,15 +258,15 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
                 break;
 
             case 'ast-toc':
-                sb.add(writeTableOfContents(element, section.external));
+                sb.add(writeTableOfContents(ast, section.external));
                 break;
         
             default:
                 break;
         }
 
-        previousType = element.type;
-        previous = element.documentOrder;
+        previousType = ast.type;
+        previous = ast.documentOrder;
     }
 
     return sb.toString();

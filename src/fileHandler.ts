@@ -1,10 +1,8 @@
 import { IRegisterable } from "./types.containers";
 import { IFileHandler } from "./types.fileHandler";
-import fs from 'fs';
-
 import { IUtil, Result } from "./types.general";
 
-function buildLoader(util: IUtil, fd: any): IFileHandler {
+function buildLoader(util: IUtil, fs: any): IFileHandler {
     function load(path: string): Result<string> {
         try {
             const value: string = fs.readFileSync(path, {encoding: 'utf8'});
@@ -30,9 +28,19 @@ function buildLoader(util: IUtil, fd: any): IFileHandler {
         }
     }
 
+    function getProcessWorkingDirectory(): string {
+        return process.cwd();
+    }
+
+    function setProcessWorkingDirectory(directory: string): void {
+        process.chdir(directory);
+    }
+
     return {
         load,
         write,
+        getProcessWorkingDirectory,
+        setProcessWorkingDirectory,
     };
 }
 

@@ -8,5 +8,10 @@ export interface IFileWriter {
     write(path: string, text: Result<string>): Result<string>;
 };
 
-export interface IFileHandler extends IFileLoader, IFileWriter {
+export interface IDirectoryHandler {
+    getProcessWorkingDirectory(): string;
+    setProcessWorkingDirectory(directory: string): void;
+}
+
+export interface IFileHandler extends IFileLoader, IFileWriter, IDirectoryHandler {
 };

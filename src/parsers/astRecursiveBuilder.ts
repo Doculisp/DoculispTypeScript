@@ -6,23 +6,32 @@ import { IFileHandler } from "../types.fileHandler";
 import { IProjectLocation, IUtil, Result } from "../types.general";
 import { TokenFunction } from "../types.tokens";
 
-function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler) : IAstBuilder {
+function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) : IAstBuilder {
 
-    function _parse(path: string, location: IProjectLocation): Result<IAst> {
-        const fileMaybe = fileHandler.load(path);
-        if(!fileMaybe.success) {
-            return fileMaybe;
+    function _parse(filePath: string, location: IProjectLocation): Result<IAst> {
+        const workingDir = fileHandler.getProcessWorkingDirectory();
+        const targetDir = path.resolve(path.dirname(filePath));
+        try {
+            fileHandler.setProcessWorkingDirectory(targetDir);
+
+            const fileMaybe = fileHandler.load(path.basename(filePath));
+            if(!fileMaybe.success) {
+                return fileMaybe;
+            }
+    
+            const documentResult = documentParse(fileMaybe.value, location);
+            const tokens = tokenizer(documentResult);
+            const ast = astParse.parse(tokens);
+
+            return parseExternals(ast);
         }
-
-        const documentResult = documentParse(fileMaybe.value, location);
-        const tokens = tokenizer(documentResult);
-        const ast = astParse.parse(tokens);
-
-        return parseExternals(ast);
+        finally {
+            fileHandler.setProcessWorkingDirectory(workingDir);
+        }
     }
 
-    function parse(path: string): Result<IAst> {
-        return _parse(path, { documentDepth: 1, documentIndex: 1, documentPath: path });
+    function parse(filePath: string): Result<IAst> {
+        return _parse(filePath, { documentDepth: 1, documentIndex: 1, documentPath: filePath });
     }
 
     function parseSection(ast: ISectionWriter): Result<ISectionWriter> {
@@ -81,10 +90,10 @@ function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: Docum
 }
 
 const astBuilder : IRegisterable = {
-    builder: (util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler),
+    builder: (util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, path),
     name: 'astBuilder',
     singleton: true,
-    dependencies: ['util', 'astParse', 'documentParse', 'tokenizer', 'fileHandler']
+    dependencies: ['util', 'astParse', 'documentParse', 'tokenizer', 'fileHandler', 'path']
 };
 
 export {
