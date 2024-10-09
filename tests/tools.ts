@@ -45,19 +45,23 @@ function verifyMarkdownObject(text: string, options?: Options): void {
   verify(text, options);
 }
 
-export function getVerifier(configure: (overrideOptions?: Partial<Config> | undefined) => Config): ((data: any, options?: Options) => void) {
+function setupVerifier(configure: (overrideOptions?: Partial<Config> | undefined) => Config): void {
     configure({
         reporters: [new JestReporter()],
+        errorOnStaleApprovedFiles: true,
+        failOnLineEndingDifferences: false,
+        normalizeLineEndingsTo: '\n',
     });
+}
+
+export function getVerifier(configure: (overrideOptions?: Partial<Config> | undefined) => Config): ((data: any, options?: Options) => void) {
+    setupVerifier(configure);
 
     return verifyJsonObject;
 }
 
 export function getVerifiers(configure: (overrideOptions?: Partial<Config> | undefined) => Config) {
-    configure({
-        reporters: [new JestReporter()],
-    });
-
+    setupVerifier(configure);
     
     return {
         verifyAsJson: verifyJsonObject,
