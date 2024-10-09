@@ -19,7 +19,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
         return values;
     }
 
-    function isSectionMeta(internals: IInternals, util: IUtil, external: ILoad[]): HandleValue<Token[], ITitle> {
+    function isSectionMeta(internals: IInternals, util: IUtil, include: ILoad[]): HandleValue<Token[], ITitle> {
         return function(toParse: Token[], starting: ILocation):  StepParseResult<Token[], ITitle> {
             let depth = 0;
             let start: ILocation | undefined;
@@ -312,7 +312,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                if(atom.type !== 'token - atom' || atom.text !== 'external') {
+                if(atom.type !== 'token - atom' || atom.text !== 'include') {
                     return internals.noResultFound();
                 }
 
@@ -330,10 +330,10 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 const result = rawResult as ILoad[];
 
                 if(0 === result.length) {
-                    return util.fail(`External command at ${open.location} does not contain any section information.`, open.location.documentPath);
+                    return util.fail(`Include command at ${open.location} does not contain any section information.`, open.location.documentPath);
                 }
 
-                result.forEach(r => external.push(r));
+                result.forEach(r => include.push(r));
 
                 return util.ok({
                     type: 'discard',
@@ -594,7 +594,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
             }
 
             if(0 === externals.length) {
-                return util.fail(`Section command at ${(parts[0] as AstPart).documentOrder} needs the section-meta command to have external links.`, starting.documentPath);
+                return util.fail(`Section command at ${(parts[0] as AstPart).documentOrder} needs the section-meta command to have included links.`, starting.documentPath);
             }
 
             const result: IKeeper<AstPart>[] = 
@@ -615,13 +615,13 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
         parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
-                const external: ILoad[] = [];
+                const include: ILoad[] = [];
                 const parser = 
                     internals.createArrayParser(
                         isText(internals, util),
                         isHeader(internals, util),
-                        isSectionMeta(internals, util, external),
-                        isContent(internals, util, external),
+                        isSectionMeta(internals, util, include),
+                        isContent(internals, util, include),
                     );
                 const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 1, 1));
                 
@@ -635,7 +635,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                                 type: 'ast-section',
                                 ast: result,
                                 documentOrder: util.toLocation(document.projectLocation, 1, 1),
-                                external,
+                                include,
                             },
                         });
                     }

@@ -64,7 +64,7 @@ export type AstPart = IWrite | ITitle | ITableOfContents | IContentLocation | IH
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'ast-section';
     readonly ast: AstPart[];
-    readonly external: ILoad[];
+    readonly include: ILoad[];
 };
 
 export interface IEmptyAst {

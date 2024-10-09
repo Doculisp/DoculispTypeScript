@@ -692,7 +692,7 @@
           "documentPath": "./documentation/keywords.md",
           "line": 20
         },
-        "text": "`external`",
+        "text": "`include`",
         "type": "text"
       },
       {

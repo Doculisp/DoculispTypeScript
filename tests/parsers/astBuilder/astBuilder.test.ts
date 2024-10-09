@@ -80,7 +80,7 @@ describe.skip('astRecursiveBuilder', () => {
 (dl
     (section-meta
         (title A journey down a bad filePath)
-        (external
+        (include
             (Section ${badPath})
         )
     )
@@ -112,7 +112,7 @@ Hello world!
             const document = `
 (section-meta
     (title Main Document)
-    (external
+    (include
         (Section ${subDocumentPath})
     )
 )
@@ -155,7 +155,7 @@ Sub document B text.
             const doc = `
 (section-meta
     (title Main Multiple Sub Documents)
-    (external
+    (include
         (Section ${subAPath})
         (Section ${subBPath})
     )
@@ -185,7 +185,7 @@ Hi gramps!
 (dl
     (section-meta
         (title A Child Document)
-        (external
+        (include
             (GrandChild ${grandChildPath})
         )
     )
@@ -205,7 +205,7 @@ Hi Dad!
 (dl
     (section-meta
         (title Top Level Document)
-        (external
+        (include
             (Child ${childPath})
         )
     )
@@ -269,7 +269,7 @@ Hello from the grand child
 (dl
     (section-meta
         (title The Child to Bare)
-        (external
+        (include
             (Chip ${grandChildPath})
         )
     )
@@ -287,7 +287,7 @@ hello from the child
             const doc = `
 (section-meta
     (title The True Root)
-    (external
+    (include
         (Block ${childPath})
     )
 )

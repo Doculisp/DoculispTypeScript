@@ -76,7 +76,7 @@
           "documentPath": "./documentation/comment.md",
           "line": 13
         },
-        "text": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (external\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (section ./comment.md)\n        )\n    )\n)\n-->\n```",
+        "text": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (section ./comment.md)\n        )\n    )\n)\n-->\n```",
         "type": "text"
       },
       {
@@ -142,7 +142,7 @@
           "documentPath": "./documentation/comment.md",
           "line": 33
         },
-        "text": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (*external\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (*section ./comment.md)\n        )\n    )\n)\n-->\n```",
+        "text": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (*include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (*section ./comment.md)\n        )\n    )\n)\n-->\n```",
         "type": "text"
       },
       {
@@ -241,12 +241,12 @@
           "documentPath": "./documentation/comment.md",
           "line": 51
         },
-        "text": "`external`",
+        "text": "`include`",
         "type": "text"
       },
       {
         "location": {
-          "char": 139,
+          "char": 138,
           "documentDepth": 2,
           "documentIndex": 6,
           "documentPath": "./documentation/comment.md",
@@ -257,7 +257,7 @@
       },
       {
         "location": {
-          "char": 139,
+          "char": 138,
           "documentDepth": 2,
           "documentIndex": 6,
           "documentPath": "./documentation/comment.md",
@@ -268,7 +268,7 @@
       },
       {
         "location": {
-          "char": 208,
+          "char": 207,
           "documentDepth": 2,
           "documentIndex": 6,
           "documentPath": "./documentation/comment.md",
@@ -279,7 +279,7 @@
       },
       {
         "location": {
-          "char": 231,
+          "char": 230,
           "documentDepth": 2,
           "documentIndex": 6,
           "documentPath": "./documentation/comment.md",
@@ -290,7 +290,7 @@
       },
       {
         "location": {
-          "char": 231,
+          "char": 230,
           "documentDepth": 2,
           "documentIndex": 6,
           "documentPath": "./documentation/comment.md",

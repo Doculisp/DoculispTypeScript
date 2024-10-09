@@ -2,7 +2,7 @@
 
 # Content Block #
 
-The content block signifies where to build the document from the external documents. This block has only one optional subblock.
+The content block signifies where to build the document from the include documents. This block has only one optional subblock.
 
 ## Table of Contents ##
 
@@ -34,7 +34,7 @@ Any of the options with `labled` on it will use the name of the subsection.
 (dl
     (file-meta
         (title Some Document)
-        (external
+        (include
             (chapter ./first) (*The title of this document is "An introduction")
         )
     )

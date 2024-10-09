@@ -85,7 +85,7 @@
             "line": 13
           },
           "type": "ast-write",
-          "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Doculisp)\n        (external\n            (section ./doculisp.md)\n        )\n    )\n\n    (content (toc numbered-labled))\n)\n-->\n```"
+          "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Doculisp)\n        (include\n            (section ./doculisp.md)\n        )\n    )\n\n    (content (toc numbered-labled))\n)\n-->\n```"
         },
         {
           "documentOrder": {
@@ -106,7 +106,7 @@
         "documentPath": "documentation\\doculisp.md",
         "line": 1
       },
-      "external": [],
+      "include": [],
       "type": "ast-section"
     }
   }

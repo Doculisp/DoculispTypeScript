@@ -21,7 +21,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 9
         },
-        "text": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external.",
+        "text": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and include.",
         "type": "text"
       },
       {
@@ -43,7 +43,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 13
         },
-        "text": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (external\n        (section ./doculisp.md)\n    )\n)\n```",
+        "text": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (include\n        (section ./doculisp.md)\n    )\n)\n```",
         "type": "text"
       },
       {
@@ -230,7 +230,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 43
         },
-        "text": "(# External)",
+        "text": "(# Include)",
         "type": "lisp"
       },
       {
@@ -263,7 +263,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 49
         },
-        "text": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (external\n        (section ./doculisp.md)\n        (section ./section-meta.md)\n    )\n)\n```",
+        "text": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (include\n        (section ./doculisp.md)\n        (section ./section-meta.md)\n    )\n)\n```",
         "type": "text"
       },
       {
@@ -296,12 +296,12 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 61
         },
-        "text": "`external`",
+        "text": "`include`",
         "type": "text"
       },
       {
         "location": {
-          "char": 16,
+          "char": 15,
           "documentDepth": 2,
           "documentIndex": 3,
           "documentPath": "./documentation/section-meta.md",
@@ -312,7 +312,7 @@
       },
       {
         "location": {
-          "char": 16,
+          "char": 15,
           "documentDepth": 2,
           "documentIndex": 3,
           "documentPath": "./documentation/section-meta.md",
@@ -323,7 +323,7 @@
       },
       {
         "location": {
-          "char": 269,
+          "char": 268,
           "documentDepth": 2,
           "documentIndex": 3,
           "documentPath": "./documentation/section-meta.md",
@@ -334,7 +334,7 @@
       },
       {
         "location": {
-          "char": 273,
+          "char": 272,
           "documentDepth": 2,
           "documentIndex": 3,
           "documentPath": "./documentation/section-meta.md",
@@ -345,7 +345,7 @@
       },
       {
         "location": {
-          "char": 273,
+          "char": 272,
           "documentDepth": 2,
           "documentIndex": 3,
           "documentPath": "./documentation/section-meta.md",
@@ -356,7 +356,7 @@
       },
       {
         "location": {
-          "char": 507,
+          "char": 506,
           "documentDepth": 2,
           "documentIndex": 3,
           "documentPath": "./documentation/section-meta.md",
@@ -367,7 +367,7 @@
       },
       {
         "location": {
-          "char": 510,
+          "char": 509,
           "documentDepth": 2,
           "documentIndex": 3,
           "documentPath": "./documentation/section-meta.md",
@@ -461,7 +461,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 67
         },
-        "text": "```doculisp\n(external\n    (chapter\n        ./information/one.md\n    )\n)\n```",
+        "text": "```doculisp\n(include\n    (chapter\n        ./information/one.md\n    )\n)\n```",
         "type": "text"
       },
       {
@@ -549,7 +549,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 79
         },
-        "text": "```doculisp\n(external\n    (sub-section ./one.md)\n)\n```",
+        "text": "```doculisp\n(include\n    (sub-section ./one.md)\n)\n```",
         "type": "text"
       },
       {
@@ -626,7 +626,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 87
         },
-        "text": "```doculisp\n(external (section ./two.md))\n```",
+        "text": "```doculisp\n(include (section ./two.md))\n```",
         "type": "text"
       },
       {

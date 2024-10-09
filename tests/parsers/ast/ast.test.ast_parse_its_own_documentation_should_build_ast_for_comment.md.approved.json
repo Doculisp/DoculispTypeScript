@@ -85,7 +85,7 @@
             "line": 13
           },
           "type": "ast-write",
-          "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (external\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (section ./comment.md)\n        )\n    )\n)\n-->\n```"
+          "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (section ./comment.md)\n        )\n    )\n)\n-->\n```"
         },
         {
           "documentOrder": {
@@ -151,7 +151,7 @@
             "line": 33
           },
           "type": "ast-write",
-          "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (*external\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (*section ./comment.md)\n        )\n    )\n)\n-->\n```"
+          "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (*include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (*section ./comment.md)\n        )\n    )\n)\n-->\n```"
         },
         {
           "depthCount": 3,
@@ -251,11 +251,11 @@
             "line": 51
           },
           "type": "ast-write",
-          "value": "`external`"
+          "value": "`include`"
         },
         {
           "documentOrder": {
-            "char": 139,
+            "char": 138,
             "documentDepth": 2,
             "documentIndex": 6,
             "documentPath": "documentation\\comment.md",
@@ -266,7 +266,7 @@
         },
         {
           "documentOrder": {
-            "char": 139,
+            "char": 138,
             "documentDepth": 2,
             "documentIndex": 6,
             "documentPath": "documentation\\comment.md",
@@ -277,7 +277,7 @@
         },
         {
           "documentOrder": {
-            "char": 208,
+            "char": 207,
             "documentDepth": 2,
             "documentIndex": 6,
             "documentPath": "documentation\\comment.md",
@@ -288,7 +288,7 @@
         },
         {
           "documentOrder": {
-            "char": 231,
+            "char": 230,
             "documentDepth": 2,
             "documentIndex": 6,
             "documentPath": "documentation\\comment.md",
@@ -299,7 +299,7 @@
         },
         {
           "documentOrder": {
-            "char": 231,
+            "char": 230,
             "documentDepth": 2,
             "documentIndex": 6,
             "documentPath": "documentation\\comment.md",
@@ -316,7 +316,7 @@
         "documentPath": "documentation\\comment.md",
         "line": 1
       },
-      "external": [],
+      "include": [],
       "type": "ast-section"
     }
   }

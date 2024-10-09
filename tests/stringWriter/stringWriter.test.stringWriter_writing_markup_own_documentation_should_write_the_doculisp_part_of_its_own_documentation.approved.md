@@ -11,7 +11,7 @@ Example
 (dl
     (section-meta
         (title Doculisp)
-        (external
+        (include
             (section ./doculisp.md)
         )
     )

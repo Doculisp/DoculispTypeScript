@@ -30,7 +30,7 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and external."
+          "value": "This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and include."
         },
         {
           "documentOrder": {
@@ -52,7 +52,7 @@
             "line": 13
           },
           "type": "ast-write",
-          "value": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (external\n        (section ./doculisp.md)\n    )\n)\n```"
+          "value": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (include\n        (section ./doculisp.md)\n    )\n)\n```"
         },
         {
           "depthCount": 3,
@@ -242,7 +242,7 @@
             "documentPath": "section-meta.md",
             "line": 43
           },
-          "text": "External",
+          "text": "Include",
           "type": "ast-header"
         },
         {
@@ -276,7 +276,7 @@
             "line": 49
           },
           "type": "ast-write",
-          "value": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (external\n        (section ./doculisp.md)\n        (section ./section-meta.md)\n    )\n)\n```"
+          "value": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (include\n        (section ./doculisp.md)\n        (section ./section-meta.md)\n    )\n)\n```"
         },
         {
           "depthCount": 4,
@@ -310,7 +310,7 @@
             "line": 61
           },
           "type": "ast-write",
-          "value": "`external`"
+          "value": "`include`"
         },
         {
           "documentOrder": {
@@ -475,7 +475,7 @@
             "line": 67
           },
           "type": "ast-write",
-          "value": "```doculisp\n(external\n    (chapter\n        ./information/one.md\n    )\n)\n```"
+          "value": "```doculisp\n(include\n    (chapter\n        ./information/one.md\n    )\n)\n```"
         },
         {
           "documentOrder": {
@@ -563,7 +563,7 @@
             "line": 79
           },
           "type": "ast-write",
-          "value": "```doculisp\n(external\n    (sub-section ./one.md)\n)\n```"
+          "value": "```doculisp\n(include\n    (sub-section ./one.md)\n)\n```"
         },
         {
           "documentOrder": {
@@ -640,7 +640,7 @@
             "line": 87
           },
           "type": "ast-write",
-          "value": "```doculisp\n(external (section ./two.md))\n```"
+          "value": "```doculisp\n(include (section ./two.md))\n```"
         },
         {
           "documentOrder": {
@@ -739,7 +739,7 @@
         "documentPath": "section-meta.md",
         "line": 1
       },
-      "external": [],
+      "include": [],
       "type": "ast-section"
     }
   }

@@ -88,7 +88,7 @@
           "documentPath": "./documentation/_main.dlisp",
           "line": 3
         },
-        "text": "external",
+        "text": "include",
         "type": "token - atom"
       },
       {

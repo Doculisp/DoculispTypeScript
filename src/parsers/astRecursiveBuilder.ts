@@ -35,8 +35,8 @@ function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: Docum
     }
 
     function parseSection(ast: ISectionWriter): Result<ISectionWriter> {
-        for (let index = 0; index < ast.external.length; index++) {
-            const load = ast.external[index];
+        for (let index = 0; index < ast.include.length; index++) {
+            const load = ast.include[index];
             if(!load) {
                 continue;
             }

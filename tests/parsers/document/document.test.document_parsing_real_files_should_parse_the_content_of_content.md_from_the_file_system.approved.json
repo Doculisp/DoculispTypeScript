@@ -21,7 +21,7 @@
           "documentPath": "./documentation/content.md",
           "line": 9
         },
-        "text": "The content block signifies where to build the document from the external documents. This block has only one optional subblock.",
+        "text": "The content block signifies where to build the document from the included documents. This block has only one optional subblock.",
         "type": "text"
       },
       {
@@ -252,7 +252,7 @@
           "documentPath": "./documentation/content.md",
           "line": 37
         },
-        "text": "```doculisp\n(dl\n    (file-meta\n        (title Some Document)\n        (external\n            (chapter ./first) (*The title of this document is \"An introduction\")\n        )\n    )\n\n    (content (toc bulleted-labeled))\n)\n```",
+        "text": "```doculisp\n(dl\n    (file-meta\n        (title Some Document)\n        (include\n            (chapter ./first) (*The title of this document is \"An introduction\")\n        )\n    )\n\n    (content (toc bulleted-labeled))\n)\n```",
         "type": "text"
       },
       {

@@ -50,7 +50,7 @@
         "documentPath": "documentation\\_main.dlisp",
         "line": 1
       },
-      "external": [
+      "include": [
         {
           "document": false,
           "documentOrder": {

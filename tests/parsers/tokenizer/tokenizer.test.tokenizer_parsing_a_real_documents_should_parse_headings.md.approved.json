@@ -187,7 +187,7 @@
           "documentPath": "./documentation/headings.md",
           "line": 15
         },
-        "text": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Maths an intro)\n        (external\n            (section ./add.md)\n            (section ./subtract.md)\n            (section ./muliply.md)\n            (section ./divide.md)\n        )\n    )\n)\n-->\n\n<!-- (dl (# Summary)) -->\n\nA cool summary of maths.\n\n<!-- (dl (## Resons For Document)) -->\n\nAn explination why to have the document.\n\n\n<!-- (dl (content (toc unlabled))) -->\n```",
+        "text": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Maths an intro)\n        (include\n            (section ./add.md)\n            (section ./subtract.md)\n            (section ./muliply.md)\n            (section ./divide.md)\n        )\n    )\n)\n-->\n\n<!-- (dl (# Summary)) -->\n\nA cool summary of maths.\n\n<!-- (dl (## Resons For Document)) -->\n\nAn explination why to have the document.\n\n\n<!-- (dl (content (toc unlabled))) -->\n```",
         "type": "token - text"
       },
       {

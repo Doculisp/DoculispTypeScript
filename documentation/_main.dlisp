@@ -1,6 +1,6 @@
 (section-meta
     (title Doculisp)
-    (external
+    (include
         (Section ./structure.md)
         (Section ./doculisp.md)
         (Section ./section-meta.md)

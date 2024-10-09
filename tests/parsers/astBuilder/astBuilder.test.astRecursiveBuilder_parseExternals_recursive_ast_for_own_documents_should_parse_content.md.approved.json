@@ -30,7 +30,7 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "The content block signifies where to build the document from the external documents. This block has only one optional subblock."
+          "value": "The content block signifies where to build the document from the include documents. This block has only one optional subblock."
         },
         {
           "depthCount": 3,
@@ -262,7 +262,7 @@
             "line": 37
           },
           "type": "ast-write",
-          "value": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (external\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```"
+          "value": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (include\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```"
         },
         {
           "documentOrder": {
@@ -294,7 +294,7 @@
         "documentPath": "content.md",
         "line": 1
       },
-      "external": [],
+      "include": [],
       "type": "ast-section"
     }
   }

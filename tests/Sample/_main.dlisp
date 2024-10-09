@@ -1,6 +1,6 @@
 (section-meta
     (title An explanation of the tests)
-    (external
+    (include
         (Section ./parsers/_main.md)
         (*Section ./stringWriter.md)
     )

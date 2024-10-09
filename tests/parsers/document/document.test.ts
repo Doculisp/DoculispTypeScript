@@ -213,7 +213,7 @@ describe('document', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)
-    (external
+    (include
         (Section ./structure.md)
         (Section ./doculisp.md)
         (Section ./section-meta.md)
@@ -250,7 +250,7 @@ describe('document', () => {
             let dlisp = `
 (section-meta
     (title Doculisp)
-    (external
+    (include
         (Section ./structure.md)
         (Section ./doculisp.md
         (Section ./section-meta.md)

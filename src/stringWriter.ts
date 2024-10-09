@@ -254,11 +254,11 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
                 break;
 
             case 'ast-content':
-                sb.add(writeContent(section.external));
+                sb.add(writeContent(section.include));
                 break;
 
             case 'ast-toc':
-                sb.add(writeTableOfContents(ast, section.external));
+                sb.add(writeTableOfContents(ast, section.include));
                 break;
         
             default:

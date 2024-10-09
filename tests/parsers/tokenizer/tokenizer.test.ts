@@ -224,7 +224,7 @@ describe('tokenizer', () => {
                         type: 'lisp',
                         location: start,
                         text: `(section-meta
-        (external
+        (include
             (Section ./structure.md)
         )
     )`,
@@ -247,7 +247,7 @@ describe('tokenizer', () => {
                         type: 'lisp',
                         location: start,
                         text: `(section-meta
-        (*external
+        (*include
             (Section ./structure.md)
             (*Section ./comments.md)
             (Section ./toc.md)

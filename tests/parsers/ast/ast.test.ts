@@ -132,7 +132,7 @@ describe('ast', () => {
             const text = `
 (section-meta
     (title Doculisp)
-    (external
+    (include
         (Section ./structure.md)
         (Section ./doculisp.md)
         (Section ./section-meta.md)
@@ -158,7 +158,7 @@ describe('ast', () => {
                 const contents = `
 (section-meta
 (link doculisp_is_)
-(external
+(include
     (Section ./structure.md)
     (Section ./doculisp.md)
 )
@@ -311,12 +311,12 @@ describe('ast', () => {
                 })
             });
 
-            describe('external', () => {
-                it('should parse external', () => {
+            describe('include', () => {
+                it('should parse include', () => {
                     const contents = `
 (section-meta
     (title Doculisp a short description)
-    (external
+    (include
         (section ./doculisp.md)
         (section ./section-meta.md)
     )
@@ -327,11 +327,11 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                it('should not parse external without section information', () => {
+                it('should not parse include without section information', () => {
                     const contents = `
 (section-meta
     (title Doculisp a short description)
-    (external)
+    (include)
 )`;
 
                     const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
@@ -344,7 +344,7 @@ describe('ast', () => {
 (section-meta
     (title Doculisp is ✨)
     (link doculisp_is_)
-    (external
+    (include
         (Section ./structure.md)
         (Section ./doculisp.md)
     )
@@ -362,7 +362,7 @@ describe('ast', () => {
                 const text = `
 (section-meta
     (title Using Content)
-    (external
+    (include
         (Section ./HelloContent.md)
     )
 )
@@ -381,7 +381,7 @@ describe('ast', () => {
 
 (section-meta
     (title Using Content)
-    (external
+    (include
         (Section ./HelloContent.md)
     )
 )
@@ -410,7 +410,7 @@ describe('ast', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
-    (external
+    (include
         (Chapter ./sleep.md)
     )
 )
@@ -435,7 +435,7 @@ describe('ast', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
-    (external
+    (include
         (Chapter ./songs.dlisp)
     )
 )
@@ -452,7 +452,7 @@ describe('ast', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
-    (external
+    (include
         (Chapter ./songs.dlisp)
     )
 )
@@ -468,7 +468,7 @@ describe('ast', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
-    (external
+    (include
         (Chapter ./sleep.md)
     )
 )

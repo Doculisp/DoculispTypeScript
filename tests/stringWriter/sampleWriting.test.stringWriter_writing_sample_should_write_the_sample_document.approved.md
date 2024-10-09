@@ -13,7 +13,7 @@ Most of the work is done in the parsers. They take an input document and follow 
 1. Separate Doculisp from Markdown
 2. Tockenize the parts of Doculisp
 3. Recombine Markdown and Doculisp in a syntactic tree that represents the final document.
-4. Repeate steps 1 through 4 with all external documents.
+4. Repeate steps 1 through 4 with all include documents.
 
 These test prove all of the above.
 

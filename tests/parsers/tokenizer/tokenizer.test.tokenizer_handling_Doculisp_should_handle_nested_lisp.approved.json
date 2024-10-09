@@ -46,7 +46,7 @@
           "documentPath": "A:/main.md",
           "line": 3
         },
-        "text": "external",
+        "text": "include",
         "type": "token - atom"
       },
       {

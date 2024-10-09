@@ -11,7 +11,7 @@ Example:
 (dl
     (*section-meta
         (title Doculisp)
-        (external
+        (include
             (section ./doculisp.md)
             (section ./section-meta.md)
             (section ./content.md)
@@ -31,7 +31,7 @@ xample:
 (dl
     (*section-meta
         (title Doculisp)
-        (*external
+        (*include
             (section ./doculisp.md)
             (section ./section-meta.md)
             (section ./content.md)
@@ -44,6 +44,6 @@ xample:
 
 ## Nested Comments ##
 
-In this example the `section-meta` and all its subblocks are commented out. However when you uncomment `section-meta` then the `external` block will be commented out. When you uncomment that block, then the `section ./comment.md` block will be commented out.
+In this example the `section-meta` and all its subblocks are commented out. However when you uncomment `section-meta` then the `include` block will be commented out. When you uncomment that block, then the `section ./comment.md` block will be commented out.
 
 <!-- Generated Document do not edit! -->

@@ -217,7 +217,7 @@ This sub section rocks!
 (dl
     (section-meta
         (title Me and my sub section)
-        (external
+        (include
             (Section ${subPath})
         )
     )
@@ -267,7 +267,7 @@ This sub section rocks!
 (dl
     (section-meta
         (title Me and my sub sections)
-        (external
+        (include
             (Section ${subPath1})
             (Block ${subPath2})
         )
@@ -318,7 +318,7 @@ This sub section rocks!
 (dl
     (section-meta
         (title Me and my sub sections)
-        (external
+        (include
             (Section ${subPath1})
             (Block ${subPath2})
         )
@@ -369,7 +369,7 @@ This sub section rocks!
 (dl
     (section-meta
         (title Me and my sub sections)
-        (external
+        (include
             (Section ${subPath1})
             (Block ${subPath2})
         )
@@ -420,7 +420,7 @@ This sub section rocks!
 (dl
     (section-meta
         (title Me and my sub sections)
-        (external
+        (include
             (Section ${subPath1})
             (Block ${subPath2})
         )
@@ -471,7 +471,7 @@ This sub section rocks!
 (dl
     (section-meta
         (title Me and my sub sections)
-        (external
+        (include
             (Section ${subPath1})
             (Block ${subPath2})
         )
@@ -522,7 +522,7 @@ This sub section rocks!
 (dl
     (section-meta
         (title Me and my sub sections)
-        (external
+        (include
             (Section ${subPath1})
             (Block ${subPath2})
         )

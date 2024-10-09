@@ -51,7 +51,7 @@
         "documentPath": "_main.md",
         "line": 1
       },
-      "external": [
+      "include": [
         {
           "document": {
             "ast": [
@@ -98,7 +98,7 @@
               "documentPath": "./child.md",
               "line": 1
             },
-            "external": [
+            "include": [
               {
                 "document": {
                   "ast": [
@@ -134,7 +134,7 @@
                     "documentPath": "C:/grand.md",
                     "line": 1
                   },
-                  "external": [],
+                  "include": [],
                   "type": "ast-section"
                 },
                 "documentOrder": {

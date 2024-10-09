@@ -28,7 +28,7 @@
         "documentPath": "S:/ome/file.md",
         "line": 1
       },
-      "external": [],
+      "include": [],
       "type": "ast-section"
     }
   }

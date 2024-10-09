@@ -17,7 +17,7 @@ Example
 (dl
     (section-meta
         (title Maths an intro)
-        (external
+        (include
             (section ./add.md)
             (section ./subtract.md)
             (section ./muliply.md)

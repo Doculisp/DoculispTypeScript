@@ -50,7 +50,7 @@
         "documentPath": "./_main.dlisp",
         "line": 1
       },
-      "external": [
+      "include": [
         {
           "document": {
             "ast": [
@@ -96,7 +96,7 @@
               "documentPath": "./childDoc.md",
               "line": 1
             },
-            "external": [
+            "include": [
               {
                 "document": {
                   "ast": [
@@ -132,7 +132,7 @@
                     "documentPath": "./grandchild.md",
                     "line": 1
                   },
-                  "external": [],
+                  "include": [],
                   "type": "ast-section"
                 },
                 "documentOrder": {

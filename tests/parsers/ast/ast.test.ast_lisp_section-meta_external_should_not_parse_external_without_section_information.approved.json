@@ -1,5 +1,0 @@
-{
-  "documentPath": "main.dlisp",
-  "message": "External command at {\"path\":\"main.dlisp\",\"line\":4,\"char\":5} does not contain any section information.",
-  "success": false
-}

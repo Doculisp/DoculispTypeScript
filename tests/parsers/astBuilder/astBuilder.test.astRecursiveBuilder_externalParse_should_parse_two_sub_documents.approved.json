@@ -39,7 +39,7 @@
         "documentPath": "_main.dlisp",
         "line": 1
       },
-      "external": [
+      "include": [
         {
           "document": {
             "ast": [
@@ -75,7 +75,7 @@
               "documentPath": "A:/subA.md",
               "line": 1
             },
-            "external": [],
+            "include": [],
             "type": "ast-section"
           },
           "documentOrder": {
@@ -124,7 +124,7 @@
               "documentPath": "B:/subB.md",
               "line": 1
             },
-            "external": [],
+            "include": [],
             "type": "ast-section"
           },
           "documentOrder": {

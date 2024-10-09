@@ -701,7 +701,7 @@
             "line": 20
           },
           "type": "ast-write",
-          "value": "`external`"
+          "value": "`include`"
         },
         {
           "documentOrder": {
@@ -1206,7 +1206,7 @@
         "documentPath": "keywords.md",
         "line": 1
       },
-      "external": [],
+      "include": [],
       "type": "ast-section"
     }
   }
