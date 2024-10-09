@@ -176,7 +176,7 @@
           "documentPath": "./documentation/structure.md",
           "line": 15
         },
-        "text": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Basic Structure)\r\n    )\r\n)\r\n-->\r\n```",
+        "text": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Basic Structure)\n    )\n)\n-->\n```",
         "type": "token - text"
       },
       {
@@ -579,7 +579,7 @@
           "documentPath": "./documentation/structure.md",
           "line": 33
         },
-        "text": "```doculisp\r\n(atom)\r\n(atom parameter)\r\n(atom (atom2))\r\n(atom (atom2 second parameter))\r\n```",
+        "text": "```doculisp\n(atom)\n(atom parameter)\n(atom (atom2))\n(atom (atom2 second parameter))\n```",
         "type": "token - text"
       }
     ]

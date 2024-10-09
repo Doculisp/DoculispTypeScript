@@ -122,11 +122,10 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     function isKeptWhiteSpace(): HandleStringValue<DocumentPart> {
         return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
             const isWindows = doesItStartWithKeep(doesIt.startWithWindowsNewline, l => l.increaseLine());
-            const isLinux = doesItStartWithKeep(doesIt.startWithLinuxNewline, l => l.increaseLine());
-            const isMac = doesItStartWithKeep(doesIt.startWithMacsNewline, l => l.increaseLine());
+            const isNewline = doesItStartWithKeep(doesIt.startWithAnyNewline, l => l.increaseLine());
             const isWhiteSpace = doesItStartWithKeep(doesIt.startWithNonNewLineWhiteSpace, (l, f) => l.increaseChar(f));
     
-            const parser = internals.createStringParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace)
+            const parser = internals.createStringParser(isWindows, isNewline, isWhiteSpace, isStopParsingWhiteSpace)
             const parsed = parser.parse(input, current);
             if(parsed.success) {
                 const [result, leftover] = parsed.value;
@@ -144,17 +143,27 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         type: 'discard',
                     }));
                 }
+                
+                function toCleanPart(source: DocumentPart): DocumentPart{
+                    const part: DocumentPart = {
+                        location: source.location,
+                        text: source.text.replaceAll('\r\n', '\n').replaceAll('\r', '\n'),
+                        type: source.type,
+                    };
+                    return part;
+                }
     
                 if(1 === result.length) {
+                    
                     return util.ok(internals.buildStepParse(step, {
                         type: 'parse result',
-                        subResult: result[0] as DocumentPart,
+                        subResult: toCleanPart(result[0] as DocumentPart),
                     }));
                 }
     
                 return util.ok(internals.buildStepParse(step, {
                     type: 'parse group result',
-                    subResult: result.map(r => { return { type:'keep', keptValue: r }; }),
+                    subResult: result.map(r => { return { type:'keep', keptValue: toCleanPart(r) }; }),
                 }));
             }
     
@@ -176,7 +185,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: location, text: parsed.replaceAll('\r\n', '\n').replaceAll('\r', '\n'), type: 'text' },
                         rest,
                         location: location,
                     });
@@ -596,7 +605,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: location, text: parsed.replaceAll('\r\n', '\n').replaceAll('\r', '\n'), type: 'text' },
                         rest,
                         location: location,
                     });

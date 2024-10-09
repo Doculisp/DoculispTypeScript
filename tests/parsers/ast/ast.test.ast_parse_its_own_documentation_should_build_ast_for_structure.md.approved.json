@@ -461,7 +461,7 @@
             "line": 33
           },
           "type": "ast-write",
-          "value": "```doculisp\r\n(atom)\r\n(atom parameter)\r\n(atom (atom2))\r\n(atom (atom2 second parameter))\r\n```"
+          "value": "```doculisp\n(atom)\n(atom parameter)\n(atom (atom2))\n(atom (atom2 second parameter))\n```"
         }
       ],
       "documentOrder": {

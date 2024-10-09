@@ -143,7 +143,7 @@
           "documentPath": "./documentation/doculisp.md",
           "line": 13
         },
-        "text": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Doculisp)\r\n        (external\r\n            (section ./doculisp.md)\r\n        )\r\n    )\r\n\r\n    (content (toc numbered-labled))\r\n)\r\n-->\r\n```",
+        "text": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Doculisp)\n        (external\n            (section ./doculisp.md)\n        )\n    )\n\n    (content (toc numbered-labled))\n)\n-->\n```",
         "type": "token - text"
       },
       {
