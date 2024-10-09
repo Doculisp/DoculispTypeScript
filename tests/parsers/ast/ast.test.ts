@@ -157,7 +157,7 @@ describe('ast', () => {
             it('should handle all subparts put together out of order', () => {
                 const contents = `
 (section-meta
-(link doculisp_is_)
+(ref-link doculisp_is_)
 (include
     (Section ./structure.md)
     (Section ./doculisp.md)
@@ -225,12 +225,12 @@ describe('ast', () => {
                 });
             });
 
-            describe('link', () => {
-                it('should parse the link', () => {
+            describe('ref-link', () => {
+                it('should parse the ref-link', () => {
                     const contents = `
 (section-meta
     (title My cool title✨)
-    (link my_cool_title)
+    (ref-link my_cool_title)
 )
 `;
                     const result = toResult(contents, buildLocation('main.dlisp', 3, 10));
@@ -238,10 +238,10 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                it('should parse the link if it comes before the title', () => {
+                it('should parse the ref-link if it comes before the title', () => {
                     const contents = `
 (section-meta
-    (link my_cool_title)
+    (ref-link my_cool_title)
     (title My cool title✨)
 )
 `;
@@ -250,10 +250,10 @@ describe('ast', () => {
                     verifyAsJson(result);
                 });
 
-                it('should not parse a link with no parameter', () => {
+                it('should not parse a ref-link with no parameter', () => {
                     const contents = `
 (section-meta
-    (link)
+    (ref-link)
     (title My cool title✨)
 )
 `;
@@ -343,7 +343,7 @@ describe('ast', () => {
                     const contents = `
 (section-meta
     (title Doculisp is ✨)
-    (link doculisp_is_)
+    (ref-link doculisp_is_)
     (include
         (Section ./structure.md)
         (Section ./doculisp.md)

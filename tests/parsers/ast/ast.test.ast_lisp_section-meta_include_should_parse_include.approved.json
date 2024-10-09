@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "# Doculisp a short description #",
-          "link": "#doculisp_a_short_description",
+          "ref_link": "#doculisp_a_short_description",
           "title": "Doculisp a short description",
           "type": "ast-title"
         }

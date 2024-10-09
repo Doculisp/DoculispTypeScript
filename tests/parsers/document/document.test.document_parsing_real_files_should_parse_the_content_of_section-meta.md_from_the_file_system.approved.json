@@ -131,7 +131,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 26
         },
-        "text": "(# Link)",
+        "text": "(# Ref-Link)",
         "type": "lisp"
       },
       {
@@ -175,7 +175,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 28
         },
-        "text": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.",
+        "text": "block. The ref-link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.",
         "type": "text"
       },
       {
@@ -197,7 +197,7 @@
           "documentPath": "./documentation/section-meta.md",
           "line": 32
         },
-        "text": "```doculisp\n(section-meta\n    (title Doculisp is awesome ✨)\n    (link doculisp_is_awesome_)\n)\n```",
+        "text": "```doculisp\n(section-meta\n    (title Doculisp is awesome ✨)\n    (ref-link doculisp_is_awesome_)\n)\n```",
         "type": "text"
       },
       {

@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Doculisp Master Block ##",
-          "link": "#doculisp_master_block",
+          "ref_link": "#doculisp_master_block",
           "title": "Doculisp Master Block",
           "type": "ast-title"
         },

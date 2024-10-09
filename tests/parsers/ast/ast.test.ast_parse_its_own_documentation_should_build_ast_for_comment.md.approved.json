@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Comment Block ##",
-          "link": "#comment_block",
+          "ref_link": "#comment_block",
           "title": "Comment Block",
           "type": "ast-title"
         },

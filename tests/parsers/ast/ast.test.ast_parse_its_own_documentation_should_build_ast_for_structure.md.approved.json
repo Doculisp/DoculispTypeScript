@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Basic Structure ##",
-          "link": "#basic_structure",
+          "ref_link": "#basic_structure",
           "title": "Basic Structure",
           "type": "ast-title"
         },

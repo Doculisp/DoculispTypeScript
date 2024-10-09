@@ -91,7 +91,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                const link = (
+                const ref_link = (
                     linkText ? 
                     linkText :
                     '#' + param.text.toLocaleLowerCase().replaceAll(' ', '_'));
@@ -107,7 +107,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     title: param.text,
                     subtitle,
                     label,
-                    link,
+                    ref_link,
                     documentOrder: start,
                 };
 
@@ -128,19 +128,19 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 }
 
                 const open = input[0] as Token;
-                const link = input[1] as Token;
+                const ref_link = input[1] as Token;
                 const param = input[2] as Token;
 
                 if(open.type !== 'token - open parenthesis') {
                     return internals.noResultFound();
                 }
 
-                if(link.type !== 'token - atom' || link.text !== 'link') {
+                if(ref_link.type !== 'token - atom' || ref_link.text !== 'ref-link') {
                     return internals.noResultFound()
                 }
 
                 if(param.type !== 'token - parameter') {
-                    return util.fail(`the Link Command at ${open.location.toString()} does not have a link text.`, open.location.documentPath);
+                    return util.fail(`the Ref-Link Command at ${open.location.toString()} does not have a ref-link text.`, open.location.documentPath);
                 }
 
                 const close = input[3] as Token;
@@ -155,7 +155,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                         type: 'ast-title',
                         label: title.label,
                         title: title.title,
-                        link: linkText,
+                        ref_link: linkText,
                         documentOrder: title.documentOrder,
                     }
 
@@ -207,7 +207,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                         title: title.title,
                         subtitle: text,
                         label: title.label,
-                        link: title.link,
+                        ref_link: title.ref_link,
                         documentOrder: title.documentOrder,
                     };
 
@@ -530,15 +530,15 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 }
 
                 const third = input[2] as Token;
-                let lenght = 2;
+                let length = 2;
                 let style: AstBulletStyle = 'labeled';
 
                 if(third.type === 'token - close parenthesis') {
-                    lenght++;
+                    length++;
                 }
 
                 if(third.type === 'token - parameter') {
-                    lenght += 2;
+                    length += 2;
                     style = third.text as AstBulletStyle;
 
                     const close = input[3] as Token;
@@ -553,7 +553,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 
                 const step: IParseStepForward<Token[]> = {
                     location: current.increaseChar(),
-                    rest: trimArray(lenght, input),
+                    rest: trimArray(length, input),
                 }
 
                 if(style === 'no-table') {

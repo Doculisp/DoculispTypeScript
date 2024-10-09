@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Sing Me a Song ##",
-          "link": "#sing_me_a_song",
+          "ref_link": "#sing_me_a_song",
           "title": "Sing Me a Song",
           "type": "ast-title"
         },

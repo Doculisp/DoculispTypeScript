@@ -17,7 +17,7 @@
             "line": 1
           },
           "label": "# Doculisp #",
-          "link": "#doculisp",
+          "ref_link": "#doculisp",
           "title": "Doculisp",
           "type": "ast-title"
         },
@@ -63,7 +63,7 @@
                   "line": 2
                 },
                 "label": "## Basic Structure ##",
-                "link": "#basic_structure",
+                "ref_link": "#basic_structure",
                 "title": "Basic Structure",
                 "type": "ast-title"
               },
@@ -543,7 +543,7 @@
                   "line": 2
                 },
                 "label": "## Doculisp Master Block ##",
-                "link": "#doculisp_master_block",
+                "ref_link": "#doculisp_master_block",
                 "title": "Doculisp Master Block",
                 "type": "ast-title"
               },
@@ -658,7 +658,7 @@
                   "line": 2
                 },
                 "label": "## Section Meta Block ##",
-                "link": "#section_meta_block",
+                "ref_link": "#section_meta_block",
                 "title": "Section Meta Block",
                 "type": "ast-title"
               },
@@ -782,7 +782,7 @@
                   "documentPath": "./section-meta.md",
                   "line": 26
                 },
-                "text": "Link",
+                "text": "Ref-Link",
                 "type": "ast-header"
               },
               {
@@ -827,7 +827,7 @@
                   "line": 28
                 },
                 "type": "ast-write",
-                "value": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead."
+                "value": "block. The ref-link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead."
               },
               {
                 "documentOrder": {
@@ -849,7 +849,7 @@
                   "line": 32
                 },
                 "type": "ast-write",
-                "value": "```doculisp\n(section-meta\n    (title Doculisp is awesome ✨)\n    (link doculisp_is_awesome_)\n)\n```"
+                "value": "```doculisp\n(section-meta\n    (title Doculisp is awesome ✨)\n    (ref-link doculisp_is_awesome_)\n)\n```"
               },
               {
                 "depthCount": 3,
@@ -1406,7 +1406,7 @@
                   "line": 2
                 },
                 "label": "## Content Block ##",
-                "link": "#content_block",
+                "ref_link": "#content_block",
                 "title": "Content Block",
                 "type": "ast-title"
               },
@@ -1709,7 +1709,7 @@
                   "line": 2
                 },
                 "label": "## Dynamic Headings ##",
-                "link": "#dynamic_headings",
+                "ref_link": "#dynamic_headings",
                 "title": "Dynamic Headings",
                 "type": "ast-title"
               },
@@ -1902,7 +1902,7 @@
                   "line": 2
                 },
                 "label": "## Comment Block ##",
-                "link": "#comment_block",
+                "ref_link": "#comment_block",
                 "title": "Comment Block",
                 "type": "ast-title"
               },
@@ -2227,7 +2227,7 @@
                   "line": 2
                 },
                 "label": "## Key Atoms by Depth ##",
-                "link": "#key_atoms_by_depth",
+                "ref_link": "#key_atoms_by_depth",
                 "title": "Key Atoms by Depth",
                 "type": "ast-title"
               },

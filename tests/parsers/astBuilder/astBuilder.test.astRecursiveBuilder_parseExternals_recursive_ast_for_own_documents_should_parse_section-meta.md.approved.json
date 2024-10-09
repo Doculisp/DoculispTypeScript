@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Section Meta Block ##",
-          "link": "#section_meta_block",
+          "ref_link": "#section_meta_block",
           "title": "Section Meta Block",
           "type": "ast-title"
         },
@@ -141,7 +141,7 @@
             "documentPath": "section-meta.md",
             "line": 26
           },
-          "text": "Link",
+          "text": "Ref-Link",
           "type": "ast-header"
         },
         {
@@ -186,7 +186,7 @@
             "line": 28
           },
           "type": "ast-write",
-          "value": "block. The link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead."
+          "value": "block. The ref-link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead."
         },
         {
           "documentOrder": {
@@ -208,7 +208,7 @@
             "line": 32
           },
           "type": "ast-write",
-          "value": "```doculisp\n(section-meta\n    (title Doculisp is awesome ✨)\n    (link doculisp_is_awesome_)\n)\n```"
+          "value": "```doculisp\n(section-meta\n    (title Doculisp is awesome ✨)\n    (ref-link doculisp_is_awesome_)\n)\n```"
         },
         {
           "depthCount": 3,

@@ -17,7 +17,7 @@
             "line": 1
           },
           "label": "# Doculisp #",
-          "link": "#doculisp",
+          "ref_link": "#doculisp",
           "title": "Doculisp",
           "type": "ast-title"
         },

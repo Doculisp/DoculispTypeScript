@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "# Doculisp is ✨ #",
-          "link": "#doculisp_is_",
+          "ref_link": "#doculisp_is_",
           "title": "Doculisp is ✨",
           "type": "ast-title"
         }

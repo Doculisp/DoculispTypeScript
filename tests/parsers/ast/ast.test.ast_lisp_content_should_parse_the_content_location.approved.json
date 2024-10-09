@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Using Content ##",
-          "link": "#using_content",
+          "ref_link": "#using_content",
           "title": "Using Content",
           "type": "ast-title"
         },

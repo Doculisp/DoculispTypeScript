@@ -14,7 +14,7 @@ export interface ITitle extends ILocationSortable {
     readonly type: 'ast-title';
     readonly title: string;
     readonly label: string;
-    readonly link: string;
+    readonly ref_link: string;
     readonly subtitle?: string | undefined;
 };
 

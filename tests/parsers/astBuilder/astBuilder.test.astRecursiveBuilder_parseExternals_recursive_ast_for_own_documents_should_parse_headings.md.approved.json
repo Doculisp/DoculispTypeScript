@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Dynamic Headings ##",
-          "link": "#dynamic_headings",
+          "ref_link": "#dynamic_headings",
           "title": "Dynamic Headings",
           "type": "ast-title"
         },

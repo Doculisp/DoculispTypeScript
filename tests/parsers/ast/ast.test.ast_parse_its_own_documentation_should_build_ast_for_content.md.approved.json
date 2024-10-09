@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Content Block ##",
-          "link": "#content_block",
+          "ref_link": "#content_block",
           "title": "Content Block",
           "type": "ast-title"
         },

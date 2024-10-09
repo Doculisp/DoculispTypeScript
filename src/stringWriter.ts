@@ -151,7 +151,7 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
                 sb.addLine();
             }
 
-            addRow(sb, title.title, title.link, element.sectionLabel);
+            addRow(sb, title.title, title.ref_link, element.sectionLabel);
         }
         
         if(0 < sb.length) {

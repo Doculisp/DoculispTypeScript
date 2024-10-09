@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "#### My cool title ####",
-          "link": "#my_cool_title",
+          "ref_link": "#my_cool_title",
           "subtitle": "###### This is information ######",
           "title": "My cool title",
           "type": "ast-title"
