@@ -51,6 +51,8 @@ function setupVerifier(configure: (overrideOptions?: Partial<Config> | undefined
         errorOnStaleApprovedFiles: true,
         failOnLineEndingDifferences: false,
         normalizeLineEndingsTo: '\n',
+        appendEOL: true,
+        EOL: '\n',
     });
 }
 

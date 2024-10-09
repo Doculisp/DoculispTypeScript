@@ -10,7 +10,7 @@
           "documentPath": "./documentation/content.md",
           "line": 2
         },
-        "text": "(section-meta\r\n        (title Content Block)\r\n    )",
+        "text": "(section-meta\n        (title Content Block)\n    )",
         "type": "lisp"
       },
       {
@@ -186,7 +186,7 @@
           "documentPath": "./documentation/content.md",
           "line": 27
         },
-        "text": "```doculisp\r\n(contents (toc))\r\n```",
+        "text": "```doculisp\n(contents (toc))\n```",
         "type": "text"
       },
       {
@@ -197,7 +197,7 @@
           "documentPath": "./documentation/content.md",
           "line": 31
         },
-        "text": "```doculisp\r\n(contents (toc bulleted-labeled))\r\n```",
+        "text": "```doculisp\n(contents (toc bulleted-labeled))\n```",
         "type": "text"
       },
       {
@@ -252,7 +252,7 @@
           "documentPath": "./documentation/content.md",
           "line": 37
         },
-        "text": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (external\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```",
+        "text": "```doculisp\n(dl\n    (file-meta\n        (title Some Document)\n        (external\n            (chapter ./first) (*The title of this document is \"An introduction\")\n        )\n    )\n\n    (content (toc bulleted-labeled))\n)\n```",
         "type": "text"
       },
       {
@@ -274,7 +274,7 @@
           "documentPath": "./documentation/content.md",
           "line": 52
         },
-        "text": "```markdown\r\n* Chapter: [An Introduction](#an-introduction)\r\n```",
+        "text": "```markdown\n* Chapter: [An Introduction](#an-introduction)\n```",
         "type": "text"
       }
     ],

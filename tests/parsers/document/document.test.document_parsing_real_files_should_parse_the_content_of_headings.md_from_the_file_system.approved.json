@@ -10,7 +10,7 @@
           "documentPath": "./documentation/headings.md",
           "line": 2
         },
-        "text": "(section-meta\r\n        (title Dynamic Headings)\r\n    )",
+        "text": "(section-meta\n        (title Dynamic Headings)\n    )",
         "type": "lisp"
       },
       {
@@ -120,7 +120,7 @@
           "documentPath": "./documentation/headings.md",
           "line": 15
         },
-        "text": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Maths an intro)\r\n        (external\r\n            (section ./add.md)\r\n            (section ./subtract.md)\r\n            (section ./muliply.md)\r\n            (section ./divide.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n\r\n<!-- (dl (# Summary)) -->\r\n\r\nA cool summary of maths.\r\n\r\n<!-- (dl (## Resons For Document)) -->\r\n\r\nAn explination why to have the document.\r\n\r\n\r\n<!-- (dl (content (toc unlabled))) -->\r\n```",
+        "text": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Maths an intro)\n        (external\n            (section ./add.md)\n            (section ./subtract.md)\n            (section ./muliply.md)\n            (section ./divide.md)\n        )\n    )\n)\n-->\n\n<!-- (dl (# Summary)) -->\n\nA cool summary of maths.\n\n<!-- (dl (## Resons For Document)) -->\n\nAn explination why to have the document.\n\n\n<!-- (dl (content (toc unlabled))) -->\n```",
         "type": "text"
       },
       {

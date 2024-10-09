@@ -118,7 +118,7 @@
             "line": 15
           },
           "type": "ast-write",
-          "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Basic Structure)\r\n    )\r\n)\r\n-->\r\n```"
+          "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Basic Structure)\n    )\n)\n-->\n```"
         },
         {
           "documentOrder": {
