@@ -94,7 +94,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 const ref_link = (
                     linkText ? 
                     linkText :
-                    '#' + param.text.toLocaleLowerCase().replaceAll(' ', '_'));
+                    '#' + param.text.toLocaleLowerCase().replaceAll(' ', '-'));
 
                 const label = headerize(open.location.documentDepth, param.text);
                 const subtitle: string | undefined = 

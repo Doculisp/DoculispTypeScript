@@ -2,13 +2,13 @@
 
 # Doculisp #
 
-1. [Section: Basic Structure](#basic_structure)
-2. [Section: Doculisp Master Block](#doculisp_master_block)
-3. [Section: Section Meta Block](#section_meta_block)
-4. [Section: Content Block](#content_block)
-5. [Section: Dynamic Headings](#dynamic_headings)
-6. [Section: Comment Block](#comment_block)
-7. [Section: Key Atoms by Depth](#key_atoms_by_depth)
+1. [Section: Basic Structure](#basic-structure)
+2. [Section: Doculisp Master Block](#doculisp-master-block)
+3. [Section: Section Meta Block](#section-meta-block)
+4. [Section: Content Block](#content-block)
+5. [Section: Dynamic Headings](#dynamic-headings)
+6. [Section: Comment Block](#comment-block)
+7. [Section: Key Atoms by Depth](#key-atoms-by-depth)
 8. [Section: Contributors ✨](##contributors-)
 
 ## Basic Structure ##

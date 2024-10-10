@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "## Section Meta Block ##",
-          "ref_link": "#section_meta_block",
+          "ref_link": "#section-meta-block",
           "title": "Section Meta Block",
           "type": "ast-title"
         },

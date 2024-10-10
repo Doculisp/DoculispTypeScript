@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "# Main Multiple Sub Documents #",
-          "ref_link": "#main_multiple_sub_documents",
+          "ref_link": "#main-multiple-sub-documents",
           "title": "Main Multiple Sub Documents",
           "type": "ast-title"
         },
@@ -52,7 +52,7 @@
                   "line": 2
                 },
                 "label": "## Sub A ##",
-                "ref_link": "#sub_a",
+                "ref_link": "#sub-a",
                 "title": "Sub A",
                 "type": "ast-title"
               },
@@ -101,7 +101,7 @@
                   "line": 2
                 },
                 "label": "## Sub B ##",
-                "ref_link": "#sub_b",
+                "ref_link": "#sub-b",
                 "title": "Sub B",
                 "type": "ast-title"
               },
