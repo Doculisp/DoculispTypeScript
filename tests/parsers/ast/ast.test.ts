@@ -201,6 +201,25 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
+            it.skip('should not parse a section meta with a invalid atom', () => {
+                const content = `<!--
+(dl
+    (section-meta
+        (title A Bad atom)
+        (bad does stuff)
+    )
+)
+-->
+
+A story of a misbehaving parser.
+
+`
+
+                const result = toResult(content, buildLocation('./_main.md', 1, 1));
+
+                verifyAsJson(result);
+            });
+
             describe('title', () => {
                 it('should parse a title', () => {
                     const contents = `
