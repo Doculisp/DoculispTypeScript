@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 import { container } from './container';
 import { Command } from 'commander';
 import { Result } from './types/types.general';
