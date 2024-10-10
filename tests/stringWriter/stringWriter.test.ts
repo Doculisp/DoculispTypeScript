@@ -1,12 +1,12 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
-import { IFail, IProjectLocation, IUtil } from "../../src/types.general";
-import { Result } from "../../src/types.general";
+import { IFail, IProjectLocation, IUtil } from "../../src/types/types.general";
+import { Result } from "../../src/types/types.general";
 import { buildLocation, testable } from "../testHelpers";
-import { IDirectoryHandler, IFileLoader } from "../../src/types.fileHandler";
+import { IDirectoryHandler, IFileLoader } from "../../src/types/types.fileHandler";
 import { container } from "../../src/container";
-import { IDictionary } from "../../src/types.containers";
+import { IDictionary } from "../../src/types/types.containers";
 import fs from 'fs';
 import path from "path";
 

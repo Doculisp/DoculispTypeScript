@@ -3,8 +3,8 @@ import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifier } from "../../tools";
-import { DocumentMap, DocumentParser } from "../../../src/types.document";
-import { IProjectLocation, Result } from "../../../src/types.general";
+import { DocumentMap, DocumentParser } from "../../../src/types/types.document";
+import { IProjectLocation, Result } from "../../../src/types/types.general";
 import { buildLocation, testable } from "../../testHelpers";
 
 describe('document', () => {

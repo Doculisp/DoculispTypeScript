@@ -1,6 +1,6 @@
-import { IRegisterable } from "./types.containers";
-import { IFileHandler } from "./types.fileHandler";
-import { IUtil, Result } from "./types.general";
+import { IRegisterable } from "../types/types.containers";
+import { IFileHandler } from "../types/types.fileHandler";
+import { IUtil, Result } from "../types/types.general";
 
 function buildLoader(util: IUtil, fs: any): IFileHandler {
     function load(path: string): Result<string> {

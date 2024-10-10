@@ -1,7 +1,7 @@
-import { AstPart, IAst, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "./types.ast";
-import { IRegisterable } from "./types.containers";
-import { ILocation, IUtil, Result } from "./types.general";
-import { IStringWriter } from "./types.stringWriter";
+import { AstPart, IAst, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.ast";
+import { IRegisterable } from "../types/types.containers";
+import { ILocation, IUtil, Result } from "../types/types.general";
+import { IStringWriter } from "../types/types.stringWriter";
 
 class StringBuilder {
     private _lines: string[];

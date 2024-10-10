@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import { Options } from "approvals/lib/Core/Options";
-import { IDictionary, ITestableContainer } from "../../../src/types.containers";
-import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
-import { IAst } from "../../../src/types.ast";
-import { IAstBuilder } from "../../../src/types.astBuilder";
+import { IDictionary, ITestableContainer } from "../../../src/types/types.containers";
+import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
+import { IAst } from "../../../src/types/types.ast";
+import { IAstBuilder } from "../../../src/types/types.astBuilder";
 import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
-import { IDirectoryHandler, IFileLoader } from "../../../src/types.fileHandler";
+import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
 import { buildLocation, testable } from '../../testHelpers';
 
 describe.skip('astRecursiveBuilder', () => {

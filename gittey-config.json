@@ -40,7 +40,7 @@
         },
         {
             "name": "build",
-            "command": "npm run compile",
+            "command": "cls; npm run compile",
             "description": "builds output directory"
         }
     ],

@@ -1,5 +1,21 @@
-import { IContainer, IDependencyContainer, IDependencyManager, IDictionary, IRegisterable, ITestableContainer, Valid } from "./types.containers";
+import { IContainer, IDependencyContainer, IDependencyManager, IDictionary, IRegisterable, ITestableContainer, Valid } from "./types/types.containers";
 import { globSync } from 'glob';
+
+function importModules(container: IContainer, moduleNames: string[]) {
+    moduleNames.forEach(n => {
+        if(n === './index') {
+            return;
+        }
+        const module = require(n);
+        const keys = Object.keys(module);
+        keys
+            .filter(key => {
+                let value = module[key];
+                return !!value?.name && !!value?.builder;
+            })
+            .forEach(key => container.register(module[key]));
+    });
+}
 
 function findModules(container: IContainer) {
     let moduleNames = (
@@ -9,17 +25,7 @@ function findModules(container: IContainer) {
         })
     );
 
-    moduleNames.forEach(n => {
-        import(n).then(m => {
-            const keys = Object.keys(m);
-            keys.
-                filter(key => {
-                    let value = m[key];
-                    return !!value.name && !!value.builder;
-                }).
-                forEach(key => container.register(m[key]));
-        });
-    });
+    importModules(container, moduleNames);
 }
 
 class TreeNode {

@@ -1,6 +1,6 @@
-import { IRegisterable } from "../types.containers";
-import { ILocation, ISuccess, IUtil, Result } from "../types.general";
-import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParseResult, StepParse } from "../types.internal";
+import { IRegisterable } from "../types/types.containers";
+import { ILocation, ISuccess, IUtil, Result } from "../types/types.general";
+import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParseResult, StepParse } from "../types/types.internal";
 
 function mapFirst<TParse, TResult>(internals: IInternals, input: TParse, current: ILocation, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
     for (let index = 0; index < collection.length; index++) {

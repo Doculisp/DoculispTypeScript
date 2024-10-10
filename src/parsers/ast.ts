@@ -1,8 +1,8 @@
-import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types.ast";
-import { IRegisterable } from "../types.containers";
-import { ILocation, IUtil, Result } from "../types.general";
-import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types.internal";
-import { Token, TokenizedDocument } from "../types.tokens";
+import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.ast";
+import { IRegisterable } from "../types/types.containers";
+import { ILocation, IUtil, Result } from "../types/types.general";
+import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
+import { Token, TokenizedDocument } from "../types/types.tokens";
 
 function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
     let hasSection: boolean = false;

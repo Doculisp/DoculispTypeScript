@@ -1,7 +1,7 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
-import { Result } from "../../src/types.general";
+import { Result } from "../../src/types/types.general";
 import { testable } from "../testHelpers";
 import { container } from "../../src/container";
 import path from "path";

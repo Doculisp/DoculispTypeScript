@@ -1,10 +1,10 @@
-import { IAst, IAstParser } from "../src/types.ast";
-import { IAstBuilder } from "../src/types.astBuilder";
-import { IContainer, ITestableContainer } from "../src/types.containers";
-import { DocumentMap, DocumentParser } from "../src/types.document";
-import { IProjectLocation, Result } from "../src/types.general";
-import { TokenFunction, TokenizedDocument } from "../src/types.tokens";
-import { IStringWriter } from "../src/types.stringWriter"
+import { IAst, IAstParser } from "../src/types/types.ast";
+import { IAstBuilder } from "../src/types/types.astBuilder";
+import { IContainer, ITestableContainer } from "../src/types/types.containers";
+import { DocumentMap, DocumentParser } from "../src/types/types.document";
+import { IProjectLocation, Result } from "../src/types/types.general";
+import { TokenFunction, TokenizedDocument } from "../src/types/types.tokens";
+import { IStringWriter } from "../src/types/types.stringWriter"
 
 export function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
     return {

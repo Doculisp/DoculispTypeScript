@@ -1,9 +1,9 @@
-import { IRegisterable } from "../types.containers";
-import { DocumentMap, DocumentPart, ILispBlock } from "../types.document";
-import { ILocation, IUtil, Result, isSame } from "../types.general";
-import { IInternals, StringStepParseResult } from "../types.internal";
-import { ILispSearches, Searcher } from "../types.textHelpers";
-import { Token, TokenFunction, TokenizedDocument } from "../types.tokens";
+import { IRegisterable } from "../types/types.containers";
+import { DocumentMap, DocumentPart, ILispBlock } from "../types/types.document";
+import { ILocation, IUtil, Result, isSame } from "../types/types.general";
+import { IInternals, StringStepParseResult } from "../types/types.internal";
+import { ILispSearches, Searcher } from "../types/types.textHelpers";
+import { Token, TokenFunction, TokenizedDocument } from "../types/types.tokens";
 
 function getTokenBuilder() {
     const tokens: Token[] = [];

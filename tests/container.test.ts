@@ -1,5 +1,5 @@
 import { registry } from "../src/container";
-import { IRegisterable, ITestableContainer } from "../src/types.containers";
+import { IRegisterable, ITestableContainer } from "../src/types/types.containers";
 import * as fs from 'fs';
 
 function getRandomNumber(max?: number, min?: number) {

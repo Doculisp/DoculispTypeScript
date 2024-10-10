@@ -4,9 +4,9 @@ import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { container } from "../../../src/container";
-import { IAst, IAstParser } from '../../../src/types.ast'
-import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
-import { TokenizedDocument } from "../../../src/types.tokens";
+import { IAst, IAstParser } from '../../../src/types/types.ast'
+import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
+import { TokenizedDocument } from "../../../src/types/types.tokens";
 import { buildLocation, testable } from "../../testHelpers";
 
 describe('ast', () => {

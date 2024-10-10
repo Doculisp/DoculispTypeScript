@@ -1,5 +1,5 @@
-import { IRegisterable } from "./types.containers";
-import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "./types.general";
+import { IRegisterable } from "../types/types.containers";
+import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "../types/types.general";
 
 function before() : IsBefore { return isBefore; }
 function after()  : IsAfter  { return isAfter; }

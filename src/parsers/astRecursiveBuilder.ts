@@ -1,10 +1,10 @@
-import { IAst, IAstParser, ISectionWriter } from "../types.ast";
-import { IAstBuilder } from "../types.astBuilder";
-import { IRegisterable } from "../types.containers";
-import { DocumentParser } from "../types.document";
-import { IFileHandler } from "../types.fileHandler";
-import { IProjectLocation, IUtil, Result } from "../types.general";
-import { TokenFunction } from "../types.tokens";
+import { IAst, IAstParser, ISectionWriter } from "../types/types.ast";
+import { IAstBuilder } from "../types/types.astBuilder";
+import { IRegisterable } from "../types/types.containers";
+import { DocumentParser } from "../types/types.document";
+import { IFileHandler } from "../types/types.fileHandler";
+import { IProjectLocation, IUtil, Result } from "../types/types.general";
+import { TokenFunction } from "../types/types.tokens";
 
 function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) : IAstBuilder {
 

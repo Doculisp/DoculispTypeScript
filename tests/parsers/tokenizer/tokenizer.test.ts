@@ -2,10 +2,10 @@ import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
-import { ITestableContainer } from "../../../src/types.containers";
-import { TokenFunction, TokenizedDocument } from '../../../src/types.tokens';
-import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types.general";
-import { DocumentMap } from "../../../src/types.document";
+import { ITestableContainer } from "../../../src/types/types.containers";
+import { TokenFunction, TokenizedDocument } from '../../../src/types/types.tokens';
+import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
+import { DocumentMap } from "../../../src/types/types.document";
 import fs from 'fs';
 import { buildLocation, testable } from "../../testHelpers";
 

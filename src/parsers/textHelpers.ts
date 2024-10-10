@@ -1,5 +1,5 @@
-import { IRegisterable } from "../types.containers";
-import { IDocumentSearches, ILispSearches, Searcher } from "../types.textHelpers";
+import { IRegisterable } from "../types/types.containers";
+import { IDocumentSearches, ILispSearches, Searcher } from "../types/types.textHelpers";
 
 const documentSearches: IDocumentSearches = {
     startWithNonNewLineWhiteSpace: /^[^\S\r\n]/, // /^\s/,

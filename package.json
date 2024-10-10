@@ -6,7 +6,8 @@
   "scripts": {
     "precompile": "rimraf src/**/*.js test/**/*.js dist/**/* -g",
     "compile": "tsc",
-    "test": "jest tests"
+    "test": "jest tests",
+    "start": "ts-node ./src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "commander": "^12.1.0",
     "glob": "^10.4.1"
   }
 }

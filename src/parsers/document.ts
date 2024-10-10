@@ -1,9 +1,9 @@
-import { IRegisterable, Valid } from "../types.containers";
-import { DocumentMap, DocumentParser, DocumentPart } from "../types.document";
-import { ILocation, IProjectLocation, IUtil, Result, isSame } from "../types.general";
+import { IRegisterable, Valid } from "../types/types.containers";
+import { DocumentMap, DocumentParser, DocumentPart } from "../types/types.document";
+import { ILocation, IProjectLocation, IUtil, Result, isSame } from "../types/types.general";
 import * as path from 'node:path';
-import { IDocumentSearches, Searcher } from "../types.textHelpers";
-import { HandleStringValue, IInternals, IParseStepForward, IStringParseStepForward, StringStepParseResult } from "../types.internal";
+import { IDocumentSearches, Searcher } from "../types/types.textHelpers";
+import { HandleStringValue, IInternals, IParseStepForward, IStringParseStepForward, StringStepParseResult } from "../types/types.internal";
 
 function createMap(projectLocation: IProjectLocation, parts: DocumentPart[]): DocumentMap {
     return {
