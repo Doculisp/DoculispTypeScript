@@ -387,7 +387,39 @@
       },
       {
         "location": {
-          "char": 5,
+          "char": 9,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.dlisp",
+          "line": 11
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 10,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.dlisp",
+          "line": 11
+        },
+        "text": "Section",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 18,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.dlisp",
+          "line": 11
+        },
+        "text": "./contributors.md",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 35,
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
@@ -397,7 +429,7 @@
       },
       {
         "location": {
-          "char": 1,
+          "char": 5,
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
@@ -411,7 +443,17 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
-          "line": 14
+          "line": 13
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.dlisp",
+          "line": 15
         },
         "type": "token - open parenthesis"
       },
@@ -421,7 +463,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
-          "line": 14
+          "line": 15
         },
         "text": "content",
         "type": "token - atom"
@@ -432,7 +474,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
-          "line": 14
+          "line": 15
         },
         "type": "token - open parenthesis"
       },
@@ -442,7 +484,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
-          "line": 14
+          "line": 15
         },
         "text": "toc",
         "type": "token - atom"
@@ -453,7 +495,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
-          "line": 14
+          "line": 15
         },
         "text": "numbered-labeled",
         "type": "token - parameter"
@@ -464,7 +506,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
-          "line": 14
+          "line": 15
         },
         "type": "token - close parenthesis"
       },
@@ -474,7 +516,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.dlisp",
-          "line": 14
+          "line": 15
         },
         "type": "token - close parenthesis"
       }

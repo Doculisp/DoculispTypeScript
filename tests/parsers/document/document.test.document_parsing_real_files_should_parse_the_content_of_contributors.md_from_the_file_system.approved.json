@@ -1,0 +1,331 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 2
+        },
+        "text": "(section-meta\n        (title Contributors ✨)\n        (ref-link #contributors-)\n    )",
+        "type": "lisp"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 10
+        },
+        "text": "Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 12
+        },
+        "text": "I want to give a special thanks to my friend [Chris Stead](https://github.com/cmstead) who wrote [Book Lisp](https://github.com/cmstead/booklisp) which was a huge insperation for this tool.",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 17
+        },
+        "text": "<table>",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 18
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 18
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 18
+        },
+        "text": "<tbody>",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 19
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 19
+        },
+        "text": "<tr>",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 20
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 20
+        },
+        "text": "<td align=\"center\" valign=\"top\" width=\"14.28%\"><a href=\"http://www.chrisstead.net/\"><img src=\"https://avatars.githubusercontent.com/u/4184510?v=4?s=100\" width=\"100px;\" alt=\"Chris Stead\"/><br /><sub><b>Chris Stead</b></sub></a><br /><a href=\"#ideas-cmstead\" title=\"Ideas, Planning, & Feedback\">🤔</a></td>",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 4,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 21
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 5,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 21
+        },
+        "text": "</tr>",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 2,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 22
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 22
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 3,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 22
+        },
+        "text": "</tbody>",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 23
+        },
+        "text": "</table>",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 3,
+          "documentIndex": 8,
+          "documentPath": "./documentation/contributors.md",
+          "line": 30
+        },
+        "text": "This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!",
+        "type": "text"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 3,
+      "documentIndex": 8,
+      "documentPath": "./documentation/contributors.md"
+    }
+  }
+}

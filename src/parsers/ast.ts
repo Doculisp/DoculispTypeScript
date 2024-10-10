@@ -169,7 +169,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 });
             }
 
-            function tryParseSubtitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+            function tryParseSubtitle(input: Token[], current: ILocation): DiscardedResult<Token[]> {    
                 if(!start) {
                     return internals.noResultFound();
                 }
@@ -296,7 +296,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 });
             }
 
-            function tryParseExternal(input: Token[], current: ILocation): DiscardedResult<Token[]> {
+            function tryParseInclude(input: Token[], current: ILocation): DiscardedResult<Token[]> {
                 if(!start) {
                     return internals.noResultFound();
                 }
@@ -342,7 +342,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 });
             }
 
-            const parser = internals.createArrayParser<Token, AstPart>(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseExternal);
+            const parser = internals.createArrayParser<Token, AstPart>(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseInclude);
             const parsed = parser.parse(toParse, starting);
 
             if(!parsed.success) {
@@ -433,6 +433,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     rest: trimArray(1, input),
                 });
             }
+
             return internals.noResultFound();
         }
     }
@@ -623,6 +624,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                         isSectionMeta(internals, util, include),
                         isContent(internals, util, include),
                     );
+
                 const parsed = parser.parse(document.tokens, util.toLocation(document.projectLocation, 1, 1));
                 
                 if(parsed.success) {

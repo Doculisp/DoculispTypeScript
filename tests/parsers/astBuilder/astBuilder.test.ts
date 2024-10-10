@@ -11,7 +11,7 @@ import { container } from "../../../src/container";
 import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
 import { buildLocation, testable } from '../../testHelpers';
 
-describe.skip('astRecursiveBuilder', () => {
+describe('astRecursiveBuilder', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
 
     let util: IUtil = undefined as any;

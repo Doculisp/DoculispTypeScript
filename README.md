@@ -9,6 +9,7 @@
 5. [Section: Dynamic Headings](#dynamic_headings)
 6. [Section: Comment Block](#comment_block)
 7. [Section: Key Atoms by Depth](#key_atoms_by_depth)
+8. [Section: Contributors ✨](#contributors_✨)
 
 ## Basic Structure ##
 
@@ -316,5 +317,7 @@ Here is a list of all the key atoms by depth:
   * `#` text
   * `*`
 * `*`
+
+## Contributors ✨ ##
 
 <!-- Generated Document do not edit! -->

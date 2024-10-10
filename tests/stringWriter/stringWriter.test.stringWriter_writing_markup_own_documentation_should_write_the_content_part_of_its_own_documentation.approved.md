@@ -2,7 +2,7 @@
 
 # Content Block #
 
-The content block signifies where to build the document from the include documents. This block has only one optional subblock.
+The content block signifies where to build the document from the included documents. This block has only one optional subblock.
 
 ## Table of Contents ##
 

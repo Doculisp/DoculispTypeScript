@@ -352,6 +352,11 @@ describe('tokenizer', () => {
             const result = getFileContent('keywords.md', 2, 7);
             verifyAsJson(result);
         });
+
+        it('should parse contributors.md', () => {
+            const result = getFileContent('contributors.md', 2, 8);
+            verifyAsJson(result);
+        });
         
         it('should parse _main.dlisp', () => {
             const result = getFileContent('_main.dlisp', 1, 1);

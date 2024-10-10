@@ -30,7 +30,7 @@
             "line": 9
           },
           "type": "ast-write",
-          "value": "The content block signifies where to build the document from the include documents. This block has only one optional subblock."
+          "value": "The content block signifies where to build the document from the included documents. This block has only one optional subblock."
         },
         {
           "depthCount": 3,
@@ -196,7 +196,7 @@
             "line": 27
           },
           "type": "ast-write",
-          "value": "```doculisp\r\n(contents (toc))\r\n```"
+          "value": "```doculisp\n(contents (toc))\n```"
         },
         {
           "documentOrder": {
@@ -207,7 +207,7 @@
             "line": 31
           },
           "type": "ast-write",
-          "value": "```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
+          "value": "```doculisp\n(contents (toc bulleted-labeled))\n```"
         },
         {
           "documentOrder": {
@@ -262,7 +262,7 @@
             "line": 37
           },
           "type": "ast-write",
-          "value": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (include\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```"
+          "value": "```doculisp\n(dl\n    (file-meta\n        (title Some Document)\n        (include\n            (chapter ./first) (*The title of this document is \"An introduction\")\n        )\n    )\n\n    (content (toc bulleted-labeled))\n)\n```"
         },
         {
           "documentOrder": {
@@ -284,7 +284,7 @@
             "line": 52
           },
           "type": "ast-write",
-          "value": "```markdown\r\n* Chapter: [An Introduction](#an-introduction)\r\n```"
+          "value": "```markdown\n* Chapter: [An Introduction](#an-introduction)\n```"
         }
       ],
       "documentOrder": {

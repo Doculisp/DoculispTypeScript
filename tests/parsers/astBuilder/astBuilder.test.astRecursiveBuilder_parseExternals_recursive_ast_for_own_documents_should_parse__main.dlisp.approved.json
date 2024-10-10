@@ -28,7 +28,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.dlisp",
-            "line": 14
+            "line": 15
           },
           "type": "ast-toc"
         },
@@ -38,7 +38,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.dlisp",
-            "line": 14
+            "line": 15
           },
           "type": "ast-content"
         }
@@ -164,7 +164,7 @@
                   "line": 15
                 },
                 "type": "ast-write",
-                "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Basic Structure)\r\n    )\r\n)\r\n-->\r\n```"
+                "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Basic Structure)\n    )\n)\n-->\n```"
               },
               {
                 "documentOrder": {
@@ -507,7 +507,7 @@
                   "line": 33
                 },
                 "type": "ast-write",
-                "value": "```doculisp\r\n(atom)\r\n(atom parameter)\r\n(atom (atom2))\r\n(atom (atom2 second parameter))\r\n```"
+                "value": "```doculisp\n(atom)\n(atom parameter)\n(atom (atom2))\n(atom (atom2 second parameter))\n```"
               }
             ],
             "documentOrder": {
@@ -611,7 +611,7 @@
                   "line": 13
                 },
                 "type": "ast-write",
-                "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Doculisp)\r\n        (include\r\n            (section ./doculisp.md)\r\n        )\r\n    )\r\n\r\n    (content (toc numbered-labled))\r\n)\r\n-->\r\n```"
+                "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Doculisp)\n        (include\n            (section ./doculisp.md)\n        )\n    )\n\n    (content (toc numbered-labled))\n)\n-->\n```"
               },
               {
                 "documentOrder": {
@@ -955,7 +955,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 16,
+                  "char": 15,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./section-meta.md",
@@ -966,7 +966,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 16,
+                  "char": 15,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./section-meta.md",
@@ -977,7 +977,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 269,
+                  "char": 268,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./section-meta.md",
@@ -988,7 +988,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 273,
+                  "char": 272,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./section-meta.md",
@@ -999,7 +999,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 273,
+                  "char": 272,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./section-meta.md",
@@ -1010,7 +1010,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 507,
+                  "char": 506,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./section-meta.md",
@@ -1021,7 +1021,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 510,
+                  "char": 509,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./section-meta.md",
@@ -1419,7 +1419,7 @@
                   "line": 9
                 },
                 "type": "ast-write",
-                "value": "The content block signifies where to build the document from the include documents. This block has only one optional subblock."
+                "value": "The content block signifies where to build the document from the included documents. This block has only one optional subblock."
               },
               {
                 "depthCount": 3,
@@ -1585,7 +1585,7 @@
                   "line": 27
                 },
                 "type": "ast-write",
-                "value": "```doculisp\r\n(contents (toc))\r\n```"
+                "value": "```doculisp\n(contents (toc))\n```"
               },
               {
                 "documentOrder": {
@@ -1596,7 +1596,7 @@
                   "line": 31
                 },
                 "type": "ast-write",
-                "value": "```doculisp\r\n(contents (toc bulleted-labeled))\r\n```"
+                "value": "```doculisp\n(contents (toc bulleted-labeled))\n```"
               },
               {
                 "documentOrder": {
@@ -1651,7 +1651,7 @@
                   "line": 37
                 },
                 "type": "ast-write",
-                "value": "```doculisp\r\n(dl\r\n    (file-meta\r\n        (title Some Document)\r\n        (include\r\n            (chapter ./first) (*The title of this document is \"An introduction\")\r\n        )\r\n    )\r\n\r\n    (content (toc bulleted-labeled))\r\n)\r\n```"
+                "value": "```doculisp\n(dl\n    (file-meta\n        (title Some Document)\n        (include\n            (chapter ./first) (*The title of this document is \"An introduction\")\n        )\n    )\n\n    (content (toc bulleted-labeled))\n)\n```"
               },
               {
                 "documentOrder": {
@@ -1673,7 +1673,7 @@
                   "line": 52
                 },
                 "type": "ast-write",
-                "value": "```markdown\r\n* Chapter: [An Introduction](#an-introduction)\r\n```"
+                "value": "```markdown\n* Chapter: [An Introduction](#an-introduction)\n```"
               }
             ],
             "documentOrder": {
@@ -1821,7 +1821,7 @@
                   "line": 15
                 },
                 "type": "ast-write",
-                "value": "```markdown\r\n<!--\r\n(dl\r\n    (section-meta\r\n        (title Maths an intro)\r\n        (include\r\n            (section ./add.md)\r\n            (section ./subtract.md)\r\n            (section ./muliply.md)\r\n            (section ./divide.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n\r\n<!-- (dl (# Summary)) -->\r\n\r\nA cool summary of maths.\r\n\r\n<!-- (dl (## Resons For Document)) -->\r\n\r\nAn explination why to have the document.\r\n\r\n\r\n<!-- (dl (content (toc unlabled))) -->\r\n```"
+                "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Maths an intro)\n        (include\n            (section ./add.md)\n            (section ./subtract.md)\n            (section ./muliply.md)\n            (section ./divide.md)\n        )\n    )\n)\n-->\n\n<!-- (dl (# Summary)) -->\n\nA cool summary of maths.\n\n<!-- (dl (## Resons For Document)) -->\n\nAn explination why to have the document.\n\n\n<!-- (dl (content (toc unlabled))) -->\n```"
               },
               {
                 "documentOrder": {
@@ -1970,7 +1970,7 @@
                   "line": 13
                 },
                 "type": "ast-write",
-                "value": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (include\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```"
+                "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (section ./comment.md)\n        )\n    )\n)\n-->\n```"
               },
               {
                 "documentOrder": {
@@ -2036,7 +2036,7 @@
                   "line": 33
                 },
                 "type": "ast-write",
-                "value": "```markdown\r\n<!--\r\n(dl\r\n    (*section-meta\r\n        (title Doculisp)\r\n        (*include\r\n            (section ./doculisp.md)\r\n            (section ./section-meta.md)\r\n            (section ./content.md)\r\n            (*section ./comment.md)\r\n        )\r\n    )\r\n)\r\n-->\r\n```"
+                "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (*include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (*section ./comment.md)\n        )\n    )\n)\n-->\n```"
               },
               {
                 "depthCount": 3,
@@ -2140,7 +2140,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 139,
+                  "char": 138,
                   "documentDepth": 2,
                   "documentIndex": 6,
                   "documentPath": "./comment.md",
@@ -2151,7 +2151,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 139,
+                  "char": 138,
                   "documentDepth": 2,
                   "documentIndex": 6,
                   "documentPath": "./comment.md",
@@ -2162,7 +2162,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 208,
+                  "char": 207,
                   "documentDepth": 2,
                   "documentIndex": 6,
                   "documentPath": "./comment.md",
@@ -2173,7 +2173,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 231,
+                  "char": 230,
                   "documentDepth": 2,
                   "documentIndex": 6,
                   "documentPath": "./comment.md",
@@ -2184,7 +2184,7 @@
               },
               {
                 "documentOrder": {
-                  "char": 231,
+                  "char": 230,
                   "documentDepth": 2,
                   "documentIndex": 6,
                   "documentPath": "./comment.md",
@@ -3427,6 +3427,352 @@
             "line": 10
           },
           "path": "./keywords.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": {
+            "ast": [
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 2
+                },
+                "label": "## Contributors ✨ ##",
+                "ref_link": "##contributors-",
+                "title": "Contributors ✨",
+                "type": "ast-title"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 10
+                },
+                "type": "ast-write",
+                "value": "Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 12
+                },
+                "type": "ast-write",
+                "value": "I want to give a special thanks to my friend [Chris Stead](https://github.com/cmstead) who wrote [Book Lisp](https://github.com/cmstead/booklisp) which was a huge insperation for this tool."
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 17
+                },
+                "type": "ast-write",
+                "value": "<table>"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 18
+                },
+                "type": "ast-write",
+                "value": "<tbody>"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 19
+                },
+                "type": "ast-write",
+                "value": "<tr>"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 6,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 7,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 20
+                },
+                "type": "ast-write",
+                "value": "<td align=\"center\" valign=\"top\" width=\"14.28%\"><a href=\"http://www.chrisstead.net/\"><img src=\"https://avatars.githubusercontent.com/u/4184510?v=4?s=100\" width=\"100px;\" alt=\"Chris Stead\"/><br /><sub><b>Chris Stead</b></sub></a><br /><a href=\"#ideas-cmstead\" title=\"Ideas, Planning, & Feedback\">🤔</a></td>"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 4,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 5,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 21
+                },
+                "type": "ast-write",
+                "value": "</tr>"
+              },
+              {
+                "documentOrder": {
+                  "char": 2,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 3,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 22
+                },
+                "type": "ast-write",
+                "value": "</tbody>"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 23
+                },
+                "type": "ast-write",
+                "value": "</table>"
+              },
+              {
+                "documentOrder": {
+                  "char": 1,
+                  "documentDepth": 2,
+                  "documentIndex": 8,
+                  "documentPath": "./contributors.md",
+                  "line": 30
+                },
+                "type": "ast-write",
+                "value": "This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!"
+              }
+            ],
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 8,
+              "documentPath": "./contributors.md",
+              "line": 1
+            },
+            "include": [],
+            "type": "ast-section"
+          },
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "_main.dlisp",
+            "line": 11
+          },
+          "path": "./contributors.md",
           "sectionLabel": "Section",
           "type": "ast-load"
         }

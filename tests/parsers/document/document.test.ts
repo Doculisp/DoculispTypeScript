@@ -362,6 +362,11 @@ The first block is the \`dl\` block. In it \`dl\` is the atom. It contains the \
             verifyAsJson(result);
         });
 
+        it('should parse the content of contributors.md from the file system', () => {
+            const result = getContent('contributors.md', 3, 8);
+            verifyAsJson(result);
+        });
+
         it('should parse the content of _main.dlisp from the file system', () => {
             const result = getContent('_main.dlisp', 1, 1);
             verifyAsJson(result);

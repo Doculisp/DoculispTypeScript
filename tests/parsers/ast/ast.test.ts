@@ -528,6 +528,11 @@ describe('ast', () => {
             verifyAsJson(result);
         });
 
+        it('should build ast for contributors.md', () => {
+            const result = getContents('contributors.md', 2, 8);
+            verifyAsJson(result);
+        });
+
         it('should build ast for _main.dlisp', () => {
             const result = getContents('_main.dlisp', 1, 1);
             verifyAsJson(result);

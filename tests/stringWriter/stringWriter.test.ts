@@ -10,7 +10,7 @@ import { IDictionary } from "../../src/types/types.containers";
 import fs from 'fs';
 import path from "path";
 
-describe.skip('stringWriter', () => {
+describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;

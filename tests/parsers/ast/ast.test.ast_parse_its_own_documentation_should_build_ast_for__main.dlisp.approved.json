@@ -28,7 +28,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.dlisp",
-            "line": 14
+            "line": 15
           },
           "type": "ast-toc"
         },
@@ -38,7 +38,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.dlisp",
-            "line": 14
+            "line": 15
           },
           "type": "ast-content"
         }
@@ -139,6 +139,19 @@
             "line": 10
           },
           "path": "./keywords.md",
+          "sectionLabel": "Section",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 9,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.dlisp",
+            "line": 11
+          },
+          "path": "./contributors.md",
           "sectionLabel": "Section",
           "type": "ast-load"
         }

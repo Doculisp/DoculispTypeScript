@@ -8,6 +8,7 @@
         (Section ./headings.md)
         (Section ./comment.md)
         (Section ./keywords.md)
+        (Section ./contributors.md)
     )
 )
 

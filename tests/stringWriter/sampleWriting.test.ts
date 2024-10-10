@@ -38,7 +38,7 @@ describe('stringWriter writing sample', () => {
         workingDir = process.cwd();
     });
 
-    it.skip('should write document.md', () => {
+    it('should write document.md', () => {
         process.chdir('./parsers/');
 
         const result = toResult('./document.md');
