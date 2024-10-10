@@ -3442,7 +3442,7 @@
                   "line": 2
                 },
                 "label": "## Contributors ✨ ##",
-                "ref_link": "##contributors-",
+                "ref_link": "#contributors-",
                 "title": "Contributors ✨",
                 "type": "ast-title"
               },

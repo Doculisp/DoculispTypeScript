@@ -9,7 +9,7 @@
 5. [Section: Dynamic Headings](#dynamic-headings)
 6. [Section: Comment Block](#comment-block)
 7. [Section: Key Atoms by Depth](#key-atoms-by-depth)
-8. [Section: Contributors ✨](##contributors-)
+8. [Section: Contributors ✨](#contributors-)
 
 ## Basic Structure ##
 
