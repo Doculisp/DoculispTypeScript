@@ -2,7 +2,10 @@
   "name": "Doculisp",
   "version": "1.0.0",
   "description": "A scripting language to build markdown documents",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": {
+    "doculisp": "./dist/index.js"
+  },
   "scripts": {
     "precompile": "rimraf src/**/*.js test/**/*.js dist/**/* -g",
     "compile": "tsc",

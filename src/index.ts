@@ -12,9 +12,8 @@ program
     .version('0.0.1')
     .requiredOption('-s, --source <source_path>', 'The source file to compile')
     .requiredOption('-d, --output <output_path>', 'The output document path for the compiled markdown')
-    .option('-t, --test', 'runs the compiler without generating the output file.');
-
-program.parse(process.argv);
+    .option('-t, --test', 'runs the compiler without generating the output file.')
+    .parse(process.argv);
 
 function reportResult(result: Result<string | false>) {
     if (result.success) {
