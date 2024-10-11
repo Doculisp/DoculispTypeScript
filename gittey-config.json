@@ -25,7 +25,7 @@
         },
         {
             "name": "push",
-            "command": "gittey test && git push --tags",
+            "command": "gittey test && git push && git push --tags",
             "description": "performs a git push if tests are passing"
         },
         {
