@@ -3,14 +3,26 @@ import { container } from './container';
 import { Command } from 'commander';
 import { Result } from './types/types.general';
 import { IController } from './types/types.controller';
+import { IVersion } from './types/types.version';
 
 const program = new Command();
 const controller = container.buildAs<IController>('controller');
+const versionGetter = container.buildAs<IVersion>('version');
+
+const versionMaybe = versionGetter.getVersion();
+
+let version = '?.?.?'
+
+if(!versionMaybe.success) {
+    console.log('doculisp cannot determine its version')
+} else {
+    version = versionMaybe.value;
+}
 
 program
     .name('doculisp')
     .description('A compiler for markdown')
-    .version('0.0.1')
+    .version(version)
     .requiredOption('-s, --source <source_path>', 'The source file to compile')
     .requiredOption('-d, --output <output_path>', 'The output document path for the compiled markdown')
     .option('-t, --test', 'runs the compiler without generating the output file.')
