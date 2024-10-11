@@ -1,6 +1,7 @@
 (section-meta
     (title Doculisp)
     (include
+        (Section ./cli.md)
         (Section ./structure.md)
         (Section ./doculisp.md)
         (Section ./section-meta.md)

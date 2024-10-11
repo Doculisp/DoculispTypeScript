@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jason-kerney/TS-Kata.git"
+    "url": "git+https://github.com/Doculisp/DoculispTypeScript.git"
   },
   "keywords": [
     "markdown",
@@ -24,9 +24,9 @@
   "author": "Jason-Kerney",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jason-kerney/TS-Kata/issues"
+    "url": "https://github.com/Doculisp/DoculispTypeScript/issues"
   },
-  "homepage": "https://github.com/jason-kerney/TS-Kata#readme",
+  "homepage": "https://github.com/Doculisp/DoculispTypeScript#readme",
   "devDependencies": {
     "@types/jest": "^29.2.6",
     "@types/node": "^20.12.12",
@@ -44,7 +44,9 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "@types/figlet": "^1.7.0",
     "commander": "^12.1.0",
+    "figlet": "^1.8.0",
     "glob": "^10.4.1"
   }
 }

@@ -2,14 +2,46 @@
 
 # Doculisp #
 
-1. [Section: Basic Structure](#basic-structure)
-2. [Section: Doculisp Master Block](#doculisp-master-block)
-3. [Section: Section Meta Block](#section-meta-block)
-4. [Section: Content Block](#content-block)
-5. [Section: Dynamic Headings](#dynamic-headings)
-6. [Section: Comment Block](#comment-block)
-7. [Section: Key Atoms by Depth](#key-atoms-by-depth)
-8. [Section: Contributors ✨](#contributors-)
+1. [Section: Using the Command Line Interface](#using-the-command-line-interface)
+2. [Section: Basic Structure](#basic-structure)
+3. [Section: Doculisp Master Block](#doculisp-master-block)
+4. [Section: Section Meta Block](#section-meta-block)
+5. [Section: Content Block](#content-block)
+6. [Section: Dynamic Headings](#dynamic-headings)
+7. [Section: Comment Block](#comment-block)
+8. [Section: Key Atoms by Depth](#key-atoms-by-depth)
+9. [Section: Contributors ✨](#contributors-)
+
+## Using the Command Line Interface ##
+
+### To Install Doculisp ###
+
+Run the following command: `npm i -g doculisp`
+
+### Running the Doculisp compiler ###
+
+If you run doculisp with the help option : `doculisp --help` you will see the following:
+
+```
+___  ____ ____ _  _ _    _ ____ ___
+|  \ |  | |    |  | |    | [__  |__]
+|__/ |__| |___ |__| |___ | ___] |
+
+                     Version: 0.0.5
+
+Usage: doculisp [options]
+
+A compiler for markdown
+
+Options:
+  -V, --version               output the version number
+  -s, --source <source_path>  the source file to compile
+  -d, --output <output_path>  the output document path for the compiled markdown
+  -t, --test                  runs the compiler without generating the output file.
+  -h, --help                  display help for command
+```
+
+The source and destination options are required.
 
 ## Basic Structure ##
 
