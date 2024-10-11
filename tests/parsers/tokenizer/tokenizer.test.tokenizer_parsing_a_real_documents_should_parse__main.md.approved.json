@@ -491,11 +491,22 @@
       },
       {
         "location": {
-          "char": 6,
+          "char": 1,
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.md",
           "line": 20
+        },
+        "text": "```\n___  ____ ____ _  _ _    _ ____ ___\n|  \\ |  | |    |  | |    | [__  |__]\n|__/ |__| |___ |__| |___ | ___] |\n```",
+        "type": "token - text"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.md",
+          "line": 26
         },
         "type": "token - open parenthesis"
       },
@@ -505,7 +516,49 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.md",
-          "line": 20
+          "line": 26
+        },
+        "text": "#",
+        "type": "token - atom"
+      },
+      {
+        "location": {
+          "char": 9,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.md",
+          "line": 26
+        },
+        "text": "Table of Contents",
+        "type": "token - parameter"
+      },
+      {
+        "location": {
+          "char": 26,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.md",
+          "line": 26
+        },
+        "type": "token - close parenthesis"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.md",
+          "line": 27
+        },
+        "type": "token - open parenthesis"
+      },
+      {
+        "location": {
+          "char": 7,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.md",
+          "line": 27
         },
         "text": "content",
         "type": "token - atom"
@@ -516,7 +569,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.md",
-          "line": 20
+          "line": 27
         },
         "type": "token - open parenthesis"
       },
@@ -526,7 +579,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.md",
-          "line": 20
+          "line": 27
         },
         "text": "toc",
         "type": "token - atom"
@@ -537,7 +590,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.md",
-          "line": 20
+          "line": 27
         },
         "text": "numbered-labeled",
         "type": "token - parameter"
@@ -548,7 +601,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.md",
-          "line": 20
+          "line": 27
         },
         "type": "token - close parenthesis"
       },
@@ -558,7 +611,7 @@
           "documentDepth": 1,
           "documentIndex": 1,
           "documentPath": "./documentation/_main.md",
-          "line": 20
+          "line": 27
         },
         "type": "token - close parenthesis"
       }

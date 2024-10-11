@@ -2,6 +2,14 @@
 
 # Doculisp #
 
+```
+___  ____ ____ _  _ _    _ ____ ___
+|  \ |  | |    |  | |    | [__  |__]
+|__/ |__| |___ |__| |___ | ___] |
+```
+
+## Table of Contents ##
+
 1. [Section: Using the Command Line Interface](#using-the-command-line-interface)
 2. [Section: Basic Structure](#basic-structure)
 3. [Section: Doculisp Master Block](#doculisp-master-block)
@@ -27,7 +35,7 @@ ___  ____ ____ _  _ _    _ ____ ___
 |  \ |  | |    |  | |    | [__  |__]
 |__/ |__| |___ |__| |___ | ___] |
 
-                     Version: 0.0.5
+                     Version: N.N.N
 
 Usage: doculisp [options]
 
