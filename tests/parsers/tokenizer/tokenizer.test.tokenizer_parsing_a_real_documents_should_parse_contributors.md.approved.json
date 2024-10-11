@@ -99,12 +99,12 @@
           "documentPath": "./documentation/contributors.md",
           "line": 4
         },
-        "text": "#contributors-",
+        "text": "contributors-",
         "type": "token - parameter"
       },
       {
         "location": {
-          "char": 33,
+          "char": 32,
           "documentDepth": 2,
           "documentIndex": 8,
           "documentPath": "./documentation/contributors.md",

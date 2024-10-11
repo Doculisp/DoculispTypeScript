@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "# My Cool Document #",
-          "ref_link": "#my_cool_document",
+          "ref_link": "#my-cool-document",
           "title": "My Cool Document",
           "type": "ast-title"
         }

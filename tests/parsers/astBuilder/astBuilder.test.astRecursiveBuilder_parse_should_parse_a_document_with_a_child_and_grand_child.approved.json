@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "# The True Root #",
-          "ref_link": "#the_true_root",
+          "ref_link": "#the-true-root",
           "title": "The True Root",
           "type": "ast-title"
         },
@@ -63,7 +63,7 @@
                   "line": 3
                 },
                 "label": "## The Child to Bare ##",
-                "ref_link": "#the_child_to_bare",
+                "ref_link": "#the-child-to-bare",
                 "title": "The Child to Bare",
                 "type": "ast-title"
               },
@@ -109,7 +109,7 @@
                         "line": 3
                       },
                       "label": "### The GRoot of all Docs ###",
-                      "ref_link": "#the_groot_of_all_docs",
+                      "ref_link": "#the-groot-of-all-docs",
                       "title": "The GRoot of all Docs",
                       "type": "ast-title"
                     },

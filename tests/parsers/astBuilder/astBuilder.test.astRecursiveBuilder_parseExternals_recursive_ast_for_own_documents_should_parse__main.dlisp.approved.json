@@ -63,7 +63,7 @@
                   "line": 2
                 },
                 "label": "## Basic Structure ##",
-                "ref_link": "#basic_structure",
+                "ref_link": "#basic-structure",
                 "title": "Basic Structure",
                 "type": "ast-title"
               },
@@ -543,7 +543,7 @@
                   "line": 2
                 },
                 "label": "## Doculisp Master Block ##",
-                "ref_link": "#doculisp_master_block",
+                "ref_link": "#doculisp-master-block",
                 "title": "Doculisp Master Block",
                 "type": "ast-title"
               },
@@ -658,7 +658,7 @@
                   "line": 2
                 },
                 "label": "## Section Meta Block ##",
-                "ref_link": "#section_meta_block",
+                "ref_link": "#section-meta-block",
                 "title": "Section Meta Block",
                 "type": "ast-title"
               },
@@ -1406,7 +1406,7 @@
                   "line": 2
                 },
                 "label": "## Content Block ##",
-                "ref_link": "#content_block",
+                "ref_link": "#content-block",
                 "title": "Content Block",
                 "type": "ast-title"
               },
@@ -1709,7 +1709,7 @@
                   "line": 2
                 },
                 "label": "## Dynamic Headings ##",
-                "ref_link": "#dynamic_headings",
+                "ref_link": "#dynamic-headings",
                 "title": "Dynamic Headings",
                 "type": "ast-title"
               },
@@ -1902,7 +1902,7 @@
                   "line": 2
                 },
                 "label": "## Comment Block ##",
-                "ref_link": "#comment_block",
+                "ref_link": "#comment-block",
                 "title": "Comment Block",
                 "type": "ast-title"
               },
@@ -2227,7 +2227,7 @@
                   "line": 2
                 },
                 "label": "## Key Atoms by Depth ##",
-                "ref_link": "#key_atoms_by_depth",
+                "ref_link": "#key-atoms-by-depth",
                 "title": "Key Atoms by Depth",
                 "type": "ast-title"
               },
@@ -3442,7 +3442,7 @@
                   "line": 2
                 },
                 "label": "## Contributors ✨ ##",
-                "ref_link": "##contributors-",
+                "ref_link": "#contributors-",
                 "title": "Contributors ✨",
                 "type": "ast-title"
               },

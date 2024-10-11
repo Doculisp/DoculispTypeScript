@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "# Top Level Document #",
-          "ref_link": "#top_level_document",
+          "ref_link": "#top-level-document",
           "title": "Top Level Document",
           "type": "ast-title"
         },
@@ -64,7 +64,7 @@
                   "line": 2
                 },
                 "label": "## A Child Document ##",
-                "ref_link": "#a_child_document",
+                "ref_link": "#a-child-document",
                 "title": "A Child Document",
                 "type": "ast-title"
               },
@@ -111,7 +111,7 @@
                         "line": 2
                       },
                       "label": "### A Grandchild Document ###",
-                      "ref_link": "#a_grandchild_document",
+                      "ref_link": "#a-grandchild-document",
                       "title": "A Grandchild Document",
                       "type": "ast-title"
                     },

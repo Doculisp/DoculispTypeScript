@@ -17,7 +17,7 @@
             "line": 2
           },
           "label": "# Main Document #",
-          "ref_link": "#main_document",
+          "ref_link": "#main-document",
           "title": "Main Document",
           "type": "ast-title"
         },
@@ -63,7 +63,7 @@
                   "line": 2
                 },
                 "label": "## Fist Sub-Document ##",
-                "ref_link": "#fist_sub-document",
+                "ref_link": "#fist-sub-document",
                 "title": "Fist Sub-Document",
                 "type": "ast-title"
               },

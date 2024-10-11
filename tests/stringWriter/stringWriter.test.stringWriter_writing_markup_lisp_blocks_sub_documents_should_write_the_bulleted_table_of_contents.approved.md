@@ -4,8 +4,8 @@
 
 a truly divided tail.
 
-* [My First Sub Section](#my_first_sub_section)
-* [My second Sub Section](#my_second_sub_section)
+* [My First Sub Section](#my-first-sub-section)
+* [My second Sub Section](#my-second-sub-section)
 
 ## My First Sub Section ##
 
