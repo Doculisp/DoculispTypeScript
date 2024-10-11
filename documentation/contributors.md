@@ -2,7 +2,7 @@
 (dl
     (section-meta
         (title Contributors ✨)
-        (ref-link #contributors-)
+        (ref-link contributors-)
     )
 )
 -->

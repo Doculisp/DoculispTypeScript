@@ -1,11 +1,13 @@
+import path from "node:path";
 import { IContainer, IDependencyContainer, IDependencyManager, IDictionary, IRegisterable, ITestableContainer, Valid } from "./types/types.containers";
 import { globSync } from 'glob';
 
 function importModules(container: IContainer, moduleNames: string[]) {
     moduleNames.forEach(n => {
-        if(n === './index') {
+        if(n.endsWith('index')) {
             return;
         }
+
         const module = require(n);
         const keys = Object.keys(module);
         keys
@@ -18,10 +20,22 @@ function importModules(container: IContainer, moduleNames: string[]) {
 }
 
 function findModules(container: IContainer) {
+    let modulePath = __dirname;
+    if(modulePath.endsWith('src')) {
+        modulePath = path.resolve(path.join(modulePath, '../dist'));
+    }
+
+    if(!modulePath.endsWith('dist')) {
+        modulePath = path.resolve(path.join(modulePath, './dist'));
+    }
+
+    const globPattern = modulePath + '/**/*.js';
     let moduleNames = (
-        globSync('./dist/**/*.js')
+        globSync(globPattern)
         .map(p => {
-            return p.replace('dist', '.').replace('\\src', '').replace('.js', '').replaceAll('\\', '/');
+            let r = path.resolve(p);
+
+            return r.replace('.js', '').replaceAll('\\', '/');
         })
     );
 
