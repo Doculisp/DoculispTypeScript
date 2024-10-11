@@ -552,8 +552,8 @@ A story of a misbehaving parser.
             verifyAsJson(result);
         });
 
-        it('should build ast for _main.dlisp', () => {
-            const result = getContents('_main.dlisp', 1, 1);
+        it('should build ast for _main.md', () => {
+            const result = getContents('_main.md', 1, 1);
             verifyAsJson(result);
         });
     });

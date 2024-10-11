@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.md",
+          "line": 2
+        },
+        "text": "(section-meta\n        (title Doculisp)\n        (include\n            (Section ./cli.md)\n            (Section ./structure.md)\n            (Section ./doculisp.md)\n            (Section ./section-meta.md)\n            (Section ./content.md)\n            (Section ./headings.md)\n            (Section ./comment.md)\n            (Section ./keywords.md)\n            (Section ./contributors.md)\n        )\n    )",
+        "type": "lisp"
+      },
+      {
+        "location": {
+          "char": 6,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./documentation/_main.md",
+          "line": 20
+        },
+        "text": "(content (toc numbered-labeled))",
+        "type": "lisp"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "./documentation/_main.md"
+    }
+  }
+}

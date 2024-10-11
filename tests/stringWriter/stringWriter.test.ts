@@ -611,7 +611,7 @@ a truly divided tail.
             });
 
             it('should write the whole of its own documentation', () => {
-                const filePath = './_main.dlisp';
+                const filePath = './_main.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));

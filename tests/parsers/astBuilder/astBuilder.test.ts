@@ -364,8 +364,8 @@ hello from the child
             verifyAsJson(result);
         });
 
-        it('should parse _main.dlisp', () => {
-            const result = getContents('_main.dlisp', 1, 1);
+        it('should parse _main.md', () => {
+            const result = getContents('_main.md', 1, 1);
             verifyAsJson(result);
         });
     });

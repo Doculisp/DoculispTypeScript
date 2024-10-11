@@ -358,8 +358,8 @@ describe('tokenizer', () => {
             verifyAsJson(result);
         });
         
-        it('should parse _main.dlisp', () => {
-            const result = getFileContent('_main.dlisp', 1, 1);
+        it('should parse _main.md', () => {
+            const result = getFileContent('_main.md', 1, 1);
             verifyAsJson(result);
         });
     });
