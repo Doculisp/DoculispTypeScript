@@ -84,7 +84,7 @@
             "line": 5
           },
           "path": "./cli.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "CLI",
           "type": "ast-load"
         },
         {
@@ -97,7 +97,7 @@
             "line": 6
           },
           "path": "./structure.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Language",
           "type": "ast-load"
         },
         {
@@ -110,7 +110,7 @@
             "line": 7
           },
           "path": "./doculisp.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Language",
           "type": "ast-load"
         },
         {
@@ -123,7 +123,7 @@
             "line": 8
           },
           "path": "./section-meta.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Language",
           "type": "ast-load"
         },
         {
@@ -136,7 +136,7 @@
             "line": 9
           },
           "path": "./content.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Language",
           "type": "ast-load"
         },
         {
@@ -149,7 +149,7 @@
             "line": 10
           },
           "path": "./headings.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Language",
           "type": "ast-load"
         },
         {
@@ -162,7 +162,7 @@
             "line": 11
           },
           "path": "./comment.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Language",
           "type": "ast-load"
         },
         {
@@ -175,7 +175,7 @@
             "line": 12
           },
           "path": "./keywords.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Language",
           "type": "ast-load"
         },
         {
@@ -188,7 +188,7 @@
             "line": 13
           },
           "path": "./contributors.md",
-          "sectionLabel": "Section",
+          "sectionLabel": "Recognition",
           "type": "ast-load"
         }
       ],

@@ -10,7 +10,7 @@
           "documentPath": "./documentation/_main.md",
           "line": 2
         },
-        "text": "(section-meta\n        (title Doculisp)\n        (include\n            (Section ./cli.md)\n            (Section ./structure.md)\n            (Section ./doculisp.md)\n            (Section ./section-meta.md)\n            (Section ./content.md)\n            (Section ./headings.md)\n            (Section ./comment.md)\n            (Section ./keywords.md)\n            (Section ./contributors.md)\n        )\n    )",
+        "text": "(section-meta\n        (title Doculisp)\n        (include\n            (CLI ./cli.md)\n            (Language ./structure.md)\n            (Language ./doculisp.md)\n            (Language ./section-meta.md)\n            (Language ./content.md)\n            (Language ./headings.md)\n            (Language ./comment.md)\n            (Language ./keywords.md)\n            (Recognition ./contributors.md)\n        )\n    )",
         "type": "lisp"
       },
       {

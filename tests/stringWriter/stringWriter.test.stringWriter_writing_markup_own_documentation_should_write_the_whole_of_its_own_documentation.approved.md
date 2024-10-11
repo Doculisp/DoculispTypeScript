@@ -10,15 +10,15 @@ ___  ____ ____ _  _ _    _ ____ ___
 
 ## Table of Contents ##
 
-1. [Section: Using the Command Line Interface](#using-the-command-line-interface)
-2. [Section: Basic Structure](#basic-structure)
-3. [Section: Doculisp Master Block](#doculisp-master-block)
-4. [Section: Section Meta Block](#section-meta-block)
-5. [Section: Content Block](#content-block)
-6. [Section: Dynamic Headings](#dynamic-headings)
-7. [Section: Comment Block](#comment-block)
-8. [Section: Key Atoms by Depth](#key-atoms-by-depth)
-9. [Section: Contributors ✨](#contributors-)
+1. [CLI: Using the Command Line Interface](#using-the-command-line-interface)
+2. [Language: Basic Structure](#basic-structure)
+3. [Language: Doculisp Master Block](#doculisp-master-block)
+4. [Language: Section Meta Block](#section-meta-block)
+5. [Language: Content Block](#content-block)
+6. [Language: Dynamic Headings](#dynamic-headings)
+7. [Language: Comment Block](#comment-block)
+8. [Language: Key Atoms by Depth](#key-atoms-by-depth)
+9. [Recognition: Contributors ✨](#contributors-)
 
 ## Using the Command Line Interface ##
 
