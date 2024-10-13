@@ -11,14 +11,15 @@ ___  ____ ____ _  _ _    _ ____ ___
 ## Table of Contents ##
 
 1. [CLI: Using the Command Line Interface](#using-the-command-line-interface)
-2. [Language: Basic Structure](#basic-structure)
-3. [Language: Doculisp Master Block](#doculisp-master-block)
-4. [Language: Section Meta Block](#section-meta-block)
-5. [Language: Content Block](#content-block)
-6. [Language: Dynamic Headings](#dynamic-headings)
-7. [Language: Comment Block](#comment-block)
-8. [Language: Key Atoms by Depth](#key-atoms-by-depth)
-9. [Recognition: Contributors ✨](#contributors-)
+2. [Intro: What Problem Does Doculisp Solve?](#what-problem-does-doculisp-solve)
+3. [Language: Basic Structure](#basic-structure)
+4. [Language: Doculisp Master Block](#doculisp-master-block)
+5. [Language: Section Meta Block](#section-meta-block)
+6. [Language: Content Block](#content-block)
+7. [Language: Dynamic Headings](#dynamic-headings)
+8. [Language: Comment Block](#comment-block)
+9. [Language: Key Atoms by Depth](#key-atoms-by-depth)
+10. [Recognition: Contributors ✨](#contributors-)
 
 ## Using the Command Line Interface ##
 
@@ -50,6 +51,14 @@ Options:
 ```
 
 The source and destination options are required.
+
+## What Problem Does Doculisp Solve? ##
+
+Doculisp is designed to solve one problem, making readme files easier to edit and maintain. With Doculisp you can break each read me into multiple smaller files. Every time you have a header or subheader that could be a new file. This allows for the task of documentation to be managed in parts. When a part of the documentation needs to be edited, you can open the file that pertains to that part, and only that part. There is a secondary advantage to this. Whe a change to the documentation happens, you can see what that change effected without looking at file diffs just by examining the files that changed.
+
+### A Word of Advice ###
+
+If the text under a subheading is small, I would recommend  not breaking it into a different file. I actually recommend you start with a single readme, and refactor out to different files as the readme grows in size. Remember the point of this is to make updating and managing updates easier.
 
 ## Basic Structure ##
 

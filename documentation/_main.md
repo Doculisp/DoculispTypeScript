@@ -4,6 +4,7 @@
         (title Doculisp)
         (include
             (CLI ./cli.md)
+            (Intro ./why.md)
             (Language ./structure.md)
             (Language ./doculisp.md)
             (Language ./section-meta.md)

@@ -27,7 +27,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.md",
-            "line": 20
+            "line": 21
           },
           "type": "ast-write",
           "value": "```\n___  ____ ____ _  _ _    _ ____ ___\n|  \\ |  | |    |  | |    | [__  |__]\n|__/ |__| |___ |__| |___ | ___] |\n```"
@@ -39,7 +39,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.md",
-            "line": 26
+            "line": 27
           },
           "text": "Table of Contents",
           "type": "ast-header"
@@ -51,7 +51,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.md",
-            "line": 27
+            "line": 28
           },
           "type": "ast-toc"
         },
@@ -61,7 +61,7 @@
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.md",
-            "line": 27
+            "line": 28
           },
           "type": "ast-content"
         }
@@ -96,8 +96,8 @@
             "documentPath": "documentation\\_main.md",
             "line": 6
           },
-          "path": "./structure.md",
-          "sectionLabel": "Language",
+          "path": "./why.md",
+          "sectionLabel": "Intro",
           "type": "ast-load"
         },
         {
@@ -109,7 +109,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 7
           },
-          "path": "./doculisp.md",
+          "path": "./structure.md",
           "sectionLabel": "Language",
           "type": "ast-load"
         },
@@ -122,7 +122,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 8
           },
-          "path": "./section-meta.md",
+          "path": "./doculisp.md",
           "sectionLabel": "Language",
           "type": "ast-load"
         },
@@ -135,7 +135,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 9
           },
-          "path": "./content.md",
+          "path": "./section-meta.md",
           "sectionLabel": "Language",
           "type": "ast-load"
         },
@@ -148,7 +148,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 10
           },
-          "path": "./headings.md",
+          "path": "./content.md",
           "sectionLabel": "Language",
           "type": "ast-load"
         },
@@ -161,7 +161,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 11
           },
-          "path": "./comment.md",
+          "path": "./headings.md",
           "sectionLabel": "Language",
           "type": "ast-load"
         },
@@ -174,7 +174,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 12
           },
-          "path": "./keywords.md",
+          "path": "./comment.md",
           "sectionLabel": "Language",
           "type": "ast-load"
         },
@@ -186,6 +186,19 @@
             "documentIndex": 1,
             "documentPath": "documentation\\_main.md",
             "line": 13
+          },
+          "path": "./keywords.md",
+          "sectionLabel": "Language",
+          "type": "ast-load"
+        },
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 13,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "documentation\\_main.md",
+            "line": 14
           },
           "path": "./contributors.md",
           "sectionLabel": "Recognition",
