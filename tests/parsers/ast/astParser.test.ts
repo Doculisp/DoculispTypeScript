@@ -50,7 +50,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
 
-        it.skip('should return failure if given failure', () => {
+        it('should return failure if given failure', () => {
             const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
     
             const result = parser.parse(failure);
@@ -58,7 +58,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
     
-        it.skip('should parse a text token', () => {
+        it('should parse a text token', () => {
             const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,

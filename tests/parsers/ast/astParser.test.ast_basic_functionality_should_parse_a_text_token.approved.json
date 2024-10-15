@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "value": [
+    {
+      "location": {
+        "char": 1,
+        "documentDepth": 2,
+        "documentIndex": 9,
+        "documentPath": "T:/ext/only.md",
+        "line": 2
+      },
+      "type": "ast-value",
+      "value": "Some text"
+    }
+  ]
+}
