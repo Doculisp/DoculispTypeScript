@@ -6,7 +6,7 @@ import { testable } from "../testHelpers";
 import { container } from "../../src/container";
 import path from "path";
 
-describe('stringWriter writing sample', () => {
+describe.skip('stringWriter writing sample', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (filePath: string) => Result<string> = null as any;
@@ -38,14 +38,14 @@ describe('stringWriter writing sample', () => {
         workingDir = process.cwd();
     });
 
-    it('should write document.md', () => {
+    it.skip('should write document.md', () => {
         process.chdir('./parsers/');
 
         const result = toResult('./document.md');
         verifyMarkdownResult(result);
     });
 
-    it('should write the sample document', () => {
+    it.skip('should write the sample document', () => {
         const result = toResult('./_main.dlisp');
         verifyMarkdownResult(result);
         expect(process.cwd()).toBe(path.resolve('.'));

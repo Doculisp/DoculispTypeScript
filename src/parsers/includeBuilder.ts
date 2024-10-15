@@ -1,14 +1,15 @@
-import { IDoculisp, IDoculispParser, ISectionWriter } from "../types/types.astDoculisp";
+import { IDoculisp, IDoculispParser, IEmptyDoculisp, ISectionWriter } from "../types/types.astDoculisp";
 import { IIncludeBuilder } from "../types/types.includeBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { DocumentParser } from "../types/types.document";
 import { IFileHandler } from "../types/types.fileHandler";
 import { IProjectLocation, IUtil, Result } from "../types/types.general";
 import { TokenFunction } from "../types/types.tokens";
+import { IAstParser } from "../types/types.ast";
 
-function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) : IIncludeBuilder {
+function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any, astParser: IAstParser) : IIncludeBuilder {
 
-    function _parse(filePath: string, location: IProjectLocation): Result<IDoculisp> {
+    function _parse(filePath: string, location: IProjectLocation): Result<IDoculisp | IEmptyDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();
         const targetDir = path.resolve(path.dirname(filePath));
         try {
@@ -21,7 +22,8 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
     
             const documentResult = documentParse(fileMaybe.value, location);
             const tokens = tokenizer(documentResult);
-            const doculisp = astParse.parse(tokens);
+            const ast = astParser.parse(tokens);
+            const doculisp = doculispParser.parse(ast);
 
             return parseExternals(doculisp);
         }
@@ -30,7 +32,7 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
         }
     }
 
-    function parse(filePath: string): Result<IDoculisp> {
+    function parse(filePath: string): Result<IDoculisp | IEmptyDoculisp> {
         return _parse(filePath, { documentDepth: 1, documentIndex: 1, documentPath: filePath });
     }
 
@@ -52,7 +54,7 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
             }
 
             const astDocument = astResult.value;
-            if(astDocument.section.type === 'doculisp-empty') {
+            if(astDocument.type === 'doculisp-empty') {
                 continue;
             }
 
@@ -62,13 +64,13 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
         return util.ok(doculisp);
     }
 
-    function parseExternals(astResult: Result<IDoculisp>): Result<IDoculisp> {
+    function parseExternals(astResult: Result<IDoculisp | IEmptyDoculisp>): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
         }
 
         const doculisp = astResult.value;
-        if(doculisp.section.type === 'doculisp-empty') {
+        if(doculisp.type === 'doculisp-empty') {
             return astResult;
         }
 
@@ -90,10 +92,10 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
 }
 
 const astBuilder : IRegisterable = {
-    builder: (util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, path),
+    builder: (util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any, astParser: IAstParser) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, path, astParser),
     name: 'includeBuilder',
     singleton: true,
-    dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'path']
+    dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'path', 'astParser']
 };
 
 export {

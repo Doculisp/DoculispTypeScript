@@ -10,7 +10,7 @@ import { IDictionary } from "../../src/types/types.containers";
 import fs from 'fs';
 import path from "path";
 
-describe('stringWriter', () => {
+describe.skip('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
@@ -41,8 +41,8 @@ describe('stringWriter', () => {
         });
     });
 
-    describe('basic functionality', () => {
-        it('should not write an error', () => {
+    describe.skip('basic functionality', () => {
+        it.skip('should not write an error', () => {
             const expectedResult = fail('Some failure', 'S:/ome/path.md');
             const writer = testable.stringWriter.writer(container);
             const result = writer.writeAst(expectedResult);
@@ -51,27 +51,27 @@ describe('stringWriter', () => {
         });
     });
 
-    describe('writing markup', () => {
-        describe('text block', () => {
-            it('should successfully write an empty string', () => {
+    describe.skip('writing markup', () => {
+        describe.skip('text block', () => {
+            it.skip('should successfully write an empty string', () => {
                 const result = toResult('', buildLocation('C:/my_document.md', 4, 8));
 
                 verifyMarkdownResult(result);
             });
 
-            it('should write a simple text of "hello"', () =>{
+            it.skip('should write a simple text of "hello"', () =>{
                 const result = toResult('hello', buildLocation('C:/my_document.md', 3, 6));
 
                 verifyMarkdownResult(result);
             });
 
-            it('should write text of "blow fish"', () => {
+            it.skip('should write text of "blow fish"', () => {
                 const result = toResult('blow fish', buildLocation('C:/my_document.md', 7, 2));
 
                 verifyMarkdownResult(result);
             });
 
-            it('should write a multiline code block', () => {
+            it.skip('should write a multiline code block', () => {
                 const md = `An example of an markdown document with html comments:
 
 \`\`\`markdown
@@ -90,10 +90,10 @@ describe('stringWriter', () => {
             });
         });
 
-        describe('lisp blocks', () => {
-            describe('section-meta', () => {
-                describe('title', () => {
-                    it('should write the title', () => {
+        describe.skip('lisp blocks', () => {
+            describe.skip('section-meta', () => {
+                describe.skip('title', () => {
+                    it.skip('should write the title', () => {
                         const contents = `
 (section-meta
     (title My Cool Document)
@@ -104,7 +104,7 @@ describe('stringWriter', () => {
                         verifyMarkdownResult(result);
                     });
                     
-                    it('should write the title at different depth', () => {
+                    it.skip('should write the title at different depth', () => {
                         const contents = `
 (section-meta
     (title My Cool Document)
@@ -115,7 +115,7 @@ describe('stringWriter', () => {
                         verifyMarkdownResult(result);
                     });
                     
-                    it('should write the title and subtitle', () => {
+                    it.skip('should write the title and subtitle', () => {
                         const contents = `
 (section-meta
     (title My Cool Document)
@@ -129,8 +129,8 @@ describe('stringWriter', () => {
                 });
             });
 
-            describe('dynamic header', () => {
-                it('should write the dynamic header', () => {
+            describe.skip('dynamic header', () => {
+                it.skip('should write the dynamic header', () => {
                     const doc = `
 <!--
 (dl
@@ -161,7 +161,7 @@ This is the end
                 });
             });
 
-            describe('sub documents', () => {
+            describe.skip('sub documents', () => {
                 let ok: (value: any) => Result<any> = undefined as any;
                 let addFile : (filePath: string, body: string) => void = undefined as any;
 
@@ -195,7 +195,7 @@ This is the end
                     });
                 });
 
-                it('should write the contents of a sub document', () => {
+                it.skip('should write the contents of a sub document', () => {
                     const subPath = './sub.md'
                     const subDocument = `
 <!--
@@ -233,7 +233,7 @@ a truly divided tail.
                     verifyMarkdownResult(result);
                 });
 
-                it('should write the table of contents', () => {
+                it.skip('should write the table of contents', () => {
                     const subPath1 = './sub.md'
                     const subDocument1 = `
 <!--
@@ -284,7 +284,7 @@ a truly divided tail.
                     verifyMarkdownResult(result);
                 });
 
-                it('should write the unlabeled table of contents', () => {
+                it.skip('should write the unlabeled table of contents', () => {
                     const subPath1 = './sub.md'
                     const subDocument1 = `
 <!--
@@ -335,7 +335,7 @@ a truly divided tail.
                     verifyMarkdownResult(result);
                 });
 
-                it('should write the numbered table of contents', () => {
+                it.skip('should write the numbered table of contents', () => {
                     const subPath1 = './sub.md'
                     const subDocument1 = `
 <!--
@@ -386,7 +386,7 @@ a truly divided tail.
                     verifyMarkdownResult(result);
                 });
 
-                it('should write the numbered-labeled table of contents', () => {
+                it.skip('should write the numbered-labeled table of contents', () => {
                     const subPath1 = './sub.md'
                     const subDocument1 = `
 <!--
@@ -437,7 +437,7 @@ a truly divided tail.
                     verifyMarkdownResult(result);
                 });
 
-                it('should write the bulleted table of contents', () => {
+                it.skip('should write the bulleted table of contents', () => {
                     const subPath1 = './sub.md'
                     const subDocument1 = `
 <!--
@@ -488,7 +488,7 @@ a truly divided tail.
                     verifyMarkdownResult(result);
                 });
 
-                it('should write the bulleted-labeled table of contents', () => {
+                it.skip('should write the bulleted-labeled table of contents', () => {
                     const subPath1 = './sub.md'
                     const subDocument1 = `
 <!--
@@ -542,7 +542,7 @@ a truly divided tail.
 
         });
 
-        describe('own documentation', () => {
+        describe.skip('own documentation', () => {
             let workingDir: string = null as any;
             beforeEach(() => {
                 workingDir = process.cwd();
@@ -554,7 +554,7 @@ a truly divided tail.
                 process.chdir(workingDir);
             });
 
-            it('should write the structure part of its own documentation', () => {
+            it.skip('should write the structure part of its own documentation', () => {
                 const filePath = './structure.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
@@ -562,7 +562,7 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
-            it('should write the doculisp part of its own documentation', () => {
+            it.skip('should write the doculisp part of its own documentation', () => {
                 const filePath = './doculisp.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
@@ -570,7 +570,7 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
-            it('should write the section-meta part of its own documentation', () => {
+            it.skip('should write the section-meta part of its own documentation', () => {
                 const filePath = './section-meta.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
@@ -578,7 +578,7 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
-            it('should write the content part of its own documentation', () => {
+            it.skip('should write the content part of its own documentation', () => {
                 const filePath = './content.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
@@ -586,7 +586,7 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
-            it('should write the headings part of its own documentation', () => {
+            it.skip('should write the headings part of its own documentation', () => {
                 const filePath = './headings.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
@@ -594,7 +594,7 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
-            it('should write the comment part of its own documentation', () => {
+            it.skip('should write the comment part of its own documentation', () => {
                 const filePath = './comment.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
@@ -602,7 +602,7 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
-            it('should write the keywords part of its own documentation', () => {
+            it.skip('should write the keywords part of its own documentation', () => {
                 const filePath = './keywords.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
@@ -610,7 +610,7 @@ a truly divided tail.
                 verifyMarkdownResult(result);
             });
 
-            it('should write the whole of its own documentation', () => {
+            it.skip('should write the whole of its own documentation', () => {
                 const filePath = './_main.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 

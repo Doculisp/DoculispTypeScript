@@ -3,7 +3,7 @@ import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
 import { TokenFunction, TokenizedDocument } from "../src/types/types.tokens";
 import { IAstParser, RootAst, IAstEmpty } from "../src/types/types.ast";
-import { IDoculisp, IDoculispParser } from "../src/types/types.astDoculisp";
+import { IDoculisp, IDoculispParser, IEmptyDoculisp } from "../src/types/types.astDoculisp";
 import { IIncludeBuilder } from "../src/types/types.includeBuilder";
 import { IStringWriter } from "../src/types/types.stringWriter"
 
@@ -65,14 +65,14 @@ function rawAstResultBuilder(environment: ITestableContainer, text: string, loca
     return map(tokenParser, astParser.parse);
 }
 
-function rawDoculispResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp> {
-    const tokenResultParser = rawTokenResultBuilder(environment, text, location);
+function rawDoculispResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp | IEmptyDoculisp> {
+    const astResultParser = rawAstResultBuilder(environment, text, location);
     const astParser = buildDoculispParser(environment);
 
-    return map(tokenResultParser, astParser.parse);
+    return map(astResultParser, astParser.parse);
 }
 
-function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp> {
+function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp | IEmptyDoculisp> {
     const astResultParser = rawDoculispResultBuilder(environment, text, location);
     const astRecursiveBuilder = buildIncludeParser(environment);
 
@@ -80,10 +80,10 @@ function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, t
 }
 
 function rawStringWriterResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<string> {
-    const astRecursiveBuilder = rawAstRecursiveExternalResultBuilder(environment, text, location);
+    const includeBuilder = rawAstRecursiveExternalResultBuilder(environment, text, location);
     const stringWriter = buildStringWriter(environment);
 
-    return map(astRecursiveBuilder, stringWriter.writeAst);
+    return map(includeBuilder, stringWriter.writeAst);
 }
 
 function rawStringWriterPathResultBuilder(environment: ITestableContainer, filePath: string): () => Result<string> {
@@ -142,7 +142,7 @@ function newIncludeParserBuilder(container: IContainer, setup: (environment: ITe
     });
 }
 
-function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<IDoculisp> {
+function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<IDoculisp | IEmptyDoculisp> {
     return newBuilder(container, setup, environment => {
         return buildIncludeParser(environment).parse;
     });
@@ -160,13 +160,13 @@ function newAstResultBuilder(container: IContainer, setup: (environment: ITestab
     });
 }
 
-function newDoculispResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> {
+function newDoculispResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawDoculispResultBuilder(environment, text, location)();
     });
 }
 
-function newIncludeExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> {
+function newIncludeExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstRecursiveExternalResultBuilder(environment, text, location)();
     });

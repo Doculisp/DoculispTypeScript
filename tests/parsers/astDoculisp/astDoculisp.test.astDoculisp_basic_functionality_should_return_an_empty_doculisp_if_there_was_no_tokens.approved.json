@@ -1,13 +1,6 @@
 {
   "success": true,
   "value": {
-    "projectLocation": {
-      "documentDepth": 4,
-      "documentIndex": 10,
-      "documentPath": "A:/empty/doc.md"
-    },
-    "section": {
-      "type": "doculisp-empty"
-    }
+    "type": "doculisp-empty"
   }
 }

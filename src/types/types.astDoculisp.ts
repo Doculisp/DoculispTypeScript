@@ -1,5 +1,5 @@
+import { IAstEmpty, RootAst } from "./types.ast";
 import { ILocation, IProjectLocation, Result } from "./types.general";
-import { TokenizedDocument } from "./types.tokens";
 
 export interface ILocationSortable {
     readonly documentOrder: ILocation;
@@ -73,9 +73,10 @@ export interface IEmptyDoculisp {
 
 export interface IDoculisp {
     projectLocation: IProjectLocation;
-    section: ISectionWriter | IEmptyDoculisp;
+    section: ISectionWriter;
+    type: 'doculisp-root';
 }
 
 export interface IDoculispParser {
-    parse(tokenResults: Result<TokenizedDocument>): Result<IDoculisp>;
+    parse(tokenResults: Result<RootAst[] | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp>;
 };
