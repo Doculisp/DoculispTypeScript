@@ -102,8 +102,8 @@ describe('astDoculisp', () => {
         });
     });
 
-    describe.skip('lisp', () => {
-        it.skip('should simple lisp tokens', () => {
+    describe('lisp', () => {
+        it('should simple ast', () => {
             const contents = `<!--
 (dl (# My heading))
 -->`;
@@ -112,7 +112,7 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
     
-        it.skip('should not parse a bad header', () => {
+        it('should not parse a bad header', () => {
             const contents = `<!--
 (dl (#head My heading))
 -->`;
@@ -121,7 +121,7 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
     
-        it.skip('should not parse a header without a parameter', () => {
+        it('should not parse a header without a parameter', () => {
             const contents = `<!--
 (dl (#))
 -->`;

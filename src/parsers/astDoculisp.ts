@@ -1,5 +1,5 @@
 import { CoreAst, IAstEmpty, RootAst } from "../types/types.ast";
-import { DoculispPart, IDoculisp, IDoculispParser, IEmptyDoculisp, ILoad } from "../types/types.astDoculisp";
+import { DoculispPart, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
@@ -7,11 +7,7 @@ import { ITrimArray } from "../types/types.trimArray";
 
 function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray): IDoculispParser {
 
-    function parseValue(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], DoculispPart> {
-        if(input.length === 0) {
-            return internals.noResultFound();
-        }
-
+    function parseValue(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IWrite> {
         const ast = input[0] as CoreAst;
 
         if(ast.type !== 'ast-value') {
@@ -30,6 +26,30 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         });
     }
 
+    function parseHeader(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IHeader> {
+        const ast = input[0] as CoreAst;
+
+        if(ast.value.replaceAll('#', '').length !== 0) {
+            return internals.noResultFound();
+        }
+
+        if(ast.type !== 'ast-Command') {
+            return util.fail(`Dynamic Header at '${ast.location.documentPath}' Line: ${ast.location.line}, Char: ${ast.location.char} is missing the header text`, current.documentPath);
+        }
+
+        return util.ok({
+            type: 'parse result',
+            subResult: {
+                type: 'doculisp-header',
+                depthCount: current.documentDepth + ast.value.length,
+                documentOrder: ast.location,
+                text: ast.parameter.value,
+            },
+            location: current,
+            rest: trimArray.trim(1, input),
+        });
+    }
+
     function parse(astResult: Result<RootAst | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
@@ -41,7 +61,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
         const astRoot = astResult.value;
         
-        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue);
+        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue, parseHeader);
         const parsed = parser.parse(astRoot.ast, util.toLocation(astRoot.location, 0, 0));
 
         if(!parsed.success) {
@@ -52,7 +72,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
         if(0 < remaining.remaining.length) {
             const next = remaining.remaining[0] as CoreAst;
-            return util.fail(`Unknown atom '${next.value}' at '${next.location.documentPath}' Line: ${next.location.line}, Char: ${next.location.char})`, next.location.documentPath);
+            return util.fail(`Unknown atom '${next.value}' at '${next.location.documentPath}' Line: ${next.location.line}, Char: ${next.location.char}`, next.location.documentPath);
         }
 
         return util.ok({

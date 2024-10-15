@@ -1,5 +1,5 @@
 {
   "documentPath": "S:/ome/file.md",
-  "message": "Header at {\"path\":\"S:/ome/file.md\",\"line\":2,\"char\":2} has no header text.",
+  "message": "Dynamic Header at 'S:/ome/file.md' Line: 2, Char: 2 is missing the header text",
   "success": false
 }
