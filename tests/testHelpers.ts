@@ -1,4 +1,4 @@
-import { IDoculisp, IAstParser } from "../src/types/types.astDoculisp";
+import { IDoculisp, IDoculispParser } from "../src/types/types.astDoculisp";
 import { IAstBuilder } from "../src/types/types.astBuilder";
 import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
@@ -34,8 +34,8 @@ function buildTokenResultParser(environment: ITestableContainer): TokenFunction 
     return environment.buildAs<TokenFunction>('tokenizer');
 }
 
-function buildAstParser(environment: ITestableContainer): IAstParser {
-    return environment.buildAs<IAstParser>('astDoculispParse');
+function buildAstParser(environment: ITestableContainer): IDoculispParser {
+    return environment.buildAs<IDoculispParser>('astDoculispParse');
 }
 
 function buildRecursiveAstParser(environment: ITestableContainer) : IAstBuilder {
@@ -112,7 +112,7 @@ function newTokenResultParserBuilder(container: IContainer, setup: (environment:
     });
 }
 
-function newAstParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstParser {
+function newAstParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IDoculispParser {
     return newBuilder(container, setup, environment => {
         return buildAstParser(environment);
     });

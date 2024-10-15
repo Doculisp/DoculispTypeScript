@@ -77,6 +77,6 @@ export interface IDoculisp {
 }
 
 export type ParseAst = (tokenResults: Result<TokenizedDocument>) => Result<IDoculisp>;
-export interface IAstParser {
+export interface IDoculispParser {
     parse(tokenResults: Result<TokenizedDocument>): Result<IDoculisp>;
 };

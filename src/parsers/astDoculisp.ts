@@ -1,11 +1,11 @@
-import { AstBulletStyle, DoculispPart, IDoculisp, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
+import { AstBulletStyle, DoculispPart, IDoculisp, IDoculispParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
 import { IRootStructure, IStructure } from "../types/types.structure";
 import { Token, TokenizedDocument } from "../types/types.tokens";
 
-function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRootStructure): IAstParser {
+function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRootStructure): IDoculispParser {
     let hasSection: boolean = false;
     function headerize(depth: number, value: string): string {
         const id = ''.padStart(depth, '#');

@@ -4,7 +4,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { container } from "../../../src/container";
-import { IDoculisp, IAstParser } from '../../../src/types/types.astDoculisp'
+import { IDoculisp, IDoculispParser } from '../../../src/types/types.astDoculisp'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { TokenizedDocument } from "../../../src/types/types.tokens";
 import { buildLocation, testable } from "../../testHelpers";
@@ -30,7 +30,7 @@ describe('ast', () => {
     });
 
     describe('basic functionality', () => {
-        let parser: IAstParser = undefined as any;
+        let parser: IDoculispParser = undefined as any;
 
         beforeEach(() => {
             util = null as any;
