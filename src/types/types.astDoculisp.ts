@@ -71,12 +71,12 @@ export interface IEmptyAst {
     readonly type: 'ast-empty';
 }
 
-export interface IAst {
+export interface IDoculisp {
     projectLocation: IProjectLocation;
     section: ISectionWriter | IEmptyAst;
 }
 
-export type ParseAst = (tokenResults: Result<TokenizedDocument>) => Result<IAst>;
+export type ParseAst = (tokenResults: Result<TokenizedDocument>) => Result<IDoculisp>;
 export interface IAstParser {
-    parse(tokenResults: Result<TokenizedDocument>): Result<IAst>;
+    parse(tokenResults: Result<TokenizedDocument>): Result<IDoculisp>;
 };

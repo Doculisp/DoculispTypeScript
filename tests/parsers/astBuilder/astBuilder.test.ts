@@ -3,7 +3,7 @@ import path from 'path';
 import { Options } from "approvals/lib/Core/Options";
 import { IDictionary, ITestableContainer } from "../../../src/types/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
-import { IAst } from "../../../src/types/types.astDoculisp";
+import { IDoculisp } from "../../../src/types/types.astDoculisp";
 import { IAstBuilder } from "../../../src/types/types.astBuilder";
 import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";
@@ -53,7 +53,7 @@ describe('astRecursiveBuilder', () => {
     }
 
     describe('externalParse', () => {
-        let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
+        let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> = undefined as any;
 
         beforeEach(() => {
             toExternalResult = testable.recursiveAst.externalResultBuilder(container, setup);
@@ -222,7 +222,7 @@ Hello World!
     });
 
     describe('parse', () => {
-        let toResult: (filePath: string) => Result<IAst> = undefined as any
+        let toResult: (filePath: string) => Result<IDoculisp> = undefined as any
 
         beforeEach(() => {
             toResult = testable.recursiveAst.resultBuilder(container, setup);
@@ -304,7 +304,7 @@ hello from the child
     });
 
     describe('parseExternals recursive ast for own documents', () => {
-        let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
+        let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> = undefined as any;
         let workingDir: string = null as any;
         beforeEach(() => {
             workingDir = process.cwd();
@@ -322,7 +322,7 @@ hello from the child
             process.chdir(workingDir);
         });
 
-        function getContents(fileName: string, depth: number, index: number): Result<IAst> {
+        function getContents(fileName: string, depth: number, index: number): Result<IDoculisp> {
             const filePath = fileName;
             const location = buildLocation(filePath, depth, index);
             const content = fs.readFileSync(filePath, { encoding: 'utf8' });

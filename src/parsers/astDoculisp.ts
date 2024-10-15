@@ -1,4 +1,4 @@
-import { AstBulletStyle, DoculispPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
+import { AstBulletStyle, DoculispPart, IDoculisp, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
@@ -632,7 +632,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
     }
 
     return {
-        parse(maybeTokens: Result<TokenizedDocument>): Result<IAst> {
+        parse(maybeTokens: Result<TokenizedDocument>): Result<IDoculisp> {
             if(maybeTokens.success){
                 const document = maybeTokens.value;
                 const include: ILoad[] = [];

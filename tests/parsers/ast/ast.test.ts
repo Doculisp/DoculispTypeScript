@@ -4,7 +4,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { container } from "../../../src/container";
-import { IAst, IAstParser } from '../../../src/types/types.astDoculisp'
+import { IDoculisp, IAstParser } from '../../../src/types/types.astDoculisp'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { TokenizedDocument } from "../../../src/types/types.tokens";
 import { buildLocation, testable } from "../../testHelpers";
@@ -14,7 +14,7 @@ describe('ast', () => {
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
     let util: IUtil = undefined as any;
-    let toResult: (text: string, projectLocation: IProjectLocation) => Result<IAst> = undefined as any;
+    let toResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -526,7 +526,7 @@ A story of a misbehaving parser.
     });
 
     describe('parse its own documentation', () => {
-        function getContents(fileName: string, depth: number, index: number): Result<IAst> {
+        function getContents(fileName: string, depth: number, index: number): Result<IDoculisp> {
             const filePath = path.join('./documentation/', fileName);
             const location: IProjectLocation = buildLocation(filePath, depth, index);
 

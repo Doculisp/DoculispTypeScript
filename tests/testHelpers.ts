@@ -1,4 +1,4 @@
-import { IAst, IAstParser } from "../src/types/types.astDoculisp";
+import { IDoculisp, IAstParser } from "../src/types/types.astDoculisp";
 import { IAstBuilder } from "../src/types/types.astBuilder";
 import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
@@ -53,14 +53,14 @@ function rawTokenResultBuilder(environment: ITestableContainer, text: string, lo
     return map(docParser, tokenParser);
 }
 
-function rawAstResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IAst> {
+function rawAstResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp> {
     const tokenResultParser = rawTokenResultBuilder(environment, text, location);
     const astParser = buildAstParser(environment);
 
     return map(tokenResultParser, astParser.parse);
 }
 
-function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IAst> {
+function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp> {
     const astResultParser = rawAstResultBuilder(environment, text, location);
     const astRecursiveBuilder = buildRecursiveAstParser(environment);
 
@@ -124,7 +124,7 @@ function newAstRecursiveParserBuilder(container: IContainer, setup: (environment
     });
 }
 
-function newAstRecursiveResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<IAst> {
+function newAstRecursiveResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<IDoculisp> {
     return newBuilder(container, setup, environment => {
         return buildRecursiveAstParser(environment).parse;
     });
@@ -136,13 +136,13 @@ function newTokenResultBuilder(container: IContainer, setup: (environment: ITest
     });
 }
 
-function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
+function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstResultBuilder(environment, text, location)();
     });
 }
 
-function newAstRecursiveExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IAst> {
+function newAstRecursiveExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstRecursiveExternalResultBuilder(environment, text, location)();
     });

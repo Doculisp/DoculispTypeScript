@@ -1,4 +1,4 @@
-import { IAst, IAstParser, ISectionWriter } from "../types/types.astDoculisp";
+import { IDoculisp, IAstParser, ISectionWriter } from "../types/types.astDoculisp";
 import { IAstBuilder } from "../types/types.astBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { DocumentParser } from "../types/types.document";
@@ -8,7 +8,7 @@ import { TokenFunction } from "../types/types.tokens";
 
 function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) : IAstBuilder {
 
-    function _parse(filePath: string, location: IProjectLocation): Result<IAst> {
+    function _parse(filePath: string, location: IProjectLocation): Result<IDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();
         const targetDir = path.resolve(path.dirname(filePath));
         try {
@@ -30,7 +30,7 @@ function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: Docum
         }
     }
 
-    function parse(filePath: string): Result<IAst> {
+    function parse(filePath: string): Result<IDoculisp> {
         return _parse(filePath, { documentDepth: 1, documentIndex: 1, documentPath: filePath });
     }
 
@@ -62,7 +62,7 @@ function buildAstBuilder(util: IUtil, astParse: IAstParser, documentParse: Docum
         return util.ok(ast);
     }
 
-    function parseExternals(astResult: Result<IAst>): Result<IAst> {
+    function parseExternals(astResult: Result<IDoculisp>): Result<IDoculisp> {
         if(!astResult.success) {
             return astResult;
         }

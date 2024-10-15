@@ -1,4 +1,4 @@
-import { DoculispPart, IAst, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
+import { DoculispPart, IDoculisp, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
@@ -273,7 +273,7 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
 }
 
 function buildWriter(util: IUtil) : IStringWriter {
-    function writeAst(astMaybe: Result<IAst>): Result<string> {
+    function writeAst(astMaybe: Result<IDoculisp>): Result<string> {
         if(!astMaybe.success) {
             return astMaybe;
         }
