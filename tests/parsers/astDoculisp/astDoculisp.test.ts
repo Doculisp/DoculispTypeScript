@@ -9,7 +9,7 @@ import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/t
 import { TokenizedDocument } from "../../../src/types/types.tokens";
 import { buildLocation, testable } from "../../testHelpers";
 
-describe('ast', () => {
+describe('astDoculisp', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
