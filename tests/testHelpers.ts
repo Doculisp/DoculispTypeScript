@@ -39,7 +39,7 @@ function buildAstParser(environment: ITestableContainer): IDoculispParser {
 }
 
 function buildRecursiveAstParser(environment: ITestableContainer) : IAstBuilder {
-    return environment.buildAs<IAstBuilder>('astBuilder');
+    return environment.buildAs<IAstBuilder>('includeBuilder');
 }
 
 function buildStringWriter(environment: ITestableContainer): IStringWriter {

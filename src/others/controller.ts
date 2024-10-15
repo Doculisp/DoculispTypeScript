@@ -40,7 +40,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IAstBuilder,
 const controllerBuilder: IRegisterable = {
     builder: (util: IUtil, handler: IFileWriter, astBuilder: IAstBuilder, stringWrter: IStringWriter) => buildLoader(util, handler, astBuilder, stringWrter),
     name: 'controller',
-    dependencies: ['util', 'fileHandler', 'astBuilder', 'stringWriter'],
+    dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter'],
     singleton: true
 };
 

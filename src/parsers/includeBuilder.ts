@@ -91,7 +91,7 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
 
 const astBuilder : IRegisterable = {
     builder: (util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, path),
-    name: 'astBuilder',
+    name: 'includeBuilder',
     singleton: true,
     dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'path']
 };
