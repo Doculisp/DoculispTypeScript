@@ -223,6 +223,26 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
+            it('should strip out some special characters from the ref-link', () => {
+//                 const content = `<!--
+// (dl
+//     (section-meta
+//         (title A !@#$%^&*+=\(\){[]}|\\;:'" Story ,./<>? about things)
+//     )
+// )
+// -->`;
+                const content = `<!--
+(dl
+    (section-meta
+        (title A !@#$%^&*+=;:'" Story ,./<>? about things)
+    )
+)
+-->`;
+
+                const result = toResult(content, buildLocation('./_main.md', 1, 1));
+                verifyAsJson(result);
+            });
+
             describe('title', () => {
                 it('should parse a title', () => {
                     const contents = `

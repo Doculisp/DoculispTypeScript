@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "./_main.md"
+    },
+    "section": {
+      "ast": [
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "./_main.md",
+            "line": 2
+          },
+          "label": "# A !@#$%^&*+=;:'\" Story ,./<>? about things #",
+          "ref_link": "#a--story--about-things",
+          "title": "A !@#$%^&*+=;:'\" Story ,./<>? about things",
+          "type": "ast-title"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "./_main.md",
+        "line": 1
+      },
+      "include": [],
+      "type": "ast-section"
+    }
+  }
+}

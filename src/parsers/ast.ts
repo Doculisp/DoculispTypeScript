@@ -106,10 +106,48 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                     return internals.noResultFound();
                 }
 
+                let text: string = param.text;
+                [
+                    '.', 
+                    ',',
+                    '!',
+                    '@',
+                    '#',
+                    '$',
+                    '%',
+                    '^',
+                    '&',
+                    '*',
+                    '(',
+                    ')',
+                    '=',
+                    '+',
+                    '{',
+                    '[',
+                    '}',
+                    ']',
+                    '|',
+                    '\\',
+                    ':',
+                    ';',
+                    "'",
+                    '"',
+                    '`',
+                    '<',
+                    ',',
+                    '>',
+                    '.',
+                    '?',
+                    '/',
+                ].forEach(v => {
+                    text = text.replaceAll(v, '');
+                })
+
                 const ref_link = (
                     linkText ? 
                     linkText :
-                    '#' + param.text.toLocaleLowerCase().replaceAll(' ', '-'));
+                    '#' + text.toLocaleLowerCase().replaceAll(' ', '-')
+                );
 
                 const label = headerize(atom.location.documentDepth, param.text);
                 const subtitle: string | undefined = 
