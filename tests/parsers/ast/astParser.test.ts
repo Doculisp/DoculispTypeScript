@@ -109,22 +109,21 @@ describe('ast', () => {
     
             verifyAsJson(result);
         });
-    
-        it.skip('should not parse a bad header', () => {
-            const contents = `<!--
-(dl (#head My heading))
--->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 3, 2));
-    
+
+        it('should parse a basic atom', () => {
+            const text = '(content)';
+            const result = toResult(text, buildLocation('./_main.dlisp', 1, 1));
             verifyAsJson(result);
         });
-    
-        it.skip('should not parse a header without a parameter', () => {
-            const contents = `<!--
-(dl (#))
--->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 3));
-    
+
+        it.skip('should parse a container', () => {
+            const text = `
+(section-meta
+    (title Doculisp)
+)
+`;
+
+            const result = toResult(text, buildLocation('./_main.dlisp', 1, 6));
             verifyAsJson(result);
         });
 

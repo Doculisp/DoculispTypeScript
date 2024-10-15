@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "value": [
+    {
+      "location": {
+        "char": 2,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "./_main.dlisp",
+        "line": 1
+      },
+      "type": "ast-atom",
+      "value": "content"
+    }
+  ]
+}

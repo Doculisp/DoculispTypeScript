@@ -1,4 +1,4 @@
-import { IAstParser, ICommand, IEmpty, IParameter, IValue, RootAst } from "../types/types.ast";
+import { IAstParser, IAtom, ICommand, IEmpty, IParameter, IValue, RootAst } from "../types/types.ast";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
@@ -29,6 +29,14 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         };
     }
 
+    function parseAtomToken(atom: AtomToken): IAtom {
+        return {
+            type: 'ast-atom',
+            location: atom.location,
+            value: atom.text,
+        }
+    }
+
     function parseCommandToken(atom: AtomToken, parameter: ParameterToken): ICommand {
         return {
             type: 'ast-Command',
@@ -37,6 +45,30 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             location: atom.location
         }
     }
+
+    function parseAtom(input: Token[], current: ILocation): StepParseResult<Token[], RootAst> {
+        if(input.length < 2) {
+            return internals.noResultFound();
+        }
+
+        const atom = input[0] as Token;
+        const close = input[1] as Token;
+
+        if(atom.type !== 'token - atom') {
+            return internals.noResultFound();
+        }
+
+        if(close.type !== 'token - close parenthesis') {
+            return internals.noResultFound();
+        }
+
+        return util.ok({
+            type: 'parse result',
+            subResult: parseAtomToken(atom),
+            location: current,
+            rest: trimArray(2, input),
+        });
+    };
 
     function parseText(input: Token[], current: ILocation): StepParseResult<Token[], RootAst> {
         if(input.length < 1) {
@@ -96,7 +128,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             return util.ok({ type: 'ast-Empty' });
         }
 
-        const parser = internals.createArrayParser(parseText, parseCommand);
+        const parser = internals.createArrayParser(parseText, parseCommand, parseAtom);
         const parsed = parser.parse(tokenDoc.tokens, (tokenDoc.tokens[0] as Token).location);
 
         if(!parsed.success) {
