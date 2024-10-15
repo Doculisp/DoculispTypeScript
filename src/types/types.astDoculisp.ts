@@ -76,7 +76,6 @@ export interface IDoculisp {
     section: ISectionWriter | IEmptyDoculisp;
 }
 
-export type ParseAst = (tokenResults: Result<TokenizedDocument>) => Result<IDoculisp>;
 export interface IDoculispParser {
     parse(tokenResults: Result<TokenizedDocument>): Result<IDoculisp>;
 };
