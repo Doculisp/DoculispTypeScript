@@ -675,7 +675,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
     };
 }
 
-const astParser: IRegisterable = {
+const doculispParser: IRegisterable = {
     builder: (internals: IInternals, util: IUtil, structure: IRootStructure) => buildAstParser(internals, util, structure),
     name: 'astDoculispParse',
     singleton: false,
@@ -683,5 +683,5 @@ const astParser: IRegisterable = {
 };
 
 export {
-    astParser,
+    doculispParser,
 };

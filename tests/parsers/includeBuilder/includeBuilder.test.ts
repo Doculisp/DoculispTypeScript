@@ -56,7 +56,7 @@ describe('includeBuilder', () => {
         let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp> = undefined as any;
 
         beforeEach(() => {
-            toExternalResult = testable.recursiveAst.externalResultBuilder(container, setup);
+            toExternalResult = testable.include.includeResultBuilder(container, setup);
         });
 
         it('should handle an empty ast', () => {
@@ -65,7 +65,7 @@ describe('includeBuilder', () => {
         });
 
         it('should return an error if given an error', () => {
-            const builder: IIncludeBuilder = testable.recursiveAst.parserBuilder(container, setup);
+            const builder: IIncludeBuilder = testable.include.parserBuilder(container, setup);
 
             const expectedResult = fail('This is a failure', 'M:/y/pah.md');
             expect(builder.parseExternals(expectedResult)).toBe(expectedResult);
@@ -225,7 +225,7 @@ Hello World!
         let toResult: (filePath: string) => Result<IDoculisp> = undefined as any
 
         beforeEach(() => {
-            toResult = testable.recursiveAst.resultBuilder(container, setup);
+            toResult = testable.include.resultBuilder(container, setup);
         });
 
         it('should return file error if there is one', () => {
@@ -309,7 +309,7 @@ hello from the child
         beforeEach(() => {
             workingDir = process.cwd();
             process.chdir('./documentation');
-            toExternalResult = testable.recursiveAst.externalResultBuilder(container, environment => {
+            toExternalResult = testable.include.includeResultBuilder(container, environment => {
                 util = null as any;
                 util = environment.buildAs<IUtil>('util');
 
