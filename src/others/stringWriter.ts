@@ -1,4 +1,4 @@
-import { AstPart, IAst, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
+import { DoculispPart, IAst, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
@@ -82,7 +82,7 @@ function writeAstHeader(astHeader: IHeader): string {
 }
 
 function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
-    function findTitle(ast: AstPart[]): ITitle | null {
+    function findTitle(ast: DoculispPart[]): ITitle | null {
         for (let index = 0; index < ast.length; index++) {
             const element = ast[index];
             if(!element) {

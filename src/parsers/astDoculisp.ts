@@ -1,4 +1,4 @@
-import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
+import { AstBulletStyle, DoculispPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
@@ -376,7 +376,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                 });
             }
 
-            const parser = internals.createArrayParser<Token, AstPart>(tryParseError, tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseInclude);
+            const parser = internals.createArrayParser<Token, DoculispPart>(tryParseError, tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseInclude);
             const parsed = parser.parse(toParse, starting);
 
             if(!parsed.success) {
@@ -403,8 +403,8 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
         };
     }
 
-    function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
-        return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+    function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], DoculispPart> {
+        return function (input: Token[], current: ILocation): StepParseResult<Token[], DoculispPart> {
             if(input.length < 2) {
                 return internals.noResultFound();
             }
@@ -431,7 +431,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                 return util.fail(`Header at ${atom.location.toString()} has invalid syntax.`, atom.location.documentPath);
             }
 
-            const part: AstPart = {
+            const part: DoculispPart = {
                 type: 'ast-header',
                 depthCount: atom.text.length + atom.location.documentDepth,
                 text: param.text,
@@ -447,8 +447,8 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
         }
     }
 
-    function isText(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
-        return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
+    function isText(internals: IInternals, util: IUtil): HandleValue<Token[], DoculispPart> {
+        return function (input: Token[], current: ILocation): StepParseResult<Token[], DoculispPart> {
             const token: Token = input[0] as Token;
             if(token.type === 'token - text') {
                 return util.ok({
@@ -467,8 +467,8 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
         }
     }
 
-    function isContent(internals: IInternals, util: IUtil, externals: readonly ILoad[]) : HandleValue<Token[], AstPart> {
-        return function (toParse: Token[], starting: ILocation): StepParseResult<Token[], AstPart> {
+    function isContent(internals: IInternals, util: IUtil, externals: readonly ILoad[]) : HandleValue<Token[], DoculispPart> {
+        return function (toParse: Token[], starting: ILocation): StepParseResult<Token[], DoculispPart> {
             let tocLoc: ILocation = undefined as any;
             let depth: number = 0;
             function tryParseContent(input: Token[], current: ILocation) : StepParseResult<Token[], IContentLocation> {
@@ -596,7 +596,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                 );
             }
 
-            const parser = internals.createArrayParser<Token, AstPart>(tryParseContent, tryParseToc, tryParseClose);
+            const parser = internals.createArrayParser<Token, DoculispPart>(tryParseContent, tryParseToc, tryParseClose);
             const parsed = parser.parse(toParse, starting);
 
             if(!parsed.success) {
@@ -610,14 +610,14 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
             }
             
             if(!hasSection) {
-                return util.fail(`Section command must come before the Content command at ${(parts[0] as AstPart).documentOrder}`, starting.documentPath);
+                return util.fail(`Section command must come before the Content command at ${(parts[0] as DoculispPart).documentOrder}`, starting.documentPath);
             }
 
             if(0 === externals.length) {
-                return util.fail(`Section command at ${(parts[0] as AstPart).documentOrder} needs the section-meta command to have included links.`, starting.documentPath);
+                return util.fail(`Section command at ${(parts[0] as DoculispPart).documentOrder} needs the section-meta command to have included links.`, starting.documentPath);
             }
 
-            const result: IKeeper<AstPart>[] = 
+            const result: IKeeper<DoculispPart>[] = 
                 parts.
                     sort((a, b) => a.documentOrder.compare(b.documentOrder) * -1).
                     map(r => { return { type: 'keep', keptValue: r }; });

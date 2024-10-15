@@ -59,11 +59,11 @@ export interface IContentLocation extends ILocationSortable {
     readonly type: 'ast-content'
 }
 
-export type AstPart = IWrite | ITitle | ITableOfContents | IContentLocation | IHeader;
+export type DoculispPart = IWrite | ITitle | ITableOfContents | IContentLocation | IHeader;
 
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'ast-section';
-    readonly ast: AstPart[];
+    readonly ast: DoculispPart[];
     readonly include: ILoad[];
 };
 
