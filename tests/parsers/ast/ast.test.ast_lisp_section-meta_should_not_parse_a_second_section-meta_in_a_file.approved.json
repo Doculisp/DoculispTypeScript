@@ -1,5 +1,5 @@
 {
   "documentPath": "./two/sections.dlisp",
-  "message": "A second Section-Meta command was detected at {\"path\":\"./two/sections.dlisp\",\"line\":6,\"char\":1}",
+  "message": "A second Section-Meta command was detected at {\"path\":\"./two/sections.dlisp\",\"line\":6,\"char\":2}",
   "success": false
 }

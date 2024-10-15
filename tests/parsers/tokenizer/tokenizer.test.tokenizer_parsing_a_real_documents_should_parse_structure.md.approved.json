@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 1,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./documentation/structure.md",
-          "line": 2
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 2,
           "documentDepth": 2,
           "documentIndex": 1,
@@ -27,16 +17,6 @@
         },
         "text": "section-meta",
         "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 9,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./documentation/structure.md",
-          "line": 3
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -423,16 +403,6 @@
       },
       {
         "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./documentation/structure.md",
-          "line": 27
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 7,
           "documentDepth": 2,
           "documentIndex": 1,
@@ -528,16 +498,6 @@
         },
         "text": ") character and no parentheses (unless escaped). A parameter has a max length of 255 characters.",
         "type": "token - text"
-      },
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./documentation/structure.md",
-          "line": 31
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {

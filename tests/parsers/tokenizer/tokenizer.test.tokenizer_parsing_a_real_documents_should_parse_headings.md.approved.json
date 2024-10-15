@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 1,
-          "documentDepth": 2,
-          "documentIndex": 5,
-          "documentPath": "./documentation/headings.md",
-          "line": 2
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 2,
           "documentDepth": 2,
           "documentIndex": 5,
@@ -27,16 +17,6 @@
         },
         "text": "section-meta",
         "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 9,
-          "documentDepth": 2,
-          "documentIndex": 5,
-          "documentPath": "./documentation/headings.md",
-          "line": 3
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -211,16 +191,6 @@
         },
         "text": "However if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4.",
         "type": "token - text"
-      },
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 5,
-          "documentPath": "./documentation/headings.md",
-          "line": 46
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {

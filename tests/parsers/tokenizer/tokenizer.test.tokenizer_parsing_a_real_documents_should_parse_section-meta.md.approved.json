@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 1,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 2
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 2,
           "documentDepth": 2,
           "documentIndex": 3,
@@ -27,16 +17,6 @@
         },
         "text": "section-meta",
         "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 9,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 3
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -112,16 +92,6 @@
         },
         "text": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (include\n        (section ./doculisp.md)\n    )\n)\n```",
         "type": "token - text"
-      },
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 22
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -223,16 +193,6 @@
       },
       {
         "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 26
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 7,
           "documentDepth": 2,
           "documentIndex": 3,
@@ -331,16 +291,6 @@
       },
       {
         "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 39
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 7,
           "documentDepth": 2,
           "documentIndex": 3,
@@ -381,16 +331,6 @@
         },
         "text": "Subtitle creates a heading that is two levels of heading less then the title directly beneath the title.",
         "type": "token - text"
-      },
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 43
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -456,16 +396,6 @@
         },
         "text": "```doculisp\n(section-meta\n    (title Doculisp a short description)\n    (include\n        (section ./doculisp.md)\n        (section ./section-meta.md)\n    )\n)\n```",
         "type": "token - text"
-      },
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 59
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -916,16 +846,6 @@
         },
         "text": ".",
         "type": "token - text"
-      },
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 3,
-          "documentPath": "./documentation/section-meta.md",
-          "line": 93
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {

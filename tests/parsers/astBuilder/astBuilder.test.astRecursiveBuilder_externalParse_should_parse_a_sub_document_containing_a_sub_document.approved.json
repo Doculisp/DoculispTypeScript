@@ -10,7 +10,7 @@
       "ast": [
         {
           "documentOrder": {
-            "char": 1,
+            "char": 2,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.md",
@@ -57,7 +57,7 @@
             "ast": [
               {
                 "documentOrder": {
-                  "char": 1,
+                  "char": 2,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "./child.md",
@@ -104,7 +104,7 @@
                   "ast": [
                     {
                       "documentOrder": {
-                        "char": 1,
+                        "char": 2,
                         "documentDepth": 3,
                         "documentIndex": 1,
                         "documentPath": "C:/grand.md",
@@ -138,7 +138,7 @@
                   "type": "ast-section"
                 },
                 "documentOrder": {
-                  "char": 13,
+                  "char": 14,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "./child.md",
@@ -152,7 +152,7 @@
             "type": "ast-section"
           },
           "documentOrder": {
-            "char": 13,
+            "char": 14,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.md",

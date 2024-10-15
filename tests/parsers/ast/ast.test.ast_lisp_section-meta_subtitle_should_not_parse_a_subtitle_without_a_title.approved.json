@@ -1,5 +1,5 @@
 {
   "documentPath": "main.dlisp",
-  "message": "section-meta atom at {\"path\":\"main.dlisp\",\"line\":2,\"char\":1} must contain at least a title.",
+  "message": "section-meta atom at {\"path\":\"main.dlisp\",\"line\":2,\"char\":2} must contain at least a title.",
   "success": false
 }

@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 1,
-          "documentDepth": 0,
-          "documentIndex": 0,
-          "documentPath": "A:/main.md",
-          "line": 2
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 2,
           "documentDepth": 0,
           "documentIndex": 0,

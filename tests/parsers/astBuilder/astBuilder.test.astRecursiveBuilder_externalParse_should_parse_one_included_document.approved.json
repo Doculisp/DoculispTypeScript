@@ -10,7 +10,7 @@
       "ast": [
         {
           "documentOrder": {
-            "char": 1,
+            "char": 2,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "C:/_main.dlisp",
@@ -56,7 +56,7 @@
             "ast": [
               {
                 "documentOrder": {
-                  "char": 1,
+                  "char": 2,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "C:/sub.md",
@@ -90,7 +90,7 @@
             "type": "ast-section"
           },
           "documentOrder": {
-            "char": 9,
+            "char": 10,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "C:/_main.dlisp",

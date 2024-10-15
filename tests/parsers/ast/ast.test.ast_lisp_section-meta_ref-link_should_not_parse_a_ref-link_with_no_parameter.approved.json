@@ -1,5 +1,5 @@
 {
   "documentPath": "main.dlisp",
-  "message": "the Ref-Link Command at {\"path\":\"main.dlisp\",\"line\":3,\"char\":5} does not have a ref-link text.",
+  "message": "the Ref-Link Command at {\"path\":\"main.dlisp\",\"line\":3,\"char\":6} does not have a ref-link text.",
   "success": false
 }

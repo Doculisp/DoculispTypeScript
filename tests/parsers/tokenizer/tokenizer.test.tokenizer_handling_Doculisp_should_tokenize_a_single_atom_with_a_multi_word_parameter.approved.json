@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 13,
-          "documentDepth": 0,
-          "documentIndex": 0,
-          "documentPath": "Z:/parameter.md",
-          "line": 1
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 14,
           "documentDepth": 0,
           "documentIndex": 0,

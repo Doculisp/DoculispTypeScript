@@ -10,7 +10,7 @@
       "ast": [
         {
           "documentOrder": {
-            "char": 1,
+            "char": 2,
             "documentDepth": 1,
             "documentIndex": 4,
             "documentPath": "main.dlisp",
@@ -33,7 +33,7 @@
         {
           "document": false,
           "documentOrder": {
-            "char": 5,
+            "char": 6,
             "documentDepth": 1,
             "documentIndex": 4,
             "documentPath": "main.dlisp",
@@ -46,7 +46,7 @@
         {
           "document": false,
           "documentOrder": {
-            "char": 5,
+            "char": 6,
             "documentDepth": 1,
             "documentIndex": 4,
             "documentPath": "main.dlisp",

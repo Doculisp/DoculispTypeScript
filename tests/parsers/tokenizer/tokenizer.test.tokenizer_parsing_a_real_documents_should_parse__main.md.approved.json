@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 1,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 2
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 2,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -27,16 +17,6 @@
         },
         "text": "section-meta",
         "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 9,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 3
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -72,16 +52,6 @@
       },
       {
         "location": {
-          "char": 9,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 4
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 10,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -90,16 +60,6 @@
         },
         "text": "include",
         "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 5
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -135,16 +95,6 @@
       },
       {
         "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 6
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 14,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -174,16 +124,6 @@
           "line": 6
         },
         "type": "token - close parenthesis"
-      },
-      {
-        "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 7
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -219,16 +159,6 @@
       },
       {
         "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 8
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 14,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -258,16 +188,6 @@
           "line": 8
         },
         "type": "token - close parenthesis"
-      },
-      {
-        "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 9
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -303,16 +223,6 @@
       },
       {
         "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 10
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 14,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -342,16 +252,6 @@
           "line": 10
         },
         "type": "token - close parenthesis"
-      },
-      {
-        "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 11
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -387,16 +287,6 @@
       },
       {
         "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 12
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 14,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -429,16 +319,6 @@
       },
       {
         "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 13
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 14,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -468,16 +348,6 @@
           "line": 13
         },
         "type": "token - close parenthesis"
-      },
-      {
-        "location": {
-          "char": 13,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 14
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -544,16 +414,6 @@
       },
       {
         "location": {
-          "char": 6,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 27
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 7,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -586,16 +446,6 @@
       },
       {
         "location": {
-          "char": 6,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 28
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 7,
           "documentDepth": 1,
           "documentIndex": 1,
@@ -604,16 +454,6 @@
         },
         "text": "content",
         "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 15,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./documentation/_main.md",
-          "line": 28
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {

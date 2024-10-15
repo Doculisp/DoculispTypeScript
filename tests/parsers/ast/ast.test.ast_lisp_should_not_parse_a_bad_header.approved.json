@@ -1,5 +1,5 @@
 {
   "documentPath": "S:/ome/file.md",
-  "message": "Header at {\"path\":\"S:/ome/file.md\",\"line\":2,\"char\":1} has invalid syntax.",
+  "message": "Header at {\"path\":\"S:/ome/file.md\",\"line\":2,\"char\":2} has invalid syntax.",
   "success": false
 }

@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 1,
-          "documentDepth": 2,
-          "documentIndex": 4,
-          "documentPath": "./documentation/content.md",
-          "line": 2
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 2,
           "documentDepth": 2,
           "documentIndex": 4,
@@ -27,16 +17,6 @@
         },
         "text": "section-meta",
         "type": "token - atom"
-      },
-      {
-        "location": {
-          "char": 9,
-          "documentDepth": 2,
-          "documentIndex": 4,
-          "documentPath": "./documentation/content.md",
-          "line": 3
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {
@@ -90,16 +70,6 @@
         },
         "text": "The content block signifies where to build the document from the included documents. This block has only one optional subblock.",
         "type": "token - text"
-      },
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 4,
-          "documentPath": "./documentation/content.md",
-          "line": 11
-        },
-        "type": "token - open parenthesis"
       },
       {
         "location": {

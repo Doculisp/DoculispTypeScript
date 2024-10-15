@@ -10,7 +10,7 @@
       "ast": [
         {
           "documentOrder": {
-            "char": 1,
+            "char": 2,
             "documentDepth": 2,
             "documentIndex": 1,
             "documentPath": "structure.md",
@@ -365,7 +365,7 @@
         {
           "depthCount": 3,
           "documentOrder": {
-            "char": 6,
+            "char": 7,
             "documentDepth": 2,
             "documentIndex": 1,
             "documentPath": "structure.md",
@@ -443,7 +443,7 @@
         {
           "depthCount": 3,
           "documentOrder": {
-            "char": 6,
+            "char": 7,
             "documentDepth": 2,
             "documentIndex": 1,
             "documentPath": "structure.md",

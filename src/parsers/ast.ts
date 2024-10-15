@@ -28,36 +28,31 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
             let title: ITitle | false = false;
 
             function tryParseSectionMeta(input: Token[], current: ILocation): DiscardedResult<Token[]> {
-                if(input.length < 2) {
+                if(input.length < 1) {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const atom = input[1] as Token;
-
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
+                const atom = input[0] as Token;
 
                 if(atom.type !== 'token - atom' || atom.text !== 'section-meta') {
                     return internals.noResultFound();
                 }
 
                 if(start && 0 < depth) {
-                    return util.fail(`A nested Section-Meta command at ${open.location}.`, open.location.documentPath);
+                    return util.fail(`A nested Section-Meta command at ${atom.location}.`, atom.location.documentPath);
                 }
 
                 if(start) {
-                    return util.fail(`A second Section-Meta command was detected at ${open.location}`, open.location.documentPath);
+                    return util.fail(`A second Section-Meta command was detected at ${atom.location}`, atom.location.documentPath);
                 }
 
                 depth++;
-                start = open.location;
+                start = atom.location;
 
                 return util.ok({
                     type: 'discard',
                     location: current.increaseChar(),
-                    rest: trimArray(2, input),
+                    rest: trimArray(1, input),
                 });
             }
 
@@ -66,28 +61,23 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                if(input.length < 3) {
+                if(input.length < 2) {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const atom = input[1] as Token;
-                const param = input[2] as Token;
-
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
+                const atom = input[0] as Token;
+                const param = input[1] as Token;
 
                 if(atom.type !== 'token - atom' || atom.text !== 'title') {
                     return internals.noResultFound();
                 }
 
                 if(param.type !== 'token - parameter') {
-                    return util.fail(`Title at ${open.location.toString()} does not contain title text.`, open.location.documentPath);
+                    return util.fail(`Title at ${atom.location.toString()} does not contain title text.`, atom.location.documentPath);
                 }
 
-                const close = input[3] as Token;
-                if(close.type !== 'token - close parenthesis') {
+                const close = input[2] as Token;
+                if(input.length < 3 || close.type !== 'token - close parenthesis') {
                     return internals.noResultFound();
                 }
 
@@ -96,7 +86,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     linkText :
                     '#' + param.text.toLocaleLowerCase().replaceAll(' ', '-'));
 
-                const label = headerize(open.location.documentDepth, param.text);
+                const label = headerize(atom.location.documentDepth, param.text);
                 const subtitle: string | undefined = 
                     subTitleText ?
                     subTitleText :
@@ -113,7 +103,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 
                 return util.ok({
                     type: 'discard',
-                    rest: trimArray(4, input),
+                    rest: trimArray(3, input),
                     location: current.increaseChar(),
                 });
             }
@@ -123,28 +113,23 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                if(input.length < 3) {
+                if(input.length < 2) {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const ref_link = input[1] as Token;
-                const param = input[2] as Token;
-
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
+                const ref_link = input[0] as Token;
+                const param = input[1] as Token;
 
                 if(ref_link.type !== 'token - atom' || ref_link.text !== 'ref-link') {
                     return internals.noResultFound()
                 }
 
                 if(param.type !== 'token - parameter') {
-                    return util.fail(`the Ref-Link Command at ${open.location.toString()} does not have a ref-link text.`, open.location.documentPath);
+                    return util.fail(`the Ref-Link Command at ${ref_link.location.toString()} does not have a ref-link text.`, ref_link.location.documentPath);
                 }
 
-                const close = input[3] as Token;
-                if(close.type !== 'token - close parenthesis') {
+                const close = input[2] as Token;
+                if(input.length < 4 || close.type !== 'token - close parenthesis') {
                     return internals.noResultFound();
                 }
 
@@ -164,7 +149,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 
                 return util.ok({
                     type: 'discard',
-                    rest: trimArray(4, input),
+                    rest: trimArray(3, input),
                     location: current.increaseChar(),
                 });
             }
@@ -174,27 +159,22 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                if(input.length < 4) {
+                if(input.length < 3) {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const atom = input[1] as Token;
-                const param = input[2] as Token;
-
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
+                const atom = input[0] as Token;
+                const param = input[1] as Token;
 
                 if(atom.type !== 'token - atom' || atom.text !== 'subtitle') {
                     return internals.noResultFound();
                 }
 
                 if(param.type !== 'token - parameter') {
-                    return util.fail(`The Subtitle command at ${open.location} does not contain subtitle text.`, open.location.documentPath);
+                    return util.fail(`The Subtitle command at ${atom.location} does not contain subtitle text.`, atom.location.documentPath);
                 }
 
-                const close = input[3] as Token;
+                const close = input[2] as Token;
                 if(close.type !== 'token - close parenthesis') {
                     return internals.noResultFound();
                 }
@@ -217,7 +197,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 subTitleText = text;
                 return util.ok({
                     type: 'discard',
-                    rest: trimArray(4, input),
+                    rest: trimArray(3, input),
                     location: current.increaseChar(),
                 });
             }
@@ -255,27 +235,22 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                if(input.length < 4) {
+                if(input.length < 3) {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const atom = input[1] as Token;
-                const param = input[2] as Token;
-
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
+                const atom = input[0] as Token;
+                const param = input[1] as Token;
 
                 if(atom.type !== 'token - atom') {
                     return internals.noResultFound();
                 }
 
                 if(param.type !== 'token - parameter') {
-                    return util.fail(`Section command named "${atom.text}" at ${open.location} does not have a section title.`, open.location.documentPath);
+                    return util.fail(`Section command named "${atom.text}" at ${atom.location} does not have a section title.`, atom.location.documentPath);
                 }
 
-                const close = input[3] as Token;
+                const close = input[2] as Token;
                 if(close.type !== 'token - close parenthesis') {
                     return internals.noResultFound();
                 }
@@ -284,14 +259,14 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     type: 'ast-load',
                     sectionLabel: atom.text,
                     path: param.text,
-                    documentOrder: open.location,
+                    documentOrder: atom.location,
                     document: false,
                 }
 
                 return util.ok({
                     type: 'parse result',
                     subResult: load,
-                    rest: trimArray(4, input),
+                    rest: trimArray(3, input),
                     location: current.increaseChar(),
                 });
             }
@@ -301,22 +276,18 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                if(input.length < 3) {
+                if(input.length < 2) {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const atom = input[1] as Token;
+                const atom = input[0] as Token;
 
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
 
                 if(atom.type !== 'token - atom' || atom.text !== 'include') {
                     return internals.noResultFound();
                 }
 
-                input = trimArray(2, input);
+                input = trimArray(1, input);
                 depth++;
 
                 const parser = internals.createArrayParser<Token, ILoad>(trySubParseLoadable, tryParseClose);
@@ -330,7 +301,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                 const result = rawResult as ILoad[];
 
                 if(0 === result.length) {
-                    return util.fail(`Include command at ${open.location} does not contain any section information.`, open.location.documentPath);
+                    return util.fail(`Include command at ${atom.location} does not contain any section information.`, atom.location.documentPath);
                 }
 
                 result.forEach(r => include.push(r));
@@ -371,49 +342,44 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 
     function isHeader(internals: IInternals, util: IUtil): HandleValue<Token[], AstPart> {
         return function (input: Token[], current: ILocation): StepParseResult<Token[], AstPart> {
-            if(input.length < 3) {
+            if(input.length < 2) {
                 return internals.noResultFound();
             }
 
-            let open = input[0] as Token;
-            let atom = input[1] as Token;
-            let param = input[2] as Token;
-
-            if(open.type !== 'token - open parenthesis') {
-                return internals.noResultFound();
-            }
+            let atom = input[0] as Token;
+            let param = input[1] as Token;
 
             if(atom.type !== 'token - atom' || !atom.text.startsWith('#')) {
                 return internals.noResultFound();
             }
 
             if(param.type !== 'token - parameter') {
-                return util.fail(`Header at ${open.location.toString()} has no header text.`, open.location.documentPath);
+                return util.fail(`Header at ${atom.location.toString()} has no header text.`, atom.location.documentPath);
             }
 
-            let close = input[3] as Token;
-            if(close.type !== 'token - close parenthesis') {
-                return util.fail(`Header at ${open.location.toString()} has unexpected character at ${close.location.toString()}`, close.location.documentPath);
+            let close = input[2] as Token;
+            if(input.length < 3 || close.type !== 'token - close parenthesis') {
+                return util.fail(`Header at ${atom.location.toString()} has unexpected character at ${close.location.toString()}`, close.location.documentPath);
             }
 
             const match: string = (atom.text.match(/#+/) as any)[0];
 
             if(match.length !== atom.text.length) {
-                return util.fail(`Header at ${open.location.toString()} has invalid syntax.`, open.location.documentPath);
+                return util.fail(`Header at ${atom.location.toString()} has invalid syntax.`, atom.location.documentPath);
             }
 
             const part: AstPart = {
                 type: 'ast-header',
-                depthCount: atom.text.length + open.location.documentDepth,
+                depthCount: atom.text.length + atom.location.documentDepth,
                 text: param.text,
-                documentOrder: open.location,
+                documentOrder: atom.location,
             };
 
             return util.ok({
                 type: 'parse result',
                 subResult: part,
                 location: current.increaseChar(),
-                rest: trimArray(4, input),
+                rest: trimArray(3, input),
             });
         }
     }
@@ -443,33 +409,28 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
             let tocLoc: ILocation = undefined as any;
             let depth: number = 0;
             function tryParseContent(input: Token[], current: ILocation) : StepParseResult<Token[], IContentLocation> {
-                if(input.length < 2) {
+                if(input.length < 1) {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const atom = input[1] as Token;
-
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
+                const atom = input[0] as Token;
 
                 if(atom.type !== 'token - atom' || atom.text !== 'content') {
                     return internals.noResultFound();
                 }
                 
-                const close = input[2] as Token;
+                const close = input[1] as Token;
 
                 const length = 
                     close.type === 'token - close parenthesis' ?
-                    3 :
-                    2;
+                    2 :
+                    1;
 
-                if(length < 3) {
+                if(length < 2) {
                     depth++;
                 }
 
-                tocLoc = open.location;
+                tocLoc = atom.location.increaseChar(-1);
 
                 return util.ok({
                     type: 'parse result',
@@ -507,7 +468,7 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
             }
 
             function tryParseToc(input: Token[], current: ILocation): StepParseResult<Token[], ITableOfContents> {
-                if(input.length < 2) {
+                if(input.length < 1) {
                     return internals.noResultFound();
                 }
 
@@ -515,23 +476,18 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     return internals.noResultFound();
                 }
 
-                const open = input[0] as Token;
-                const atom = input[1] as Token;
-
-                if(open.type !== 'token - open parenthesis') {
-                    return internals.noResultFound();
-                }
+                const atom = input[0] as Token;
 
                 if(atom.type !== 'token - atom') {
                     return internals.noResultFound();
                 }
 
                 if(atom.text !== 'toc'){
-                    return util.fail(`Content at ${tocLoc} contains unknown sub command at ${open.location}`, open.location.documentPath);
+                    return util.fail(`Content at ${tocLoc} contains unknown sub command at ${atom.location}`, atom.location.documentPath);
                 }
 
-                const third = input[2] as Token;
-                let length = 2;
+                const third = input[1] as Token;
+                let length = 1;
                 let style: AstBulletStyle = 'labeled';
 
                 if(third.type === 'token - close parenthesis') {
@@ -542,14 +498,14 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
                     length += 2;
                     style = third.text as AstBulletStyle;
 
-                    const close = input[3] as Token;
-                    if(close.type !== 'token - close parenthesis') {
-                        return internals.noResultFound();
+                    const close = input[2] as Token;
+                    if(input.length < 3 || close.type !== 'token - close parenthesis') {
+                        return internals.noResultFound(); // Should be an error.
                     }
                 }
 
                 if(!bulletStyles.includes(style)) {
-                    return util.fail(`Toc command at ${open.location} is given unknown bullet style of "${style}"\n exceptable styles are [ ${bulletStyles.map(b => '"' + b + '"').join(", ")} ]`, open.location.documentPath);
+                    return util.fail(`Toc command at ${atom.location} is given unknown bullet style of "${style}"\n exceptable styles are [ ${bulletStyles.map(b => '"' + b + '"').join(", ")} ]`, atom.location.documentPath);
                 }
 
                 const step: IParseStepForward<Token[]> = {

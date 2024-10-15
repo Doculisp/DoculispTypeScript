@@ -9,16 +9,6 @@
     "tokens": [
       {
         "location": {
-          "char": 2,
-          "documentDepth": 0,
-          "documentIndex": 0,
-          "documentPath": "D:/comments/simple.md",
-          "line": 4
-        },
-        "type": "token - open parenthesis"
-      },
-      {
-        "location": {
           "char": 3,
           "documentDepth": 0,
           "documentIndex": 0,

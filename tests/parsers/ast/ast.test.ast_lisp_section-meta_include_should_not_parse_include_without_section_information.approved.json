@@ -1,5 +1,5 @@
 {
   "documentPath": "main.dlisp",
-  "message": "Include command at {\"path\":\"main.dlisp\",\"line\":4,\"char\":5} does not contain any section information.",
+  "message": "Include command at {\"path\":\"main.dlisp\",\"line\":4,\"char\":6} does not contain any section information.",
   "success": false
 }
