@@ -1,4 +1,4 @@
-import { AstBulletStyle, DoculispPart, IDoculisp, IDoculispParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
+import { DoculispBulletStyle, DoculispPart, IDoculisp, IDoculispParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
@@ -551,7 +551,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
 
                 const third = input[1] as Token;
                 let length = 1;
-                let style: AstBulletStyle = 'labeled';
+                let style: DoculispBulletStyle = 'labeled';
 
                 if(third.type === 'token - close parenthesis') {
                     length++;
@@ -559,7 +559,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
 
                 if(third.type === 'token - parameter') {
                     length += 2;
-                    style = third.text as AstBulletStyle;
+                    style = third.text as DoculispBulletStyle;
 
                     const close = input[2] as Token;
                     if(input.length < 3 || close.type !== 'token - close parenthesis') {

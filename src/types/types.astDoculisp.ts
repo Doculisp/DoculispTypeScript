@@ -25,7 +25,7 @@ export interface ILoad extends ILocationSortable {
     document: ISectionWriter | false;
 }
 
-export type AstBulletStyle = 
+export type DoculispBulletStyle = 
     'no-table'  |
     'unlabeled' |
     'labeled'   |
@@ -34,7 +34,7 @@ export type AstBulletStyle =
     'bulleted' |
     'bulleted-labeled';
 
-export const bulletStyles: ReadonlyArray<AstBulletStyle> = [
+export const bulletStyles: ReadonlyArray<DoculispBulletStyle> = [
     'no-table',
     'unlabeled',
     'labeled',
@@ -46,7 +46,7 @@ export const bulletStyles: ReadonlyArray<AstBulletStyle> = [
 
 export interface ITableOfContents extends ILocationSortable {
     readonly type: 'ast-toc';
-    readonly bulletStyle: AstBulletStyle;
+    readonly bulletStyle: DoculispBulletStyle;
 };
 
 export interface IHeader extends ILocationSortable {
