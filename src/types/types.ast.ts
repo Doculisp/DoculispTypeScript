@@ -1,22 +1,22 @@
 import { ILocation, Result } from "./types.general";
 import { TokenizedDocument } from "./types.tokens";
 
-export interface IAtom {
+export interface IAstAtom {
     readonly value: string;
     readonly location: ILocation;
     readonly type: 'ast-atom';
 };
 
-export interface IParameter {
+export interface IAstParameter {
     readonly value: string;
     readonly location: ILocation;
     readonly type: 'ast-Parameter'
 }
 
-export interface ICommand {
+export interface IAstCommand {
     readonly value: string;
     readonly location: ILocation;
-    readonly parameter: IParameter;
+    readonly parameter: IAstParameter;
     readonly type: 'ast-Command'
 };
 
@@ -27,20 +27,20 @@ export interface IAstContainer {
     readonly type: 'ast-container'
 };
 
-export interface IValue {
+export interface IAstValue {
     readonly value: string;
     readonly location: ILocation;
     readonly type: 'ast-value';
 };
 
-export interface IEmpty {
+export interface IAstEmpty {
     readonly type: 'ast-Empty';
 }
 
-export type AtomAst = ICommand | IAstContainer | IAtom;
-export type RootAst = IValue | AtomAst;
-export type Ast = RootAst | IParameter;
+export type AtomAst = IAstCommand | IAstContainer | IAstAtom;
+export type RootAst = IAstValue | AtomAst;
+export type Ast = RootAst | IAstParameter;
 
 export interface IAstParser {
-    parse(tokens: Result<TokenizedDocument>): Result<RootAst[] | IEmpty>;
+    parse(tokens: Result<TokenizedDocument>): Result<RootAst[] | IAstEmpty>;
 }

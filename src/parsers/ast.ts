@@ -1,4 +1,4 @@
-import { AtomAst, IAstContainer, IAstParser, IAtom, ICommand, IEmpty, IParameter, IValue, RootAst } from "../types/types.ast";
+import { AtomAst, IAstContainer, IAstParser, IAstAtom, IAstCommand, IAstEmpty, IAstParameter, IAstValue, RootAst } from "../types/types.ast";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
@@ -13,7 +13,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         return values;
     }
     
-    function parseTextToken(token: TextToken): IValue {
+    function parseTextToken(token: TextToken): IAstValue {
         return {
             type: 'ast-value',
             value: token.text,
@@ -21,7 +21,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         };
     }
 
-    function parseParameterToken(parameter: ParameterToken): IParameter {
+    function parseParameterToken(parameter: ParameterToken): IAstParameter {
         return {
             type: 'ast-Parameter',
             location: parameter.location,
@@ -29,7 +29,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         };
     }
 
-    function parseAtomToken(atom: AtomToken): IAtom {
+    function parseAtomToken(atom: AtomToken): IAstAtom {
         return {
             type: 'ast-atom',
             location: atom.location,
@@ -37,7 +37,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         }
     }
 
-    function parseCommandToken(atom: AtomToken, parameter: ParameterToken): ICommand {
+    function parseCommandToken(atom: AtomToken, parameter: ParameterToken): IAstCommand {
         return {
             type: 'ast-Command',
             value: atom.text,
@@ -55,7 +55,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         };
     }
 
-    function parseAtom(input: Token[], current: ILocation): StepParseResult<Token[], IAtom> {
+    function parseAtom(input: Token[], current: ILocation): StepParseResult<Token[], IAstAtom> {
         if(input.length < 2) {
             return internals.noResultFound();
         }
@@ -79,7 +79,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         });
     };
 
-    function parseText(input: Token[], current: ILocation): StepParseResult<Token[], IValue> {
+    function parseText(input: Token[], current: ILocation): StepParseResult<Token[], IAstValue> {
         if(input.length < 1) {
             return internals.noResultFound();
         }
@@ -98,7 +98,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         });
     };
 
-    function parseCommand(input: Token[], current: ILocation): StepParseResult<Token[], ICommand> {
+    function parseCommand(input: Token[], current: ILocation): StepParseResult<Token[], IAstCommand> {
         if(input.length < 3) {
             return internals.noResultFound();
         }
@@ -166,7 +166,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         });
     }
     
-    function parse(tokenMaybe: Result<TokenizedDocument>): Result<RootAst[] | IEmpty> {
+    function parse(tokenMaybe: Result<TokenizedDocument>): Result<RootAst[] | IAstEmpty> {
         if(!tokenMaybe.success) {
             return tokenMaybe;
         }

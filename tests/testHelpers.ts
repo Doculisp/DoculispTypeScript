@@ -2,7 +2,7 @@ import { IProjectLocation, Result } from "../src/types/types.general";
 import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
 import { TokenFunction, TokenizedDocument } from "../src/types/types.tokens";
-import { IAstParser, RootAst, IEmpty } from "../src/types/types.ast";
+import { IAstParser, RootAst, IAstEmpty } from "../src/types/types.ast";
 import { IDoculisp, IDoculispParser } from "../src/types/types.astDoculisp";
 import { IIncludeBuilder } from "../src/types/types.includeBuilder";
 import { IStringWriter } from "../src/types/types.stringWriter"
@@ -58,7 +58,7 @@ function rawTokenResultBuilder(environment: ITestableContainer, text: string, lo
     return map(docParser, tokenParser);
 }
 
-function rawAstResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<RootAst[] | IEmpty> {
+function rawAstResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<RootAst[] | IAstEmpty> {
     const tokenParser = rawTokenResultBuilder(environment, text, location);
     const astParser = buildAstParser(environment);
 
@@ -154,7 +154,7 @@ function newTokenResultBuilder(container: IContainer, setup: (environment: ITest
     });
 }
 
-function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<RootAst[] | IEmpty> {
+function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<RootAst[] | IAstEmpty> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstResultBuilder(environment, text, location)();
     });
