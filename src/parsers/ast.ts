@@ -1,8 +1,8 @@
-import { IAstParser, IEmpty, IValue, RootAst } from "../types/types.ast";
+import { IAstParser, ICommand, IEmpty, IParameter, IValue, RootAst } from "../types/types.ast";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
-import { TextToken, Token, TokenizedDocument } from "../types/types.tokens";
+import { AtomToken, ParameterToken, TextToken, Token, TokenizedDocument } from "../types/types.tokens";
 
 function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
     function trimArray<T>(length: number, values: T[]): T[] {
@@ -19,6 +19,23 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             value: token.text,
             location: token.location,
         };
+    }
+
+    function parseParameterToken(parameter: ParameterToken): IParameter {
+        return {
+            type: 'ast-Parameter',
+            location: parameter.location,
+            value: parameter.text,
+        };
+    }
+
+    function parseCommandToken(atom: AtomToken, parameter: ParameterToken): ICommand {
+        return {
+            type: 'ast-Command',
+            value: atom.text,
+            parameter: parseParameterToken(parameter),
+            location: atom.location
+        }
     }
 
     function parseText(input: Token[], current: ILocation): StepParseResult<Token[], RootAst> {
@@ -39,6 +56,35 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             rest: trimArray(1, input),
         });
     };
+
+    function parseCommand(input: Token[], current: ILocation): StepParseResult<Token[], RootAst> {
+        if(input.length < 3) {
+            return internals.noResultFound();
+        }
+
+        const command = input[0] as Token;
+        const parameter = input[1] as Token;
+        const closeCommand = input[2] as Token;
+
+        if(command.type !== 'token - atom') {
+            return internals.noResultFound();
+        }
+
+        if(parameter.type !== 'token - parameter') {
+            return internals.noResultFound();
+        }
+
+        if(closeCommand.type !== 'token - close parenthesis') {
+            return util.fail(`Malformed lisp at ${closeCommand.location}.`, closeCommand.location.documentPath);
+        }
+
+        return util.ok({
+            type: 'parse result',
+            subResult: parseCommandToken(command, parameter),
+            location: current,
+            rest: trimArray(3, input),
+        });
+    }
     
     function parse(tokenMaybe: Result<TokenizedDocument>): Result<RootAst[] | IEmpty> {
         if(!tokenMaybe.success) {
@@ -50,7 +96,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             return util.ok({ type: 'ast-Empty' });
         }
 
-        const parser = internals.createArrayParser(parseText);
+        const parser = internals.createArrayParser(parseText, parseCommand);
         const parsed = parser.parse(tokenDoc.tokens, (tokenDoc.tokens[0] as Token).location);
 
         if(!parsed.success) {
@@ -59,9 +105,9 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
 
         const [result, leftovers] = parsed.value;
 
-        if(leftovers.remaining.length < 0) {
+        if(0 < leftovers.remaining.length) {
             const token: Token = leftovers.remaining[0] as Token;
-            return util.fail(`Unknown Token '${token}`, token.location.documentPath)
+            return util.fail(`Unknown Token '${JSON.stringify(token, null, 4)}`, token.location.documentPath)
         }
         
         return util.ok(result);

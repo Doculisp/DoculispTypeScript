@@ -100,8 +100,8 @@ describe('ast', () => {
         });
     });
 
-    describe.skip('lisp', () => {
-        it.skip('should simple lisp tokens', () => {
+    describe('lisp', () => {
+        it('should simple lisp tokens', () => {
             const contents = `<!--
 (dl (# My heading))
 -->`;
