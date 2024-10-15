@@ -1,12 +1,12 @@
 import { IDoculisp, IDoculispParser, ISectionWriter } from "../types/types.astDoculisp";
-import { IAstBuilder } from "../types/types.includeBuilder";
+import { IIncludeBuilder } from "../types/types.includeBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { DocumentParser } from "../types/types.document";
 import { IFileHandler } from "../types/types.fileHandler";
 import { IProjectLocation, IUtil, Result } from "../types/types.general";
 import { TokenFunction } from "../types/types.tokens";
 
-function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) : IAstBuilder {
+function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) : IIncludeBuilder {
 
     function _parse(filePath: string, location: IProjectLocation): Result<IDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();

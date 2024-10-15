@@ -1,5 +1,5 @@
 import { IDoculisp, IDoculispParser } from "../src/types/types.astDoculisp";
-import { IAstBuilder } from "../src/types/types.includeBuilder";
+import { IIncludeBuilder } from "../src/types/types.includeBuilder";
 import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
 import { IProjectLocation, Result } from "../src/types/types.general";
@@ -38,8 +38,8 @@ function buildAstParser(environment: ITestableContainer): IDoculispParser {
     return environment.buildAs<IDoculispParser>('astDoculispParse');
 }
 
-function buildRecursiveAstParser(environment: ITestableContainer) : IAstBuilder {
-    return environment.buildAs<IAstBuilder>('includeBuilder');
+function buildRecursiveAstParser(environment: ITestableContainer) : IIncludeBuilder {
+    return environment.buildAs<IIncludeBuilder>('includeBuilder');
 }
 
 function buildStringWriter(environment: ITestableContainer): IStringWriter {
@@ -118,7 +118,7 @@ function newAstParserBuilder(container: IContainer, setup: (environment: ITestab
     });
 }
 
-function newAstRecursiveParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstBuilder {
+function newAstRecursiveParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IIncludeBuilder {
     return newBuilder(container, setup, environment => {
         return buildRecursiveAstParser(environment);
     });

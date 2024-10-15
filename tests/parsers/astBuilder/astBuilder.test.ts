@@ -4,7 +4,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { IDictionary, ITestableContainer } from "../../../src/types/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { IDoculisp } from "../../../src/types/types.astDoculisp";
-import { IAstBuilder } from "../../../src/types/types.includeBuilder";
+import { IIncludeBuilder } from "../../../src/types/types.includeBuilder";
 import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
@@ -65,7 +65,7 @@ describe('astRecursiveBuilder', () => {
         });
 
         it('should return an error if given an error', () => {
-            const builder: IAstBuilder = testable.recursiveAst.parserBuilder(container, setup);
+            const builder: IIncludeBuilder = testable.recursiveAst.parserBuilder(container, setup);
 
             const expectedResult = fail('This is a failure', 'M:/y/pah.md');
             expect(builder.parseExternals(expectedResult)).toBe(expectedResult);

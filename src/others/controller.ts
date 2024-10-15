@@ -1,11 +1,11 @@
-import { IAstBuilder } from "../types/types.includeBuilder";
+import { IIncludeBuilder } from "../types/types.includeBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { IController } from "../types/types.controller";
 import { IFileWriter } from "../types/types.fileHandler";
 import { IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
 
-function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IAstBuilder, stringWrter: IStringWriter): IController {
+function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter): IController {
     function _compile(sourcePath: string, destinationPath: string | false): Result<string | false> {
         const ast = astBuilder.parse(sourcePath);
         const document = stringWrter.writeAst(ast);
@@ -38,7 +38,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IAstBuilder,
 }
 
 const controllerBuilder: IRegisterable = {
-    builder: (util: IUtil, handler: IFileWriter, astBuilder: IAstBuilder, stringWrter: IStringWriter) => buildLoader(util, handler, astBuilder, stringWrter),
+    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter) => buildLoader(util, handler, astBuilder, stringWrter),
     name: 'controller',
     dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter'],
     singleton: true
