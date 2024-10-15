@@ -7,8 +7,8 @@ import { IStringWriter } from "../types/types.stringWriter";
 
 function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter): IController {
     function _compile(sourcePath: string, destinationPath: string | false): Result<string | false> {
-        const ast = astBuilder.parse(sourcePath);
-        const document = stringWrter.writeAst(ast);
+        const doculisp = astBuilder.parse(sourcePath);
+        const document = stringWrter.writeAst(doculisp);
 
         if(!!destinationPath){
             const result = handler.write(destinationPath, document);

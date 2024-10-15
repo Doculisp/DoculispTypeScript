@@ -21,7 +21,7 @@ describe('astDoculisp', () => {
     });
 
     beforeEach(() => {
-        toResult = testable.ast.resultBuilder(container, environment => {
+        toResult = testable.doculisp.resultBuilder(container, environment => {
             util = environment.buildAs<IUtil>('util');
         });
         
@@ -34,7 +34,7 @@ describe('astDoculisp', () => {
 
         beforeEach(() => {
             util = null as any;
-            parser = testable.ast.parserBuilder(container, environment => {
+            parser = testable.doculisp.parserBuilder(container, environment => {
                 util = environment.buildAs<IUtil>('util');
             });
         });
@@ -47,7 +47,7 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
     
-        it('should return an empty ast if there was no tokens', () => {
+        it('should return an empty doculisp if there was no tokens', () => {
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: buildLocation('A:/empty/doc.md', 4, 10),
                 tokens: []

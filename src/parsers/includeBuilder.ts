@@ -21,9 +21,9 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
     
             const documentResult = documentParse(fileMaybe.value, location);
             const tokens = tokenizer(documentResult);
-            const ast = astParse.parse(tokens);
+            const doculisp = astParse.parse(tokens);
 
-            return parseExternals(ast);
+            return parseExternals(doculisp);
         }
         finally {
             fileHandler.setProcessWorkingDirectory(workingDir);
@@ -34,9 +34,9 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
         return _parse(filePath, { documentDepth: 1, documentIndex: 1, documentPath: filePath });
     }
 
-    function parseSection(ast: ISectionWriter): Result<ISectionWriter> {
-        for (let index = 0; index < ast.include.length; index++) {
-            const load = ast.include[index];
+    function parseSection(doculisp: ISectionWriter): Result<ISectionWriter> {
+        for (let index = 0; index < doculisp.include.length; index++) {
+            const load = doculisp.include[index];
             if(!load) {
                 continue;
             }
@@ -46,7 +46,7 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
                 continue;
             }
 
-            const astResult = _parse(load.path, { documentDepth: ast.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path});
+            const astResult = _parse(load.path, { documentDepth: doculisp.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path});
             if(!astResult.success) {
                 return astResult;
             }
@@ -59,7 +59,7 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
             load.document = astDocument.section;
         }
 
-        return util.ok(ast);
+        return util.ok(doculisp);
     }
 
     function parseExternals(astResult: Result<IDoculisp>): Result<IDoculisp> {
@@ -67,20 +67,20 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
             return astResult;
         }
 
-        const ast = astResult.value;
-        if(ast.section.type === 'doculisp-empty') {
+        const doculisp = astResult.value;
+        if(doculisp.section.type === 'doculisp-empty') {
             return astResult;
         }
 
-        const newSection = parseSection(ast.section);
+        const newSection = parseSection(doculisp.section);
 
         if(!newSection.success) {
             return newSection;
         }
 
-        ast.section = newSection.value;
+        doculisp.section = newSection.value;
 
-        return util.ok(ast);
+        return util.ok(doculisp);
     }
 
     return {

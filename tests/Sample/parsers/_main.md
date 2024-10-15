@@ -6,7 +6,7 @@
         (include
             (Subsection ./document.md) (* where all parsing starts)
             (*Subsection ./tokenizer.md) (* Building semantic information about key words.)
-            (*Subsection ./ast.md) (* Turning tokens into Abstract Syntax Trees.)
+            (*Subsection ./doculisp.md) (* Turning tokens into Abstract Syntax Trees.)
             (*Subsection ./astBuilder.md) (*Building include document Abstract Syntax Trees.)
         )
     )

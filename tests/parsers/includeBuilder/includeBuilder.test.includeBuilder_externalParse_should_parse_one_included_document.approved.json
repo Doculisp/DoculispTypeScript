@@ -7,7 +7,7 @@
       "documentPath": "C:/_main.dlisp"
     },
     "section": {
-      "ast": [
+      "doculisp": [
         {
           "documentOrder": {
             "char": 2,
@@ -53,7 +53,7 @@
       "include": [
         {
           "document": {
-            "ast": [
+            "doculisp": [
               {
                 "documentOrder": {
                   "char": 2,

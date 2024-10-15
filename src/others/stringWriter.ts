@@ -82,9 +82,9 @@ function writeAstHeader(astHeader: IHeader): string {
 }
 
 function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
-    function findTitle(ast: DoculispPart[]): ITitle | null {
-        for (let index = 0; index < ast.length; index++) {
-            const element = ast[index];
+    function findTitle(doculisp: DoculispPart[]): ITitle | null {
+        for (let index = 0; index < doculisp.length; index++) {
+            const element = doculisp[index];
             if(!element) {
                 continue;
             }
@@ -141,7 +141,7 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
             }
     
             const doc = element.document;
-            const title = findTitle(doc.ast);
+            const title = findTitle(doc.doculisp);
     
             if(!title) {
                 continue;
@@ -216,20 +216,20 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
     const sb = new StringBuilder();
     let previousType = '';
 
-    for (let index = 0; index < section.ast.length; index++) {
-        const ast = section.ast[index];
-        if(!ast) {
+    for (let index = 0; index < section.doculisp.length; index++) {
+        const doculisp = section.doculisp[index];
+        if(!doculisp) {
             continue;
         }
 
-        if(isNewLine(previous, ast.documentOrder)) {
+        if(isNewLine(previous, doculisp.documentOrder)) {
             sb.addLine();
         }
 
-        if(previousType === 'doculisp-write' && ast.type === 'doculisp-write') {
-            if(previous.documentPath !== ast.documentOrder.documentPath
-               || (previous.line + 2) <= ast.documentOrder.line
-               || (ast.documentOrder.line + 2) <= previous.line
+        if(previousType === 'doculisp-write' && doculisp.type === 'doculisp-write') {
+            if(previous.documentPath !== doculisp.documentOrder.documentPath
+               || (previous.line + 2) <= doculisp.documentOrder.line
+               || (doculisp.documentOrder.line + 2) <= previous.line
             ) {
                 sb.addLine();
             } else if (0 < sb.lineLength) {
@@ -240,17 +240,17 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
             sb.addLine();
         }
 
-        switch (ast.type) {
+        switch (doculisp.type) {
             case 'doculisp-write':
-                sb.add(writeAstWrite(ast));
+                sb.add(writeAstWrite(doculisp));
                 break;
 
             case 'doculisp-title':
-                sb.add(writeAstTitle(ast));
+                sb.add(writeAstTitle(doculisp));
                 break;
 
             case 'doculisp-header':
-                sb.add(writeAstHeader(ast));
+                sb.add(writeAstHeader(doculisp));
                 break;
 
             case 'doculisp-content':
@@ -258,15 +258,15 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
                 break;
 
             case 'doculisp-toc':
-                sb.add(writeTableOfContents(ast, section.include));
+                sb.add(writeTableOfContents(doculisp, section.include));
                 break;
         
             default:
                 break;
         }
 
-        previousType = ast.type;
-        previous = ast.documentOrder;
+        previousType = doculisp.type;
+        previous = doculisp.documentOrder;
     }
 
     return sb.toString();

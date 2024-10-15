@@ -654,7 +654,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                             projectLocation: document.projectLocation,
                             section: {
                                 type: 'doculisp-section',
-                                ast: result,
+                                doculisp: result,
                                 documentOrder: util.toLocation(document.projectLocation, 1, 1),
                                 include,
                             },

@@ -177,7 +177,7 @@ const testable = {
         parserBuilder: newTokenResultParserBuilder,
         resultBuilder: newTokenResultBuilder,
     },
-    ast: {
+    doculisp: {
         parserBuilder: newAstParserBuilder,
         resultBuilder: newAstResultBuilder,
     },

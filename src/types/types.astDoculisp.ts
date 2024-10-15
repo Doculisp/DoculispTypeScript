@@ -63,7 +63,7 @@ export type DoculispPart = IWrite | ITitle | ITableOfContents | IContentLocation
 
 export interface ISectionWriter extends ILocationSortable {
     readonly type: 'doculisp-section';
-    readonly ast: DoculispPart[];
+    readonly doculisp: DoculispPart[];
     readonly include: ILoad[];
 };
 

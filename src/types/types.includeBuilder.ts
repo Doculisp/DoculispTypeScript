@@ -3,5 +3,5 @@ import { Result } from "./types.general";
 
 export interface IIncludeBuilder {
     parse(path: string): Result<IDoculisp>;
-    parseExternals(ast: Result<IDoculisp>): Result<IDoculisp>;
+    parseExternals(doculisp: Result<IDoculisp>): Result<IDoculisp>;
 }
