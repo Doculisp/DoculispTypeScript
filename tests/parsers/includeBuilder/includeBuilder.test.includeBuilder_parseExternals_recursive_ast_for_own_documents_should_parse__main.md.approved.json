@@ -19,7 +19,7 @@
           "label": "# Doculisp #",
           "ref_link": "#doculisp",
           "title": "Doculisp",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -42,7 +42,7 @@
             "line": 27
           },
           "text": "Table of Contents",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "bulletStyle": "numbered-labeled",
@@ -53,7 +53,7 @@
             "documentPath": "_main.md",
             "line": 28
           },
-          "type": "ast-toc"
+          "type": "doculisp-toc"
         },
         {
           "documentOrder": {
@@ -63,7 +63,7 @@
             "documentPath": "_main.md",
             "line": 28
           },
-          "type": "ast-content"
+          "type": "doculisp-content"
         }
       ],
       "documentOrder": {
@@ -88,7 +88,7 @@
                 "label": "## Using the Command Line Interface ##",
                 "ref_link": "#using-the-command-line-interface",
                 "title": "Using the Command Line Interface",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "depthCount": 3,
@@ -100,7 +100,7 @@
                   "line": 9
                 },
                 "text": "To Install Doculisp",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -134,7 +134,7 @@
                   "line": 13
                 },
                 "text": "Running the Doculisp compiler",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -211,7 +211,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -222,7 +222,7 @@
           },
           "path": "./cli.md",
           "sectionLabel": "CLI",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -238,7 +238,7 @@
                 "label": "## What Problem Does Doculisp Solve? ##",
                 "ref_link": "#what-problem-does-doculisp-solve",
                 "title": "What Problem Does Doculisp Solve?",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -261,7 +261,7 @@
                   "line": 12
                 },
                 "text": "A Word of Advice",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -283,7 +283,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -294,7 +294,7 @@
           },
           "path": "./why.md",
           "sectionLabel": "Intro",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -310,7 +310,7 @@
                 "label": "## Basic Structure ##",
                 "ref_link": "#basic-structure",
                 "title": "Basic Structure",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -663,7 +663,7 @@
                   "line": 27
                 },
                 "text": "Parameter",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -741,7 +741,7 @@
                   "line": 31
                 },
                 "text": "Visual Explanation",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -763,7 +763,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -774,7 +774,7 @@
           },
           "path": "./structure.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -790,7 +790,7 @@
                 "label": "## Doculisp Master Block ##",
                 "ref_link": "#doculisp-master-block",
                 "title": "Doculisp Master Block",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -878,7 +878,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -889,7 +889,7 @@
           },
           "path": "./doculisp.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -905,7 +905,7 @@
                 "label": "## Section Meta Block ##",
                 "ref_link": "#section-meta-block",
                 "title": "Section Meta Block",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -950,7 +950,7 @@
                   "line": 22
                 },
                 "text": "Title (required)",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -1028,7 +1028,7 @@
                   "line": 26
                 },
                 "text": "Ref-Link",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -1106,7 +1106,7 @@
                   "line": 39
                 },
                 "text": "Subtitle",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -1129,7 +1129,7 @@
                   "line": 43
                 },
                 "text": "Include",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -1174,7 +1174,7 @@
                   "line": 59
                 },
                 "text": "Sub-Sections",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -1604,7 +1604,7 @@
                   "line": 93
                 },
                 "text": "Exception to the Rule",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -1626,7 +1626,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -1637,7 +1637,7 @@
           },
           "path": "./section-meta.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -1653,7 +1653,7 @@
                 "label": "## Content Block ##",
                 "ref_link": "#content-block",
                 "title": "Content Block",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -1676,7 +1676,7 @@
                   "line": 11
                 },
                 "text": "Table of Contents",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -1929,7 +1929,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -1940,7 +1940,7 @@
           },
           "path": "./content.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -1956,7 +1956,7 @@
                 "label": "## Dynamic Headings ##",
                 "ref_link": "#dynamic-headings",
                 "title": "Dynamic Headings",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -2100,7 +2100,7 @@
                   "line": 46
                 },
                 "text": "Max Heading Depth",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -2122,7 +2122,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -2133,7 +2133,7 @@
           },
           "path": "./headings.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -2149,7 +2149,7 @@
                 "label": "## Comment Block ##",
                 "ref_link": "#comment-block",
                 "title": "Comment Block",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -2293,7 +2293,7 @@
                   "line": 49
                 },
                 "text": "Nested Comments",
-                "type": "ast-header"
+                "type": "doculisp-header"
               },
               {
                 "documentOrder": {
@@ -2447,7 +2447,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -2458,7 +2458,7 @@
           },
           "path": "./comment.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -2474,7 +2474,7 @@
                 "label": "## Key Atoms by Depth ##",
                 "ref_link": "#key-atoms-by-depth",
                 "title": "Key Atoms by Depth",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -3662,7 +3662,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -3673,7 +3673,7 @@
           },
           "path": "./keywords.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": {
@@ -3689,7 +3689,7 @@
                 "label": "## Contributors ✨ ##",
                 "ref_link": "#contributors-",
                 "title": "Contributors ✨",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -4008,7 +4008,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -4019,10 +4019,10 @@
           },
           "path": "./contributors.md",
           "sectionLabel": "Recognition",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

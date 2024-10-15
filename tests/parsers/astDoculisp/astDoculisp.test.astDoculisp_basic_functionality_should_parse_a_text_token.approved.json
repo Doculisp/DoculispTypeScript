@@ -28,7 +28,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

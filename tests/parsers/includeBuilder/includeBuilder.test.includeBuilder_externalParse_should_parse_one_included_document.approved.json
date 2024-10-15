@@ -19,7 +19,7 @@
           "label": "# Main Document #",
           "ref_link": "#main-document",
           "title": "Main Document",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "bulletStyle": "numbered-labeled",
@@ -30,7 +30,7 @@
             "documentPath": "C:/_main.dlisp",
             "line": 9
           },
-          "type": "ast-toc"
+          "type": "doculisp-toc"
         },
         {
           "documentOrder": {
@@ -40,7 +40,7 @@
             "documentPath": "C:/_main.dlisp",
             "line": 9
           },
-          "type": "ast-content"
+          "type": "doculisp-content"
         }
       ],
       "documentOrder": {
@@ -65,7 +65,7 @@
                 "label": "## Fist Sub-Document ##",
                 "ref_link": "#fist-sub-document",
                 "title": "Fist Sub-Document",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -87,7 +87,7 @@
               "line": 1
             },
             "include": [],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 10,
@@ -98,10 +98,10 @@
           },
           "path": "C:/sub.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

@@ -19,7 +19,7 @@
           "label": "### My cool title✨ ###",
           "ref_link": "#my_cool_title",
           "title": "My cool title✨",
-          "type": "ast-title"
+          "type": "doculisp-title"
         }
       ],
       "documentOrder": {
@@ -30,7 +30,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

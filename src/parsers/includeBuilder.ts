@@ -52,7 +52,7 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
             }
 
             const astDocument = astResult.value;
-            if(astDocument.section.type === 'ast-empty') {
+            if(astDocument.section.type === 'doculisp-empty') {
                 continue;
             }
 
@@ -68,7 +68,7 @@ function buildAstBuilder(util: IUtil, astParse: IDoculispParser, documentParse: 
         }
 
         const ast = astResult.value;
-        if(ast.section.type === 'ast-empty') {
+        if(ast.section.type === 'doculisp-empty') {
             return astResult;
         }
 

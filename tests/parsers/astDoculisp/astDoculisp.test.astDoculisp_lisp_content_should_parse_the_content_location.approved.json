@@ -19,7 +19,7 @@
           "label": "## Using Content ##",
           "ref_link": "#using-content",
           "title": "Using Content",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -29,7 +29,7 @@
             "documentPath": "../main.dlisp",
             "line": 9
           },
-          "type": "ast-content"
+          "type": "doculisp-content"
         }
       ],
       "documentOrder": {
@@ -51,10 +51,10 @@
           },
           "path": "./HelloContent.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

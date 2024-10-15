@@ -20,7 +20,7 @@
           "ref_link": "#my-cool-title",
           "subtitle": "###### This is information ######",
           "title": "My cool title",
-          "type": "ast-title"
+          "type": "doculisp-title"
         }
       ],
       "documentOrder": {
@@ -31,7 +31,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

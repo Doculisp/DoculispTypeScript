@@ -19,7 +19,7 @@
           "label": "## Basic Structure ##",
           "ref_link": "#basic-structure",
           "title": "Basic Structure",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -372,7 +372,7 @@
             "line": 27
           },
           "text": "Parameter",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -450,7 +450,7 @@
             "line": 31
           },
           "text": "Visual Explanation",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -472,7 +472,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

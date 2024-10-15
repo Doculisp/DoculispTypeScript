@@ -19,7 +19,7 @@
           "label": "## Sing Me a Song ##",
           "ref_link": "#sing-me-a-song",
           "title": "Sing Me a Song",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "bulletStyle": "numbered-labeled",
@@ -30,7 +30,7 @@
             "documentPath": "./itty.dlisp",
             "line": 9
           },
-          "type": "ast-toc"
+          "type": "doculisp-toc"
         },
         {
           "documentOrder": {
@@ -40,7 +40,7 @@
             "documentPath": "./itty.dlisp",
             "line": 9
           },
-          "type": "ast-content"
+          "type": "doculisp-content"
         }
       ],
       "documentOrder": {
@@ -62,10 +62,10 @@
           },
           "path": "./songs.dlisp",
           "sectionLabel": "Chapter",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

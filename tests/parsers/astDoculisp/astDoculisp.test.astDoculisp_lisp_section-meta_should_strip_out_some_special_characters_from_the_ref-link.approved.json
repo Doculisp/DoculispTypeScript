@@ -19,7 +19,7 @@
           "label": "# A !@#$%^&*+=;:'\" Story ,./<>? about things #",
           "ref_link": "#a--story--about-things",
           "title": "A !@#$%^&*+=;:'\" Story ,./<>? about things",
-          "type": "ast-title"
+          "type": "doculisp-title"
         }
       ],
       "documentOrder": {
@@ -30,7 +30,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

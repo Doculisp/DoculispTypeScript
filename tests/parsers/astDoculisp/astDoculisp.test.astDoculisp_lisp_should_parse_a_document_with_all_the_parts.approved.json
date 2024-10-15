@@ -19,7 +19,7 @@
           "label": "#### Doculisp ####",
           "ref_link": "#doculisp",
           "title": "Doculisp",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "depthCount": 6,
@@ -31,7 +31,7 @@
             "line": 15
           },
           "text": "An introduction to Doculisp",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "bulletStyle": "numbered-labeled",
@@ -42,7 +42,7 @@
             "documentPath": "./_main.dlisp",
             "line": 17
           },
-          "type": "ast-toc"
+          "type": "doculisp-toc"
         },
         {
           "documentOrder": {
@@ -52,7 +52,7 @@
             "documentPath": "./_main.dlisp",
             "line": 17
           },
-          "type": "ast-content"
+          "type": "doculisp-content"
         }
       ],
       "documentOrder": {
@@ -74,7 +74,7 @@
           },
           "path": "./structure.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -87,7 +87,7 @@
           },
           "path": "./doculisp.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -100,7 +100,7 @@
           },
           "path": "./section-meta.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -113,7 +113,7 @@
           },
           "path": "./content.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -126,7 +126,7 @@
           },
           "path": "./headings.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -139,7 +139,7 @@
           },
           "path": "./comment.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -152,10 +152,10 @@
           },
           "path": "./keywords.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

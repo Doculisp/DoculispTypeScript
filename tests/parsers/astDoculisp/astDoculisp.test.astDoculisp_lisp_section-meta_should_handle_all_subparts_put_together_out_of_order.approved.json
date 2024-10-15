@@ -19,7 +19,7 @@
           "label": "# Doculisp is ✨ #",
           "ref_link": "#doculisp_is_",
           "title": "Doculisp is ✨",
-          "type": "ast-title"
+          "type": "doculisp-title"
         }
       ],
       "documentOrder": {
@@ -41,7 +41,7 @@
           },
           "path": "./structure.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -54,10 +54,10 @@
           },
           "path": "./doculisp.md",
           "sectionLabel": "Section",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

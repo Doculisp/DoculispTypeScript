@@ -19,7 +19,7 @@
           "label": "## Key Atoms by Depth ##",
           "ref_link": "#key-atoms-by-depth",
           "title": "Key Atoms by Depth",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -1207,7 +1207,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

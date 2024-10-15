@@ -18,7 +18,7 @@
             "line": 2
           },
           "text": "My heading",
-          "type": "ast-header"
+          "type": "doculisp-header"
         }
       ],
       "documentOrder": {
@@ -29,7 +29,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

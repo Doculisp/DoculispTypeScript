@@ -11,7 +11,7 @@ export interface IWrite extends ILocationSortable {
 };
 
 export interface ITitle extends ILocationSortable {
-    readonly type: 'ast-title';
+    readonly type: 'doculisp-title';
     readonly title: string;
     readonly label: string;
     readonly ref_link: string;
@@ -19,7 +19,7 @@ export interface ITitle extends ILocationSortable {
 };
 
 export interface ILoad extends ILocationSortable {
-    readonly type: 'ast-load';
+    readonly type: 'doculisp-load';
     readonly path: string;
     readonly sectionLabel: string;
     document: ISectionWriter | false;
@@ -45,30 +45,30 @@ export const bulletStyles: ReadonlyArray<DoculispBulletStyle> = [
 ];
 
 export interface ITableOfContents extends ILocationSortable {
-    readonly type: 'ast-toc';
+    readonly type: 'doculisp-toc';
     readonly bulletStyle: DoculispBulletStyle;
 };
 
 export interface IHeader extends ILocationSortable {
-    readonly type: 'ast-header'
+    readonly type: 'doculisp-header'
     readonly depthCount: number;
     readonly text: string;
 };
 
 export interface IContentLocation extends ILocationSortable {
-    readonly type: 'ast-content'
+    readonly type: 'doculisp-content'
 }
 
 export type DoculispPart = IWrite | ITitle | ITableOfContents | IContentLocation | IHeader;
 
 export interface ISectionWriter extends ILocationSortable {
-    readonly type: 'ast-section';
+    readonly type: 'doculisp-section';
     readonly ast: DoculispPart[];
     readonly include: ILoad[];
 };
 
 export interface IEmptyDoculisp {
-    readonly type: 'ast-empty';
+    readonly type: 'doculisp-empty';
 }
 
 export interface IDoculisp {

@@ -19,7 +19,7 @@
           "label": "## Doculisp Master Block ##",
           "ref_link": "#doculisp-master-block",
           "title": "Doculisp Master Block",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -107,7 +107,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

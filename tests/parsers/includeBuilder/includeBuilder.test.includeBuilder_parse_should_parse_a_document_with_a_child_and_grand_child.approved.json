@@ -19,7 +19,7 @@
           "label": "# The True Root #",
           "ref_link": "#the-true-root",
           "title": "The True Root",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "bulletStyle": "labeled",
@@ -30,7 +30,7 @@
             "documentPath": "./_main.dlisp",
             "line": 9
           },
-          "type": "ast-toc"
+          "type": "doculisp-toc"
         },
         {
           "documentOrder": {
@@ -40,7 +40,7 @@
             "documentPath": "./_main.dlisp",
             "line": 9
           },
-          "type": "ast-content"
+          "type": "doculisp-content"
         }
       ],
       "documentOrder": {
@@ -65,7 +65,7 @@
                 "label": "## The Child to Bare ##",
                 "ref_link": "#the-child-to-bare",
                 "title": "The Child to Bare",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -86,7 +86,7 @@
                   "documentPath": "./childDoc.md",
                   "line": 14
                 },
-                "type": "ast-content"
+                "type": "doculisp-content"
               }
             ],
             "documentOrder": {
@@ -111,7 +111,7 @@
                       "label": "### The GRoot of all Docs ###",
                       "ref_link": "#the-groot-of-all-docs",
                       "title": "The GRoot of all Docs",
-                      "type": "ast-title"
+                      "type": "doculisp-title"
                     },
                     {
                       "documentOrder": {
@@ -133,7 +133,7 @@
                     "line": 1
                   },
                   "include": [],
-                  "type": "ast-section"
+                  "type": "doculisp-section"
                 },
                 "documentOrder": {
                   "char": 14,
@@ -144,10 +144,10 @@
                 },
                 "path": "./grandchild.md",
                 "sectionLabel": "Chip",
-                "type": "ast-load"
+                "type": "doculisp-load"
               }
             ],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 10,
@@ -158,10 +158,10 @@
           },
           "path": "./childDoc.md",
           "sectionLabel": "Block",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

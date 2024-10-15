@@ -19,7 +19,7 @@
           "label": "# Doculisp #",
           "ref_link": "#doculisp",
           "title": "Doculisp",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -42,7 +42,7 @@
             "line": 27
           },
           "text": "Table of Contents",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "bulletStyle": "numbered-labeled",
@@ -53,7 +53,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 28
           },
-          "type": "ast-toc"
+          "type": "doculisp-toc"
         },
         {
           "documentOrder": {
@@ -63,7 +63,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 28
           },
-          "type": "ast-content"
+          "type": "doculisp-content"
         }
       ],
       "documentOrder": {
@@ -85,7 +85,7 @@
           },
           "path": "./cli.md",
           "sectionLabel": "CLI",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -98,7 +98,7 @@
           },
           "path": "./why.md",
           "sectionLabel": "Intro",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -111,7 +111,7 @@
           },
           "path": "./structure.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -124,7 +124,7 @@
           },
           "path": "./doculisp.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -137,7 +137,7 @@
           },
           "path": "./section-meta.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -150,7 +150,7 @@
           },
           "path": "./content.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -163,7 +163,7 @@
           },
           "path": "./headings.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -176,7 +176,7 @@
           },
           "path": "./comment.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -189,7 +189,7 @@
           },
           "path": "./keywords.md",
           "sectionLabel": "Language",
-          "type": "ast-load"
+          "type": "doculisp-load"
         },
         {
           "document": false,
@@ -202,10 +202,10 @@
           },
           "path": "./contributors.md",
           "sectionLabel": "Recognition",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

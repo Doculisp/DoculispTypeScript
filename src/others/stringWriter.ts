@@ -89,7 +89,7 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
                 continue;
             }
 
-            if(element.type === 'ast-title') {
+            if(element.type === 'doculisp-title') {
                 return element;
             }
         }
@@ -245,19 +245,19 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
                 sb.add(writeAstWrite(ast));
                 break;
 
-            case 'ast-title':
+            case 'doculisp-title':
                 sb.add(writeAstTitle(ast));
                 break;
 
-            case 'ast-header':
+            case 'doculisp-header':
                 sb.add(writeAstHeader(ast));
                 break;
 
-            case 'ast-content':
+            case 'doculisp-content':
                 sb.add(writeContent(section.include));
                 break;
 
-            case 'ast-toc':
+            case 'doculisp-toc':
                 sb.add(writeTableOfContents(ast, section.include));
                 break;
         
@@ -278,7 +278,7 @@ function buildWriter(util: IUtil) : IStringWriter {
             return astMaybe;
         }
 
-        if(astMaybe.value.section.type === 'ast-empty'){
+        if(astMaybe.value.section.type === 'doculisp-empty'){
             return util.ok('');
         }
 

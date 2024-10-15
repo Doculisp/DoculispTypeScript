@@ -19,7 +19,7 @@
           "label": "## Comment Block ##",
           "ref_link": "#comment-block",
           "title": "Comment Block",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -163,7 +163,7 @@
             "line": 49
           },
           "text": "Nested Comments",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -317,7 +317,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

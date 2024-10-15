@@ -19,7 +19,7 @@
           "label": "## Section Meta Block ##",
           "ref_link": "#section-meta-block",
           "title": "Section Meta Block",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -64,7 +64,7 @@
             "line": 22
           },
           "text": "Title (required)",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -142,7 +142,7 @@
             "line": 26
           },
           "text": "Ref-Link",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -220,7 +220,7 @@
             "line": 39
           },
           "text": "Subtitle",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -243,7 +243,7 @@
             "line": 43
           },
           "text": "Include",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -288,7 +288,7 @@
             "line": 59
           },
           "text": "Sub-Sections",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -718,7 +718,7 @@
             "line": 93
           },
           "text": "Exception to the Rule",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -740,7 +740,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

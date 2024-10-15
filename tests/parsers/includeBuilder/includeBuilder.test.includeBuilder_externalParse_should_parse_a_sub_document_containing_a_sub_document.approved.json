@@ -19,7 +19,7 @@
           "label": "# Top Level Document #",
           "ref_link": "#top-level-document",
           "title": "Top Level Document",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -66,7 +66,7 @@
                 "label": "## A Child Document ##",
                 "ref_link": "#a-child-document",
                 "title": "A Child Document",
-                "type": "ast-title"
+                "type": "doculisp-title"
               },
               {
                 "documentOrder": {
@@ -113,7 +113,7 @@
                       "label": "### A Grandchild Document ###",
                       "ref_link": "#a-grandchild-document",
                       "title": "A Grandchild Document",
-                      "type": "ast-title"
+                      "type": "doculisp-title"
                     },
                     {
                       "documentOrder": {
@@ -135,7 +135,7 @@
                     "line": 1
                   },
                   "include": [],
-                  "type": "ast-section"
+                  "type": "doculisp-section"
                 },
                 "documentOrder": {
                   "char": 14,
@@ -146,10 +146,10 @@
                 },
                 "path": "C:/grand.md",
                 "sectionLabel": "GrandChild",
-                "type": "ast-load"
+                "type": "doculisp-load"
               }
             ],
-            "type": "ast-section"
+            "type": "doculisp-section"
           },
           "documentOrder": {
             "char": 14,
@@ -160,10 +160,10 @@
           },
           "path": "./child.md",
           "sectionLabel": "Child",
-          "type": "ast-load"
+          "type": "doculisp-load"
         }
       ],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }

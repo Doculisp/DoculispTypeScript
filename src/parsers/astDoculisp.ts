@@ -156,7 +156,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                     undefined;
 
                 title = {
-                    type: 'ast-title',
+                    type: 'doculisp-title',
                     title: param.text,
                     subtitle,
                     label,
@@ -200,7 +200,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
 
                 if(title) {
                     const n: ITitle = {
-                        type: 'ast-title',
+                        type: 'doculisp-title',
                         label: title.label,
                         title: title.title,
                         ref_link: linkText,
@@ -246,7 +246,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
 
                 if(title) {
                     const nt: ITitle = {
-                        type: 'ast-title',
+                        type: 'doculisp-title',
                         title: title.title,
                         subtitle: text,
                         label: title.label,
@@ -319,7 +319,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                 }
 
                 const load: ILoad = {
-                    type: 'ast-load',
+                    type: 'doculisp-load',
                     sectionLabel: atom.text,
                     path: param.text,
                     documentOrder: atom.location,
@@ -432,7 +432,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
             }
 
             const part: DoculispPart = {
-                type: 'ast-header',
+                type: 'doculisp-header',
                 depthCount: atom.text.length + atom.location.documentDepth,
                 text: param.text,
                 documentOrder: atom.location,
@@ -498,7 +498,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                 return util.ok({
                     type: 'parse result',
                     subResult: { 
-                        type: 'ast-content',
+                        type: 'doculisp-content',
                         documentOrder: atom.location,
                     },
                     rest: trimArray(length, input),
@@ -588,7 +588,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                     internals.buildStepParse(step, {
                         type: 'parse result',
                         subResult: {
-                            type: 'ast-toc',
+                            type: 'doculisp-toc',
                             bulletStyle: style,
                             documentOrder: tocLoc,
                         }
@@ -653,7 +653,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                         return util.ok({
                             projectLocation: document.projectLocation,
                             section: {
-                                type: 'ast-section',
+                                type: 'doculisp-section',
                                 ast: result,
                                 documentOrder: util.toLocation(document.projectLocation, 1, 1),
                                 include,
@@ -663,7 +663,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
 
                     return util.ok({
                         projectLocation: document.projectLocation,
-                        section: { type: 'ast-empty' },
+                        section: { type: 'doculisp-empty' },
                     });
                 }
 

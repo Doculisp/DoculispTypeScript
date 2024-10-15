@@ -19,7 +19,7 @@
           "label": "## Dynamic Headings ##",
           "ref_link": "#dynamic-headings",
           "title": "Dynamic Headings",
-          "type": "ast-title"
+          "type": "doculisp-title"
         },
         {
           "documentOrder": {
@@ -163,7 +163,7 @@
             "line": 46
           },
           "text": "Max Heading Depth",
-          "type": "ast-header"
+          "type": "doculisp-header"
         },
         {
           "documentOrder": {
@@ -185,7 +185,7 @@
         "line": 1
       },
       "include": [],
-      "type": "ast-section"
+      "type": "doculisp-section"
     }
   }
 }
