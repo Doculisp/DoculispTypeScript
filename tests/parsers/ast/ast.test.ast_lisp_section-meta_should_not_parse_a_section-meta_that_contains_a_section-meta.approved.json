@@ -1,5 +1,5 @@
 {
   "documentPath": "A:/malformed/file.dlisp",
-  "message": "A nested Section-Meta command at {\"path\":\"A:/malformed/file.dlisp\",\"line\":3,\"char\":6}.",
+  "message": "Atom of 'section-meta' at {\"path\":\"A:/malformed/file.dlisp\",\"line\":3,\"char\":6} is not expected as part of section-meta.",
   "success": false
 }

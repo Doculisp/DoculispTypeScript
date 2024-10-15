@@ -1,0 +1,5 @@
+{
+  "documentPath": "./_main.md",
+  "message": "Atom of 'bad' at {\"path\":\"./_main.md\",\"line\":4,\"char\":10} is not expected as part of section-meta.",
+  "success": false
+}

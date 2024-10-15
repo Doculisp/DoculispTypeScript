@@ -201,12 +201,15 @@ describe('ast', () => {
                 verifyAsJson(result);
             });
 
-            it.skip('should not parse a section meta with a invalid atom', () => {
+            it('should not parse a section meta with a invalid atom', () => {
                 const content = `<!--
 (dl
     (section-meta
         (title A Bad atom)
         (bad does stuff)
+        (include
+                (sample ./good.md)
+        )
     )
 )
 -->

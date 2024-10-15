@@ -2,10 +2,10 @@ import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITa
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
-import { IRootStructure } from "../types/types.structure";
+import { IRootStructure, IStructure } from "../types/types.structure";
 import { Token, TokenizedDocument } from "../types/types.tokens";
 
-function buildAstParser(internals: IInternals, util: IUtil, _structureRoot: IRootStructure): IAstParser {
+function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRootStructure): IAstParser {
     let hasSection: boolean = false;
     function headerize(depth: number, value: string): string {
         const id = ''.padStart(depth, '#');
@@ -27,8 +27,30 @@ function buildAstParser(internals: IInternals, util: IUtil, _structureRoot: IRoo
             let linkText: string | false = false;
             let subTitleText: string | false = false;
             let title: ITitle | false = false;
-            // const sectionMetaBlock = 
-            //     structureRoot.SubAtoms.getStructureForSubAtom('section-meta') as IStructure;
+            const sectionMetaBlock = 
+                structureRoot.SubAtoms.getStructureForSubAtom('section-meta') as IStructure;
+
+            function tryParseError(input: Token[], _current: ILocation): DiscardedResult<Token[]> {
+                if(!start || depth < 1) {
+                    return internals.noResultFound();
+                }
+                
+                if(input.length < 1) {
+                    return internals.noResultFound();
+                }
+
+                const atom = input[0] as Token;
+
+                if(atom.type !== 'token - atom') {
+                    return internals.noResultFound();
+                }
+
+                if(!!sectionMetaBlock.hasSubAtom && !sectionMetaBlock.hasSubAtom.isValidSubAtom(atom.text)) {
+                    return util.fail(`Atom of '${atom.text}' at ${atom.location} is not expected as part of section-meta.`, atom.location.documentPath);
+                }
+
+                return internals.noResultFound();
+            }
 
             function tryParseSectionMeta(input: Token[], current: ILocation): DiscardedResult<Token[]> {
                 if(input.length < 1) {
@@ -316,7 +338,7 @@ function buildAstParser(internals: IInternals, util: IUtil, _structureRoot: IRoo
                 });
             }
 
-            const parser = internals.createArrayParser<Token, AstPart>(tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseInclude);
+            const parser = internals.createArrayParser<Token, AstPart>(tryParseError, tryParseSectionMeta, tryParseTitle, tryParseClose, tryParseLink, tryParseSubtitle, tryParseInclude);
             const parsed = parser.parse(toParse, starting);
 
             if(!parsed.success) {
