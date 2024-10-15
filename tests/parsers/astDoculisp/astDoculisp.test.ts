@@ -7,7 +7,7 @@ import { container } from "../../../src/container";
 import { IDoculisp, IDoculispParser, IEmptyDoculisp } from '../../../src/types/types.astDoculisp'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { buildLocation, testable } from "../../testHelpers";
-import { IAstEmpty } from '../../../src/types/types.ast';
+import { IAstEmpty, RootAst } from '../../../src/types/types.ast';
 
 describe('astDoculisp', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -57,22 +57,24 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
     
-        it.skip('should parse a text token', () => {
-            // const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
-            // const tokens: Result<TokenizedDocument> = ok({
-            //     projectLocation: projectLocation,
-            //     tokens: [
-            //         {
-            //             type: 'token - text',
-            //             location: util.toLocation(projectLocation, 2, 1),
-            //             text: 'Some text',
-            //         }
-            //     ],
-            // });
+        it('should parse a value', () => {
+            const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
+
+            const ast: RootAst = {
+                Ast: [
+                    {
+                        type: 'ast-value',
+                        value: 'Some text',
+                        location: util.toLocation(projectLocation, 2, 1),
+                    }
+                ],
+                location: projectLocation,
+                type: 'RootAst'
+            };
     
-            // const result = parser.parse(tokens);
+            const result = parser.parse(ok(ast));
     
-            // verifyAsJson(result);
+            verifyAsJson(result);
         });
     
         it.skip('should parse multiple text tokens', () => {

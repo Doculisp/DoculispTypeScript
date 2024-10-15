@@ -14,7 +14,7 @@ describe('ast', () => {
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
     let util: IUtil = undefined as any;
-    let toResult: (text: string, projectLocation: IProjectLocation) => Result<RootAst[] | IAstEmpty> = undefined as any;
+    let toResult: (text: string, projectLocation: IProjectLocation) => Result<RootAst | IAstEmpty> = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -531,7 +531,7 @@ A story of a misbehaving parser.
     });
 
     describe.skip('parse its own documentation', () => {
-        function getContents(fileName: string, depth: number, index: number): Result<RootAst[] | IAstEmpty> {
+        function getContents(fileName: string, depth: number, index: number): Result<RootAst | IAstEmpty> {
             const filePath = path.join('./documentation/', fileName);
             const location: IProjectLocation = buildLocation(filePath, depth, index);
 

@@ -58,7 +58,7 @@ function rawTokenResultBuilder(environment: ITestableContainer, text: string, lo
     return map(docParser, tokenParser);
 }
 
-function rawAstResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<RootAst[] | IAstEmpty> {
+function rawAstResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<RootAst | IAstEmpty> {
     const tokenParser = rawTokenResultBuilder(environment, text, location);
     const astParser = buildAstParser(environment);
 
@@ -154,7 +154,7 @@ function newTokenResultBuilder(container: IContainer, setup: (environment: ITest
     });
 }
 
-function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<RootAst[] | IAstEmpty> {
+function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<RootAst | IAstEmpty> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstResultBuilder(environment, text, location)();
     });

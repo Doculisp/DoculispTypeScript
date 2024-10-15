@@ -29,6 +29,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

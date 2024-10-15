@@ -1,18 +1,11 @@
-import { AtomAst, IAstContainer, IAstParser, IAstAtom, IAstCommand, IAstEmpty, IAstParameter, IAstValue, RootAst } from "../types/types.ast";
+import { AtomAst, IAstContainer, IAstParser, IAstAtom, IAstCommand, IAstEmpty, IAstParameter, IAstValue, RootAst, CoreAst } from "../types/types.ast";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
 import { AtomToken, ParameterToken, TextToken, Token, TokenizedDocument } from "../types/types.tokens";
+import { ITrimArray } from "../types/types.trimArray";
 
-function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
-    function trimArray<T>(length: number, values: T[]): T[] {
-        for (let index = 0; index < length; index++) {
-            values.shift();
-        }
-
-        return values;
-    }
-    
+function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArray): IAstParser {
     function parseTextToken(token: TextToken): IAstValue {
         return {
             type: 'ast-value',
@@ -75,7 +68,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             type: 'parse result',
             subResult: parseAtomToken(atom),
             location: current,
-            rest: trimArray(2, input),
+            rest: trimArray.trim(2, input),
         });
     };
 
@@ -94,7 +87,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             type: 'parse result',
             subResult: parseTextToken(textToken),
             location: current,
-            rest: trimArray(1, input),
+            rest: trimArray.trim(1, input),
         });
     };
 
@@ -123,7 +116,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             type: 'parse result',
             subResult: parseCommandToken(command, parameter),
             location: current,
-            rest: trimArray(3, input),
+            rest: trimArray.trim(3, input),
         });
     }
 
@@ -144,7 +137,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         }
 
         const parser = internals.createArrayParser<Token, AtomAst>(parseAtom, parseCommand, parseContainer);
-        const parsed = parser.parse(trimArray(1, input), container.location);
+        const parsed = parser.parse(trimArray.trim(1, input), container.location);
 
         if(!parsed.success) {
             return parsed;
@@ -162,11 +155,11 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             type: 'parse result',
             subResult: parseContainerToken(container, subAst),
             location: current,
-            rest: trimArray(1, remaining.remaining),
+            rest: trimArray.trim(1, remaining.remaining),
         });
     }
     
-    function parse(tokenMaybe: Result<TokenizedDocument>): Result<RootAst[] | IAstEmpty> {
+    function parse(tokenMaybe: Result<TokenizedDocument>): Result<RootAst | IAstEmpty> {
         if(!tokenMaybe.success) {
             return tokenMaybe;
         }
@@ -176,7 +169,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             return util.ok({ type: 'ast-Empty' });
         }
 
-        const parser = internals.createArrayParser<Token, RootAst>(parseText, parseCommand, parseAtom, parseContainer);
+        const parser = internals.createArrayParser<Token, CoreAst>(parseText, parseCommand, parseAtom, parseContainer);
         const parsed = parser.parse(tokenDoc.tokens, (tokenDoc.tokens[0] as Token).location);
 
         if(!parsed.success) {
@@ -190,7 +183,11 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             return util.fail(`Unknown Token '${JSON.stringify(token, null, 4)}`, token.location.documentPath)
         }
         
-        return util.ok(result);
+        return util.ok({
+            Ast: result,
+            location: tokenDoc.projectLocation,
+            type: 'RootAst'
+        });
     }
 
     return {
@@ -199,10 +196,10 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
 }
 
 const astParser: IRegisterable = {
-    builder: (util: IUtil, internals: IInternals) => buildAstParser(util, internals),
+    builder: (util: IUtil, internals: IInternals, trimArray: ITrimArray) => buildAstParser(util, internals, trimArray),
     name: 'astParser',
     singleton: false,
-    dependencies: ['util', 'internals']
+    dependencies: ['util', 'internals', 'trimArray']
 };
 
 export {

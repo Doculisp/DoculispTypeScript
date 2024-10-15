@@ -62,9 +62,9 @@ export interface IContentLocation extends ILocationSortable {
 export type DoculispPart = IWrite | ITitle | ITableOfContents | IContentLocation | IHeader;
 
 export interface ISectionWriter extends ILocationSortable {
-    readonly type: 'doculisp-section';
     readonly doculisp: DoculispPart[];
     readonly include: ILoad[];
+    readonly type: 'doculisp-section';
 };
 
 export interface IEmptyDoculisp {
@@ -78,5 +78,5 @@ export interface IDoculisp {
 }
 
 export interface IDoculispParser {
-    parse(tokenResults: Result<RootAst[] | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp>;
+    parse(tokenResults: Result<RootAst | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp>;
 };
