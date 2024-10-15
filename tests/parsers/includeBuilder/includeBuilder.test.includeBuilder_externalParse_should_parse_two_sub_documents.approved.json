@@ -64,7 +64,7 @@
                   "documentPath": "A:/subA.md",
                   "line": 9
                 },
-                "type": "ast-write",
+                "type": "doculisp-write",
                 "value": "Sub document A text."
               }
             ],
@@ -113,7 +113,7 @@
                   "documentPath": "B:/subB.md",
                   "line": 9
                 },
-                "type": "ast-write",
+                "type": "doculisp-write",
                 "value": "Sub document B text."
               }
             ],

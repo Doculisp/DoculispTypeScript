@@ -226,7 +226,7 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
             sb.addLine();
         }
 
-        if(previousType === 'ast-write' && ast.type === 'ast-write') {
+        if(previousType === 'doculisp-write' && ast.type === 'doculisp-write') {
             if(previous.documentPath !== ast.documentOrder.documentPath
                || (previous.line + 2) <= ast.documentOrder.line
                || (ast.documentOrder.line + 2) <= previous.line
@@ -241,7 +241,7 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
         }
 
         switch (ast.type) {
-            case 'ast-write':
+            case 'doculisp-write':
                 sb.add(writeAstWrite(ast));
                 break;
 

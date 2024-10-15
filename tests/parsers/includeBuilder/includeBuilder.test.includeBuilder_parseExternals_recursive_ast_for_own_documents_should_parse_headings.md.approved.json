@@ -29,7 +29,7 @@
             "documentPath": "headings.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the "
         },
         {
@@ -40,7 +40,7 @@
             "documentPath": "headings.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`(#`"
         },
         {
@@ -51,7 +51,7 @@
             "documentPath": "headings.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -62,7 +62,7 @@
             "documentPath": "headings.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "block, or dynamic headinlg block."
         },
         {
@@ -73,7 +73,7 @@
             "documentPath": "headings.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The dynamic heading block works differently then other blocks. The number of "
         },
         {
@@ -84,7 +84,7 @@
             "documentPath": "headings.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`#`"
         },
         {
@@ -95,7 +95,7 @@
             "documentPath": "headings.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -106,7 +106,7 @@
             "documentPath": "headings.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "signs determins how far it is beneith the current sub/section heading."
         },
         {
@@ -117,7 +117,7 @@
             "documentPath": "headings.md",
             "line": 13
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Example"
         },
         {
@@ -128,7 +128,7 @@
             "documentPath": "headings.md",
             "line": 15
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Maths an intro)\n        (include\n            (section ./add.md)\n            (section ./subtract.md)\n            (section ./muliply.md)\n            (section ./divide.md)\n        )\n    )\n)\n-->\n\n<!-- (dl (# Summary)) -->\n\nA cool summary of maths.\n\n<!-- (dl (## Resons For Document)) -->\n\nAn explination why to have the document.\n\n\n<!-- (dl (content (toc unlabled))) -->\n```"
         },
         {
@@ -139,7 +139,7 @@
             "documentPath": "headings.md",
             "line": 42
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "If this example was the top level document, then the title of the document, Heading 1, would be \"Maths an intro\". \"Summray\" would then be created as a Heading 2, and  \"Resons For Document\" as Heading 3."
         },
         {
@@ -150,7 +150,7 @@
             "documentPath": "headings.md",
             "line": 44
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "However if this document reprended a subsection directly under the Title, then \"Maths an intro\" would be Heading 2, \"Summary\" heading 3, and \"Reasons For Document\" would be Heading 4."
         },
         {
@@ -173,7 +173,7 @@
             "documentPath": "headings.md",
             "line": 48
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Currently, the maximum heading depth recognized by Markdown is H6. However Doculisp will not restrict you to that depth. If the total depth is more then H6 you may get unexpected results."
         }
       ],

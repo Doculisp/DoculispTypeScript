@@ -29,7 +29,7 @@
             "documentPath": "content.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The content block signifies where to build the document from the included documents. This block has only one optional subblock."
         },
         {
@@ -52,7 +52,7 @@
             "documentPath": "content.md",
             "line": 13
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location."
         },
         {
@@ -63,7 +63,7 @@
             "documentPath": "content.md",
             "line": 15
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The structure of the table of contents is "
         },
         {
@@ -74,7 +74,7 @@
             "documentPath": "content.md",
             "line": 15
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`(toc)`"
         },
         {
@@ -85,7 +85,7 @@
             "documentPath": "content.md",
             "line": 15
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -96,7 +96,7 @@
             "documentPath": "content.md",
             "line": 15
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "there is an optional parameter that can have one of the following values:"
         },
         {
@@ -107,7 +107,7 @@
             "documentPath": "content.md",
             "line": 17
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "* no-table"
         },
         {
@@ -118,7 +118,7 @@
             "documentPath": "content.md",
             "line": 18
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "* unlabeled"
         },
         {
@@ -129,7 +129,7 @@
             "documentPath": "content.md",
             "line": 19
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "* labeled"
         },
         {
@@ -140,7 +140,7 @@
             "documentPath": "content.md",
             "line": 20
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "* numbered"
         },
         {
@@ -151,7 +151,7 @@
             "documentPath": "content.md",
             "line": 21
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "* numbered-labeled"
         },
         {
@@ -162,7 +162,7 @@
             "documentPath": "content.md",
             "line": 22
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "* bulleted"
         },
         {
@@ -173,7 +173,7 @@
             "documentPath": "content.md",
             "line": 23
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "* bulleted-labeled"
         },
         {
@@ -184,7 +184,7 @@
             "documentPath": "content.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Examples"
         },
         {
@@ -195,7 +195,7 @@
             "documentPath": "content.md",
             "line": 27
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```doculisp\n(contents (toc))\n```"
         },
         {
@@ -206,7 +206,7 @@
             "documentPath": "content.md",
             "line": 31
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```doculisp\n(contents (toc bulleted-labeled))\n```"
         },
         {
@@ -217,7 +217,7 @@
             "documentPath": "content.md",
             "line": 35
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Any of the options with "
         },
         {
@@ -228,7 +228,7 @@
             "documentPath": "content.md",
             "line": 35
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`labled`"
         },
         {
@@ -239,7 +239,7 @@
             "documentPath": "content.md",
             "line": 35
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -250,7 +250,7 @@
             "documentPath": "content.md",
             "line": 35
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "on it will use the name of the subsection. "
         },
         {
@@ -261,7 +261,7 @@
             "documentPath": "content.md",
             "line": 37
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```doculisp\n(dl\n    (file-meta\n        (title Some Document)\n        (include\n            (chapter ./first) (*The title of this document is \"An introduction\")\n        )\n    )\n\n    (content (toc bulleted-labeled))\n)\n```"
         },
         {
@@ -272,7 +272,7 @@
             "documentPath": "content.md",
             "line": 50
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The table of contents would contain a line that looked like:"
         },
         {
@@ -283,7 +283,7 @@
             "documentPath": "content.md",
             "line": 52
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```markdown\n* Chapter: [An Introduction](#an-introduction)\n```"
         }
       ],

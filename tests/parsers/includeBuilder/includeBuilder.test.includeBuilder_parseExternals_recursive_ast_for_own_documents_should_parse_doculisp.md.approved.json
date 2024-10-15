@@ -29,7 +29,7 @@
             "documentPath": "doculisp.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "All doculisp is contained in an outer doculisp block. That block starts with "
         },
         {
@@ -40,7 +40,7 @@
             "documentPath": "doculisp.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`(dl`"
         },
         {
@@ -51,7 +51,7 @@
             "documentPath": "doculisp.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -62,7 +62,7 @@
             "documentPath": "doculisp.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "followed by a white space. This doculisp block must be contained in an html comment."
         },
         {
@@ -73,7 +73,7 @@
             "documentPath": "doculisp.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Example"
         },
         {
@@ -84,7 +84,7 @@
             "documentPath": "doculisp.md",
             "line": 13
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Doculisp)\n        (include\n            (section ./doculisp.md)\n        )\n    )\n\n    (content (toc numbered-labled))\n)\n-->\n```"
         },
         {
@@ -95,7 +95,7 @@
             "documentPath": "doculisp.md",
             "line": 28
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "You will notice that in this example the doculisp contains 2 main blocks, however it is valid for the Doculisp block to contain more or less. Even zero other blocks."
         }
       ],

@@ -75,7 +75,7 @@
                   "documentPath": "./childDoc.md",
                   "line": 12
                 },
-                "type": "ast-write",
+                "type": "doculisp-write",
                 "value": "hello from the child"
               },
               {
@@ -121,7 +121,7 @@
                         "documentPath": "./grandchild.md",
                         "line": 10
                       },
-                      "type": "ast-write",
+                      "type": "doculisp-write",
                       "value": "Hello from the grand child"
                     }
                   ],

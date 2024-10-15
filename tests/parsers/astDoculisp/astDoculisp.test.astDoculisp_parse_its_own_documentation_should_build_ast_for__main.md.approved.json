@@ -29,7 +29,7 @@
             "documentPath": "documentation\\_main.md",
             "line": 21
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```\n___  ____ ____ _  _ _    _ ____ ___\n|  \\ |  | |    |  | |    | [__  |__]\n|__/ |__| |___ |__| |___ | ___] |\n```"
         },
         {

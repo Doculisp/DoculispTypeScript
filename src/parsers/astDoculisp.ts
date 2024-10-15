@@ -454,7 +454,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
                 return util.ok({
                     type: 'parse result',
                     subResult: {
-                        type: 'ast-write',
+                        type: 'doculisp-write',
                         documentOrder: token.location,
                         value: token.text,
                     },

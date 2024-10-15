@@ -29,7 +29,7 @@
             "documentPath": "comment.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics "
         },
         {
@@ -40,7 +40,7 @@
             "documentPath": "comment.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`*`"
         },
         {
@@ -51,7 +51,7 @@
             "documentPath": "comment.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -62,7 +62,7 @@
             "documentPath": "comment.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "just after an open parenthisis and end when the block and all its subblocks are closed."
         },
         {
@@ -73,7 +73,7 @@
             "documentPath": "comment.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Example:"
         },
         {
@@ -84,7 +84,7 @@
             "documentPath": "comment.md",
             "line": 13
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (section ./comment.md)\n        )\n    )\n)\n-->\n```"
         },
         {
@@ -95,7 +95,7 @@
             "documentPath": "comment.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "In this example the "
         },
         {
@@ -106,7 +106,7 @@
             "documentPath": "comment.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`section-meta`"
         },
         {
@@ -117,7 +117,7 @@
             "documentPath": "comment.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -128,7 +128,7 @@
             "documentPath": "comment.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices."
         },
         {
@@ -139,7 +139,7 @@
             "documentPath": "comment.md",
             "line": 31
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "xample:"
         },
         {
@@ -150,7 +150,7 @@
             "documentPath": "comment.md",
             "line": 33
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```markdown\n<!--\n(dl\n    (*section-meta\n        (title Doculisp)\n        (*include\n            (section ./doculisp.md)\n            (section ./section-meta.md)\n            (section ./content.md)\n            (*section ./comment.md)\n        )\n    )\n)\n-->\n```"
         },
         {
@@ -173,7 +173,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "In this example the "
         },
         {
@@ -184,7 +184,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`section-meta`"
         },
         {
@@ -195,7 +195,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -206,7 +206,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "and all its subblocks are commented out. However when you uncomment "
         },
         {
@@ -217,7 +217,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`section-meta`"
         },
         {
@@ -228,7 +228,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -239,7 +239,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "then the "
         },
         {
@@ -250,7 +250,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`include`"
         },
         {
@@ -261,7 +261,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -272,7 +272,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "block will be commented out. When you uncomment that block, then the "
         },
         {
@@ -283,7 +283,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`section ./comment.md`"
         },
         {
@@ -294,7 +294,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -305,7 +305,7 @@
             "documentPath": "comment.md",
             "line": 51
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "block will be commented out."
         }
       ],

@@ -29,7 +29,7 @@
             "documentPath": "_main.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Hello World!"
         },
         {
@@ -40,7 +40,7 @@
             "documentPath": "_main.md",
             "line": 13
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "(content)"
         }
       ],
@@ -76,7 +76,7 @@
                   "documentPath": "./child.md",
                   "line": 12
                 },
-                "type": "ast-write",
+                "type": "doculisp-write",
                 "value": "Hi Dad!"
               },
               {
@@ -87,7 +87,7 @@
                   "documentPath": "./child.md",
                   "line": 14
                 },
-                "type": "ast-write",
+                "type": "doculisp-write",
                 "value": "(content)"
               }
             ],
@@ -123,7 +123,7 @@
                         "documentPath": "C:/grand.md",
                         "line": 9
                       },
-                      "type": "ast-write",
+                      "type": "doculisp-write",
                       "value": "Hi gramps!"
                     }
                   ],

@@ -29,7 +29,7 @@
             "documentPath": "structure.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses "
         },
         {
@@ -40,7 +40,7 @@
             "documentPath": "structure.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`(`"
         },
         {
@@ -51,7 +51,7 @@
             "documentPath": "structure.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -62,7 +62,7 @@
             "documentPath": "structure.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses "
         },
         {
@@ -73,7 +73,7 @@
             "documentPath": "structure.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`)`"
         },
         {
@@ -84,7 +84,7 @@
             "documentPath": "structure.md",
             "line": 9
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "."
         },
         {
@@ -95,7 +95,7 @@
             "documentPath": "structure.md",
             "line": 11
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Even the Doculisp main block follows this."
         },
         {
@@ -106,7 +106,7 @@
             "documentPath": "structure.md",
             "line": 13
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Example"
         },
         {
@@ -117,7 +117,7 @@
             "documentPath": "structure.md",
             "line": 15
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```markdown\n<!--\n(dl\n    (section-meta\n        (title Basic Structure)\n    )\n)\n-->\n```"
         },
         {
@@ -128,7 +128,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "The first block is the "
         },
         {
@@ -139,7 +139,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`dl`"
         },
         {
@@ -150,7 +150,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -161,7 +161,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "block. In it "
         },
         {
@@ -172,7 +172,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`dl`"
         },
         {
@@ -183,7 +183,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -194,7 +194,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "is the atom. It contains the "
         },
         {
@@ -205,7 +205,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`section-meta`"
         },
         {
@@ -216,7 +216,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -227,7 +227,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "sub-block.  That block has the atom "
         },
         {
@@ -238,7 +238,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`section-meta`"
         },
         {
@@ -249,7 +249,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -260,7 +260,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "followed by a further sub block. The last sub block is the "
         },
         {
@@ -271,7 +271,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`title`"
         },
         {
@@ -282,7 +282,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -293,7 +293,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "sub block. In it "
         },
         {
@@ -304,7 +304,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`title`"
         },
         {
@@ -315,7 +315,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -326,7 +326,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "is the atom and "
         },
         {
@@ -337,7 +337,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`Basic Structure`"
         },
         {
@@ -348,7 +348,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -359,7 +359,7 @@
             "documentPath": "structure.md",
             "line": 25
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "is the parameter."
         },
         {
@@ -382,7 +382,7 @@
             "documentPath": "structure.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "A parameter is a string of characters that contains no line advancement ("
         },
         {
@@ -393,7 +393,7 @@
             "documentPath": "structure.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`\\r`"
         },
         {
@@ -404,7 +404,7 @@
             "documentPath": "structure.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": " "
         },
         {
@@ -415,7 +415,7 @@
             "documentPath": "structure.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "or "
         },
         {
@@ -426,7 +426,7 @@
             "documentPath": "structure.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "`\\n`"
         },
         {
@@ -437,7 +437,7 @@
             "documentPath": "structure.md",
             "line": 29
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": ") character and no parentheses (unless escaped). A parameter has a max length of 255 characters."
         },
         {
@@ -460,7 +460,7 @@
             "documentPath": "structure.md",
             "line": 33
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "```doculisp\n(atom)\n(atom parameter)\n(atom (atom2))\n(atom (atom2 second parameter))\n```"
         }
       ],

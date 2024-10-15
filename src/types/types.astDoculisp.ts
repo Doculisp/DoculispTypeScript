@@ -6,7 +6,7 @@ export interface ILocationSortable {
 };
 
 export interface IWrite extends ILocationSortable {
-    readonly type: 'ast-write';
+    readonly type: 'doculisp-write';
     readonly value: string;
 };
 

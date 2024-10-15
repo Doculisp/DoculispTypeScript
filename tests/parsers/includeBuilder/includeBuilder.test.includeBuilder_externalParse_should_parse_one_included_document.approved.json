@@ -75,7 +75,7 @@
                   "documentPath": "C:/sub.md",
                   "line": 9
                 },
-                "type": "ast-write",
+                "type": "doculisp-write",
                 "value": "Hello world!"
               }
             ],

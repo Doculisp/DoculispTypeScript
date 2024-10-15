@@ -16,7 +16,7 @@
             "documentPath": "T:/ext/only.md",
             "line": 2
           },
-          "type": "ast-write",
+          "type": "doculisp-write",
           "value": "Some text"
         }
       ],
