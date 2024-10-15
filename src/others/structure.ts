@@ -1,20 +1,7 @@
 import { IRegisterable } from "../types/types.containers";
+import { IRootStructure, IStructure } from "../types/types.structure";
 
-interface IValidateSubItem {
-    isValidSubAtom(name: string): boolean;
-    getStructureForSubAtom(name: string): IStructure | false;
-    getMandatorySubAtoms(): IStructure[];
-}
-
-interface IStructure {
-    hasParameter: true | false | 'maybe';
-    hasSubAtom: false | IValidateSubItem;
-    mandatory?: true;
-    type: 'comment' | 'section' | 'include' | 'ref-link' | 'subtitle' | 'title' | 'section-meta' | 'toc' | 'content' | 'header' | 'dl';
-};
-
-
-function buildStructure(): IStructure {
+function buildStructure(): IRootStructure {
     const commentBlock: IStructure = {
         hasParameter: 'maybe',
         hasSubAtom: {
@@ -150,9 +137,9 @@ function buildStructure(): IStructure {
         type: 'header',
     }
 
-    const doculispBlock: IStructure = {
+    const doculispBlock: IRootStructure = {
         hasParameter: false,
-        hasSubAtom: {
+        SubAtoms: {
             getMandatorySubAtoms() { return []; },
             getStructureForSubAtom(name) {
                 if(name.startsWith('*')) {

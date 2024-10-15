@@ -2,9 +2,10 @@ import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITa
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
+import { IRootStructure } from "../types/types.structure";
 import { Token, TokenizedDocument } from "../types/types.tokens";
 
-function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
+function buildAstParser(internals: IInternals, util: IUtil, _structureRoot: IRootStructure): IAstParser {
     let hasSection: boolean = false;
     function headerize(depth: number, value: string): string {
         const id = ''.padStart(depth, '#');
@@ -26,6 +27,8 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
             let linkText: string | false = false;
             let subTitleText: string | false = false;
             let title: ITitle | false = false;
+            // const sectionMetaBlock = 
+            //     structureRoot.SubAtoms.getStructureForSubAtom('section-meta') as IStructure;
 
             function tryParseSectionMeta(input: Token[], current: ILocation): DiscardedResult<Token[]> {
                 if(input.length < 1) {
@@ -613,10 +616,10 @@ function buildAstParser(internals: IInternals, util: IUtil): IAstParser {
 }
 
 const astParser: IRegisterable = {
-    builder: (internals: IInternals, util: IUtil) => buildAstParser(internals, util),
+    builder: (internals: IInternals, util: IUtil, structure: IRootStructure) => buildAstParser(internals, util, structure),
     name: 'astParse',
     singleton: false,
-    dependencies: ['internals', 'util']
+    dependencies: ['internals', 'util', 'structure']
 };
 
 export {
