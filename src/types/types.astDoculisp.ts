@@ -67,13 +67,13 @@ export interface ISectionWriter extends ILocationSortable {
     readonly include: ILoad[];
 };
 
-export interface IEmptyAst {
+export interface IEmptyDoculisp {
     readonly type: 'ast-empty';
 }
 
 export interface IDoculisp {
     projectLocation: IProjectLocation;
-    section: ISectionWriter | IEmptyAst;
+    section: ISectionWriter | IEmptyDoculisp;
 }
 
 export type ParseAst = (tokenResults: Result<TokenizedDocument>) => Result<IDoculisp>;
