@@ -61,7 +61,7 @@ describe('astDoculisp', () => {
             const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
 
             const ast: RootAst = {
-                Ast: [
+                ast: [
                     {
                         type: 'ast-value',
                         value: 'Some text',
@@ -77,27 +77,28 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
     
-        it.skip('should parse multiple text tokens', () => {
-            // const projectLocation = buildLocation('T:/ext/only.md', 4, 8);
-            // const tokens: Result<TokenizedDocument> = ok({
-            //     projectLocation: projectLocation,
-            //     tokens: [
-            //         {
-            //             type: 'token - text',
-            //             location: util.toLocation(projectLocation, 1, 1),
-            //             text: 'Intro text',
-            //         },
-            //         {
-            //             type: 'token - text',
-            //             location: util.toLocation(projectLocation, 5, 1),
-            //             text: 'Text after some comment',
-            //         }
-            //     ],
-            // });
+        it('should parse multiple value ast elements', () => {
+            const projectLocation = buildLocation('T:/ext/only.md', 4, 8);
+            const ast: RootAst = {
+                ast: [
+                    {
+                        type: 'ast-value',
+                        value: 'Intro text',
+                        location: util.toLocation(projectLocation, 1, 1),
+                    },
+                    {
+                        type: 'ast-value',
+                        value: 'Text after some comment',
+                        location: util.toLocation(projectLocation, 5, 1),
+                    }
+                ],
+                type: 'RootAst',
+                location: projectLocation,
+            };
     
-            // const result = parser.parse(tokens);
+            const result = parser.parse(ok(ast));
     
-            // verifyAsJson(result);
+            verifyAsJson(result);
         });
     });
 

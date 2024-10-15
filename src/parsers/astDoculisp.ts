@@ -42,7 +42,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         const astRoot = astResult.value;
         
         const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue);
-        const parsed = parser.parse(astRoot.Ast, util.toLocation(astRoot.location, 0, 0));
+        const parsed = parser.parse(astRoot.ast, util.toLocation(astRoot.location, 0, 0));
 
         if(!parsed.success) {
             return parsed;

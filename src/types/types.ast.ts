@@ -42,7 +42,7 @@ export type CoreAst = IAstValue | AtomAst;
 export type Ast = CoreAst | IAstParameter;
 
 export type RootAst = {
-    readonly Ast: CoreAst[],
+    readonly ast: CoreAst[],
     readonly location: IProjectLocation;
     readonly type: 'RootAst',
 }

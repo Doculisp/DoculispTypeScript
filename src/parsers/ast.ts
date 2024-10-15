@@ -184,7 +184,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
         }
         
         return util.ok({
-            Ast: result,
+            ast: result,
             location: tokenDoc.projectLocation,
             type: 'RootAst'
         });
