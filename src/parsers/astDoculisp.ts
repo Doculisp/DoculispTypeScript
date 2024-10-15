@@ -1,4 +1,4 @@
-import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.ast";
+import { AstBulletStyle, AstPart, IAst, IAstParser, IContentLocation, ILoad, ITableOfContents, ITitle, bulletStyles } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { DiscardedResult, HandleValue, IInternals, IKeeper, IParseStepForward, StepParseResult } from "../types/types.internal";
@@ -677,7 +677,7 @@ function buildAstParser(internals: IInternals, util: IUtil, structureRoot: IRoot
 
 const astParser: IRegisterable = {
     builder: (internals: IInternals, util: IUtil, structure: IRootStructure) => buildAstParser(internals, util, structure),
-    name: 'astParse',
+    name: 'astDoculispParse',
     singleton: false,
     dependencies: ['internals', 'util', 'structure']
 };

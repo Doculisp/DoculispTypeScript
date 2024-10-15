@@ -3,7 +3,7 @@ import path from 'path';
 import { Options } from "approvals/lib/Core/Options";
 import { IDictionary, ITestableContainer } from "../../../src/types/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
-import { IAst } from "../../../src/types/types.ast";
+import { IAst } from "../../../src/types/types.astDoculisp";
 import { IAstBuilder } from "../../../src/types/types.astBuilder";
 import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";

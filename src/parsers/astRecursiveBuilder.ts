@@ -1,4 +1,4 @@
-import { IAst, IAstParser, ISectionWriter } from "../types/types.ast";
+import { IAst, IAstParser, ISectionWriter } from "../types/types.astDoculisp";
 import { IAstBuilder } from "../types/types.astBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { DocumentParser } from "../types/types.document";
@@ -93,7 +93,7 @@ const astBuilder : IRegisterable = {
     builder: (util: IUtil, astParse: IAstParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, path),
     name: 'astBuilder',
     singleton: true,
-    dependencies: ['util', 'astParse', 'documentParse', 'tokenizer', 'fileHandler', 'path']
+    dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'path']
 };
 
 export {

@@ -1,4 +1,4 @@
-import { IAst } from "./types.ast";
+import { IAst } from "./types.astDoculisp";
 import { Result } from "./types.general";
 
 export interface IStringWriter {
