@@ -116,7 +116,13 @@ describe('ast', () => {
             verifyAsJson(result);
         });
 
-        it.skip('should parse a container', () => {
+        it('should parse a container with a basic atom', () => {
+            const text = '(section-meta (title))';
+            const result = toResult(text, buildLocation('./_main.dlisp', 1, 1));
+            verifyAsJson(result);
+        });
+
+        it('should parse a container with a command', () => {
             const text = `
 (section-meta
     (title Doculisp)
@@ -127,7 +133,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
 
-        it.skip('should parse a document with all the parts', () => {
+        it('should parse a document with all the parts', () => {
             const text = `
 (section-meta
     (title Doculisp)

@@ -1,0 +1,264 @@
+{
+  "success": true,
+  "value": [
+    {
+      "location": {
+        "char": 2,
+        "documentDepth": 4,
+        "documentIndex": 7,
+        "documentPath": "./_main.dlisp",
+        "line": 2
+      },
+      "subStructure": [
+        {
+          "location": {
+            "char": 6,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 3
+          },
+          "parameter": {
+            "location": {
+              "char": 12,
+              "documentDepth": 4,
+              "documentIndex": 7,
+              "documentPath": "./_main.dlisp",
+              "line": 3
+            },
+            "type": "ast-Parameter",
+            "value": "Doculisp"
+          },
+          "type": "ast-Command",
+          "value": "title"
+        },
+        {
+          "location": {
+            "char": 6,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 4
+          },
+          "subStructure": [
+            {
+              "location": {
+                "char": 10,
+                "documentDepth": 4,
+                "documentIndex": 7,
+                "documentPath": "./_main.dlisp",
+                "line": 5
+              },
+              "parameter": {
+                "location": {
+                  "char": 18,
+                  "documentDepth": 4,
+                  "documentIndex": 7,
+                  "documentPath": "./_main.dlisp",
+                  "line": 5
+                },
+                "type": "ast-Parameter",
+                "value": "./structure.md"
+              },
+              "type": "ast-Command",
+              "value": "Section"
+            },
+            {
+              "location": {
+                "char": 10,
+                "documentDepth": 4,
+                "documentIndex": 7,
+                "documentPath": "./_main.dlisp",
+                "line": 6
+              },
+              "parameter": {
+                "location": {
+                  "char": 18,
+                  "documentDepth": 4,
+                  "documentIndex": 7,
+                  "documentPath": "./_main.dlisp",
+                  "line": 6
+                },
+                "type": "ast-Parameter",
+                "value": "./doculisp.md"
+              },
+              "type": "ast-Command",
+              "value": "Section"
+            },
+            {
+              "location": {
+                "char": 10,
+                "documentDepth": 4,
+                "documentIndex": 7,
+                "documentPath": "./_main.dlisp",
+                "line": 7
+              },
+              "parameter": {
+                "location": {
+                  "char": 18,
+                  "documentDepth": 4,
+                  "documentIndex": 7,
+                  "documentPath": "./_main.dlisp",
+                  "line": 7
+                },
+                "type": "ast-Parameter",
+                "value": "./section-meta.md"
+              },
+              "type": "ast-Command",
+              "value": "Section"
+            },
+            {
+              "location": {
+                "char": 10,
+                "documentDepth": 4,
+                "documentIndex": 7,
+                "documentPath": "./_main.dlisp",
+                "line": 8
+              },
+              "parameter": {
+                "location": {
+                  "char": 18,
+                  "documentDepth": 4,
+                  "documentIndex": 7,
+                  "documentPath": "./_main.dlisp",
+                  "line": 8
+                },
+                "type": "ast-Parameter",
+                "value": "./content.md"
+              },
+              "type": "ast-Command",
+              "value": "Section"
+            },
+            {
+              "location": {
+                "char": 10,
+                "documentDepth": 4,
+                "documentIndex": 7,
+                "documentPath": "./_main.dlisp",
+                "line": 9
+              },
+              "parameter": {
+                "location": {
+                  "char": 18,
+                  "documentDepth": 4,
+                  "documentIndex": 7,
+                  "documentPath": "./_main.dlisp",
+                  "line": 9
+                },
+                "type": "ast-Parameter",
+                "value": "./headings.md"
+              },
+              "type": "ast-Command",
+              "value": "Section"
+            },
+            {
+              "location": {
+                "char": 10,
+                "documentDepth": 4,
+                "documentIndex": 7,
+                "documentPath": "./_main.dlisp",
+                "line": 10
+              },
+              "parameter": {
+                "location": {
+                  "char": 18,
+                  "documentDepth": 4,
+                  "documentIndex": 7,
+                  "documentPath": "./_main.dlisp",
+                  "line": 10
+                },
+                "type": "ast-Parameter",
+                "value": "./comment.md"
+              },
+              "type": "ast-Command",
+              "value": "Section"
+            },
+            {
+              "location": {
+                "char": 10,
+                "documentDepth": 4,
+                "documentIndex": 7,
+                "documentPath": "./_main.dlisp",
+                "line": 11
+              },
+              "parameter": {
+                "location": {
+                  "char": 18,
+                  "documentDepth": 4,
+                  "documentIndex": 7,
+                  "documentPath": "./_main.dlisp",
+                  "line": 11
+                },
+                "type": "ast-Parameter",
+                "value": "./keywords.md"
+              },
+              "type": "ast-Command",
+              "value": "Section"
+            }
+          ],
+          "type": "ast-container",
+          "value": "include"
+        }
+      ],
+      "type": "ast-container",
+      "value": "section-meta"
+    },
+    {
+      "location": {
+        "char": 2,
+        "documentDepth": 4,
+        "documentIndex": 7,
+        "documentPath": "./_main.dlisp",
+        "line": 15
+      },
+      "parameter": {
+        "location": {
+          "char": 5,
+          "documentDepth": 4,
+          "documentIndex": 7,
+          "documentPath": "./_main.dlisp",
+          "line": 15
+        },
+        "type": "ast-Parameter",
+        "value": "An introduction to Doculisp"
+      },
+      "type": "ast-Command",
+      "value": "##"
+    },
+    {
+      "location": {
+        "char": 2,
+        "documentDepth": 4,
+        "documentIndex": 7,
+        "documentPath": "./_main.dlisp",
+        "line": 17
+      },
+      "subStructure": [
+        {
+          "location": {
+            "char": 11,
+            "documentDepth": 4,
+            "documentIndex": 7,
+            "documentPath": "./_main.dlisp",
+            "line": 17
+          },
+          "parameter": {
+            "location": {
+              "char": 15,
+              "documentDepth": 4,
+              "documentIndex": 7,
+              "documentPath": "./_main.dlisp",
+              "line": 17
+            },
+            "type": "ast-Parameter",
+            "value": "numbered-labeled"
+          },
+          "type": "ast-Command",
+          "value": "toc"
+        }
+      ],
+      "type": "ast-container",
+      "value": "content"
+    }
+  ]
+}

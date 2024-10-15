@@ -1,4 +1,4 @@
-import { IAstParser, IAtom, ICommand, IEmpty, IParameter, IValue, RootAst } from "../types/types.ast";
+import { AtomAst, IAstContainer, IAstParser, IAtom, ICommand, IEmpty, IParameter, IValue, RootAst } from "../types/types.ast";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
@@ -46,7 +46,16 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         }
     }
 
-    function parseAtom(input: Token[], current: ILocation): StepParseResult<Token[], RootAst> {
+    function parseContainerToken(command: AtomToken, ast: AtomAst[]): IAstContainer {
+        return {
+            type: 'ast-container',
+            subStructure: ast,
+            location: command.location,
+            value: command.text,
+        };
+    }
+
+    function parseAtom(input: Token[], current: ILocation): StepParseResult<Token[], IAtom> {
         if(input.length < 2) {
             return internals.noResultFound();
         }
@@ -70,7 +79,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         });
     };
 
-    function parseText(input: Token[], current: ILocation): StepParseResult<Token[], RootAst> {
+    function parseText(input: Token[], current: ILocation): StepParseResult<Token[], IValue> {
         if(input.length < 1) {
             return internals.noResultFound();
         }
@@ -89,7 +98,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
         });
     };
 
-    function parseCommand(input: Token[], current: ILocation): StepParseResult<Token[], RootAst> {
+    function parseCommand(input: Token[], current: ILocation): StepParseResult<Token[], ICommand> {
         if(input.length < 3) {
             return internals.noResultFound();
         }
@@ -117,6 +126,45 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             rest: trimArray(3, input),
         });
     }
+
+    function parseContainer(input: Token[], current: ILocation): StepParseResult<Token[], IAstContainer> {
+        if(input.length < 3) {
+            return internals.noResultFound();
+        }
+
+        const container = input[0] as Token;
+        const atom = input[0] as Token;
+
+        if(container.type !== 'token - atom') {
+            return internals.noResultFound();
+        }
+
+        if (atom.type !== 'token - atom') {
+            return internals.noResultFound();
+        }
+
+        const parser = internals.createArrayParser<Token, AtomAst>(parseAtom, parseCommand, parseContainer);
+        const parsed = parser.parse(trimArray(1, input), container.location);
+
+        if(!parsed.success) {
+            return parsed;
+        }
+
+        const [subAst, remaining] = parsed.value;
+
+        const close = remaining.remaining[0] as Token;
+
+        if(remaining.remaining.length === 0 || close.type !== 'token - close parenthesis') {
+            return util.fail(`Malformed lisp at ${remaining.location}`, remaining.location.documentPath);
+        }
+
+        return util.ok({
+            type: 'parse result',
+            subResult: parseContainerToken(container, subAst),
+            location: current,
+            rest: trimArray(1, remaining.remaining),
+        });
+    }
     
     function parse(tokenMaybe: Result<TokenizedDocument>): Result<RootAst[] | IEmpty> {
         if(!tokenMaybe.success) {
@@ -128,7 +176,7 @@ function buildAstParser(util: IUtil, internals: IInternals): IAstParser {
             return util.ok({ type: 'ast-Empty' });
         }
 
-        const parser = internals.createArrayParser(parseText, parseCommand, parseAtom);
+        const parser = internals.createArrayParser<Token, RootAst>(parseText, parseCommand, parseAtom, parseContainer);
         const parsed = parser.parse(tokenDoc.tokens, (tokenDoc.tokens[0] as Token).location);
 
         if(!parsed.success) {

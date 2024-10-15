@@ -20,7 +20,7 @@ export interface ICommand {
     readonly type: 'ast-Command'
 };
 
-export interface IContainer {
+export interface IAstContainer {
     readonly value: string;
     readonly location: ILocation;
     readonly subStructure: AtomAst[]
@@ -37,8 +37,7 @@ export interface IEmpty {
     readonly type: 'ast-Empty';
 }
 
-type AtomAst = ICommand | IContainer | IAtom;
-
+export type AtomAst = ICommand | IAstContainer | IAtom;
 export type RootAst = IValue | AtomAst;
 export type Ast = RootAst | IParameter;
 
