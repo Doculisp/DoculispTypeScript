@@ -1,0 +1,27 @@
+{
+  "success": true,
+  "value": [
+    {
+      "location": {
+        "char": 1,
+        "documentDepth": 4,
+        "documentIndex": 8,
+        "documentPath": "T:/ext/only.md",
+        "line": 1
+      },
+      "type": "ast-value",
+      "value": "Intro text"
+    },
+    {
+      "location": {
+        "char": 1,
+        "documentDepth": 4,
+        "documentIndex": 8,
+        "documentPath": "T:/ext/only.md",
+        "line": 5
+      },
+      "type": "ast-value",
+      "value": "Text after some comment"
+    }
+  ]
+}

@@ -76,7 +76,7 @@ describe('ast', () => {
             verifyAsJson(result);
         });
     
-        it.skip('should parse multiple text tokens', () => {
+        it('should parse multiple text tokens', () => {
             const projectLocation = buildLocation('T:/ext/only.md', 4, 8);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,
