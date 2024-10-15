@@ -1,4 +1,4 @@
-import { IAstBuilder } from "../types/types.astBuilder";
+import { IAstBuilder } from "../types/types.includeBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { IController } from "../types/types.controller";
 import { IFileWriter } from "../types/types.fileHandler";

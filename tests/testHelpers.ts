@@ -1,5 +1,5 @@
 import { IDoculisp, IDoculispParser } from "../src/types/types.astDoculisp";
-import { IAstBuilder } from "../src/types/types.astBuilder";
+import { IAstBuilder } from "../src/types/types.includeBuilder";
 import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
 import { IProjectLocation, Result } from "../src/types/types.general";

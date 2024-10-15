@@ -4,7 +4,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { IDictionary, ITestableContainer } from "../../../src/types/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { IDoculisp } from "../../../src/types/types.astDoculisp";
-import { IAstBuilder } from "../../../src/types/types.astBuilder";
+import { IAstBuilder } from "../../../src/types/types.includeBuilder";
 import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";

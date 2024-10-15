@@ -1,5 +1,5 @@
 import { IDoculisp, IDoculispParser, ISectionWriter } from "../types/types.astDoculisp";
-import { IAstBuilder } from "../types/types.astBuilder";
+import { IAstBuilder } from "../types/types.includeBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { DocumentParser } from "../types/types.document";
 import { IFileHandler } from "../types/types.fileHandler";
