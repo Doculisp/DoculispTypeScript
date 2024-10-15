@@ -7,6 +7,10 @@ import { IRootStructure } from "../types/types.structure";
 
 function buildAstParser(internals: IInternals, util: IUtil, structure: IRootStructure): IDoculispParser {
     function parse(tokenResults: Result<RootAst[] | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp> {
+        if(!tokenResults.success) {
+            return tokenResults;
+        }
+        
         return util.ok({ type: 'doculisp-empty' });
     }
 

@@ -49,7 +49,7 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
 
-        it.skip('should return failure if given failure', () => {
+        it('should return failure if given failure', () => {
             const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
     
             const result = parser.parse(failure);
