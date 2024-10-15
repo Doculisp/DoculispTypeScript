@@ -11,7 +11,7 @@ Here is a list of all the key atoms by depth:
       * `*`
     * `subtitle` text
       * `*`
-    * `link` text
+    * `ref-link` text
       * `*`
     * `include`
       * name path

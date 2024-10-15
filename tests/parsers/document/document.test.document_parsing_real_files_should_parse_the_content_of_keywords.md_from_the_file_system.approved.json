@@ -516,12 +516,12 @@
           "documentPath": "./documentation/keywords.md",
           "line": 18
         },
-        "text": "`link`",
+        "text": "`ref-link`",
         "type": "text"
       },
       {
         "location": {
-          "char": 14,
+          "char": 18,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",
@@ -532,7 +532,7 @@
       },
       {
         "location": {
-          "char": 14,
+          "char": 18,
           "documentDepth": 2,
           "documentIndex": 7,
           "documentPath": "./documentation/keywords.md",

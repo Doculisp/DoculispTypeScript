@@ -525,11 +525,11 @@
             "line": 18
           },
           "type": "ast-write",
-          "value": "`link`"
+          "value": "`ref-link`"
         },
         {
           "documentOrder": {
-            "char": 14,
+            "char": 18,
             "documentDepth": 2,
             "documentIndex": 7,
             "documentPath": "documentation\\keywords.md",
@@ -540,7 +540,7 @@
         },
         {
           "documentOrder": {
-            "char": 14,
+            "char": 18,
             "documentDepth": 2,
             "documentIndex": 7,
             "documentPath": "documentation\\keywords.md",
