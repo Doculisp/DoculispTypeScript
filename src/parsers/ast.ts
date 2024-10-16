@@ -32,7 +32,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
 
     function parseCommandToken(atom: AtomToken, parameter: ParameterToken): IAstCommand {
         return {
-            type: 'ast-Command',
+            type: 'ast-command',
             value: atom.text,
             parameter: parseParameterToken(parameter),
             location: atom.location

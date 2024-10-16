@@ -1,5 +1,5 @@
-import { CoreAst, IAstEmpty, RootAst } from "../types/types.ast";
-import { DoculispPart, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, IWrite } from "../types/types.astDoculisp";
+import { AtomAst, CoreAst, IAstCommand, IAstEmpty, RootAst } from "../types/types.ast";
+import { DoculispPart, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
@@ -33,7 +33,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             return internals.noResultFound();
         }
 
-        if(ast.type !== 'ast-Command') {
+        if(ast.type !== 'ast-command') {
             return util.fail(`Dynamic Header at '${ast.location.documentPath}' Line: ${ast.location.line}, Char: ${ast.location.char} is missing the header text`, current.documentPath);
         }
 
@@ -48,6 +48,114 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             location: current,
             rest: trimArray.trim(1, input),
         });
+    }
+
+    function parseSectionMeta(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], ITitle> {
+        function parseTitle(ast: AtomAst[], location: ILocation, label: string, refLink: string | undefined, subtitle: string | undefined): Result<ITitle> {
+            const titles = ast.filter(s => s.value === 'title');
+    
+            if(1 < titles.length) {
+                return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, current.documentPath);
+            }
+
+            if(titles.length === 0) {
+                return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} is missing a title block.`, current.documentPath);
+            }
+    
+            const title = titles[0] as AtomAst;
+    
+            if(title.type === 'ast-atom') {
+                return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, current.documentPath);
+            }
+    
+            if(title.type === 'ast-container') {
+                const next = title.subStructure[0] as AtomAst;
+                return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, current.documentPath);
+            }
+
+            let linkText = title.parameter.value.replaceAll(' ', '-');
+            if(!refLink) {
+                [
+                    '.', 
+                    ',',
+                    '!',
+                    '@',
+                    '#',
+                    '$',
+                    '%',
+                    '^',
+                    '&',
+                    '*',
+                    '(',
+                    ')',
+                    '=',
+                    '+',
+                    '{',
+                    '[',
+                    '}',
+                    ']',
+                    '|',
+                    '\\',
+                    ':',
+                    ';',
+                    "'",
+                    '"',
+                    '`',
+                    '<',
+                    ',',
+                    '>',
+                    '.',
+                    '?',
+                    '/',
+                ].forEach(v => {
+                    linkText = linkText.replaceAll(v, '');
+                });
+            }
+
+            return util.ok({
+                type: 'doculisp-title',
+                title: title.parameter.value,
+                documentOrder: title.location,
+                label: label,
+                ref_link: refLink ?? linkText,
+                subtitle: subtitle,
+            });
+        }
+
+        function parseSubtitle(ast: AtomAst[], location: ILocation): Result<string | undefined> {
+            const subtitles = ast.filter(a => a.value === 'subtitle');
+
+            if(subtitles.length === 0) {
+                return util.ok(undefined);
+            }
+
+            if(1 < subtitles.length) {
+                return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one subtitle.`, current.documentPath);
+            }
+
+            const subtitle = subtitles[0] as AtomAst;
+
+            if(subtitle.type === 'ast-atom') {
+                return util.fail(`The subtitle block at '${subtitle.location.documentPath}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} is missing the subtitle text.`, current.documentPath);
+            }
+
+            if(subtitle.type === 'ast-container') {
+                const next = subtitle.subStructure[0] as AtomAst;
+                return util.fail(`The subtitle block at '${subtitle.location.documentPath}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
+            }
+
+            return util.ok(subtitle.parameter.value);
+        }
+
+        // function parse
+
+        const ast = input[0] as CoreAst;
+
+        if(ast.type !== 'ast-container' || ast.value !== 'section-meta') {
+            return internals.noResultFound();
+        }
+
+        
     }
 
     function parse(astResult: Result<RootAst | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp> {

@@ -17,7 +17,7 @@ export interface IAstCommand {
     readonly value: string;
     readonly location: ILocation;
     readonly parameter: IAstParameter;
-    readonly type: 'ast-Command'
+    readonly type: 'ast-command'
 };
 
 export interface IAstContainer {

@@ -155,7 +155,7 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
 
-        describe.skip('section-meta', () => {
+        describe('section-meta', () => {
             it.skip('should handle all subparts put together out of order', () => {
                 const contents = `
 (section-meta
@@ -245,8 +245,8 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
-            describe.skip('title', () => {
-                it.skip('should parse a title', () => {
+            describe('title', () => {
+                it('should parse a title', () => {
                     const contents = `
 (section-meta
     (title My Cool Document)
