@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 6,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "C:/_main.dlisp",
-            "line": 2
+            "line": 3
           },
           "label": "# Main Document #",
           "ref_link": "#main-document",
@@ -24,7 +24,7 @@
         {
           "bulletStyle": "numbered-labeled",
           "documentOrder": {
-            "char": 1,
+            "char": 10,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "C:/_main.dlisp",
@@ -56,11 +56,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "C:/sub.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Fist Sub-Document ##",
                 "ref_link": "#fist-sub-document",
@@ -102,6 +102,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

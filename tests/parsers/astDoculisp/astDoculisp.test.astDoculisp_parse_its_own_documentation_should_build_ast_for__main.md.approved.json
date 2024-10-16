@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.md",
-            "line": 2
+            "line": 3
           },
           "label": "# Doculisp #",
           "ref_link": "#doculisp",
@@ -47,7 +47,7 @@
         {
           "bulletStyle": "numbered-labeled",
           "documentOrder": {
-            "char": 6,
+            "char": 15,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "documentation\\_main.md",
@@ -206,6 +206,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

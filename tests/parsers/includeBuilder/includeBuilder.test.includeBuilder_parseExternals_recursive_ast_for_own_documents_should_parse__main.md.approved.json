@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.md",
-            "line": 2
+            "line": 3
           },
           "label": "# Doculisp #",
           "ref_link": "#doculisp",
@@ -47,7 +47,7 @@
         {
           "bulletStyle": "numbered-labeled",
           "documentOrder": {
-            "char": 6,
+            "char": 15,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.md",
@@ -79,11 +79,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "./cli.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Using the Command Line Interface ##",
                 "ref_link": "#using-the-command-line-interface",
@@ -229,11 +229,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 2,
                   "documentPath": "./why.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## What Problem Does Doculisp Solve? ##",
                 "ref_link": "#what-problem-does-doculisp-solve",
@@ -301,11 +301,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 3,
                   "documentPath": "./structure.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Basic Structure ##",
                 "ref_link": "#basic-structure",
@@ -781,11 +781,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 4,
                   "documentPath": "./doculisp.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Doculisp Master Block ##",
                 "ref_link": "#doculisp-master-block",
@@ -896,11 +896,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 5,
                   "documentPath": "./section-meta.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Section Meta Block ##",
                 "ref_link": "#section-meta-block",
@@ -1644,11 +1644,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 6,
                   "documentPath": "./content.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Content Block ##",
                 "ref_link": "#content-block",
@@ -1731,7 +1731,40 @@
                   "line": 15
                 },
                 "type": "doculisp-write",
-                "value": "there is an optional parameter that can have one of the following values:"
+                "value": "there is an optional parameter that can have one of the following values, "
+              },
+              {
+                "documentOrder": {
+                  "char": 125,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./content.md",
+                  "line": 15
+                },
+                "type": "doculisp-write",
+                "value": "`labeled`"
+              },
+              {
+                "documentOrder": {
+                  "char": 135,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./content.md",
+                  "line": 15
+                },
+                "type": "doculisp-write",
+                "value": " "
+              },
+              {
+                "documentOrder": {
+                  "char": 135,
+                  "documentDepth": 2,
+                  "documentIndex": 6,
+                  "documentPath": "./content.md",
+                  "line": 15
+                },
+                "type": "doculisp-write",
+                "value": "is the default:"
               },
               {
                 "documentOrder": {
@@ -1947,11 +1980,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 7,
                   "documentPath": "./headings.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Dynamic Headings ##",
                 "ref_link": "#dynamic-headings",
@@ -2140,11 +2173,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 8,
                   "documentPath": "./comment.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Comment Block ##",
                 "ref_link": "#comment-block",
@@ -2465,11 +2498,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 9,
                   "documentPath": "./keywords.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Key Atoms by Depth ##",
                 "ref_link": "#key-atoms-by-depth",
@@ -3680,11 +3713,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 10,
                   "documentPath": "./contributors.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Contributors ✨ ##",
                 "ref_link": "#contributors-",
@@ -4023,6 +4056,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

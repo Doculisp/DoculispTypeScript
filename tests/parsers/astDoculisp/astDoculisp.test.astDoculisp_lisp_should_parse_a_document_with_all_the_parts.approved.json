@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 6,
             "documentDepth": 4,
             "documentIndex": 7,
             "documentPath": "./_main.dlisp",
-            "line": 2
+            "line": 3
           },
           "label": "#### Doculisp ####",
           "ref_link": "#doculisp",
@@ -36,7 +36,7 @@
         {
           "bulletStyle": "numbered-labeled",
           "documentOrder": {
-            "char": 1,
+            "char": 10,
             "documentDepth": 4,
             "documentIndex": 7,
             "documentPath": "./_main.dlisp",
@@ -156,6 +156,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

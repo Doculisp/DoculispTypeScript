@@ -11,7 +11,7 @@ import { container } from "../../../src/container";
 import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
 import { buildLocation, testable } from '../../testHelpers';
 
-describe.skip('includeBuilder', () => {
+describe('includeBuilder', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
 
     let util: IUtil = undefined as any;
@@ -52,26 +52,26 @@ describe.skip('includeBuilder', () => {
         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
     }
 
-    describe.skip('externalParse', () => {
+    describe('externalParse', () => {
         let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> = undefined as any;
 
         beforeEach(() => {
             toExternalResult = testable.include.includeResultBuilder(container, setup);
         });
 
-        it.skip('should handle an empty ast', () => {
+        it('should handle an empty ast', () => {
             const result = toExternalResult("", buildLocation('C:/_main.dlisp', 1, 1));
             verifyAsJson(result);
         });
 
-        it.skip('should return an error if given an error', () => {
+        it('should return an error if given an error', () => {
             const builder: IIncludeBuilder = testable.include.parserBuilder(container, setup);
 
             const expectedResult = fail('This is a failure', 'M:/y/pah.md');
             expect(builder.parseExternals(expectedResult)).toBe(expectedResult);
         });
 
-        it.skip('should return an error if there is a file error', () => {
+        it('should return an error if there is a file error', () => {
             const badPath = 'B:/add.md';
             const expectedResult = fail('baad file error', badPath);
             addPathResult(badPath, expectedResult);
@@ -94,7 +94,7 @@ describe.skip('includeBuilder', () => {
             expect(result).toBe(expectedResult);
         });
 
-        it.skip('should parse one included document', () =>{
+        it('should parse one included document', () =>{
             const subDocument = `<!--
 (dl
     (section-meta
@@ -123,7 +123,7 @@ Hello world!
             verifyAsJson(toExternalResult(document, buildLocation('C:/_main.dlisp', 1, 1)));
         });
 
-        it.skip('should parse two sub documents', () => {
+        it('should parse two sub documents', () => {
             const subA = `<!--
 (dl
     (section-meta
@@ -168,7 +168,7 @@ Sub document B text.
             verifyAsJson(result);
         });
 
-        it.skip('should parse a sub document containing a sub document', () => {
+        it('should parse a sub document containing a sub document', () => {
             const grandChildDocument = `<!--
 (dl
     (section-meta
@@ -221,14 +221,14 @@ Hello World!
         });
     });
 
-    describe.skip('parse', () => {
+    describe('parse', () => {
         let toResult: (filePath: string) => Result<IDoculisp | IEmptyDoculisp> = undefined as any
 
         beforeEach(() => {
             toResult = testable.include.resultBuilder(container, setup);
         });
 
-        it.skip('should return file error if there is one', () => {
+        it('should return file error if there is one', () => {
             const docPath = 'C:/bad.md';
 
             const expectedResult = fail('baad file', docPath);
@@ -239,7 +239,7 @@ Hello World!
             expect(result).toBe(expectedResult);
         });
 
-        it.skip('should parse an empty file', () => {
+        it('should parse an empty file', () => {
             const doc = '';
             const docPath = 'empty.md';
             
@@ -249,7 +249,7 @@ Hello World!
             verifyAsJson(result);
         });
 
-        it.skip('should parse a document with a child and grand child', () => {
+        it('should parse a document with a child and grand child', () => {
             const grandChildPath = './grandchild.md'
             const grandchild = `
 <!--
@@ -303,7 +303,7 @@ hello from the child
         });
     });
 
-    describe.skip('parseExternals recursive ast for own documents', () => {
+    describe('parseExternals recursive ast for own documents', () => {
         let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> = undefined as any;
         let workingDir: string = null as any;
         beforeEach(() => {
@@ -329,42 +329,42 @@ hello from the child
             return toExternalResult(content, location);
         }
 
-        it.skip('should parse structure.md', () => {
+        it('should parse structure.md', () => {
             const result = getContents('structure.md', 2, 1);
             verifyAsJson(result);
         });
 
-        it.skip('should parse doculisp.md', () => {
+        it('should parse doculisp.md', () => {
             const result = getContents('doculisp.md', 2, 2);
             verifyAsJson(result);
         });
 
-        it.skip('should parse section-meta.md', () => {
+        it('should parse section-meta.md', () => {
             const result = getContents('section-meta.md', 2, 3);
             verifyAsJson(result);
         });
 
-        it.skip('should parse content.md', () => {
+        it('should parse content.md', () => {
             const result = getContents('content.md', 2, 4);
             verifyAsJson(result);
         });
 
-        it.skip('should parse headings.md', () => {
+        it('should parse headings.md', () => {
             const result = getContents('headings.md', 2, 5);
             verifyAsJson(result);
         });
 
-        it.skip('should parse comment.md', () => {
+        it('should parse comment.md', () => {
             const result = getContents('comment.md', 2, 6);
             verifyAsJson(result);
         });
 
-        it.skip('should parse keywords.md', () => {
+        it('should parse keywords.md', () => {
             const result = getContents('keywords.md', 2, 6);
             verifyAsJson(result);
         });
 
-        it.skip('should parse _main.md', () => {
+        it('should parse _main.md', () => {
             const result = getContents('_main.md', 1, 1);
             verifyAsJson(result);
         });

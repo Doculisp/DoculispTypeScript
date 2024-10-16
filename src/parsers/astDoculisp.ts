@@ -362,7 +362,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             if(!hasInclude) {
                 return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists without an include block that has external files.`, current.documentPath);
             }
-    
+
             const content: IContentLocation = {
                 type: 'doculisp-content',
                 documentOrder: contentBlock.location,
@@ -375,6 +375,13 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     location: contentBlock.location,
                     rest: trimArray.trim(1, input),
                 });
+            }
+
+            const bad = contentBlock.subStructure.filter(a => a.value !== 'toc');
+
+            if(0 < bad.length) {
+                const next = bad[0] as AtomAst;
+                return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} has unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
             }
     
             const tocMaybe = parseToc(contentBlock.subStructure, contentBlock.location);

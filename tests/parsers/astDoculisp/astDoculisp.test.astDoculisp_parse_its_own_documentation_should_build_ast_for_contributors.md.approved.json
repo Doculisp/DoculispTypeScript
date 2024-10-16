@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 2,
             "documentIndex": 8,
             "documentPath": "documentation\\contributors.md",
-            "line": 2
+            "line": 3
           },
           "label": "## Contributors ✨ ##",
           "ref_link": "#contributors-",
@@ -339,6 +339,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

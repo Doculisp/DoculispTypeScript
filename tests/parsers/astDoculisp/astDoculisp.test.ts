@@ -130,7 +130,7 @@ describe('astDoculisp', () => {
             verifyAsJson(result);
         });
 
-        it.skip('should parse a document with all the parts', () => {
+        it('should parse a document with all the parts', () => {
             const text = `
 (section-meta
     (title Doculisp)
@@ -590,7 +590,7 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
-            it.skip('should not parse a content whith a sub command other then toc', () => {
+            it('should not parse a content whith a sub command other then toc', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
@@ -625,7 +625,7 @@ A story of a misbehaving parser.
         })
     });
 
-    describe.skip('parse its own documentation', () => {
+    describe('parse its own documentation', () => {
         function getContents(fileName: string, depth: number, index: number): Result<IDoculisp | IEmptyDoculisp> {
             const filePath = path.join('./documentation/', fileName);
             const location: IProjectLocation = buildLocation(filePath, depth, index);
@@ -635,47 +635,47 @@ A story of a misbehaving parser.
             return toResult(content, location);
         }
 
-        it.skip('should build ast for structure.md', () => {
+        it('should build ast for structure.md', () => {
             const result = getContents('structure.md', 2, 1);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for doculisp.md', () => {
+        it('should build ast for doculisp.md', () => {
             const result = getContents('doculisp.md', 2, 2);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for section-meta.md', () => {
+        it('should build ast for section-meta.md', () => {
             const result = getContents('section-meta.md', 2, 3);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for content.md', () => {
+        it('should build ast for content.md', () => {
             const result = getContents('content.md', 2, 4);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for headings.md', () => {
+        it('should build ast for headings.md', () => {
             const result = getContents('headings.md', 2, 5);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for comment.md', () => {
+        it('should build ast for comment.md', () => {
             const result = getContents('comment.md', 2, 6);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for keywords.md', () => {
+        it('should build ast for keywords.md', () => {
             const result = getContents('keywords.md', 2, 7);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for contributors.md', () => {
+        it('should build ast for contributors.md', () => {
             const result = getContents('contributors.md', 2, 8);
             verifyAsJson(result);
         });
 
-        it.skip('should build ast for _main.md', () => {
+        it('should build ast for _main.md', () => {
             const result = getContents('_main.md', 1, 1);
             verifyAsJson(result);
         });

@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 2,
             "documentIndex": 6,
             "documentPath": "keywords.md",
-            "line": 2
+            "line": 3
           },
           "label": "## Key Atoms by Depth ##",
           "ref_link": "#key-atoms-by-depth",
@@ -1208,6 +1208,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

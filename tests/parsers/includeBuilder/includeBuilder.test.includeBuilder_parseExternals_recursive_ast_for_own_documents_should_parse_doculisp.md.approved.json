@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 2,
             "documentIndex": 2,
             "documentPath": "doculisp.md",
-            "line": 2
+            "line": 3
           },
           "label": "## Doculisp Master Block ##",
           "ref_link": "#doculisp-master-block",
@@ -108,6 +108,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

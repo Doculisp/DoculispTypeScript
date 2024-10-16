@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 2,
             "documentIndex": 6,
             "documentPath": "documentation\\comment.md",
-            "line": 2
+            "line": 3
           },
           "label": "## Comment Block ##",
           "ref_link": "#comment-block",
@@ -318,6 +318,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

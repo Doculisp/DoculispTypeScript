@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 2,
             "documentIndex": 5,
             "documentPath": "headings.md",
-            "line": 2
+            "line": 3
           },
           "label": "## Dynamic Headings ##",
           "ref_link": "#dynamic-headings",
@@ -186,6 +186,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

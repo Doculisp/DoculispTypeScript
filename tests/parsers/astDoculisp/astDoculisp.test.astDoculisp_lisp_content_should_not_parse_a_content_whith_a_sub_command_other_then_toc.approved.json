@@ -1,5 +1,5 @@
 {
   "documentPath": "./itty.dlisp",
-  "message": "Content at {\"path\":\"./itty.dlisp\",\"line\":9,\"char\":1} contains unknown sub command at {\"path\":\"./itty.dlisp\",\"line\":9,\"char\":11}",
+  "message": "The content block at './itty.dlisp' Line: 9, Char: 2 has unknown command '#' at Line: 9, Char: 11.",
   "success": false
 }

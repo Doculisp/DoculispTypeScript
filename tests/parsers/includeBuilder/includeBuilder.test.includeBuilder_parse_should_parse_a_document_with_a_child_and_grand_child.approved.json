@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 6,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "./_main.dlisp",
-            "line": 2
+            "line": 3
           },
           "label": "# The True Root #",
           "ref_link": "#the-true-root",
@@ -24,7 +24,7 @@
         {
           "bulletStyle": "labeled",
           "documentOrder": {
-            "char": 1,
+            "char": 10,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "./_main.dlisp",
@@ -56,11 +56,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "./childDoc.md",
-                  "line": 3
+                  "line": 4
                 },
                 "label": "## The Child to Bare ##",
                 "ref_link": "#the-child-to-bare",
@@ -102,11 +102,11 @@
                   "doculisp": [
                     {
                       "documentOrder": {
-                        "char": 2,
+                        "char": 10,
                         "documentDepth": 3,
                         "documentIndex": 1,
                         "documentPath": "./grandchild.md",
-                        "line": 3
+                        "line": 4
                       },
                       "label": "### The GRoot of all Docs ###",
                       "ref_link": "#the-groot-of-all-docs",
@@ -162,6 +162,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

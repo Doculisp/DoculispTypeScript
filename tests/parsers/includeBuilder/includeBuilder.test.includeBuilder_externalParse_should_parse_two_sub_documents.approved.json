@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 6,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.dlisp",
-            "line": 2
+            "line": 3
           },
           "label": "# Main Multiple Sub Documents #",
           "ref_link": "#main-multiple-sub-documents",
@@ -45,11 +45,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "A:/subA.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Sub A ##",
                 "ref_link": "#sub-a",
@@ -94,11 +94,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 2,
                   "documentPath": "B:/subB.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## Sub B ##",
                 "ref_link": "#sub-b",
@@ -140,6 +140,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

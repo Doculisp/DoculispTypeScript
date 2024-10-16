@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 2,
             "documentIndex": 3,
             "documentPath": "section-meta.md",
-            "line": 2
+            "line": 3
           },
           "label": "## Section Meta Block ##",
           "ref_link": "#section-meta-block",
@@ -741,6 +741,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

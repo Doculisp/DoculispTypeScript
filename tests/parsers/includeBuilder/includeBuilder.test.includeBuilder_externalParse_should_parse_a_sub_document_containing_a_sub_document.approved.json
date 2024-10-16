@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 10,
             "documentDepth": 1,
             "documentIndex": 1,
             "documentPath": "_main.md",
-            "line": 2
+            "line": 3
           },
           "label": "# Top Level Document #",
           "ref_link": "#top-level-document",
@@ -57,11 +57,11 @@
             "doculisp": [
               {
                 "documentOrder": {
-                  "char": 2,
+                  "char": 10,
                   "documentDepth": 2,
                   "documentIndex": 1,
                   "documentPath": "./child.md",
-                  "line": 2
+                  "line": 3
                 },
                 "label": "## A Child Document ##",
                 "ref_link": "#a-child-document",
@@ -104,11 +104,11 @@
                   "doculisp": [
                     {
                       "documentOrder": {
-                        "char": 2,
+                        "char": 10,
                         "documentDepth": 3,
                         "documentIndex": 1,
                         "documentPath": "C:/grand.md",
-                        "line": 2
+                        "line": 3
                       },
                       "label": "### A Grandchild Document ###",
                       "ref_link": "#a-grandchild-document",
@@ -164,6 +164,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }
