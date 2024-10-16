@@ -12,7 +12,7 @@ The content block signifies where to build the document from the included docume
 
 The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.
 
-The structure of the table of contents is `(toc)` there is an optional parameter that can have one of the following values:
+The structure of the table of contents is `(toc)` there is an optional parameter that can have one of the following values, `labeled` is the default:
 
 * no-table
 * unlabeled

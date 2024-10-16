@@ -87,7 +87,40 @@
           "documentPath": "./documentation/content.md",
           "line": 15
         },
-        "text": "there is an optional parameter that can have one of the following values:",
+        "text": "there is an optional parameter that can have one of the following values, ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 125,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": "`labeled`",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 135,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 135,
+          "documentDepth": 2,
+          "documentIndex": 4,
+          "documentPath": "./documentation/content.md",
+          "line": 15
+        },
+        "text": "is the default:",
         "type": "text"
       },
       {

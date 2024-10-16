@@ -450,8 +450,8 @@ A story of a misbehaving parser.
             });
         });
 
-        describe.skip('content', () => {
-            it.skip('should parse the content location', () => {
+        describe('content', () => {
+            it('should parse the content location', () => {
                 const text = `
 (section-meta
     (title Using Content)
@@ -499,7 +499,7 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
-            it.skip('should parse a table of contents', () => {
+            it('should parse a table of contents', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)
@@ -557,7 +557,7 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
-            it.skip('should not parse a table of contents with unrecognizable bullet style', () => {
+            it('should not parse a table of contents with unrecognizable bullet style', () => {
                 const text = `
 (section-meta
     (title Sing Me a Song)

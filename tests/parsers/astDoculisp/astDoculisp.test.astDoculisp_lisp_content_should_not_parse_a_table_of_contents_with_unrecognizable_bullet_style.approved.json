@@ -1,5 +1,5 @@
 {
   "documentPath": "./itty.dlisp",
-  "message": "Toc command at {\"path\":\"./itty.dlisp\",\"line\":9,\"char\":11} is given unknown bullet style of \"unknown\"\n exceptable styles are [ \"no-table\", \"unlabeled\", \"labeled\", \"numbered\", \"numbered-labeled\", \"bulleted\", \"bulleted-labeled\" ]",
+  "message": "The toc block at './itty.dlisp' Line: 9, Char: 11 has unknown bullet style 'unknown'.",
   "success": false
 }

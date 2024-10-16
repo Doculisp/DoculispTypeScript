@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 6,
             "documentDepth": 2,
             "documentIndex": 1,
             "documentPath": "./itty.dlisp",
-            "line": 2
+            "line": 3
           },
           "label": "## Sing Me a Song ##",
           "ref_link": "#sing-me-a-song",
@@ -24,7 +24,7 @@
         {
           "bulletStyle": "bulleted",
           "documentOrder": {
-            "char": 1,
+            "char": 10,
             "documentDepth": 2,
             "documentIndex": 1,
             "documentPath": "./itty.dlisp",
@@ -66,6 +66,7 @@
         }
       ],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

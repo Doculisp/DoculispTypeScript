@@ -1,5 +1,5 @@
 import { AtomAst, CoreAst, IAstCommand, IAstEmpty, RootAst } from "../types/types.ast";
-import { DoculispPart, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, ITitle, IWrite } from "../types/types.astDoculisp";
+import { DoculispBulletStyle, DoculispPart, IContentLocation, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
@@ -273,6 +273,109 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         });
     }
 
+    function parseContent(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IContentLocation | ITableOfContents> {
+        function parseToc(ast: AtomAst[], location: ILocation): Result<ITableOfContents | false> {
+            const tocs = ast.filter(a => a.value === 'toc');
+
+            if(tocs.length === 0) {
+                return util.ok(false);
+            }
+
+            if(1 < tocs.length) {
+                return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one toc.`, location.documentPath);
+            }
+
+            const toc = tocs[0] as AtomAst;
+
+            if(toc.type === 'ast-container') {
+                const next = toc.subStructure[0] as AtomAst;
+                return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+            }
+
+            const bulletStyle = 
+                (toc.type === 'ast-atom'
+                    ? 'labeled'
+                    : toc.parameter.value
+                ) as DoculispBulletStyle;
+
+            const validStyles: DoculispBulletStyle[] = [
+                'bulleted',
+                'bulleted-labeled',
+                'labeled',
+                'no-table',
+                'numbered',
+                'numbered-labeled',
+                'unlabeled'
+            ];
+
+            if(!validStyles.includes(bulletStyle)) {
+                return util.fail(`The toc block at '${toc.location.documentPath}' Line: ${toc.location.line}, Char: ${toc.location.char} has unknown bullet style '${bulletStyle}'.`, location.documentPath);
+            }
+
+            if(bulletStyle === 'no-table') {
+                return util.ok(false);
+            }
+
+            const docuToc: ITableOfContents = {
+                type: 'doculisp-toc',
+                documentOrder: toc.location.increaseChar(-1),
+                bulletStyle: bulletStyle,
+            };
+
+            return util.ok(docuToc);
+        }
+
+        const contentBlock = input[0] as CoreAst;
+
+        if(contentBlock.value !== 'content') {
+            return internals.noResultFound();
+        }
+
+        if(contentBlock.type === 'ast-value') {
+            return internals.noResultFound();
+        }
+
+        if(contentBlock.type === 'ast-command') {
+            return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} contains unknown parameter '${contentBlock.parameter.value}'`, current.documentPath);
+        }
+
+        const content: IContentLocation = {
+            type: 'doculisp-content',
+            documentOrder: contentBlock.location,
+        }
+
+        if(contentBlock.type === 'ast-atom') {
+            return util.ok({
+                type: 'parse result',
+                subResult: content,
+                location: contentBlock.location,
+                rest: trimArray.trim(1, input),
+            });
+        }
+
+        const tocMaybe = parseToc(contentBlock.subStructure, contentBlock.location);
+
+        if(!tocMaybe.success) {
+            return tocMaybe;
+        }
+
+        if(!tocMaybe.value) {
+            return util.ok({
+                type: 'parse result',
+                subResult: content,
+                location: contentBlock.location,
+                rest: trimArray.trim(1, input),
+            });
+        }
+
+        return util.ok({
+            type: 'parse group result',
+            subResult: [tocMaybe.value as ITableOfContents, content].map((r): IKeeper<ITableOfContents | IContentLocation> => { return { type: 'keep', keptValue: r } }),
+            location: tocMaybe.value.documentOrder,
+            rest: trimArray.trim(1, input),
+        });
+    }
+
     function parse(astResult: Result<RootAst | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
@@ -284,7 +387,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
         const astRoot = astResult.value;
         
-        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue, parseHeader, parseSectionMeta);
+        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue, parseHeader, parseSectionMeta, parseContent);
         const parsed = parser.parse(astRoot.ast, util.toLocation(astRoot.location, 0, 0));
 
         if(!parsed.success) {
