@@ -1,0 +1,5 @@
+{
+  "documentPath": "../noInclude.dlisp",
+  "message": "The content block at '../noInclude.dlisp' Line: 7, Char: 2 exists without an include block that has external files.",
+  "success": false
+}

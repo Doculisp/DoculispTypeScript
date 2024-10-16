@@ -519,7 +519,7 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
-            it.skip('should not parse the content location when there are no externals', () => {
+            it('should not parse the content location when there are no externals', () => {
                 const text = `
 (section-meta
     (title Using Content)
@@ -528,7 +528,22 @@ A story of a misbehaving parser.
 (content)
 `;
 
-                const result = toResult(text, buildLocation('../main.dlisp', 2, 7));
+                const result = toResult(text, buildLocation('../noInclude.dlisp', 2, 7));
+
+                verifyAsJson(result);
+            });
+
+            it('should not parse the content location when there is an empty include', () => {
+                const text = `
+(section-meta
+    (title Using Content)
+    (include)
+)
+
+(content)
+`;
+
+                const result = toResult(text, buildLocation('../noInclude.dlisp', 2, 7));
 
                 verifyAsJson(result);
             });

@@ -1,5 +1,5 @@
 {
-  "documentPath": "../main.dlisp",
-  "message": "Section command at {\"path\":\"../main.dlisp\",\"line\":6,\"char\":2} needs the section-meta command to have included links.",
+  "documentPath": "../noInclude.dlisp",
+  "message": "The content block at '../noInclude.dlisp' Line: 6, Char: 2 exists without an include block that has external files.",
   "success": false
 }
