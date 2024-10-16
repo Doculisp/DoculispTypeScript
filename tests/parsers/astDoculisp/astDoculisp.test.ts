@@ -172,7 +172,7 @@ describe('astDoculisp', () => {
                 verifyAsJson(result);
             });
 
-            it.skip('should not parse a section-meta that contains a section-meta', () => {
+            it('should not parse a section-meta that contains a section-meta', () => {
                 const content = `
 (section-meta
     (section-meta

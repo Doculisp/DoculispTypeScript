@@ -224,31 +224,38 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             return parseSections(include.subStructure);
         }
 
-        const ast = input[0] as CoreAst;
+        const sectionMeta = input[0] as CoreAst;
 
-        if(ast.type !== 'ast-container' || ast.value !== 'section-meta') {
+        if(sectionMeta.type !== 'ast-container' || sectionMeta.value !== 'section-meta') {
             return internals.noResultFound();
         }
 
-        const subtitle = parseSubtitle(ast.subStructure, current, ast.location.documentDepth + 2);
+        const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include'].includes(a.value));
+
+        if(0 < badSections.length) {
+            const next = badSections[0] as AtomAst;
+            return util.fail(`The section-meta block at '${sectionMeta.location.documentPath}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
+        }
+
+        const subtitle = parseSubtitle(sectionMeta.subStructure, current, sectionMeta.location.documentDepth + 2);
         
         if(!subtitle.success) {
             return subtitle;
         }
 
-        const refLink = parseRefLink(ast.subStructure, current);
+        const refLink = parseRefLink(sectionMeta.subStructure, current);
 
         if(!refLink.success) {
             return refLink;
         }
 
-        const title = parseTitle(ast.subStructure, current, refLink.value, subtitle.value);
+        const title = parseTitle(sectionMeta.subStructure, current, refLink.value, subtitle.value);
 
         if(!title.success) {
             return title;
         }
 
-        const loaders = parseInclude(ast.subStructure, current);
+        const loaders = parseInclude(sectionMeta.subStructure, current);
 
         if(!loaders.success) {
             return loaders;
