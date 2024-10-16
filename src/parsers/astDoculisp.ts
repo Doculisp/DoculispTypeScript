@@ -1,9 +1,14 @@
-import { AtomAst, CoreAst, IAstCommand, IAstEmpty, RootAst } from "../types/types.ast";
+import { AtomAst, CoreAst, IAstEmpty, RootAst } from "../types/types.ast";
 import { DoculispPart, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
 import { ITrimArray } from "../types/types.trimArray";
+
+function headerize(depth: number, value: string): string {
+    const id = ''.padStart(depth, '#');
+    return `${id} ${value} ${id}`;
+}
 
 function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray): IDoculispParser {
 
@@ -51,7 +56,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     }
 
     function parseSectionMeta(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], ITitle> {
-        function parseTitle(ast: AtomAst[], location: ILocation, label: string, refLink: string | undefined, subtitle: string | undefined): Result<ITitle> {
+        function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false): Result<ITitle> {
             const titles = ast.filter(s => s.value === 'title');
     
             if(1 < titles.length) {
@@ -73,7 +78,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, current.documentPath);
             }
 
-            let linkText = title.parameter.value.replaceAll(' ', '-');
+            let linkText = title.parameter.value.toLowerCase().replaceAll(' ', '-');
             if(!refLink) {
                 [
                     '.', 
@@ -111,22 +116,23 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     linkText = linkText.replaceAll(v, '');
                 });
             }
+            linkText = linkText;
 
             return util.ok({
                 type: 'doculisp-title',
                 title: title.parameter.value,
                 documentOrder: title.location,
-                label: label,
-                ref_link: refLink ?? linkText,
-                subtitle: subtitle,
+                label: headerize(title.location.documentDepth, title.parameter.value),
+                ref_link: '#' + (refLink ? refLink : linkText),
+                subtitle: subtitle ? subtitle : undefined,
             });
         }
 
-        function parseSubtitle(ast: AtomAst[], location: ILocation): Result<string | undefined> {
+        function parseSubtitle(ast: AtomAst[], location: ILocation, depth: number): Result<string | false> {
             const subtitles = ast.filter(a => a.value === 'subtitle');
 
             if(subtitles.length === 0) {
-                return util.ok(undefined);
+                return util.ok(false);
             }
 
             if(1 < subtitles.length) {
@@ -144,10 +150,33 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 return util.fail(`The subtitle block at '${subtitle.location.documentPath}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
             }
 
-            return util.ok(subtitle.parameter.value);
+            return util.ok(headerize(depth, subtitle.parameter.value));
         }
 
-        // function parse
+        function parseRefLink(ast: AtomAst[], location: ILocation): Result<string | false> {
+            const refLinks = ast.filter(a => a.value === 'ref-link');
+
+            if(refLinks.length === 0) {
+                return util.ok(false);
+            }
+
+            if(1 < refLinks.length) {
+                return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one ref-link.`, current.documentPath);
+            }
+
+            const refLink = refLinks[0] as AtomAst;
+
+            if(refLink.type === 'ast-atom') {
+                return util.fail(`The subtitle block at '${refLink.location.documentPath}' Line: ${refLink.location.line}, Char: ${refLink.location.char} is missing the ref-link text.`, current.documentPath);
+            }
+
+            if(refLink.type === 'ast-container') {
+                const next = refLink.subStructure[0] as AtomAst;
+                return util.fail(`The ref-link block at '${refLink.location.documentPath}' Line: ${refLink.location.line}, Char: ${refLink.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
+            }
+
+            return util.ok(refLink.parameter.value);
+        } 
 
         const ast = input[0] as CoreAst;
 
@@ -155,7 +184,30 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             return internals.noResultFound();
         }
 
+        const subtitle = parseSubtitle(ast.subStructure, current, ast.location.documentDepth + 2);
         
+        if(!subtitle.success) {
+            return subtitle;
+        }
+
+        const refLink = parseRefLink(ast.subStructure, current);
+
+        if(!refLink.success) {
+            return refLink;
+        }
+
+        const title = parseTitle(ast.subStructure, current, refLink.value, subtitle.value);
+
+        if(!title.success) {
+            return title;
+        }
+
+        return util.ok({
+            type: 'parse result',
+            location: current,
+            subResult: title.value,
+            rest: trimArray.trim(1, input),
+        });
     }
 
     function parse(astResult: Result<RootAst | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp> {
@@ -169,7 +221,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
         const astRoot = astResult.value;
         
-        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue, parseHeader);
+        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue, parseHeader, parseSectionMeta);
         const parsed = parser.parse(astRoot.ast, util.toLocation(astRoot.location, 0, 0));
 
         if(!parsed.success) {

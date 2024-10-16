@@ -1,5 +1,5 @@
 {
   "documentPath": "main.dlisp",
-  "message": "the Ref-Link Command at {\"path\":\"main.dlisp\",\"line\":3,\"char\":6} does not have a ref-link text.",
+  "message": "The subtitle block at 'main.dlisp' Line: 3, Char: 6 is missing the ref-link text.",
   "success": false
 }

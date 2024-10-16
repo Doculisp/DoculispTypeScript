@@ -21,7 +21,7 @@
           "type": "ast-Parameter",
           "value": "My heading"
         },
-        "type": "ast-Command",
+        "type": "ast-command",
         "value": "#"
       }
     ],

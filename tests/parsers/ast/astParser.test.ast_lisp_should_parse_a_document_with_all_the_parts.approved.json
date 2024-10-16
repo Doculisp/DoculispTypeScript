@@ -30,7 +30,7 @@
               "type": "ast-Parameter",
               "value": "Doculisp"
             },
-            "type": "ast-Command",
+            "type": "ast-command",
             "value": "title"
           },
           {
@@ -61,7 +61,7 @@
                   "type": "ast-Parameter",
                   "value": "./structure.md"
                 },
-                "type": "ast-Command",
+                "type": "ast-command",
                 "value": "Section"
               },
               {
@@ -83,7 +83,7 @@
                   "type": "ast-Parameter",
                   "value": "./doculisp.md"
                 },
-                "type": "ast-Command",
+                "type": "ast-command",
                 "value": "Section"
               },
               {
@@ -105,7 +105,7 @@
                   "type": "ast-Parameter",
                   "value": "./section-meta.md"
                 },
-                "type": "ast-Command",
+                "type": "ast-command",
                 "value": "Section"
               },
               {
@@ -127,7 +127,7 @@
                   "type": "ast-Parameter",
                   "value": "./content.md"
                 },
-                "type": "ast-Command",
+                "type": "ast-command",
                 "value": "Section"
               },
               {
@@ -149,7 +149,7 @@
                   "type": "ast-Parameter",
                   "value": "./headings.md"
                 },
-                "type": "ast-Command",
+                "type": "ast-command",
                 "value": "Section"
               },
               {
@@ -171,7 +171,7 @@
                   "type": "ast-Parameter",
                   "value": "./comment.md"
                 },
-                "type": "ast-Command",
+                "type": "ast-command",
                 "value": "Section"
               },
               {
@@ -193,7 +193,7 @@
                   "type": "ast-Parameter",
                   "value": "./keywords.md"
                 },
-                "type": "ast-Command",
+                "type": "ast-command",
                 "value": "Section"
               }
             ],
@@ -223,7 +223,7 @@
           "type": "ast-Parameter",
           "value": "An introduction to Doculisp"
         },
-        "type": "ast-Command",
+        "type": "ast-command",
         "value": "##"
       },
       {
@@ -254,7 +254,7 @@
               "type": "ast-Parameter",
               "value": "numbered-labeled"
             },
-            "type": "ast-Command",
+            "type": "ast-command",
             "value": "toc"
           }
         ],

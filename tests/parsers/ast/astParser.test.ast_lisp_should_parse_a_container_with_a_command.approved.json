@@ -30,7 +30,7 @@
               "type": "ast-Parameter",
               "value": "Doculisp"
             },
-            "type": "ast-Command",
+            "type": "ast-command",
             "value": "title"
           }
         ],

@@ -1,0 +1,5 @@
+{
+  "documentPath": "main.dlisp",
+  "message": "Title block at 'main.dlisp' Line: 1, Char: 16 contains unknown block 'bad' at Line: 1, Char: 23",
+  "success": false
+}

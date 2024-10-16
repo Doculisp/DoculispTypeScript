@@ -1,0 +1,5 @@
+{
+  "documentPath": "main.dlisp",
+  "message": "The section-meta block at 'main.dlisp' Line: 0, Char: 0 has more then one ref-link.",
+  "success": false
+}

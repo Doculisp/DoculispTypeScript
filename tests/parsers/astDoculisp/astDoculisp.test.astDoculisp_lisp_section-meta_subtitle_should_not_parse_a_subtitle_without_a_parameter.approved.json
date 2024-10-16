@@ -1,5 +1,5 @@
 {
   "documentPath": "main.dlisp",
-  "message": "The Subtitle command at {\"path\":\"main.dlisp\",\"line\":4,\"char\":6} does not contain subtitle text.",
+  "message": "The subtitle block at 'main.dlisp' Line: 4, Char: 6 is missing the subtitle text.",
   "success": false
 }

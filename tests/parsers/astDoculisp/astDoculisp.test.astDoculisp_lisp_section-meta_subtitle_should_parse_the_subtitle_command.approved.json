@@ -10,11 +10,11 @@
       "doculisp": [
         {
           "documentOrder": {
-            "char": 2,
+            "char": 6,
             "documentDepth": 4,
             "documentIndex": 4,
             "documentPath": "main.dlisp",
-            "line": 2
+            "line": 3
           },
           "label": "#### My cool title ####",
           "ref_link": "#my-cool-title",
@@ -32,6 +32,7 @@
       },
       "include": [],
       "type": "doculisp-section"
-    }
+    },
+    "type": "doculisp-root"
   }
 }

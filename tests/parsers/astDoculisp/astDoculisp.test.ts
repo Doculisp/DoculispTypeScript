@@ -225,26 +225,6 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
-            it.skip('should strip out some special characters from the ref-link', () => {
-//                 const content = `<!--
-// (dl
-//     (section-meta
-//         (title A !@#$%^&*+=\(\){[]}|\\;:'" Story ,./<>? about things)
-//     )
-// )
-// -->`;
-                const content = `<!--
-(dl
-    (section-meta
-        (title A !@#$%^&*+=;:'" Story ,./<>? about things)
-    )
-)
--->`;
-
-                const result = toResult(content, buildLocation('./_main.md', 1, 1));
-                verifyAsJson(result);
-            });
-
             describe('title', () => {
                 it('should parse a title', () => {
                     const contents = `
@@ -257,20 +237,31 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
             
-                it.skip('should not parse a title without a parameter', () => {
-                    const contents = `
-(section-meta
-    (title)
-)
-`;
+                it('should not parse a title without a parameter', () => {
+                    const contents = `(section-meta (title))`;
                     const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
             
                     verifyAsJson(result);
                 });
+
+                it('should not parse a title with a sub group', () => {
+                    const contents = `(section-meta (title (bad group)))`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+            
+                    verifyAsJson(result);
+
+                });
+
+                it('should not parse multiple titles', () => {
+                    const contents = '(section-meta (title A Title) (title B Title))';
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+
+                    verifyAsJson(result);
+                });
             });
 
-            describe.skip('ref-link', () => {
-                it.skip('should parse the ref-link', () => {
+            describe('ref-link', () => {
+                it('should parse the ref-link', () => {
                     const contents = `
 (section-meta
     (title My cool title✨)
@@ -282,7 +273,7 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
-                it.skip('should parse the ref-link if it comes before the title', () => {
+                it('should parse the ref-link if it comes before the title', () => {
                     const contents = `
 (section-meta
     (ref-link my_cool_title)
@@ -294,7 +285,7 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
-                it.skip('should not parse a ref-link with no parameter', () => {
+                it('should not parse a ref-link with no parameter', () => {
                     const contents = `
 (section-meta
     (ref-link)
@@ -305,10 +296,53 @@ A story of a misbehaving parser.
                             
                     verifyAsJson(result);
                 });
+
+                it('should not parse a ref-link with a sub block', () => {
+                    const contents = `
+(section-meta
+    (title My cool title✨)
+    (ref-link (weird block))
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 3, 11));
+                    verifyAsJson(result);
+                });
+
+                it('should not parse multiple ref-links', () => {
+                    const contents = `
+(section-meta
+    (ref-link my_cool_title)
+    (title My cool title✨)
+    (ref-link my-cool-title)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                    verifyAsJson(result);
+                });
+
+                it('should strip out some special characters from the ref-link', () => {
+    //                 const content = `<!--
+    // (dl
+    //     (section-meta
+    //         (title A !@#$%^&*+=\(\){[]}|\\;:'" Story ,./<>? about things)
+    //     )
+    // )
+    // -->`;
+                    const content = `<!--
+    (dl
+        (section-meta
+            (title A !@#$%^&*+=;:'" Story ,./<>? about things)
+        )
+    )
+    -->`;
+    
+                    const result = toResult(content, buildLocation('./_main.md', 1, 1));
+                    verifyAsJson(result);
+                });
             });
 
-            describe.skip('subtitle', () => {
-                it.skip('should parse the subtitle command', () => {
+            describe('subtitle', () => {
+                it('should parse the subtitle command', () => {
                     const contents = `
 (section-meta
     (title My cool title)
@@ -320,7 +354,7 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
-                it.skip('should parse the subtitle before title command', () => {
+                it('should parse the subtitle before title command', () => {
                     const contents = `
 (section-meta
     (subtitle This is information)
@@ -332,7 +366,7 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
-                it.skip('should not parse a subtitle without a parameter', () => {
+                it('should not parse a subtitle without a parameter', () => {
                     const contents = `
 (section-meta
     (title My cool title)
@@ -344,15 +378,30 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
-                it.skip('should not parse a subtitle without a title', () => {
-                    const contents = `
+                it('should not parse a subtitle with a sub block', () => {
+                     const contents = `
 (section-meta
-    (subtitle A cool work of art)
+    (title My cool title)
+    (subtitle (link-ref tom))
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 10));
+        
                     verifyAsJson(result);
                 })
+
+                it('should not parse multiple subtitles', () => {
+                    const contents = `
+(section-meta
+    (subtitle This is information)
+    (title My cool title)
+    (subtitle A journey in lisp)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 2, 7));
+        
+                    verifyAsJson(result);
+                });
             });
 
             describe.skip('include', () => {

@@ -1,5 +1,5 @@
 {
   "documentPath": "main.dlisp",
-  "message": "Title at {\"path\":\"main.dlisp\",\"line\":3,\"char\":6} does not contain title text.",
+  "message": "Title block at 'main.dlisp' Line: 1, Char: 16 is missing its title text.",
   "success": false
 }
