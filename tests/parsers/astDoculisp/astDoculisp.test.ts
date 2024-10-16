@@ -468,6 +468,40 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
+            it('should not parse the content if it has a parameter text', () => {
+                const text = `
+(section-meta
+    (title Using Content)
+    (include
+        (Section ./HelloContent.md)
+    )
+)
+
+(content toc)
+`;
+
+                const result = toResult(text, buildLocation('../main.dlisp', 2, 7));
+
+                verifyAsJson(result);
+            });
+
+            it('should not parse the toc if it has a sub block', () => {
+                const text = `
+(section-meta
+    (title Using Content)
+    (include
+        (Section ./HelloContent.md)
+    )
+)
+
+(content (toc (type bulleted)))
+`;
+
+                const result = toResult(text, buildLocation('../main.dlisp', 2, 7));
+
+                verifyAsJson(result);
+            });
+
             it.skip('should not parse the content if it is before the section-meta', () => {
                 const text = `
 (content)
