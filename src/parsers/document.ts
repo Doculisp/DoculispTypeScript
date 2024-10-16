@@ -351,6 +351,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         return function (toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let depth = isOpen ? 1 : 0;
             isOpen = false;
+
             function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
@@ -421,8 +422,17 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(0 < depth){
-                    const parsed = input.charAt(0);
-                    const rest = input.slice(1);
+                    let parsed = input.charAt(0);
+                    let last = parsed;
+
+                    let n = 1;
+                    while (last === '\\' && n < input.length) {
+                        last = input.charAt(n);
+                        n++;
+                        parsed += last;
+                    }
+
+                    const rest = input.slice(parsed.length);
                     const location = current.increaseChar(parsed.length);
     
                     return util.ok({

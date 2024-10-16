@@ -203,6 +203,13 @@ describe('document', () => {
 
                 verifyAsJson(result);
             });
+
+            it('should allow for an escaped parentheses in a parameter', () => {
+                const content = '<!-- (dl (# My \\(really awesome header)) -->';
+    
+                const result = parse(content, buildLocation('./_main.md', 2, 1));
+                verifyAsJson(result);
+            });
         });
     });
 
