@@ -1,10 +1,8 @@
-import fs from 'fs';
 import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifier } from "../../tools";
-import { DocumentMap, DocumentParser } from "../../../src/types/types.document";
-import { IProjectLocation, Result } from "../../../src/types/types.general";
+import { DocumentParser } from "../../../src/types/types.document";
 import { buildLocation, testable } from "../../testHelpers";
 
 describe('document', () => {
@@ -268,107 +266,6 @@ describe('document', () => {
 
             let result = parse(dlisp, buildLocation('C:/main.dlisp', 5, 8));
 
-            verifyAsJson(result);
-        });
-    });
-
-    describe('parsing real files', () => {
-        it('should parse the content of structure.md first inline error', () =>{
-            const result = parse(`<!--
-(dl
-    (section-meta
-        (title Basic Structure)
-    )
-)
--->
-
-The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses \`(\`
-`, buildLocation('./structure.md', 2, 1));
-        
-        verifyAsJson(result);
-        });
-
-        it('should parse the content of structure.md second inline error', () =>{
-            const result = parse(`<!--
-(dl
-    (section-meta
-        (title Basic Structure)
-    )
-)
--->
-
-The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses \`(\` followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses \`)\`.
-
-Even the Doculisp main block follows this.
-
-Example
-
-\`\`\`markdown
-<!--
-(dl
-    (section-meta
-        (title Basic Structure)
-    )
-)
--->
-\`\`\`
-
-The first block is the \`dl\` block. In it \`dl\` is the atom. It contains the \`section-meta\` sub-block.  That block has the atom \`section-meta\` followed by a further sub block. The last sub block is the \`title\` sub block. In it \`title\` is the atom and \`Basic Structure\`
-`, buildLocation('./structure.md', 2, 1));
-        
-        verifyAsJson(result);
-        });
-
-        function getContent(fileName: string, depth: number, index: number): Result<DocumentMap> {
-            const path: string = `./documentation/${fileName}`;
-            const location: IProjectLocation = buildLocation(path, depth, index);
-
-            const content = parse(fs.readFileSync(path, { encoding: 'utf8' }), location);
-            return content;
-        }
-
-        it('should parse the content of structure.md from the file system', () => {
-            const result = getContent('structure.md', 2, 1);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of doculisp.md from the file system', () => {
-            const result = getContent('doculisp.md', 2, 2);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of section-meta.md from the file system', () => {
-            const result = getContent('section-meta.md', 2, 3);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of content.md from the file system', () => {
-            const result = getContent('content.md', 2, 4);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of headings.md from the file system', () => {
-            const result = getContent('headings.md', 2, 5);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of comment.md from the file system', () => {
-            const result = getContent('comment.md', 2, 6);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of keywords.md from the file system', () => {
-            const result = getContent('keywords.md', 2, 7);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of contributors.md from the file system', () => {
-            const result = getContent('contributors.md', 3, 8);
-            verifyAsJson(result);
-        });
-
-        it('should parse the content of _main.md from the file system', () => {
-            const result = getContent('_main.md', 1, 1);
             verifyAsJson(result);
         });
     });

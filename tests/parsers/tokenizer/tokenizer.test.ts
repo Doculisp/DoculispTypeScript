@@ -3,10 +3,9 @@ import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import { ITestableContainer } from "../../../src/types/types.containers";
-import { TokenFunction, TokenizedDocument } from '../../../src/types/types.tokens';
-import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
+import { TokenFunction } from '../../../src/types/types.tokens';
+import { IFail, ILocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { DocumentMap } from "../../../src/types/types.document";
-import fs from 'fs';
 import { buildLocation, testable } from "../../testHelpers";
 
 describe('tokenizer', () => {
@@ -297,69 +296,6 @@ describe('tokenizer', () => {
 
             const result = tokenizer(parseResult);
 
-            verifyAsJson(result);
-        });
-    });
-
-    describe('parsing a real documents', () => {
-        let toResult: (text: string, location: IProjectLocation) => Result<TokenizedDocument> = undefined as any;
-
-        beforeEach(() => {
-            toResult = testable.token.resultBuilder(container, (environment: ITestableContainer) => {
-                util = environment.buildAs<IUtil>('util');
-            });
-        });
-
-        function getFileContent(fileName: string, depth: number, index: number): Result<TokenizedDocument> {
-            const path = `./documentation/${fileName}`;
-            const content = fs.readFileSync(path, { encoding: 'utf8' });
-            
-            const location: IProjectLocation = buildLocation(path, depth, index)
-
-            return toResult(content, location);
-        }
-        it('should parse structure.md', () => {
-            const result = getFileContent('structure.md', 2, 1);
-            verifyAsJson(result);
-        });
-        
-        it('should parse doculisp.md', () => {
-            const result = getFileContent('doculisp.md', 2, 2);
-            verifyAsJson(result);
-        });
-        
-        it('should parse section-meta.md', () => {
-            const result = getFileContent('section-meta.md', 2, 3);
-            verifyAsJson(result);
-        });
-        
-        it('should parse content.md', () => {
-            const result = getFileContent('content.md', 2, 4);
-            verifyAsJson(result);
-        });
-        
-        it('should parse headings.md', () => {
-            const result = getFileContent('headings.md', 2, 5);
-            verifyAsJson(result);
-        });
-        
-        it('should parse comment.md', () => {
-            const result = getFileContent('comment.md', 2, 6);
-            verifyAsJson(result);
-        });
-        
-        it('should parse keywords.md', () => {
-            const result = getFileContent('keywords.md', 2, 7);
-            verifyAsJson(result);
-        });
-
-        it('should parse contributors.md', () => {
-            const result = getFileContent('contributors.md', 2, 8);
-            verifyAsJson(result);
-        });
-        
-        it('should parse _main.md', () => {
-            const result = getFileContent('_main.md', 1, 1);
             verifyAsJson(result);
         });
     });

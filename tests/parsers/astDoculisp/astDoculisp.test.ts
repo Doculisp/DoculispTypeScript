@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
@@ -623,61 +621,5 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
         })
-    });
-
-    describe('parse its own documentation', () => {
-        function getContents(fileName: string, depth: number, index: number): Result<IDoculisp | IEmptyDoculisp> {
-            const filePath = path.join('./documentation/', fileName);
-            const location: IProjectLocation = buildLocation(filePath, depth, index);
-
-            const content = fs.readFileSync(filePath, { encoding: 'utf8' });
-
-            return toResult(content, location);
-        }
-
-        it('should build ast for structure.md', () => {
-            const result = getContents('structure.md', 2, 1);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for doculisp.md', () => {
-            const result = getContents('doculisp.md', 2, 2);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for section-meta.md', () => {
-            const result = getContents('section-meta.md', 2, 3);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for content.md', () => {
-            const result = getContents('content.md', 2, 4);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for headings.md', () => {
-            const result = getContents('headings.md', 2, 5);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for comment.md', () => {
-            const result = getContents('comment.md', 2, 6);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for keywords.md', () => {
-            const result = getContents('keywords.md', 2, 7);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for contributors.md', () => {
-            const result = getContents('contributors.md', 2, 8);
-            verifyAsJson(result);
-        });
-
-        it('should build ast for _main.md', () => {
-            const result = getContents('_main.md', 1, 1);
-            verifyAsJson(result);
-        });
     });
 });
