@@ -217,7 +217,7 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 
                 let atom: Token = {
                     type: 'token - parameter',
-                    text: parameterValue.trim().replace('\\(', '(').replace('\\)', ')'),
+                    text: parameterValue.trim().replace('\\(', '(').replace('\\)', ')').replace('\\\\', '\\'),
                     location: current,
                 };
     

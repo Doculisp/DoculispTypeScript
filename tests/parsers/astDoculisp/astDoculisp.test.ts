@@ -319,17 +319,10 @@ A story of a misbehaving parser.
                 });
 
                 it('should strip out some special characters from the ref-link', () => {
-    //                 const content = `<!--
-    // (dl
-    //     (section-meta
-    //         (title A !@#$%^&*+=\(\){[]}|\\;:'" Story ,./<>? about things)
-    //     )
-    // )
-    // -->`;
                     const content = `<!--
     (dl
         (section-meta
-            (title A !@#$%^&*+=;:'" Story ,./<>? about things)
+            (title A !@#$%^&*+=\\(\\){[]}|\\\\;:'" Story ,./<>? about things)
         )
     )
     -->`;

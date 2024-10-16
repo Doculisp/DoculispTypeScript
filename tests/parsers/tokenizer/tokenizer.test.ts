@@ -9,7 +9,6 @@ import { DocumentMap } from "../../../src/types/types.document";
 import { buildLocation, testable } from "../../testHelpers";
 
 describe('tokenizer', () => {
-    // let environment: ITestableContainer = undefined as any;
     let tokenizer: TokenFunction = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;

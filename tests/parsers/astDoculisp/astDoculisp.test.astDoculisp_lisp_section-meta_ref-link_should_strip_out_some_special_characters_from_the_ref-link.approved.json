@@ -16,9 +16,9 @@
             "documentPath": "./_main.md",
             "line": 3
           },
-          "label": "# A !@#$%^&*+=;:'\" Story ,./<>? about things #",
+          "label": "# A !@#$%^&*+=(){[]}|\\;:'\" Story ,./<>? about things #",
           "ref_link": "#a--story--about-things",
-          "title": "A !@#$%^&*+=;:'\" Story ,./<>? about things",
+          "title": "A !@#$%^&*+=(){[]}|\\;:'\" Story ,./<>? about things",
           "type": "doculisp-title"
         }
       ],

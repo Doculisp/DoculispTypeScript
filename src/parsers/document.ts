@@ -423,13 +423,9 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             function tryParseWord(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(0 < depth){
                     let parsed = input.charAt(0);
-                    let last = parsed;
-
-                    let n = 1;
-                    while (last === '\\' && n < input.length) {
-                        last = input.charAt(n);
-                        n++;
-                        parsed += last;
+                    
+                    if(parsed === '\\') {
+                        parsed += input.charAt(1);
                     }
 
                     const rest = input.slice(parsed.length);
