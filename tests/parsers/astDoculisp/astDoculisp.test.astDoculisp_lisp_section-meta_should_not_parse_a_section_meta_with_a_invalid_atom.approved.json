@@ -1,5 +1,5 @@
 {
   "documentPath": "./_main.md",
-  "message": "Atom of 'bad' at {\"path\":\"./_main.md\",\"line\":4,\"char\":10} is not expected as part of section-meta.",
+  "message": "The section-meta block at './_main.md' Line: 2, Char: 2 contains unknown command 'bad' at Line: 4, Char: 10.",
   "success": false
 }
