@@ -16,6 +16,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             return astResult;
         }
 
+        let hasSectionMeta = false;
         let hasInclude = false;
 
         function parseValue(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IWrite> {
@@ -272,6 +273,8 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
             const result: (ITitle | ILoad)[] = loaders.value ? loaders.value : [];
             result.push(title.value);
+
+            hasSectionMeta = true;
     
     
             return util.ok({
@@ -346,6 +349,10 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
             if(contentBlock.type === 'ast-command') {
                 return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} contains unknown parameter '${contentBlock.parameter.value}'`, current.documentPath);
+            }
+
+            if(!hasSectionMeta) {
+                return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists before the section-meta block.`, current.documentPath);
             }
 
             if(!hasInclude) {

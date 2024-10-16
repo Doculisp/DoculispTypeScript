@@ -502,7 +502,7 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
 
-            it.skip('should not parse the content if it is before the section-meta', () => {
+            it('should not parse the content if it is before the section-meta', () => {
                 const text = `
 (content)
 

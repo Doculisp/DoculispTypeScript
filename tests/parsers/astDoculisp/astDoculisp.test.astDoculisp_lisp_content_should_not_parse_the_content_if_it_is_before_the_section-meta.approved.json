@@ -1,5 +1,5 @@
 {
   "documentPath": "../main.dlisp",
-  "message": "Section command must come before the Content command at {\"path\":\"../main.dlisp\",\"line\":2,\"char\":2}",
+  "message": "The content block at '../main.dlisp' Line: 2, Char: 2 exists before the section-meta block.",
   "success": false
 }
