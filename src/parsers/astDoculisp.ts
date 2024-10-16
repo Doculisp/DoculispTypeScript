@@ -1,8 +1,8 @@
-import { AtomAst, CoreAst, IAstEmpty, RootAst } from "../types/types.ast";
+import { AtomAst, CoreAst, IAstCommand, IAstEmpty, RootAst } from "../types/types.ast";
 import { DoculispPart, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
-import { IInternals, StepParseResult } from "../types/types.internal";
+import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
 import { ITrimArray } from "../types/types.trimArray";
 
 function headerize(depth: number, value: string): string {
@@ -55,7 +55,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         });
     }
 
-    function parseSectionMeta(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], ITitle> {
+    function parseSectionMeta(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], ITitle | ILoad> {
         function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false): Result<ITitle> {
             const titles = ast.filter(s => s.value === 'title');
     
@@ -176,7 +176,53 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
 
             return util.ok(refLink.parameter.value);
-        } 
+        }
+
+        function parseInclude(ast: AtomAst[], location: ILocation): Result<ILoad[] | false> {
+            function parseSections(ast: AtomAst[]): Result<ILoad[]> {
+                const bad = ast.filter(a => a.type !== 'ast-command');
+
+                if(0 < bad.length) {
+                    const next = bad[0] as AtomAst;
+                    return util.fail(`Include contains unknown command '${next.value}' at '${next.location.documentPath}' Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+                }
+
+                const commands = ast as IAstCommand[];
+
+                const loaders = commands.map((a): ILoad => {
+                    return {
+                        type: 'doculisp-load',
+                        document: false,
+                        documentOrder: a.location,
+                        path: a.parameter.value,
+                        sectionLabel: a.value,
+                    }
+                });
+
+                return util.ok(loaders);
+            }
+            const includes = ast.filter(a => a.value === 'include');
+
+            if(includes.length === 0) {
+                return util.ok(false);
+            }
+
+            if(1 < includes.length) {
+                return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one include.`, current.documentPath);
+            }
+            
+            const include = includes[0] as AtomAst;
+
+            if(include.type === 'ast-atom') {
+                return util.ok(false);
+            }
+
+            if(include.type === 'ast-command') {
+                return util.fail(`The include block at '${include.location.documentPath}' Line: ${include.location.line}, Char: ${include.location.char} has unknown parameter '${include.parameter.value}'.`, location.documentPath);
+            }
+
+            return parseSections(include.subStructure);
+        }
 
         const ast = input[0] as CoreAst;
 
@@ -202,10 +248,20 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             return title;
         }
 
+        const loaders = parseInclude(ast.subStructure, current);
+
+        if(!loaders.success) {
+            return loaders;
+        }
+
+        const result: (ITitle | ILoad)[] = loaders.value ? loaders.value : [];
+        result.push(title.value);
+
+
         return util.ok({
-            type: 'parse result',
+            type: 'parse group result',
             location: current,
-            subResult: title.value,
+            subResult: result.map((r): IKeeper<ITitle | ILoad> => { return { type: 'keep', keptValue: r } }),
             rest: trimArray.trim(1, input),
         });
     }

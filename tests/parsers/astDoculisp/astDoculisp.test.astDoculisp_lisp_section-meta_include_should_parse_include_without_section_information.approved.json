@@ -29,34 +29,7 @@
         "documentPath": "main.dlisp",
         "line": 1
       },
-      "include": [
-        {
-          "document": false,
-          "documentOrder": {
-            "char": 10,
-            "documentDepth": 1,
-            "documentIndex": 4,
-            "documentPath": "main.dlisp",
-            "line": 5
-          },
-          "path": "./doculisp.md",
-          "sectionLabel": "section",
-          "type": "doculisp-load"
-        },
-        {
-          "document": false,
-          "documentOrder": {
-            "char": 10,
-            "documentDepth": 1,
-            "documentIndex": 4,
-            "documentPath": "main.dlisp",
-            "line": 6
-          },
-          "path": "./section-meta.md",
-          "sectionLabel": "section",
-          "type": "doculisp-load"
-        }
-      ],
+      "include": [],
       "type": "doculisp-section"
     },
     "type": "doculisp-root"

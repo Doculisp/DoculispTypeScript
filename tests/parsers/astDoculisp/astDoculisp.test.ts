@@ -156,7 +156,7 @@ describe('astDoculisp', () => {
         });
 
         describe('section-meta', () => {
-            it.skip('should handle all subparts put together out of order', () => {
+            it('should handle all subparts put together out of order', () => {
                 const contents = `
 (section-meta
 (ref-link doculisp_is_)
@@ -404,8 +404,8 @@ A story of a misbehaving parser.
                 });
             });
 
-            describe.skip('include', () => {
-                it.skip('should parse include', () => {
+            describe('include', () => {
+                it('should parse include', () => {
                     const contents = `
 (section-meta
     (title Doculisp a short description)
@@ -420,7 +420,7 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
-                it.skip('should not parse include without section information', () => {
+                it('should parse include without section information', () => {
                     const contents = `
 (section-meta
     (title Doculisp a short description)
@@ -432,7 +432,7 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
-                it.skip('should handle them all put together', () => {
+                it('should handle them all put together', () => {
                     const contents = `
 (section-meta
     (title Doculisp is ✨)
