@@ -239,6 +239,10 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             if(sectionMeta.type !== 'ast-container' || sectionMeta.value !== 'section-meta') {
                 return internals.noResultFound();
             }
+
+            if(hasSectionMeta) {
+                return util.fail(`The section-meta block at '${sectionMeta.location.documentPath}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, current.documentPath);
+            }
     
             const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include'].includes(a.value));
     
@@ -270,7 +274,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             if(!loaders.success) {
                 return loaders;
             }
-    
+
             const result: (ITitle | ILoad)[] = loaders.value ? loaders.value : [];
             result.push(title.value);
 

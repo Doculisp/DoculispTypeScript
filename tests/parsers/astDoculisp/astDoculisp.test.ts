@@ -187,7 +187,7 @@ describe('astDoculisp', () => {
                 verifyAsJson(result);
             });
 
-            it.skip('should not parse a second section-meta in a file', () => {
+            it('should not parse a second section-meta in a file', () => {
                 const content = `
 (section-meta
     (title My Section)
