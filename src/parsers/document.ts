@@ -229,7 +229,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return internals.noResultFound();
                 }
     
-                const result = peaces.map(p => p.text).join(''); //.trim();
+                const result = peaces.map(p => p.text).join('');
                 const rest = leftover.remaining;
                 
                 return util.ok({
@@ -267,12 +267,12 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 return internals.noResultFound();
             }
 
-            function tryParseNewLine(input: string, current: ILocation): StringStepParseResult<string> {
+            function tryParseNewLineError(input: string, current: ILocation): StringStepParseResult<string> {
+                if(!opened) {
+                    return internals.stopFindingResults();
+                }
+                
                 if(doesIt.startWithAnyNewline.test(input)){
-                    if(!opened) {
-                        return internals.stopFindingResults();
-                    }
-
                     return util.fail(`Inline code block at ${starting.toString()} contains a new line before closing.`, projectLocation.documentPath);
                 }
 
@@ -320,7 +320,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 return internals.noResultFound();
             }
     
-            const parser = internals.createStringParser(tryEnd, tryParseInLine, tryParseNewLine, tryParseWhiteSpace, tryParseWord);
+            const parser = internals.createStringParser(tryEnd, tryParseInLine, tryParseNewLineError, tryParseWhiteSpace, tryParseWord);
             const parsed = parser.parse(toParse, starting);
     
             if(parsed.success) {
