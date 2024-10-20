@@ -15,6 +15,17 @@
       },
       {
         "location": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 2,
+          "documentPath": "C:/comments/helloWorld.md",
+          "line": 2
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
           "char": 2,
           "documentDepth": 1,
           "documentIndex": 2,
@@ -48,11 +59,11 @@
       },
       {
         "location": {
-          "char": 5,
+          "char": 1,
           "documentDepth": 1,
           "documentIndex": 2,
           "documentPath": "C:/comments/helloWorld.md",
-          "line": 2
+          "line": 3
         },
         "text": " ",
         "type": "text"
@@ -82,17 +93,6 @@
       {
         "location": {
           "char": 4,
-          "documentDepth": 1,
-          "documentIndex": 2,
-          "documentPath": "C:/comments/helloWorld.md",
-          "line": 3
-        },
-        "text": " ",
-        "type": "text"
-      },
-      {
-        "location": {
-          "char": 5,
           "documentDepth": 1,
           "documentIndex": 2,
           "documentPath": "C:/comments/helloWorld.md",
@@ -109,7 +109,7 @@
           "documentPath": "C:/comments/helloWorld.md",
           "line": 4
         },
-        "text": "\n",
+        "text": " ",
         "type": "text"
       },
       {
@@ -137,17 +137,6 @@
       {
         "location": {
           "char": 4,
-          "documentDepth": 1,
-          "documentIndex": 2,
-          "documentPath": "C:/comments/helloWorld.md",
-          "line": 4
-        },
-        "text": " ",
-        "type": "text"
-      },
-      {
-        "location": {
-          "char": 5,
           "documentDepth": 1,
           "documentIndex": 2,
           "documentPath": "C:/comments/helloWorld.md",

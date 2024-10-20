@@ -16,6 +16,7 @@ type ParesBuilder = {
     isDiscardedWhiteSpace(): HandleStringValue<DocumentPart>;
     isDiscardedNewline(): HandleStringValue<DocumentPart>;
     isKeptWhiteSpace(): HandleStringValue<DocumentPart>;
+    isKeptWhiteSpaceNoNewLines(): HandleStringValue<DocumentPart>;
     isMultiline() : HandleStringValue<DocumentPart>;
     isInline(): HandleStringValue<DocumentPart>;
     isDoculisp(isOpen?: boolean): HandleStringValue<DocumentPart>;
@@ -54,7 +55,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 const location = incrementor(current, parsed.length);
                 return util.ok({
                     type: 'parse result',
-                    subResult: { location: location, text: parsed, type: 'text' },
+                    subResult: { location: current, text: parsed, type: 'text' },
                     rest,
                     location: location,
                 });
@@ -171,6 +172,58 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         }
     }
 
+    function isKeptWhiteSpaceNoNewLines(): HandleStringValue<DocumentPart> {
+        return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
+            const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l.increaseLine());
+            const isNewline = doesItStartWithDiscarded(doesIt.startWithAnyNewline, l => l.increaseLine());
+            const isWhiteSpace = doesItStartWithKeep(doesIt.startWithNonNewLineWhiteSpace, (l, f) => l.increaseChar(f));
+    
+            const parser = internals.createStringParser(isWindows, isNewline, isWhiteSpace, isStopParsingWhiteSpace)
+            const parsed = parser.parse(input, current);
+            if(parsed.success) {
+                const [result, leftover] = parsed.value;
+                if(leftover.location.compare(current) === isSame) {
+                    return internals.noResultFound();
+                }
+    
+                let step: IStringParseStepForward = {
+                    rest: leftover.remaining,
+                    location: leftover.location,
+                }
+    
+                if(0 === result.length) {
+                    return util.ok(internals.buildStepParse(step, {
+                        type: 'discard',
+                    }));
+                }
+                
+                function toCleanPart(source: DocumentPart): DocumentPart{
+                    const part: DocumentPart = {
+                        location: source.location,
+                        text: source.text.replaceAll('\r\n', '\n').replaceAll('\r', '\n'),
+                        type: source.type,
+                    };
+                    return part;
+                }
+    
+                if(1 === result.length) {
+                    
+                    return util.ok(internals.buildStepParse(step, {
+                        type: 'parse result',
+                        subResult: toCleanPart(result[0] as DocumentPart),
+                    }));
+                }
+    
+                return util.ok(internals.buildStepParse(step, {
+                    type: 'parse group result',
+                    subResult: result.map(r => { return { type:'keep', keptValue: toCleanPart(r) }; }),
+                }));
+            }
+    
+            return parsed;
+        }
+    }
+
     function isMultiline() : HandleStringValue<DocumentPart> {
         return function(toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let opened: boolean = false;
@@ -185,7 +238,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: current, text: parsed, type: 'text' },
                         rest,
                         location: location,
                     });
@@ -211,7 +264,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                 return util.ok({
                     type: 'parse result',
-                    subResult: { location: location, text: parsed, type: 'text' },
+                    subResult: { location: current, text: parsed, type: 'text' },
                     rest,
                     location: location,
                 });
@@ -382,7 +435,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: current, text: parsed, type: 'text' },
                         rest,
                         location: location,
                     });
@@ -414,7 +467,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok(internals.buildStepParse(step, {
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: current, text: parsed, type: 'text' },
                     }));
                 }
                 return internals.noResultFound();
@@ -433,7 +486,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: current, text: parsed, type: 'text' },
                         rest,
                         location: location,
                     });
@@ -611,7 +664,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: current, text: parsed, type: 'text' },
                         rest,
                         location: location,
                     });
@@ -629,7 +682,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
 
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed, type: 'text' },
+                        subResult: { location: current, text: parsed, type: 'text' },
                         rest,
                         location: location,
                     });
@@ -663,6 +716,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
         isDiscardedWhiteSpace,
         isDiscardedNewline,
         isKeptWhiteSpace,
+        isKeptWhiteSpaceNoNewLines,
         isMultiline,
         isInline,
         isDoculisp,
@@ -690,10 +744,10 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
 
         const parser = 
             isDoculispFile ?
-            parserBuilder.createStringParser(partParsers.isDiscardedNewline(), partParsers.isKeptWhiteSpace(), partParsers.isDoculisp(true)) :
+            parserBuilder.createStringParser(partParsers.isDiscardedNewline(), partParsers.isKeptWhiteSpaceNoNewLines(), partParsers.isDoculisp(true)) :
             parserBuilder.createStringParser(
                 partParsers.isDiscardedNewline(),
-                partParsers.isKeptWhiteSpace(),
+                partParsers.isKeptWhiteSpaceNoNewLines(),
                 partParsers.isMultiline(), 
                 partParsers.isInline(), 
                 partParsers.isComment(), 

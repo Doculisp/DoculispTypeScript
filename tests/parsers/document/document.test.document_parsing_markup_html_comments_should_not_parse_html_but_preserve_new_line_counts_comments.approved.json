@@ -4,6 +4,17 @@
     "parts": [
       {
         "location": {
+          "char": 1,
+          "documentDepth": 8,
+          "documentIndex": 3,
+          "documentPath": "C:/readme.md",
+          "line": 4
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
           "char": 2,
           "documentDepth": 8,
           "documentIndex": 3,
@@ -230,7 +241,7 @@
           "documentPath": "C:/readme.md",
           "line": 4
         },
-        "text": " ",
+        "text": "\t",
         "type": "text"
       },
       {
@@ -252,18 +263,18 @@
           "documentPath": "C:/readme.md",
           "line": 4
         },
-        "text": "\t",
+        "text": "hello bro",
         "type": "text"
       },
       {
         "location": {
-          "char": 24,
+          "char": 1,
           "documentDepth": 8,
           "documentIndex": 3,
           "documentPath": "C:/readme.md",
-          "line": 4
+          "line": 5
         },
-        "text": "hello bro",
+        "text": " ",
         "type": "text"
       },
       {
@@ -478,17 +489,6 @@
       {
         "location": {
           "char": 21,
-          "documentDepth": 8,
-          "documentIndex": 3,
-          "documentPath": "C:/readme.md",
-          "line": 5
-        },
-        "text": " ",
-        "type": "text"
-      },
-      {
-        "location": {
-          "char": 22,
           "documentDepth": 8,
           "documentIndex": 3,
           "documentPath": "C:/readme.md",

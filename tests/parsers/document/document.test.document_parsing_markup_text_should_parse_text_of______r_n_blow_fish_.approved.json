@@ -4,6 +4,17 @@
     "parts": [
       {
         "location": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 8,
+          "documentPath": "C:/my_document.md",
+          "line": 1
+        },
+        "text": " ",
+        "type": "text"
+      },
+      {
+        "location": {
           "char": 2,
           "documentDepth": 1,
           "documentIndex": 8,
@@ -26,29 +37,7 @@
       },
       {
         "location": {
-          "char": 4,
-          "documentDepth": 1,
-          "documentIndex": 8,
-          "documentPath": "C:/my_document.md",
-          "line": 1
-        },
-        "text": " ",
-        "type": "text"
-      },
-      {
-        "location": {
           "char": 1,
-          "documentDepth": 1,
-          "documentIndex": 8,
-          "documentPath": "C:/my_document.md",
-          "line": 2
-        },
-        "text": "\n",
-        "type": "text"
-      },
-      {
-        "location": {
-          "char": 2,
           "documentDepth": 1,
           "documentIndex": 8,
           "documentPath": "C:/my_document.md",
