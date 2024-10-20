@@ -5,19 +5,19 @@
       {
         "location": {
           "char": 1,
-          "documentDepth": 8,
+          "documentDepth": 5,
           "documentIndex": 3,
-          "documentPath": "C:/readme.md",
-          "line": 4
+          "documentPath": "C:/html/inline.md",
+          "line": 1
         },
-        "text": "                     \t\thello bro",
+        "text": "hello `int = 5;` world",
         "type": "text"
       }
     ],
     "projectLocation": {
-      "documentDepth": 8,
+      "documentDepth": 5,
       "documentIndex": 3,
-      "documentPath": "C:/readme.md"
+      "documentPath": "C:/html/inline.md"
     }
   }
 }

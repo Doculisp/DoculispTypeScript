@@ -115,6 +115,14 @@ describe('document', () => {
     
                 verifyAsJson(result);
             });
+
+            it('should parse an inline codeblock in middle of sentence', () => {
+                const md = 'hello `int = 5;` world';
+
+                const result = parse(md, buildLocation('C:/html/inline.md', 5, 3));
+                
+                verifyAsJson(result);
+            })
     
             it('should parse html comments inside a multiline code block', () => {
                 const md = `An example of an markdown document with html comments:

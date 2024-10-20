@@ -3,7 +3,8 @@ import { DocumentMap, DocumentParser, DocumentPart } from "../types/types.docume
 import { ILocation, IProjectLocation, IUtil, Result, isSame } from "../types/types.general";
 import * as path from 'node:path';
 import { IDocumentSearches, Searcher } from "../types/types.textHelpers";
-import { HandleStringValue, IInternals, IParseStepForward, IStringParseStepForward, StringStepParseResult } from "../types/types.internal";
+import { HandleStringValue, HandleValue, IInternals, IParseStepForward, IStringParseStepForward, StepParseResult, StringStepParseResult } from "../types/types.internal";
+import { ITrimArray } from "../types/types.trimArray";
 
 function createMap(projectLocation: IProjectLocation, parts: DocumentPart[]): DocumentMap {
     return {
@@ -381,7 +382,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return util.fail(`Inline code block at ${starting.toString()} does not close`, projectLocation.documentPath);
                 }
     
-                    const [parts, leftover] = parsed.value;
+                const [parts, leftover] = parsed.value;
                 if(leftover.location.compare(starting) === isSame) {
                     return internals.noResultFound();
                 }
@@ -725,7 +726,84 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     };
 }
 
-function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil): Valid<DocumentParser> {    
+function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPart[], DocumentPart> {
+    function parseLine(parts: DocumentPart[], current: ILocation): StepParseResult<DocumentPart[], DocumentPart> {
+        const part = parts[0] as DocumentPart;
+        const start = part.location;
+
+        if(part.type !== 'text') {
+            const lines = part.text.split('\n');
+            const location = 1 < lines.length ? current.increaseLine(lines.length - 1).increaseChar(part.text.length) : current.increaseChar(part.text.length);
+
+            return util.ok({
+                type: 'parse result',
+                subResult: part,
+                location: location,
+                rest: trimArray.trim(1, parts),
+            });
+        }
+
+        let i = 1;
+        let next: DocumentPart = parts[i] as DocumentPart;
+        let line: DocumentPart[] = [part];
+
+        while (i < parts.length && next.location.line === start.line) {
+            line.push(next);
+            i++;
+            next = parts[i] as DocumentPart;
+        }
+
+        if(line.length < 2) {
+            const lines = part.text.split('\n');
+            const location = 1 < lines.length ? current.increaseLine(lines.length - 1).increaseChar(part.text.length) : current.increaseChar(part.text.length);
+
+            if(part.text.trim().length === 0) {
+                return util.ok({
+                    type: 'discard',
+                    location: location,
+                    rest: trimArray.trim(1, parts),
+                });
+            }
+
+
+            return util.ok({
+                type: 'parse result',
+                subResult: part,
+                location: location,
+                rest: trimArray.trim(1, parts),
+            });
+        }
+
+        const last = (line[line.length - 1] as DocumentPart);
+        const lines = last.text.split('\n');
+        const location = 1 < lines.length ? last.location.increaseLine(lines.length - 1).increaseChar((lines[lines.length - 1] as string).length) : current.increaseChar(last.text.length);
+
+        let resultText = line.map(l => l.text).join('');
+
+        if(resultText.trim().length === 0) {
+            return util.ok({
+                type: 'discard',
+                location: current.increaseChar(resultText.length),
+                rest: trimArray.trim(1, parts),
+            });
+        }
+
+        return util.ok({
+            type: 'parse result',
+            subResult: {
+                location: start,
+                text: resultText.trimEnd(),
+                type: 'text',
+            },
+            location: location,
+            rest: trimArray.trim(line.length, parts)
+        });
+    }
+
+    return parseLine;
+}
+
+function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil, trimArray: ITrimArray): Valid<DocumentParser> {    
     return function (documentText: string, projectLocation: IProjectLocation): Result<DocumentMap> {
         if(projectLocation.documentDepth <= 0) {
             return util.fail(`Document Depth must be a value of 1 or larger.`, projectLocation.documentPath);
@@ -763,7 +841,16 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
                 return util.fail(`Doculisp block at { line: 1, char: 1 } has something not contained in parenthesis at ${ ending.toString() }.`, documentPath);
             }
 
-            return util.ok(createMap(projectLocation, parts));
+            const lineConcat = parserBuilder.createArrayParser(lineBuilder(util, trimArray));
+            const linesResult = lineConcat.parse(parts, util.toLocation(projectLocation, 1, 1));
+
+            if(!linesResult.success) {
+                return linesResult;
+            }
+
+            const [lines, _leftovers] = linesResult.value;
+
+            return util.ok(createMap(projectLocation, lines));
         } else {
             return parsed;
         }
@@ -771,10 +858,10 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
 }
 
 const registerable: IRegisterable = {
-    builder: (searches: Searcher, createParser: IInternals, util: IUtil) => documentParse(searches.searchDocumentFor, createParser, util),
+    builder: (searches: Searcher, createParser: IInternals, util: IUtil, trimArray: ITrimArray) => documentParse(searches.searchDocumentFor, createParser, util, trimArray),
     name: 'documentParse',
     singleton: true,
-    dependencies: ['searches', 'internals', 'util']
+    dependencies: ['searches', 'internals', 'util', 'trimArray']
 };
 
 export {
