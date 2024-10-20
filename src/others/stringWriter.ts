@@ -52,13 +52,6 @@ class StringBuilder {
     }
 }
 
-function isNewLine(previousLocation: ILocation, currentLocation: ILocation): boolean {
-    return !(
-        previousLocation.documentPath === currentLocation.documentPath
-        && previousLocation.line === currentLocation.line
-    );
-}
-
 function writeAstWrite(astWrite: IWrite) : string {
     return astWrite.value;
 }
@@ -153,10 +146,6 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
 
             addRow(sb, title.title, title.ref_link, element.sectionLabel);
         }
-        
-        if(0 < sb.length) {
-            sb.addLine();
-        }
     
         return sb.toString();
     }
@@ -222,9 +211,7 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
             continue;
         }
 
-        if(isNewLine(previous, doculisp.documentOrder)) {
-            sb.addLine();
-        }
+        sb.addLine();
 
         if(previousType === 'doculisp-write' && doculisp.type === 'doculisp-write') {
             if(previous.documentPath !== doculisp.documentOrder.documentPath
