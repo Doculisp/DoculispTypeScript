@@ -611,7 +611,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
                     return util.ok({
                         type: 'parse result',
-                        subResult: { location: location, text: parsed.replaceAll('\r\n', '\n').replaceAll('\r', '\n'), type: 'text' },
+                        subResult: { location: location, text: parsed, type: 'text' },
                         rest,
                         location: location,
                     });
@@ -646,7 +646,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     return internals.noResultFound();
                 }
     
-                const result = parts.map(p => p.text).join('');//.trimEnd();
+                const result = parts.map(p => p.text).join('');
                 return util.ok({
                     type: 'parse result',
                     subResult: { type: 'text', text: result, location: starting },
