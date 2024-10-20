@@ -232,8 +232,6 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
                || (doculisp.documentOrder.line + 2) <= previous.line
             ) {
                 sb.addLine();
-            } else if (0 < sb.lineLength) {
-                //sb.add(' ');
             }
         }
         else {
