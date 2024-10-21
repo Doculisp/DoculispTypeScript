@@ -555,7 +555,7 @@ a truly divided tail.
             });
 
             it('should write the structure part of its own documentation', () => {
-                const filePath = './structure.md';
+                const filePath = '../../lang/docs/structure.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -563,7 +563,7 @@ a truly divided tail.
             });
 
             it('should write the doculisp part of its own documentation', () => {
-                const filePath = './doculisp.md';
+                const filePath = '../../lang/docs/doculisp.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -571,7 +571,7 @@ a truly divided tail.
             });
 
             it('should write the section-meta part of its own documentation', () => {
-                const filePath = './section-meta.md';
+                const filePath = '../../lang/docs/section-meta.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -579,7 +579,7 @@ a truly divided tail.
             });
 
             it('should write the content part of its own documentation', () => {
-                const filePath = './content.md';
+                const filePath = '../../lang/docs/content.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -587,7 +587,7 @@ a truly divided tail.
             });
 
             it('should write the headings part of its own documentation', () => {
-                const filePath = './headings.md';
+                const filePath = '../../lang/docs/headings.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -595,7 +595,7 @@ a truly divided tail.
             });
 
             it('should write the comment part of its own documentation', () => {
-                const filePath = './comment.md';
+                const filePath = '../../lang/docs/comment.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
@@ -603,7 +603,7 @@ a truly divided tail.
             });
 
             it('should write the keywords part of its own documentation', () => {
-                const filePath = './keywords.md';
+                const filePath = '../../lang/docs/keywords.md';
                 const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
 
                 const result = toResult(doc, buildLocation(filePath, 1, 1));
