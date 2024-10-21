@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 import { container } from './container';
-import { Command } from 'commander';
+import { Command, OptionValues } from 'commander';
 import { Result } from './types/types.general';
 import { IController } from './types/types.controller';
 import { IVersion } from './types/types.version';
@@ -23,7 +23,10 @@ if(!versionMaybe.success) {
 
 const helptext = '\n\n' + figlet.textSync('doculisp', {
     font: 'Cybermedium'
-}) + `\n                     Version: ${version}`;
+}) + 
+`\n            Compiler Version: ${version}` +
+'\n            Language Version: 0.1.0' +
+'\n';
 
 program.addHelpText('beforeAll', helptext);
 program.addHelpText('afterAll', '\n\n');
@@ -32,9 +35,19 @@ program
     .name('doculisp')
     .description('A compiler for markdown')
     .version(version)
-    .requiredOption('-s, --source <source_path>', 'the source file to compile')
-    .requiredOption('-d, --output <output_path>', 'the output document path for the compiled markdown')
-    .option('-t, --test', 'runs the compiler without generating the output file.')
+    .argument('<source>', 'the path to the file to compile')
+    .argument('<output>', 'the path to the output location including output file name')
+    .option('-t, --test', 'runs the compiler without generating the output file')
+    .action((sourcePath: string, outputPath: string, options: OptionValues) => {
+        if (options['test']) {
+            const result = controller.test(sourcePath);
+            reportResult(result);
+        }
+        else {
+            const result = controller.compile(sourcePath, outputPath);
+            reportResult(result);
+        }
+    })
     .parse(process.argv);
 
 function reportResult(result: Result<string | false>) {
@@ -46,18 +59,4 @@ function reportResult(result: Result<string | false>) {
         console.error(JSON.stringify(result, null, 4));
         process.exit(1);
     }
-}
-
-const options = program.opts();
-
-const sourcePath: string = options['source'];
-
-if (options['test']) {
-    const result = controller.test(sourcePath);
-    reportResult(result);
-}
-else {
-    const outputPath: string = options['output'];
-    const result = controller.compile(sourcePath, outputPath);
-    reportResult(result);
 }

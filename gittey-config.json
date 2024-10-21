@@ -45,7 +45,7 @@
         },
         {
             "name": "docs",
-            "command": "node ./dist/index.js -s ./documentation/_main.md -d ./README.md"
+            "command": "node ./dist/index.js ./documentation/_main.md ./README.md"
         }
     ],
     "collaborators": []

@@ -30,18 +30,21 @@ ___  ____ ____ _  _ _    _ ____ ___
 |  \ |  | |    |  | |    | [__  |__]
 |__/ |__| |___ |__| |___ | ___] |
 
-                     Version: N.N.N
+            Compiler Version: n.n.n
+            Language Version: n.n.n
 
-Usage: doculisp [options]
+Usage: doculisp [options] <source> <output>
 
 A compiler for markdown
 
+Arguments:
+  source         the path to the file to compile
+  output         the path to the output location including output file name
+
 Options:
-  -V, --version               output the version number
-  -s, --source <source_path>  the source file to compile
-  -d, --output <output_path>  the output document path for the compiled markdown
-  -t, --test                  runs the compiler without generating the output file.
-  -h, --help                  display help for command
+  -V, --version  output the version number
+  -t, --test     runs the compiler without generating the output file
+  -h, --help     display help for command
 ```
 
 The source and destination options are required.
