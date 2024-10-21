@@ -44,8 +44,8 @@ describe('includeBuilder', () => {
 
                 return util.fail(`filePath has not been setup.`, filePath);
             },
-            getProcessWorkingDirectory(): string { return './'},
-            setProcessWorkingDirectory(): void {},
+            getProcessWorkingDirectory(): Result<string> { return util.ok('./')},
+            setProcessWorkingDirectory(): Result<undefined> { return util.ok(undefined); },
         };
 
         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);

@@ -11,9 +11,18 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
 
     function _parse(filePath: string, location: IProjectLocation): Result<IDoculisp | IEmptyDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();
+
+        if(!workingDir.success) {
+            return workingDir;
+        }
+
         const targetDir = path.resolve(path.dirname(filePath));
         try {
-            fileHandler.setProcessWorkingDirectory(targetDir);
+            const success = fileHandler.setProcessWorkingDirectory(targetDir);
+
+            if(!success.success) {
+                return success;
+            }
 
             const fileMaybe = fileHandler.load(path.basename(filePath));
             if(!fileMaybe.success) {
@@ -28,7 +37,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             return parseExternals(doculisp);
         }
         finally {
-            fileHandler.setProcessWorkingDirectory(workingDir);
+            fileHandler.setProcessWorkingDirectory(workingDir.value);
         }
     }
 

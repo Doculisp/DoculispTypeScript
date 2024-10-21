@@ -1,13 +1,12 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
-import { IFail, IProjectLocation, IUtil } from "../../src/types/types.general";
+import { IFail, IProjectLocation, ISuccess, IUtil } from "../../src/types/types.general";
 import { Result } from "../../src/types/types.general";
 import { buildLocation, testable } from "../testHelpers";
-import { IDirectoryHandler, IFileLoader } from "../../src/types/types.fileHandler";
+import { IDirectoryHandler, IFileHandler, IFileLoader } from "../../src/types/types.fileHandler";
 import { container } from "../../src/container";
 import { IDictionary } from "../../src/types/types.containers";
-import fs from 'fs';
 import path from "path";
 
 describe('stringWriter', () => {
@@ -15,6 +14,7 @@ describe('stringWriter', () => {
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
+    let fileHandler: IFileHandler = null as any;
 
     function verifyMarkdownResult(textMaybe: Result<string>, options?: Options): void {
         if(textMaybe.success) {
@@ -36,6 +36,7 @@ describe('stringWriter', () => {
 
         toResult = testable.stringWriter.resultBuilder(container, environment => {
             const util: IUtil = environment.buildAs<IUtil>('util');
+            fileHandler = environment.buildAs<IFileHandler>('fileHandler');
             // ok = util.ok;
             fail = util.fail;
         });
@@ -186,9 +187,9 @@ This is the end
                                 return fail('path not yet setup', path);
                             },
                             getProcessWorkingDirectory() {
-                                return './';
+                                return util.ok('./');
                             },
-                            setProcessWorkingDirectory() {}
+                            setProcessWorkingDirectory() { return util.ok(undefined); }
                         };
 
                         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
@@ -556,65 +557,81 @@ a truly divided tail.
 
             it('should write the structure part of its own documentation', () => {
                 const filePath = '../../lang/docs/structure.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the doculisp part of its own documentation', () => {
                 const filePath = '../../lang/docs/doculisp.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the section-meta part of its own documentation', () => {
                 const filePath = '../../lang/docs/section-meta.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the content part of its own documentation', () => {
                 const filePath = '../../lang/docs/content.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the headings part of its own documentation', () => {
                 const filePath = '../../lang/docs/headings.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the comment part of its own documentation', () => {
                 const filePath = '../../lang/docs/comment.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the keywords part of its own documentation', () => {
                 const filePath = '../../lang/docs/keywords.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the whole of its own documentation', () => {
                 const filePath = './_main.md';
-                const doc: string = fs.readFileSync(filePath, { encoding: 'utf8' });
+                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                const result = toResult(doc, buildLocation(filePath, 1, 1));
+                expect(doc.success).toBe(true);
+
+                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
         });

@@ -8,7 +8,7 @@ function buildLoader(util: IUtil, fs: any): IFileHandler {
             const value: string = fs.readFileSync(path, {encoding: 'utf8'});
             return util.ok(value);
         } catch (error) {
-            return util.fail(`${error}`, path);
+            return util.fail(`${(error as any).message}`, path);
         }
     }
 
@@ -24,16 +24,25 @@ function buildLoader(util: IUtil, fs: any): IFileHandler {
             return text;
         }
         catch(error) {
-            return util.fail(`${error}`, path);
+            return util.fail(`${(error as any)}`, path);
         }
     }
 
-    function getProcessWorkingDirectory(): string {
-        return process.cwd();
+    function getProcessWorkingDirectory(): Result<string> {
+        try {
+            return util.ok(process.cwd());
+        } catch (error) {
+            return util.fail(`${(error as any).message}`, '');
+        }
     }
 
-    function setProcessWorkingDirectory(directory: string): void {
-        process.chdir(directory);
+    function setProcessWorkingDirectory(directory: string): Result<undefined> {
+        try {
+            process.chdir(directory);
+            return util.ok(undefined);
+        } catch(error) {
+            return util.fail(`${(error as any).message}`, directory);
+        }
     }
 
     return {

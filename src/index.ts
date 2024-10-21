@@ -43,7 +43,8 @@ function reportResult(result: Result<string | false>) {
         console.log(message);
     }
     else {
-        console.log(JSON.stringify(result, null, 4));
+        console.error(JSON.stringify(result, null, 4));
+        process.exit(1);
     }
 }
 
