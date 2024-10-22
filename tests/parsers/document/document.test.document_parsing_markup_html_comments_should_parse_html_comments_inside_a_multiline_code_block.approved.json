@@ -21,7 +21,7 @@
           "documentPath": "C:/markdown/multiline.md",
           "line": 2
         },
-        "text": "    ```markdown\n    # A document\n    \n    <!-- this need\n    a summary\n    -->\n    \n    ## Sub section title\n    ```",
+        "text": "    ```markdown\n    # A document\n\n    <!-- this need\n    a summary\n    -->\n\n    ## Sub section title\n    ```",
         "type": "text"
       }
     ],

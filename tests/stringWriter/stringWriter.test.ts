@@ -547,7 +547,7 @@ a truly divided tail.
             let workingDir: string = null as any;
             beforeEach(() => {
                 workingDir = process.cwd();
-                process.chdir('./documentation');
+                process.chdir('./tests/Sample/complex');
                 toResult = testable.stringWriter.resultBuilder(container);
             });
 
@@ -556,70 +556,85 @@ a truly divided tail.
             });
 
             it('should write the structure part of its own documentation', () => {
-                const filePath = '../../lang/docs/structure.md';
+                const filePath = './lang/structure.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the doculisp part of its own documentation', () => {
-                const filePath = '../../lang/docs/doculisp.md';
+                const filePath = './lang/doculisp.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the section-meta part of its own documentation', () => {
-                const filePath = '../../lang/docs/section-meta.md';
+                process.chdir('./lang/section-meta');
+                const filePath = './_main.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the content part of its own documentation', () => {
-                const filePath = '../../lang/docs/content.md';
+                const filePath = './lang/content.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the headings part of its own documentation', () => {
-                const filePath = '../../lang/docs/headings.md';
+                const filePath = './lang/headings.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the comment part of its own documentation', () => {
-                const filePath = '../../lang/docs/comment.md';
+                const filePath = './lang/comment.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the keywords part of its own documentation', () => {
-                const filePath = '../../lang/docs/keywords.md';
+                const filePath = './lang/keywords.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
@@ -629,7 +644,9 @@ a truly divided tail.
                 const filePath = './_main.md';
                 const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
 
-                expect(doc.success).toBe(true);
+                if(!doc.success) {
+                    expect(JSON.stringify(doc, null, 4)).toBe('');
+                }
 
                 const result = toResult(doc.value, buildLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);

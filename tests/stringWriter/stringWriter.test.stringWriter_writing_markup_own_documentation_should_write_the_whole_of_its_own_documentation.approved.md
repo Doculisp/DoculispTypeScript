@@ -193,7 +193,7 @@ Example
 )
 ```
 
-##### Sub-Sections #####
+##### Subsections #####
 
 The `include` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)`.
 
@@ -371,9 +371,9 @@ In this example the `section-meta` and all its subblocks are commented out. Howe
 
 ### Key Atoms by Depth ###
 
-Here is a list of all the key atoms by depth:
+Here is a list of all the key atoms by depth:  
 
-* markdown
+* markdown  
 * `dl`
   * `section-meta`
     * `title` text

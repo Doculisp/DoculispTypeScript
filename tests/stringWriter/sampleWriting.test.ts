@@ -29,7 +29,7 @@ describe('stringWriter writing sample', () => {
 
     beforeEach(() => {
         workingDir = process.cwd();
-        process.chdir('./tests/Sample');
+        process.chdir('./tests/Sample/simple');
         toResult = testable.stringWriter.pathParser(container);
     });
 

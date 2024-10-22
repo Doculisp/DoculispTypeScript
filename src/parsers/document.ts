@@ -278,12 +278,23 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(opened) {
                     return util.fail(`Multiline code block at ${starting.toString()} does not close`, projectLocation.documentPath);
                 }
-                const [peaces, leftover] = parsed.value;
+                const [pieces, leftover] = parsed.value;
                 if(leftover.location.compare(starting) === isSame) {
                     return internals.noResultFound();
                 }
-    
-                const result = peaces.map(p => p.text).join('');
+
+                const lines: string[] = [''];
+
+                pieces.forEach((piece: DocumentPart) => {
+                    lines[lines.length - 1] += piece.text;
+
+                    if(piece.text.endsWith('\n')) {
+                        lines[lines.length - 1] = (lines[lines.length - 1] as string).trimEnd();
+                        lines.push('');
+                    }
+                });
+
+                const result = lines.join('\n');
                 const rest = leftover.remaining;
                 
                 return util.ok({

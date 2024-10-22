@@ -2,9 +2,9 @@
 
 # Key Atoms by Depth #
 
-Here is a list of all the key atoms by depth:
+Here is a list of all the key atoms by depth:  
 
-* markdown
+* markdown  
 * `dl`
   * `section-meta`
     * `title` text
