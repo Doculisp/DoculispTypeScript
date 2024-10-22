@@ -278,23 +278,13 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(opened) {
                     return util.fail(`Multiline code block at ${starting.toString()} does not close`, projectLocation.documentPath);
                 }
+                
                 const [pieces, leftover] = parsed.value;
                 if(leftover.location.compare(starting) === isSame) {
                     return internals.noResultFound();
                 }
 
-                const lines: string[] = [''];
-
-                pieces.forEach((piece: DocumentPart) => {
-                    lines[lines.length - 1] += piece.text;
-
-                    if(piece.text.endsWith('\n')) {
-                        lines[lines.length - 1] = (lines[lines.length - 1] as string).trimEnd();
-                        lines.push('');
-                    }
-                });
-
-                const result = lines.join('\n');
+                const result = pieces.map(p => p.text).join('');
                 const rest = leftover.remaining;
                 
                 return util.ok({
@@ -738,6 +728,18 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
 }
 
 function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPart[], DocumentPart> {
+    function clean(value: string): string {
+        return value.split('\n').map(l => l.trimEnd()).join('\n');
+    }
+
+    function cleanPart(value: DocumentPart): DocumentPart {
+        return {
+            location: value.location,
+            type: value.type,
+            text: clean(value.text),
+        };
+    }
+
     function parseLine(parts: DocumentPart[], current: ILocation): StepParseResult<DocumentPart[], DocumentPart> {
         const part = parts[0] as DocumentPart;
         const start = part.location;
@@ -748,7 +750,7 @@ function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPa
 
             return util.ok({
                 type: 'parse result',
-                subResult: part,
+                subResult: cleanPart(part),
                 location: location,
                 rest: trimArray.trim(1, parts),
             });
@@ -779,7 +781,7 @@ function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPa
 
             return util.ok({
                 type: 'parse result',
-                subResult: part,
+                subResult: cleanPart(part),
                 location: location,
                 rest: trimArray.trim(1, parts),
             });
@@ -803,7 +805,7 @@ function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPa
             type: 'parse result',
             subResult: {
                 location: start,
-                text: resultText.trimEnd(),
+                text: clean(resultText),
                 type: 'text',
             },
             location: location,

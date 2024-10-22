@@ -4,7 +4,7 @@
 
 ### The "Document" Parser ###
 
-The goal of these tests is to prove that Doculisp can accurately identify Doculisp code blocks from base Markdown. Where this is the primary goal, there is also a secondary goal to prove also. Doculisp needs to remove noisy whitespace. 
+The goal of these tests is to prove that Doculisp can accurately identify Doculisp code blocks from base Markdown. Where this is the primary goal, there is also a secondary goal to prove also. Doculisp needs to remove noisy whitespace.
 
 ## General Functionality ##
 

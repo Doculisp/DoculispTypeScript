@@ -371,9 +371,9 @@ In this example the `section-meta` and all its subblocks are commented out. Howe
 
 ### Key Atoms by Depth ###
 
-Here is a list of all the key atoms by depth:  
+Here is a list of all the key atoms by depth:
 
-* markdown  
+* markdown
 * `dl`
   * `section-meta`
     * `title` text
