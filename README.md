@@ -13,7 +13,8 @@ A Compiler for Doculisp Lang.
 ## Table of Contents ##
 
 1. [CLI: Using the Command Line Interface](#using-the-command-line-interface)
-2. [Language: Doculisp](#doculisp)
+2. [Next: Things to Come From the CLI](#things-to-come-from-the-cli)
+3. [Language: Doculisp](#doculisp)
 
 ## Using the Command Line Interface ##
 
@@ -48,6 +49,12 @@ Options:
 ```
 
 The source and destination options are required.
+
+## Things to Come From the CLI ##
+
+[ ] Disable Markdown lint and prettier in Final Document
+[ ] Auto Check Version on Run
+[ ] Update Command from CLI
 
 ## Doculisp ##
 
