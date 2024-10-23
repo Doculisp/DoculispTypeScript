@@ -7,11 +7,16 @@ import { IVersion } from './types/types.version';
 import childProcess from 'child_process';
 import Registry from '@slimio/npm-registry';
 import figlet from 'figlet';
+import path from 'path';
 
 const program = new Command();
 const controller = container.buildAs<IController>('controller');
 const versionGetter = container.buildAs<IVersion>('version');
 const versionMaybe = versionGetter.getVersion();
+
+const nodePath = path.dirname(path.resolve(process.argv[0] as string));
+const modulePath = path.resolve(process.argv[1] as string);
+const isCli = modulePath.includes(nodePath);
 
 async function main() {
     let version = '?.?.?'
@@ -42,7 +47,8 @@ async function main() {
         .option('--update', 'updates the global install of doculisp')
         .action((sourcePath: string | undefined, outputPath: string | undefined, options: OptionValues) => {
             if (options['update']){
-                childProcess.execSync(`npm install doculisp@latest -g`, { stdio: 'inherit' });
+                const updateCommand = isCli ? 'npm install doculisp@latest -g' : 'npm update doculisp';
+                childProcess.execSync(updateCommand, { stdio: 'inherit' });
                 console.log('Updated!');
                 return;
             }
@@ -82,7 +88,12 @@ async function main() {
         console.log(`Your version: ${version}`);
         console.log(`Latest version: ${pkg.lastVersion}`);
         console.log();
-        console.log('Run `npm update doculisp -g` to get the latest version.');
+        if(isCli){
+            console.log('Run `npm update doculisp -g` to get the latest version.');
+        }
+        else {
+            console.log('Run `npm update doculisp` to get the latest version.')
+        }
         console.log();
         console.log('************************************************');
     }
