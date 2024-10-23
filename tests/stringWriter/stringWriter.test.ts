@@ -7,6 +7,7 @@ import { buildLocation, testable } from "../testHelpers";
 import { IDirectoryHandler, IFileHandler, IFileLoader } from "../../src/types/types.fileHandler";
 import { container } from "../../src/container";
 import { IDictionary } from "../../src/types/types.containers";
+import { IVersion } from "../../src/types/types.version";
 import path from "path";
 
 describe('stringWriter', () => {
@@ -36,8 +37,15 @@ describe('stringWriter', () => {
 
         toResult = testable.stringWriter.resultBuilder(container, environment => {
             const util: IUtil = environment.buildAs<IUtil>('util');
+
+            const version: IVersion = {
+                getVersion() {
+                    return util.ok("1.2.3");
+                },
+            };
+
+            environment.replaceValue(version, 'version');
             fileHandler = environment.buildAs<IFileHandler>('fileHandler');
-            // ok = util.ok;
             fail = util.fail;
         });
     });

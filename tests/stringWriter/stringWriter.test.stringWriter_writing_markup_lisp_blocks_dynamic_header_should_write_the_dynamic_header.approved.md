@@ -2,6 +2,8 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
+<!-- Compiled with doculisp (version 1.2.3) https://www.npmjs.com/package/doculisp -->
+
 # The use of dynamic headers #
 
 Here is how you would use the header.

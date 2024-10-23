@@ -2,6 +2,8 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
+<!-- Compiled with doculisp (version 2.0.1) https://www.npmjs.com/package/doculisp -->
+
 # Comment Block #
 
 The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics `*` just after an open parenthisis and end when the block and all its subblocks are closed.

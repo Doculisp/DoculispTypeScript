@@ -2,6 +2,8 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
+<!-- Compiled with doculisp (version 2.0.1) https://www.npmjs.com/package/doculisp -->
+
 # Doculisp Master Block #
 
 All doculisp is contained in an outer doculisp block. That block starts with `(dl` followed by a white space. This doculisp block must be contained in an html comment.

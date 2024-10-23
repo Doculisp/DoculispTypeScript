@@ -2,6 +2,7 @@ import { DoculispPart, IDoculisp, IEmptyDoculisp, IHeader, ILoad, ISectionWriter
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
+import { IVersion } from "../types/types.version";
 
 class StringBuilder {
     private _lines: string[];
@@ -257,7 +258,7 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
     return sb.toString();
 }
 
-function buildWriter(util: IUtil) : IStringWriter {
+function buildWriter(util: IUtil, versionService: IVersion) : IStringWriter {
     function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>): Result<string> {
         if(!astMaybe.success) {
             return astMaybe;
@@ -267,12 +268,18 @@ function buildWriter(util: IUtil) : IStringWriter {
             return util.ok('');
         }
 
+        const versionMaybe = versionService.getVersion();
+
+        const version = versionMaybe.success ? versionMaybe.value : '?.?.?';
+
         const sb = new StringBuilder();
         const section = astMaybe.value.section;
 
         sb.addLine('<!-- GENERATED DOCUMENT DO NOT EDIT! -->');
         sb.addLine('<!-- prettier-ignore-start -->');
         sb.addLine('<!-- markdownlint-disable -->');
+        sb.addLine();
+        sb.addLine(`<!-- Compiled with doculisp (version ${version}) https://www.npmjs.com/package/doculisp -->`);
 
 
         let previous: ILocation = util.location('', -1, -1, -1, -1);
@@ -291,9 +298,9 @@ function buildWriter(util: IUtil) : IStringWriter {
 }
 
 const stringWriter: IRegisterable = {
-    builder: (util: IUtil) => buildWriter(util),
+    builder: (util: IUtil, version: IVersion) => buildWriter(util, version),
     name: 'stringWriter',
-    dependencies: ['util'],
+    dependencies: ['util', 'version'],
     singleton: false,
 };
 

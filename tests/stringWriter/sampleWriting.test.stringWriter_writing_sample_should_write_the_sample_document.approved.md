@@ -2,6 +2,8 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
+<!-- Compiled with doculisp (version 2.0.1) https://www.npmjs.com/package/doculisp -->
+
 # An explanation of the tests #
 
 1. [Section: Parser Tests](#parser-tests)

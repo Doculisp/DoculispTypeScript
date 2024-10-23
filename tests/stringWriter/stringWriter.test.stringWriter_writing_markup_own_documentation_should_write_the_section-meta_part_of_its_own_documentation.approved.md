@@ -2,6 +2,8 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
+<!-- Compiled with doculisp (version 2.0.1) https://www.npmjs.com/package/doculisp -->
+
 # Section Meta Block #
 
 This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and include.
