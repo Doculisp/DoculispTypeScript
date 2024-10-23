@@ -6,7 +6,7 @@ import { Result } from "../../src/types/types.general";
 import { buildLocation, testable } from "../testHelpers";
 import { IDirectoryHandler, IFileHandler, IFileLoader } from "../../src/types/types.fileHandler";
 import { container } from "../../src/container";
-import { IDictionary } from "../../src/types/types.containers";
+import { IDictionary, ITestableContainer } from "../../src/types/types.containers";
 import { IVersion } from "../../src/types/types.version";
 import path from "path";
 
@@ -185,6 +185,15 @@ This is the end
                     toResult = testable.stringWriter.resultBuilder(container, environment => {
                         const util: IUtil = environment.buildAs<IUtil>('util');
                         ok = util.ok;
+
+                        const version: IVersion = {
+                            getVersion() {
+                                return util.ok("1.2.3");
+                            },
+                        };
+            
+                        environment.replaceValue(version, 'version');
+                        
                         const fileHandler: IFileLoader & IDirectoryHandler = {
                             load: function(path: string): Result<string> {
                                 const r = files[path];
@@ -556,7 +565,17 @@ a truly divided tail.
             beforeEach(() => {
                 workingDir = process.cwd();
                 process.chdir('./tests/Sample/complex');
-                toResult = testable.stringWriter.resultBuilder(container);
+                toResult = testable.stringWriter.resultBuilder(container, (environment: ITestableContainer) => {
+                    const util = environment.buildAs<IUtil>('util');
+
+                    const version: IVersion = {
+                        getVersion() {
+                            return util.ok("1.2.3");
+                        },
+                    };
+        
+                    environment.replaceValue(version, 'version');
+                });
             });
 
             afterEach(() => {
