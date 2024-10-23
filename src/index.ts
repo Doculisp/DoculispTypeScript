@@ -44,7 +44,7 @@ async function main() {
         .argument('[source]', 'the path to the file to compile')
         .argument('[output]', 'the path to the output location including output file name')
         .option('-t, --test', 'runs the compiler without generating the output file')
-        .option('--update', 'updates the global install of doculisp')
+        .option('--update', 'updates doculisp')
         .action((sourcePath: string | undefined, outputPath: string | undefined, options: OptionValues) => {
             if (options['update']){
                 const updateCommand = isCli ? 'npm install doculisp@latest -g' : 'npm update doculisp';

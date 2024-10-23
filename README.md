@@ -42,8 +42,8 @@ ___  ____ ____ _  _ _    _ ____ ___
 |  \ |  | |    |  | |    | [__  |__]
 |__/ |__| |___ |__| |___ | ___] |
 
-            Compiler Version: 2.0.1
-            Language Version: 0.1.0
+            Compiler Version: N.N.N
+            Language Version: N.N.N
 
 Usage: doculisp [options] [source] [output]
 
@@ -56,7 +56,7 @@ Arguments:
 Options:
   -V, --version  output the version number
   -t, --test     runs the compiler without generating the output file
-  --update       updates the global install of doculisp
+  --update       updates doculisp
   -h, --help     display help for command
 ```
 
