@@ -5,5 +5,3 @@
     )
 )
 -->
-
-[ ] Update CLI Documentation to how to run from local install

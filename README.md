@@ -15,28 +15,35 @@ A Compiler for Doculisp Lang.
 ## Table of Contents ##
 
 1. [CLI: Using the Command Line Interface](#using-the-command-line-interface)
-2. [Next: Things to Come From the CLI](#things-to-come-from-the-cli)
-3. [Language: Doculisp](#doculisp)
+2. [Language: Doculisp](#doculisp)
 
 ## Using the Command Line Interface ##
 
 ### To Install Doculisp ###
 
-Run the following command: `npm i -g doculisp`
+To install the cli globally run the following command: `npm i -g doculisp`
+
+To install the cli locally run the following command: `npm i doculisp --save-dev`
 
 ### Running the Doculisp compiler ###
 
-If you run doculisp with the help option : `doculisp --help` you will see the following:
+If you have Doculisp installed globally then you can run `doculisp` from the command line.
+
+If you have Doculisp installed locally then you can run `node ./node_modules/doculisp/dist/index.js` from the command line.
+
+### Using the Doculisp compiler ###
+
+If you run Doculisp with the help option : `doculisp --help` you will see the following:
 
 ```
 ___  ____ ____ _  _ _    _ ____ ___
 |  \ |  | |    |  | |    | [__  |__]
 |__/ |__| |___ |__| |___ | ___] |
 
-            Compiler Version: n.n.n
-            Language Version: n.n.n
+            Compiler Version: 2.0.1
+            Language Version: 0.1.0
 
-Usage: doculisp [options] <source> <output>
+Usage: doculisp [options] [source] [output]
 
 A compiler for markdown
 
@@ -47,14 +54,12 @@ Arguments:
 Options:
   -V, --version  output the version number
   -t, --test     runs the compiler without generating the output file
+  --update       updates the global install of doculisp
   -h, --help     display help for command
 ```
 
-The source and destination options are required.
-
-## Things to Come From the CLI ##
-
-[ ] Update CLI Documentation to how to run from local install
+When using `--test` only the source path if mandatory.
+When compiling both the source and destination are mandatory.
 
 ## Doculisp ##
 

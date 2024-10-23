@@ -4,7 +4,7 @@
         (title Doculisp)
         (include
             (CLI ./cli.md)
-            (Next ./next.md)
+            (*Next ./next.md)
             (Language ../../lang/docs/_main.md)
         )
     )
