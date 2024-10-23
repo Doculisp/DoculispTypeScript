@@ -6,6 +6,6 @@
 )
 -->
 
-[ ] Disable Markdown lint and prettier in Final Document
 [ ] Auto Check Version on Run
 [ ] Update Command from CLI
+[ ] Update CLI Documentation to how to run from local install

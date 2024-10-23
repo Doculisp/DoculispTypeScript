@@ -1,4 +1,6 @@
-<!-- Generated Document do not edit! -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
 # Section Meta Block #
 
@@ -90,4 +92,6 @@ This will create a subsection called `section` that is built using the file `./t
 
 Comment block breaks this rule slightly. The astrict character is a special character that cause all atoms that start with to be treated as a comment, and all parameters and sub blocks to be ignored.
 
-<!-- Generated Document do not edit! -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->

@@ -1,7 +1,11 @@
-<!-- Generated Document do not edit! -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
 # My Cool Document #
 
 ### A very nice document ###
 
-<!-- Generated Document do not edit! -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->

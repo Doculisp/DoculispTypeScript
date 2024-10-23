@@ -1,4 +1,6 @@
-<!-- Generated Document do not edit! -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
 # Doculisp Master Block #
 
@@ -23,4 +25,6 @@ Example
 
 You will notice that in this example the doculisp contains 2 main blocks, however it is valid for the Doculisp block to contain more or less. Even zero other blocks.
 
-<!-- Generated Document do not edit! -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->

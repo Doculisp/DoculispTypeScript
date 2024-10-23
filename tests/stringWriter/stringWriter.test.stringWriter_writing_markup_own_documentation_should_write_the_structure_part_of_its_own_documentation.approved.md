@@ -1,4 +1,6 @@
-<!-- Generated Document do not edit! -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
 # Basic Structure #
 
@@ -33,4 +35,6 @@ A parameter is a string of characters that contains no line advancement (`\r` or
 (atom (atom2 second parameter))
 ```
 
-<!-- Generated Document do not edit! -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->

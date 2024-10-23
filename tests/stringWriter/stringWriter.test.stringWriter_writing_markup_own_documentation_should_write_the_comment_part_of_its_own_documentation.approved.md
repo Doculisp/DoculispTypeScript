@@ -1,4 +1,6 @@
-<!-- Generated Document do not edit! -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
 # Comment Block #
 
@@ -46,4 +48,6 @@ xample:
 
 In this example the `section-meta` and all its subblocks are commented out. However when you uncomment `section-meta` then the `include` block will be commented out. When you uncomment that block, then the `section ./comment.md` block will be commented out.
 
-<!-- Generated Document do not edit! -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->

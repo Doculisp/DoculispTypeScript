@@ -1,4 +1,6 @@
-<!-- Generated Document do not edit! -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
 # Doculisp #
 
@@ -52,9 +54,9 @@ The source and destination options are required.
 
 ## Things to Come From the CLI ##
 
-[ ] Disable Markdown lint and prettier in Final Document
 [ ] Auto Check Version on Run
 [ ] Update Command from CLI
+[ ] Update CLI Documentation to how to run from local install
 
 ## Doculisp ##
 
@@ -459,4 +461,6 @@ I want to give a special thanks to my friend [Chris Stead](https://github.com/cm
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
-<!-- Generated Document do not edit! -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->

@@ -270,13 +270,18 @@ function buildWriter(util: IUtil) : IStringWriter {
         const sb = new StringBuilder();
         const section = astMaybe.value.section;
 
-        sb.addLine('<!-- Generated Document do not edit! -->');
+        sb.addLine('<!-- GENERATED DOCUMENT DO NOT EDIT! -->');
+        sb.addLine('<!-- prettier-ignore-start -->');
+        sb.addLine('<!-- markdownlint-disable -->');
+
 
         let previous: ILocation = util.location('', -1, -1, -1, -1);
         sb.addLine(writeSection(previous, section));
         
         sb.addLine();
-        sb.addLine('<!-- Generated Document do not edit! -->');
+        sb.addLine('<!-- markdownlint-restore -->');
+        sb.addLine('<!-- prettier-ignore-end -->');
+        sb.addLine('<!-- GENERATED DOCUMENT DO NOT EDIT! -->');
         return util.ok(sb.toString());
     }
 
