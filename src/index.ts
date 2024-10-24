@@ -45,9 +45,9 @@ async function main() {
         .argument('[output]', 'the path to the output location including output file name')
         .option('-t, --test', 'runs the compiler without generating the output file')
         .option('--update', 'updates doculisp')
-        .action((sourcePath: string | undefined, outputPath: string | undefined, options: OptionValues) => {
+        .action(async (sourcePath: string | undefined, outputPath: string | undefined, options: OptionValues) => {
             if (options['update']){
-                const updateCommand = isCli ? 'npm install doculisp@latest -g' : 'npm update doculisp';
+                const updateCommand = isCli ? 'npm update doculisp -g' : 'npm update doculisp';
                 childProcess.execSync(updateCommand, { stdio: 'inherit' });
                 console.log('Updated!');
                 return;
@@ -74,29 +74,29 @@ async function main() {
                 const result = controller.compile(sourcePath, outputPath);
                 reportResult(result);
             }
+
+            const npmReg = new Registry();
+            const pkg = await npmReg.package("doculisp");
+
+            if(pkg.lastVersion !== version) {
+                console.log('************************************************');
+                console.log();
+                console.log('A newer version of doculisp is available!');
+                console.log();
+                console.log(`Your version: ${version}`);
+                console.log(`Latest version: ${pkg.lastVersion}`);
+                console.log();
+                if(isCli){
+                    console.log('Run `npm update doculisp -g` to get the latest version.');
+                }
+                else {
+                    console.log('Run `npm update doculisp` to get the latest version.')
+                }
+                console.log();
+                console.log('************************************************');
+            }
         })
         .parseAsync(process.argv);
-
-    const npmReg = new Registry();
-    const pkg = await npmReg.package("doculisp");
-
-    if(pkg.lastVersion !== version) {
-        console.log('************************************************');
-        console.log();
-        console.log('A newer version of doculisp is available!');
-        console.log();
-        console.log(`Your version: ${version}`);
-        console.log(`Latest version: ${pkg.lastVersion}`);
-        console.log();
-        if(isCli){
-            console.log('Run `npm update doculisp -g` to get the latest version.');
-        }
-        else {
-            console.log('Run `npm update doculisp` to get the latest version.')
-        }
-        console.log();
-        console.log('************************************************');
-    }
 
 
     function reportResult(result: Result<string | false>) {
