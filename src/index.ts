@@ -109,7 +109,8 @@ async function main() {
             console.log(message);
         }
         else {
-            console.error(JSON.stringify(result, null, 4));
+            console.error(result.documentPath);
+            console.error(result.message);
             process.exit(1);
         }
     }
