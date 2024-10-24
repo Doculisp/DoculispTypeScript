@@ -423,6 +423,20 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
 
+                it('should replace hyphens with spaces in load labels', () => {
+                    const contents = `
+(section-meta
+    (title Annoying Space)
+    (include
+        (My-Section ./first.md)
+    )
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+
+                    verifyAsJson(result);
+                });
+
                 it('should handle them all put together', () => {
                     const contents = `
 (section-meta

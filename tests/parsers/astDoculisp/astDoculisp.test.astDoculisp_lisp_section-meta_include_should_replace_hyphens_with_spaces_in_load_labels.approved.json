@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 4,
+      "documentPath": "main.dlisp"
+    },
+    "section": {
+      "doculisp": [
+        {
+          "documentOrder": {
+            "char": 6,
+            "documentDepth": 1,
+            "documentIndex": 4,
+            "documentPath": "main.dlisp",
+            "line": 3
+          },
+          "label": "# Annoying Space #",
+          "ref_link": "#annoying-space",
+          "title": "Annoying Space",
+          "type": "doculisp-title"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 4,
+        "documentPath": "main.dlisp",
+        "line": 1
+      },
+      "include": [
+        {
+          "document": false,
+          "documentOrder": {
+            "char": 10,
+            "documentDepth": 1,
+            "documentIndex": 4,
+            "documentPath": "main.dlisp",
+            "line": 5
+          },
+          "path": "./first.md",
+          "sectionLabel": "My Section",
+          "type": "doculisp-load"
+        }
+      ],
+      "type": "doculisp-section"
+    },
+    "type": "doculisp-root"
+  }
+}

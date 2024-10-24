@@ -196,13 +196,13 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                     const commands = ast as IAstCommand[];
     
-                    const loaders = commands.map((a): ILoad => {
+                    const loaders = commands.map((rawLoad): ILoad => {
                         return {
                             type: 'doculisp-load',
                             document: false,
-                            documentOrder: a.location,
-                            path: a.parameter.value,
-                            sectionLabel: a.value,
+                            documentOrder: rawLoad.location,
+                            path: rawLoad.parameter.value,
+                            sectionLabel: rawLoad.value.replaceAll('-', ' '),
                         }
                     });
 
