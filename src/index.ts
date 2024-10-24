@@ -109,7 +109,7 @@ async function main() {
             console.log(message);
         }
         else {
-            console.error(result.documentPath);
+            console.error(`Error in file: ${result.documentPath}`);
             console.error(result.message);
             process.exit(1);
         }

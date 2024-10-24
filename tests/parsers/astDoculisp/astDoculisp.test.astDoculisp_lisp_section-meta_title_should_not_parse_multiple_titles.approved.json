@@ -1,5 +1,5 @@
 {
-  "documentPath": "main.dlisp",
+  "documentPath": "/found/main.dlisp",
   "message": "The section-meta block at 'main.dlisp' Line: 0, Char: 0 contains more then a single title block.",
   "success": false
 }

@@ -1,5 +1,5 @@
 {
-  "documentPath": "./two/sections.dlisp",
+  "documentPath": "/found/./two/sections.dlisp",
   "message": "The section-meta block at './two/sections.dlisp' Line: 6, Char: 2 is a duplicate block. Only one section-meta block allowed per file.",
   "success": false
 }

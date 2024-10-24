@@ -1,5 +1,5 @@
 {
-  "documentPath": "main.dlisp",
+  "documentPath": "/found/main.dlisp",
   "message": "The subtitle block at 'main.dlisp' Line: 3, Char: 6 is missing the ref-link text.",
   "success": false
 }

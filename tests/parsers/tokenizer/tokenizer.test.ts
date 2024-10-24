@@ -7,6 +7,7 @@ import { TokenFunction } from '../../../src/types/types.tokens';
 import { IFail, ILocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { DocumentMap } from "../../../src/types/types.document";
 import { buildLocation, testable } from "../../testHelpers";
+import { IPathHandler } from "../../../src/types/types.fileHandler";
 
 describe('tokenizer', () => {
     let tokenizer: TokenFunction = undefined as any;
@@ -21,6 +22,12 @@ describe('tokenizer', () => {
 
     beforeEach(() => {
         tokenizer = testable.token.parserBuilder(container, (environment: ITestableContainer) => {
+            const pathHandler: IPathHandler = {
+                resolvePath(filePath) {
+                    return "/found/" + filePath;
+                },
+            };
+            environment.replaceValue(pathHandler, 'fileHandler');
             util = environment.buildAs<IUtil>('util');
         });
 

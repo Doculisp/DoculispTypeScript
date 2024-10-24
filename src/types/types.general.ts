@@ -1,3 +1,5 @@
+import { IPathHandler } from "./types.fileHandler";
+
 export type IsBefore = -1
 export type IsSame = 0
 export type IsAfter = 1;
@@ -38,6 +40,8 @@ export interface IFail {
 export type Result<T> = ISuccess<T> | IFail;
 
 export type LocationBuilder = (line: number, char: number) => ILocation;
+
+export type UtilBuilder = (pathHandler: IPathHandler) => IUtil;
 
 export interface IUtil {
     ok<T>(successfulValue: T): ISuccess<T>;

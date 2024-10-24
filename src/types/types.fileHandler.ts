@@ -13,5 +13,9 @@ export interface IDirectoryHandler {
     setProcessWorkingDirectory(directory: string): Result<undefined>;
 }
 
-export interface IFileHandler extends IFileLoader, IFileWriter, IDirectoryHandler {
+export interface IPathHandler {
+    resolvePath(filePath: string): string;
+}
+
+export interface IFileHandler extends IFileLoader, IFileWriter, IDirectoryHandler, IPathHandler {
 };

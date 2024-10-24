@@ -6,6 +6,7 @@ import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/t
 import { TokenizedDocument } from "../../../src/types/types.tokens";
 import { buildLocation, testable } from "../../testHelpers";
 import { IAstParser, IAstEmpty, RootAst } from '../../../src/types/types.ast';
+import { IPathHandler } from "../../../src/types/types.fileHandler";
 
 describe('ast', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -20,6 +21,12 @@ describe('ast', () => {
 
     beforeEach(() => {
         toResult = testable.ast.resultBuilder(container, environment => {
+            const pathHandler: IPathHandler = {
+                resolvePath(filePath) {
+                    return "/found/" + filePath;
+                },
+            };
+            environment.replaceValue(pathHandler, 'fileHandler');
             util = environment.buildAs<IUtil>('util');
         });
         
@@ -33,6 +40,12 @@ describe('ast', () => {
         beforeEach(() => {
             util = null as any;
             parser = testable.ast.parserBuilder(container, environment => {
+                const pathHandler: IPathHandler = {
+                    resolvePath(filePath) {
+                        return "/found/" + filePath;
+                    },
+                };
+                environment.replaceValue(pathHandler, 'fileHandler');
                 util = environment.buildAs<IUtil>('util');
             });
         });

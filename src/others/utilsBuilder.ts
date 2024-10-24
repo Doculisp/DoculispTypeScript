@@ -1,4 +1,5 @@
 import { IRegisterable } from "../types/types.containers";
+import { IPathHandler } from "../types/types.fileHandler";
 import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "../types/types.general";
 
 function before() : IsBefore { return isBefore; }
@@ -106,21 +107,6 @@ class Location implements ILocation {
     }
 }
 
-function ok<T>(successfulValue: T) : ISuccess<T> {
-    return {
-        value: successfulValue,
-        success: true,
-    };
-};
-
-function fail(message: string, documentPath: string) : IFail {
-    return {
-        message,
-        documentPath,
-        success: false,
-    };
-};
-
 function location(documentPath: string, documentDepth: number, documentIndex: number, line: number, char: number): ILocation {
     return new Location(documentPath, documentDepth, documentIndex, line, char);
 }
@@ -137,8 +123,24 @@ function getProjectLocation(location: ILocation): IProjectLocation {
     };
 }
 
-function buildGeneral(): IUtil {
+function buildGeneral(fileHandler: IPathHandler): IUtil {
     
+
+    function ok<T>(successfulValue: T) : ISuccess<T> {
+        return {
+            value: successfulValue,
+            success: true,
+        };
+    };
+
+    function fail(message: string, documentPath: string) : IFail {
+        const cleanPath = fileHandler.resolvePath(documentPath);
+        return {
+            message,
+            documentPath: cleanPath,
+            success: false,
+        };
+    };
 
     return {
         ok,
@@ -149,13 +151,13 @@ function buildGeneral(): IUtil {
     };
 }
 
-const astParser: IRegisterable = {
-    builder: () => buildGeneral(),
-    name: 'util',
+const utilBuilder: IRegisterable = {
+    builder: () => buildGeneral,
+    name: 'utilBuilder',
     singleton: true,
     dependencies: []
 };
 
 export {
-    astParser,
+    utilBuilder as astParser,
 };

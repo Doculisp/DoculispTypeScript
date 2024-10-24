@@ -1,5 +1,5 @@
 {
-  "documentPath": "main.dlisp",
+  "documentPath": "/found/main.dlisp",
   "message": "Title block at 'main.dlisp' Line: 1, Char: 16 is missing its title text.",
   "success": false
 }

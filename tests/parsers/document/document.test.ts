@@ -4,6 +4,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { getVerifier } from "../../tools";
 import { DocumentParser } from "../../../src/types/types.document";
 import { buildLocation, testable } from "../../testHelpers";
+import { IPathHandler } from "../../../src/types/types.fileHandler";
 
 describe('document', () => {
     let parse: DocumentParser = undefined as any;
@@ -14,7 +15,14 @@ describe('document', () => {
     });
 
     beforeEach(() => {
-        parse = testable.document.resultBuilder(container);
+        parse = testable.document.resultBuilder(container, environment => {
+            const pathHandler: IPathHandler = {
+                resolvePath(filePath) {
+                    return "/found/" + filePath;
+                },
+            };
+            environment.replaceValue(pathHandler, 'fileHandler');
+        });
     });
 
     it('should not allow a document with a zero depth.', () => {

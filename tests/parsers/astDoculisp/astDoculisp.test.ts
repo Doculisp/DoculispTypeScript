@@ -6,6 +6,7 @@ import { IDoculisp, IDoculispParser, IEmptyDoculisp } from '../../../src/types/t
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { buildLocation, testable } from "../../testHelpers";
 import { IAstEmpty, RootAst } from '../../../src/types/types.ast';
+import { IPathHandler } from "../../../src/types/types.fileHandler";
 
 describe('astDoculisp', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -20,6 +21,12 @@ describe('astDoculisp', () => {
 
     beforeEach(() => {
         toResult = testable.doculisp.resultBuilder(container, environment => {
+            const pathHandler: IPathHandler = {
+                resolvePath(filePath) {
+                    return "/found/" + filePath;
+                },
+            };
+            environment.replaceValue(pathHandler, 'fileHandler');
             util = environment.buildAs<IUtil>('util');
         });
         
@@ -33,6 +40,12 @@ describe('astDoculisp', () => {
         beforeEach(() => {
             util = null as any;
             parser = testable.doculisp.parserBuilder(container, environment => {
+                const pathHandler: IPathHandler = {
+                    resolvePath(filePath) {
+                        return "/found/" + filePath;
+                    },
+                };
+                environment.replaceValue(pathHandler, 'fileHandler');
                 util = environment.buildAs<IUtil>('util');
             });
         });

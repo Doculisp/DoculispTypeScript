@@ -112,8 +112,8 @@ function newTextToResultBuilder<T>(container: IContainer, setup: (environment: I
     });
 }
 
-function newDocumentResultBuilder(container: IContainer): DocumentParser {
-    return newBuilder(container, () => {}, environment => {
+function newDocumentResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): DocumentParser {
+    return newBuilder(container, setup, environment => {
         return buildDocumentParser(environment);
     });
 }
