@@ -88,9 +88,13 @@ async function main() {
                 console.log();
                 if(isCli){
                     console.log('Run `npm update doculisp -g` to get the latest version.');
+                    console.log('Or');
+                    console.log('Run `doculisp --update`');
                 }
                 else {
-                    console.log('Run `npm update doculisp` to get the latest version.')
+                    console.log('Run `npm update doculisp` to get the latest version.');
+                    console.log('Or');
+                    console.log(`Run \`node ${modulePath} --update\``);
                 }
                 console.log();
                 console.log('************************************************');
