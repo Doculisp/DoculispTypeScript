@@ -1,12 +1,10 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
-import { IUtil, Result } from "../../src/types/types.general";
+import { Result } from "../../src/types/types.general";
 import { testable } from "../testHelpers";
 import { container } from "../../src/container";
 import path from "path";
-import { ITestableContainer } from "../../src/types/types.containers";
-import { IVersion } from "../../src/types/types.version";
 
 describe('stringWriter writing sample', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -32,17 +30,7 @@ describe('stringWriter writing sample', () => {
     beforeEach(() => {
         workingDir = process.cwd();
         process.chdir('./tests/Sample/simple');
-        toResult = testable.stringWriter.pathParser(container, (environment: ITestableContainer) => {
-            const util = environment.buildAs<IUtil>('util');
-
-            const version: IVersion = {
-                getVersion() {
-                    return util.ok("1.2.3");
-                },
-            };
-
-            environment.replaceValue(version, 'version');
-        });
+        toResult = testable.stringWriter.pathParser(container);
     });
 
     afterEach(() => {

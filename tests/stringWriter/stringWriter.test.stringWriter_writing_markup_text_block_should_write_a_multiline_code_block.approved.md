@@ -2,7 +2,7 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
-<!-- Compiled with doculisp (version 1.2.3) https://www.npmjs.com/package/doculisp -->
+<!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->
 
 An example of an markdown document with html comments:
 
