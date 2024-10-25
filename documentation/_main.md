@@ -19,5 +19,13 @@ ___  ____ ____ _  _ _    _ ____ ___
 
 A Compiler for Doculisp Lang.
 
-<!-- (dl (# Table of Contents)) -->
-<!-- (dl(content (toc numbered-labeled))) -->
+<!--
+(dl
+    (content
+        (toc
+            (label Table of Contents)
+            (style numbered-labeled)
+        )
+    )
+)
+-->
