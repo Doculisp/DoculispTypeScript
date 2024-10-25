@@ -22,15 +22,15 @@
           "type": "doculisp-title"
         },
         {
-          "bulletStyle": "unlabeled",
+          "bulletStyle": "labeled",
           "documentOrder": {
-            "char": 10,
+            "char": 5,
             "documentDepth": 2,
             "documentIndex": 1,
             "documentPath": "./itty.dlisp",
-            "line": 9
+            "line": 10
           },
-          "label": false,
+          "label": "Table of Awesome",
           "type": "doculisp-toc"
         },
         {

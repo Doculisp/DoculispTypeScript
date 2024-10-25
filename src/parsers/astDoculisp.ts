@@ -290,6 +290,28 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         }
     
         function parseContent(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IContentLocation | ITableOfContents> {
+            function parseBulletStyle(bulletStyle: string | undefined, location: ILocation, documentPath: string) : Result<DoculispBulletStyle> {
+                if(!bulletStyle) {
+                    return util.ok('labeled');
+                }
+
+                const validStyles: DoculispBulletStyle[] = [
+                    'bulleted',
+                    'bulleted-labeled',
+                    'labeled',
+                    'no-table',
+                    'numbered',
+                    'numbered-labeled',
+                    'unlabeled'
+                ];
+    
+                if(!validStyles.includes(bulletStyle as DoculispBulletStyle)) {
+                    return util.fail(`The toc block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has unknown bullet style '${bulletStyle}'.`, documentPath);
+                }
+
+                return util.ok(bulletStyle as DoculispBulletStyle);
+            }
+
             function parseToc(ast: AtomAst[], location: ILocation): Result<ITableOfContents | false> {
                 const tocs = ast.filter(a => a.value === 'toc');
     
@@ -304,41 +326,89 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 const toc = tocs[0] as AtomAst;
     
                 if(toc.type === 'ast-container') {
+                    if(2 < toc.subStructure.length) {
+                        const err = toc.subStructure[toc.subStructure.length -1] as AtomAst;
+                        return util.fail(`The content block at '${location.documentPath} Line: ${err.location.line}, Char: ${err.location.char}' has ${toc.subStructure.length} block and can only have 0, 1, or 2 blocks`, location.documentPath);
+                    }
+
                     const next = toc.subStructure[0] as AtomAst;
-                    return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+                    if(next.type !== 'ast-command' || !['label', 'style'].includes(next.value)){
+                        return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+                    }
+                    
+                    let labelText: string | false = false;
+                    let bulletStyle: DoculispBulletStyle = 'labeled';
+
+                    if(next.value === 'label') {
+                        labelText = next.parameter.value;
+                    }
+
+                    if(next.value === 'style') {
+                        const typeMaybe = parseBulletStyle(next.parameter.value, toc.location, location.documentPath);
+                        if(!typeMaybe.success) {
+                            return typeMaybe;
+                        }
+
+                        bulletStyle = typeMaybe.value;
+                    }
+
+                    if(1 < toc.subStructure.length) {
+                        const next1 = toc.subStructure[1] as AtomAst;
+
+                        if(next1.type !== 'ast-command' || !['label', 'style'].includes(next1.value)) {
+                            return util.fail(`The content block at '${location.documentPath}' Line: ${next1.location.line}, Char: ${next1.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+                        }
+
+                        if(next.value === next1.value) {
+                            return util.fail(`The content block at '${location.documentPath}' Line ${location.line}, Char: ${location.line} has a duplicate '${next.value}' block at Line: ${next1.location.line}, Char: ${next1.location.char}.`, location.documentPath);
+                        }
+
+                        if(next1.value === 'label') {
+                            labelText = next.parameter.value;
+                        }
+    
+                        if(next1.value === 'style') {
+                            const typeMaybe = parseBulletStyle(next1.parameter.value, toc.location, location.documentPath);
+                            if(!typeMaybe.success) {
+                                return typeMaybe;
+                            }
+    
+                            bulletStyle = typeMaybe.value;
+                        }
+                    }
+
+                    const docuToc: ITableOfContents = {
+                        type: 'doculisp-toc',
+                        label: labelText,
+                        documentOrder: toc.location.increaseChar(-1),
+                        bulletStyle: bulletStyle,
+                    };
+        
+                    return util.ok(docuToc);
                 }
-    
-                const bulletStyle = 
-                    (toc.type === 'ast-atom'
-                        ? 'labeled'
-                        : toc.parameter.value
-                    ) as DoculispBulletStyle;
-    
-                const validStyles: DoculispBulletStyle[] = [
-                    'bulleted',
-                    'bulleted-labeled',
-                    'labeled',
-                    'no-table',
-                    'numbered',
-                    'numbered-labeled',
-                    'unlabeled'
-                ];
-    
-                if(!validStyles.includes(bulletStyle)) {
-                    return util.fail(`The toc block at '${toc.location.documentPath}' Line: ${toc.location.line}, Char: ${toc.location.char} has unknown bullet style '${bulletStyle}'.`, location.documentPath);
+                else {
+                    const style = (toc.type === 'ast-atom') ? undefined : toc.parameter.value;
+                    const bulletStyleMaybe = parseBulletStyle(style, toc.location, location.documentPath);
+
+                    if(!bulletStyleMaybe.success) {
+                        return bulletStyleMaybe;
+                    }
+        
+                    const bulletStyle = bulletStyleMaybe.value
+        
+                    if(bulletStyle === 'no-table') {
+                        return util.ok(false);
+                    }
+        
+                    const docuToc: ITableOfContents = {
+                        type: 'doculisp-toc',
+                        label: false,
+                        documentOrder: toc.location.increaseChar(-1),
+                        bulletStyle: bulletStyle,
+                    };
+        
+                    return util.ok(docuToc);
                 }
-    
-                if(bulletStyle === 'no-table') {
-                    return util.ok(false);
-                }
-    
-                const docuToc: ITableOfContents = {
-                    type: 'doculisp-toc',
-                    documentOrder: toc.location.increaseChar(-1),
-                    bulletStyle: bulletStyle,
-                };
-    
-                return util.ok(docuToc);
             }
     
             const contentBlock = input[0] as CoreAst;

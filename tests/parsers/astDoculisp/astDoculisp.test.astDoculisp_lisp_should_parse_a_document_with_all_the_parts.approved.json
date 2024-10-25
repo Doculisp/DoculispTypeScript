@@ -42,6 +42,7 @@
             "documentPath": "./_main.dlisp",
             "line": 17
           },
+          "label": false,
           "type": "doculisp-toc"
         },
         {

@@ -46,6 +46,7 @@ export const bulletStyles: ReadonlyArray<DoculispBulletStyle> = [
 
 export interface ITableOfContents extends ILocationSortable {
     readonly type: 'doculisp-toc';
+    readonly label: string | false;
     readonly bulletStyle: DoculispBulletStyle;
 };
 
