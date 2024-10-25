@@ -331,20 +331,20 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                         return util.fail(`The content block at '${location.documentPath} Line: ${err.location.line}, Char: ${err.location.char}' has ${toc.subStructure.length} block and can only have 0, 1, or 2 blocks`, location.documentPath);
                     }
 
-                    const next = toc.subStructure[0] as AtomAst;
-                    if(next.type !== 'ast-command' || !['label', 'style'].includes(next.value)){
-                        return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+                    const first = toc.subStructure[0] as AtomAst;
+                    if(first.type !== 'ast-command' || !['label', 'style'].includes(first.value)){
+                        return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, location.documentPath);
                     }
                     
                     let labelText: string | false = false;
                     let bulletStyle: DoculispBulletStyle = 'labeled';
 
-                    if(next.value === 'label') {
-                        labelText = next.parameter.value;
+                    if(first.value === 'label') {
+                        labelText = first.parameter.value;
                     }
 
-                    if(next.value === 'style') {
-                        const typeMaybe = parseBulletStyle(next.parameter.value, toc.location, location.documentPath);
+                    if(first.value === 'style') {
+                        const typeMaybe = parseBulletStyle(first.parameter.value, toc.location, location.documentPath);
                         if(!typeMaybe.success) {
                             return typeMaybe;
                         }
@@ -353,22 +353,22 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     }
 
                     if(1 < toc.subStructure.length) {
-                        const next1 = toc.subStructure[1] as AtomAst;
+                        const second = toc.subStructure[1] as AtomAst;
 
-                        if(next1.type !== 'ast-command' || !['label', 'style'].includes(next1.value)) {
-                            return util.fail(`The content block at '${location.documentPath}' Line: ${next1.location.line}, Char: ${next1.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+                        if(second.type !== 'ast-command' || !['label', 'style'].includes(second.value)) {
+                            return util.fail(`The content block at '${location.documentPath}' Line: ${second.location.line}, Char: ${second.location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, location.documentPath);
                         }
 
-                        if(next.value === next1.value) {
-                            return util.fail(`The content block at '${location.documentPath}' Line ${location.line}, Char: ${location.line} has a duplicate '${next.value}' block at Line: ${next1.location.line}, Char: ${next1.location.char}.`, location.documentPath);
+                        if(first.value === second.value) {
+                            return util.fail(`The content block at '${location.documentPath}' Line ${location.line}, Char: ${location.line} has a duplicate '${first.value}' block at Line: ${second.location.line}, Char: ${second.location.char}.`, location.documentPath);
                         }
 
-                        if(next1.value === 'label') {
-                            labelText = next.parameter.value;
+                        if(second.value === 'label') {
+                            labelText = second.parameter.value;
                         }
     
-                        if(next1.value === 'style') {
-                            const typeMaybe = parseBulletStyle(next1.parameter.value, toc.location, location.documentPath);
+                        if(second.value === 'style') {
+                            const typeMaybe = parseBulletStyle(second.parameter.value, toc.location, location.documentPath);
                             if(!typeMaybe.success) {
                                 return typeMaybe;
                             }

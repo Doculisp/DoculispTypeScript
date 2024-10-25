@@ -150,24 +150,36 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
         return sb.toString();
     }
 
+    const sb = new StringBuilder();
+    if(toc.label) {
+        sb.addLine(toc.label);
+        sb.addLine();
+    }
+
     switch (toc.bulletStyle) {
         case 'labeled':
-            return writeTable(loads, writeRawLink(useLabel));
+            sb.addLine(writeTable(loads, writeRawLink(useLabel)));
+            return sb.toString();
 
         case 'unlabeled':
-            return writeTable(loads, writeRawLink(ignoreLabel));
+            sb.addLine(writeTable(loads, writeRawLink(ignoreLabel)));
+            return sb.toString();
 
         case 'numbered':
-            return writeTable(loads, writeNumbered(ignoreLabel));
+            sb.addLine(writeTable(loads, writeNumbered(ignoreLabel)));
+            return sb.toString();
 
         case 'numbered-labeled':
-            return writeTable(loads, writeNumbered(useLabel));
+            sb.addLine(writeTable(loads, writeNumbered(useLabel)));
+            return sb.toString();
 
         case 'bulleted':
-            return writeTable(loads, writeBulleted(ignoreLabel));
+            sb.addLine(writeTable(loads, writeBulleted(ignoreLabel)));
+            return sb.toString();
 
         case 'bulleted-labeled':
-            return writeTable(loads, writeBulleted(useLabel));
+            sb.addLine(writeTable(loads, writeBulleted(useLabel)));
+            return sb.toString();
     
         default:
             return `>>>> ${toc.bulletStyle} <<<<\n`;

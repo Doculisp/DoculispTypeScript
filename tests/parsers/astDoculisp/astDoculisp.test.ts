@@ -704,6 +704,28 @@ A story of a misbehaving parser.
 
                 verifyAsJson(result);
             });
+
+            it('should parse a table of contents with both a style block and label reversed', () => {
+                const text = `
+(section-meta
+    (title Sing Me a Song)
+    (include
+        (Chapter ./songs.dlisp)
+    )
+)
+
+(content
+    (toc
+        (style bulleted-labeled)
+        (label Awesome)
+    )
+)
+`;
+
+                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+
+                verifyAsJson(result);
+            });
         })
     });
 });
