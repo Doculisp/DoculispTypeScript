@@ -30,7 +30,7 @@
             "documentPath": "./itty.dlisp",
             "line": 10
           },
-          "label": "Table of Awesome",
+          "label": "### Table of Awesome ###",
           "type": "doculisp-toc"
         },
         {

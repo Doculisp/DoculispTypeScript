@@ -379,7 +379,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
                     const docuToc: ITableOfContents = {
                         type: 'doculisp-toc',
-                        label: labelText,
+                        label: labelText ? headerize(location.documentDepth + 1, labelText) : labelText,
                         documentOrder: toc.location.increaseChar(-1),
                         bulletStyle: bulletStyle,
                     };
