@@ -6,7 +6,7 @@
 
 # An explanation of the tests #
 
-1. [Section: Parser Tests](#parser-tests)
+1. Section: [Parser Tests](#parser-tests)
 
 ## Parser Tests ##
 
@@ -21,7 +21,7 @@ Most of the work is done in the parsers. They take an input document and follow 
 
 These test prove all of the above.
 
-[Subsection: First Stage Parser](#first-stage-parser)
+Subsection: [First Stage Parser](#first-stage-parser)
 
 ### First Stage Parser ###
 

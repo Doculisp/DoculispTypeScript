@@ -93,7 +93,7 @@ function writeTableOfContents(toc: ITableOfContents, loads: ILoad[]): string {
     function useLabel(append: (text: string) => void, title: string, linkText: string, label?: string): void {
         let lblText = !!label ? `${label}: `: '';
         
-        append(`[${lblText}${title}](${linkText})`);
+        append(`${lblText}[${title}](${linkText})`);
     }
 
     function ignoreLabel(append: (text: string) => void, title: string, linkText: string, label?: string): void {
