@@ -1,10 +1,4 @@
-<!--
-(dl
-    (section-meta
-        (title Include)
-    )
-)
--->
+<!-- (dl (section-meta Include)) -->
 
 This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea.
 
