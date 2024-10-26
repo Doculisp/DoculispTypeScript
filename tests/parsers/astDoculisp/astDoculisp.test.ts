@@ -237,6 +237,13 @@ A story of a misbehaving parser.
             });
 
             describe('title', () => {
+                it('should parse a title as a parameter', () => {
+                    const contents = `(section-meta My Cool Document)`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+            
+                    verifyAsJson(result);
+                });
+
                 it('should parse a title', () => {
                     const contents = `
 (section-meta

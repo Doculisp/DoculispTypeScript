@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 1,
+      "documentIndex": 7,
+      "documentPath": "main.dlisp"
+    },
+    "section": {
+      "doculisp": [
+        {
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 1,
+            "documentIndex": 7,
+            "documentPath": "main.dlisp",
+            "line": 1
+          },
+          "label": "# My Cool Document #",
+          "ref_link": "#my-cool-document",
+          "title": "My Cool Document",
+          "type": "doculisp-title"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 1,
+        "documentIndex": 7,
+        "documentPath": "main.dlisp",
+        "line": 1
+      },
+      "include": [],
+      "type": "doculisp-section"
+    },
+    "type": "doculisp-root"
+  }
+}
