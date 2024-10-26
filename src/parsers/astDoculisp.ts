@@ -85,10 +85,23 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, current.documentPath);
                 }
     
+                let linkText = getLinkText(title, refLink);
+    
+                return util.ok({
+                    type: 'doculisp-title',
+                    title: title.parameter.value,
+                    documentOrder: title.location,
+                    label: headerize(title.location.documentDepth, title.parameter.value),
+                    ref_link: '#' + (refLink ? refLink : linkText),
+                    subtitle: subtitle ? subtitle : undefined,
+                });
+            }
+    
+            function getLinkText(title: IAstCommand, refLink: string | boolean) {
                 let linkText = title.parameter.value.toLowerCase().replaceAll(' ', '-');
-                if(!refLink) {
+                if (!refLink) {
                     [
-                        '.', 
+                        '.',
                         ',',
                         '!',
                         '@',
@@ -123,18 +136,9 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                         linkText = linkText.replaceAll(v, '');
                     });
                 }
-                linkText = linkText;
-    
-                return util.ok({
-                    type: 'doculisp-title',
-                    title: title.parameter.value,
-                    documentOrder: title.location,
-                    label: headerize(title.location.documentDepth, title.parameter.value),
-                    ref_link: '#' + (refLink ? refLink : linkText),
-                    subtitle: subtitle ? subtitle : undefined,
-                });
+                return linkText;
             }
-    
+
             function parseSubtitle(ast: AtomAst[], location: ILocation, depth: number): Result<string | false> {
                 const subtitles = ast.filter(a => a.value === 'subtitle');
     
@@ -235,6 +239,25 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
     
             const sectionMeta = input[0] as CoreAst;
+
+            if(sectionMeta.type === 'ast-command' && sectionMeta.value === 'section-meta') {
+                hasSectionMeta = true;
+
+                const title: ITitle = {
+                    type: 'doculisp-title',
+                    title: sectionMeta.parameter.value,
+                    documentOrder: sectionMeta.location,
+                    label: headerize(sectionMeta.location.documentDepth, sectionMeta.parameter.value),
+                    ref_link: '#' + getLinkText(sectionMeta, false),
+                };
+
+                return util.ok({
+                    type: 'parse result',
+                    location: current,
+                    subResult: title,
+                    rest: trimArray.trim(1, input),
+                });
+            }
     
             if(sectionMeta.type !== 'ast-container' || sectionMeta.value !== 'section-meta') {
                 return internals.noResultFound();
@@ -279,7 +302,6 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             result.push(title.value);
 
             hasSectionMeta = true;
-    
     
             return util.ok({
                 type: 'parse group result',
