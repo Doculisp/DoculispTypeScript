@@ -1,11 +1,4 @@
-<!--
-(dl
-    (section-meta
-        (title Using the Command Line Interface)
-    )
-)
--->
-
+<!-- (dl (section-meta Using the Command Line Interface)) -->
 <!-- (dl (# To Install Doculisp)) -->
 
 To install the cli globally run the following command: `npm i -g doculisp`

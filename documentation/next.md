@@ -1,7 +1,1 @@
-<!--
-(dl
-    (section-meta
-        (title Things to Come From the CLI)
-    )
-)
--->
+<!-- (dl (section-meta Things to Come From the CLI)) -->

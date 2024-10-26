@@ -1,10 +1,4 @@
-<!--
-(dl
-    (section-meta
-        (title Dynamic Headings)
-    )
-)
--->
+<!-- (dl (section-meta Dynamic Headings)) -->
 
 Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the `(#` block, or dynamic headinlg block.
 

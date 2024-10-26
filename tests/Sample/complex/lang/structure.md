@@ -1,10 +1,4 @@
-<!--
-(dl
-    (section-meta
-        (title Basic Structure)
-    )
-)
--->
+<!-- (dl (section-meta Basic Structure)) -->
 
 The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses `(` followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses `)`.
 

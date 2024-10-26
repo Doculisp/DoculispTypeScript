@@ -1,10 +1,4 @@
-<!--
-(dl
-    (section-meta
-        (title ".dlisp" files)
-    )
-)
--->
+<!-- (dl (section-meta ".dlisp" files)) -->
 
 If you have a file that contains only Doculisp code blocks without any markdown you can simplify that file. By changing the extension from `.md` to `.dlisp` you can remove the html comments and the opening `(dl` to contain raw Doculisp code.
 

@@ -1,10 +1,4 @@
-<!--
-(dl
-    (section-meta
-        (title Using the Command Line Interface)
-    )
-)
--->
+<!-- (dl (section-meta Using the Command Line Interface)) -->
 
 <!-- (dl (# To Install Doculisp)) -->
 

@@ -1,9 +1,3 @@
-<!--
-(dl
-    (section-meta
-        (title Language Version)
-    )
-)
--->
+<!-- (dl (section-meta Language Version)) -->
 
 Doculisp version 0.1.0

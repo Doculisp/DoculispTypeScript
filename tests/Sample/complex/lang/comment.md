@@ -1,10 +1,4 @@
-<!--
-(dl
-    (section-meta
-        (title Comment Block)
-    )
-)
--->
+<!-- (dl (section-meta Comment Block)) -->
 
 The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics `*` just after an open parenthisis and end when the block and all its subblocks are closed.
 
