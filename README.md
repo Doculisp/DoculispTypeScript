@@ -90,7 +90,7 @@ A language for Readme.
 
 ### Language Version ###
 
-Doculisp version 0.2.0
+Doculisp version 0.2.2
 
 ### What Problem Does Doculisp Solve? ###
 
@@ -445,8 +445,14 @@ Here is a list of all the key atoms by depth:
     * `ref-link` text
       * `*`
     * `include`
-      * name path
+      * name
+      * file path
       * `*`
+    * `reference`
+      * `file`
+        * `id` text
+        * `source` file path
+        * `target` file path
     * `*`
   * `content`
     * `toc` bullet style
