@@ -2,6 +2,7 @@
 (dl
     (section-meta
         (title Doculisp)
+        (author jason-kerney)
         (include
             (CLI ./cli.md)
             (*Next ./next.md)

@@ -3,6 +3,7 @@
 <!-- markdownlint-disable -->
 
 <!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->
+<!-- Written By: jason-kerney -->
 
 # Doculisp #
 
@@ -466,6 +467,7 @@ I want to give a special thanks to my friend [Chris Stead](https://github.com/cm
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
+<!-- Written By: jason-kerney -->
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 <!-- GENERATED DOCUMENT DO NOT EDIT! -->
