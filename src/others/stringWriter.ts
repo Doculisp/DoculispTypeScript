@@ -2,6 +2,7 @@ import { DoculispPart, IDoculisp, IEmptyDoculisp, IHeader, ILoad, ISectionWriter
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
+import { IVariableRetriever } from "../types/types.variableTable";
 
 class StringBuilder {
     private _lines: string[];
@@ -270,7 +271,25 @@ function writeSection(previous: ILocation, section: ISectionWriter): string {
 }
 
 function buildWriter(util: IUtil) : IStringWriter {
-    function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>): Result<string> {
+    function buildAuthorTable(variableTable: IVariableRetriever): string | false {
+        const authors = variableTable.getValue<string[]>('author');
+
+        if(!authors){
+            return false;
+        }
+
+        if(authors.length === 0) {
+            return false;
+        }
+
+        const sb = new StringBuilder();
+        authors.forEach(name => {
+            sb.addLine(`<!-- Written By: ${name} -->`);
+        });
+
+        return sb.toString();
+    }
+    function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableRetriever): Result<string> {
         if(!astMaybe.success) {
             return astMaybe;
         }
@@ -278,6 +297,8 @@ function buildWriter(util: IUtil) : IStringWriter {
         if(astMaybe.value.type === 'doculisp-empty'){
             return util.ok('');
         }
+
+        const authorsMaybe = buildAuthorTable(variableTable);
 
         const sb = new StringBuilder();
         const section = astMaybe.value.section;
@@ -287,12 +308,18 @@ function buildWriter(util: IUtil) : IStringWriter {
         sb.addLine('<!-- markdownlint-disable -->');
         sb.addLine();
         sb.addLine(`<!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->`);
+        if(authorsMaybe){
+            sb.addLine(authorsMaybe);
+        }
 
 
         let previous: ILocation = util.location('', -1, -1, -1, -1);
         sb.addLine(writeSection(previous, section));
         
         sb.addLine();
+        if(authorsMaybe){
+            sb.addLine(authorsMaybe);
+        }
         sb.addLine('<!-- markdownlint-restore -->');
         sb.addLine('<!-- prettier-ignore-end -->');
         sb.addLine('<!-- GENERATED DOCUMENT DO NOT EDIT! -->');

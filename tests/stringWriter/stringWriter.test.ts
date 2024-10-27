@@ -8,6 +8,7 @@ import { IDirectoryHandler, IFileHandler, IFileLoader } from "../../src/types/ty
 import { container } from "../../src/container";
 import { IDictionary } from "../../src/types/types.containers";
 import path from "path";
+import { IVariableTestable } from "../../src/types/types.variableTable";
 
 describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -15,6 +16,7 @@ describe('stringWriter', () => {
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
     let fileHandler: IFileHandler = null as any;
+    let variableTable: IVariableTestable = undefined as any;
 
     function verifyMarkdownResult(textMaybe: Result<string>, options?: Options): void {
         if(textMaybe.success) {
@@ -36,6 +38,8 @@ describe('stringWriter', () => {
 
         toResult = testable.stringWriter.resultBuilder(container, environment => {
             const util: IUtil = environment.buildAs<IUtil>('util');
+            variableTable = environment.buildAs<IVariableTestable>('variableTable');
+            variableTable.clear();
 
             fileHandler = environment.buildAs<IFileHandler>('fileHandler');
             fail = util.fail;
@@ -46,7 +50,7 @@ describe('stringWriter', () => {
         it('should not write an error', () => {
             const expectedResult = fail('Some failure', 'S:/ome/path.md');
             const writer = testable.stringWriter.writer(container);
-            const result = writer.writeAst(expectedResult);
+            const result = writer.writeAst(expectedResult, variableTable);
 
             expect(result).toBe(expectedResult);
         });
