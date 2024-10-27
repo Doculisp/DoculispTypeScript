@@ -7,6 +7,7 @@ import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/t
 import { buildLocation, testable } from "../../testHelpers";
 import { IAstEmpty, RootAst } from '../../../src/types/types.ast';
 import { IPathHandler } from "../../../src/types/types.fileHandler";
+import { IVariableTestable } from "../../../src/types/types.variableTable";
 
 describe('astDoculisp', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -14,6 +15,8 @@ describe('astDoculisp', () => {
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
     let util: IUtil = undefined as any;
     let toResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> = undefined as any;
+    let variableTable: IVariableTestable = undefined as any;
+
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -21,6 +24,9 @@ describe('astDoculisp', () => {
 
     beforeEach(() => {
         toResult = testable.doculisp.resultBuilder(container, environment => {
+            variableTable = environment.buildAs<IVariableTestable>('variableTable')
+            variableTable.clear();
+
             const pathHandler: IPathHandler = {
                 resolvePath(filePath) {
                     return "/found/" + filePath;
@@ -55,7 +61,7 @@ describe('astDoculisp', () => {
                 type: 'ast-Empty',
             };
     
-            const result = parser.parse(ok(empty));
+            const result = parser.parse(ok(empty), variableTable);
     
             verifyAsJson(result);
         });
@@ -63,7 +69,7 @@ describe('astDoculisp', () => {
         it('should return failure if given failure', () => {
             const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
     
-            const result = parser.parse(failure);
+            const result = parser.parse(failure, variableTable);
     
             verifyAsJson(result);
         });
@@ -83,7 +89,7 @@ describe('astDoculisp', () => {
                 type: 'RootAst'
             };
     
-            const result = parser.parse(ok(ast));
+            const result = parser.parse(ok(ast), variableTable);
     
             verifyAsJson(result);
         });
@@ -107,7 +113,7 @@ describe('astDoculisp', () => {
                 location: projectLocation,
             };
     
-            const result = parser.parse(ok(ast));
+            const result = parser.parse(ok(ast), variableTable);
     
             verifyAsJson(result);
         });
@@ -275,6 +281,91 @@ A story of a misbehaving parser.
                     const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
 
                     verifyAsJson(result);
+                });
+            });
+
+            describe('author', () => {
+                it('should parse an author block', () => {
+                    const contents = `
+(section-meta
+    (title My Cool Document)
+    (author Jason Kerney)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    
+                    if(!result.success) {
+                        verifyAsJson(result);
+                    }
+                    else {
+                        verifyAsJson(variableTable.asJson());
+                    }
+                });
+
+                it('should parse two author blocks', () => {
+                    const contents = `
+(section-meta
+    (title My Cool Document)
+    (author Jason Kerney)
+    (author Chris Stead)
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+            
+                    if(!result.success) {
+                        verifyAsJson(result);
+                    }
+                    else {
+                        verifyAsJson(variableTable.asJson());
+                    }
+                });
+
+                it('should not parse an author block with no name', () => {
+                    const contents = `
+(section-meta
+    (title My Cool Document)
+    (author)
+)
+`;
+
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                                
+                    verifyAsJson(result);
+                });
+
+                it('should not parse an author block that contains another block', () => {
+                    const contents = `
+(section-meta
+    (title My Cool Document)
+    (author
+        (title MR.)
+        (name Jason Kerney)
+        (github jason-kerney)
+    )
+)
+`;
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                                                    
+                    verifyAsJson(result);
+                });
+
+                it('should not add a duplicate author block', () => {
+                    const contents = `
+(section-meta
+    (title My Cool Document)
+    (author Jason Kerney)
+    (author Jason Kerney)
+)
+`;
+                    
+                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                                
+                    if(!result.success) {
+                        verifyAsJson(result);
+                    }
+                    else {
+                        verifyAsJson(variableTable.asJson());
+                    }
                 });
             });
 

@@ -9,6 +9,7 @@ import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
 import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
 import { buildLocation, testable } from '../../testHelpers';
+import { IVariableSaver, IVariableTable } from '../../../src/types/types.variableTable';
 
 describe('includeBuilder', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
@@ -17,6 +18,7 @@ describe('includeBuilder', () => {
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath: string) => IFail = undefined as any;
     let addPathResult: (filePath: string, result: Result<string>) => void = undefined as any;
+    let variableSaver: IVariableSaver = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -25,6 +27,8 @@ describe('includeBuilder', () => {
     function setup(environment: ITestableContainer) {
         util = null as any;
         util = environment.buildAs<IUtil>('util');
+
+        variableSaver = environment.buildAs<IVariableTable>('variableTable');
 
         ok = util.ok;
         fail = util.fail;
@@ -67,7 +71,7 @@ describe('includeBuilder', () => {
             const builder: IIncludeBuilder = testable.include.parserBuilder(container, setup);
 
             const expectedResult = fail('This is a failure', 'M:/y/pah.md');
-            expect(builder.parseExternals(expectedResult)).toBe(expectedResult);
+            expect(builder.parseExternals(expectedResult, variableSaver)).toBe(expectedResult);
         });
 
         it('should return an error if there is a file error', () => {

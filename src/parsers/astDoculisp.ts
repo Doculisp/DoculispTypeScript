@@ -4,6 +4,7 @@ import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
 import { ITrimArray } from "../types/types.trimArray";
+import { IVariableSaver } from "../types/types.variableTable";
 
 function headerize(depth: number, value: string): string {
     const id = ''.padStart(depth, '#');
@@ -11,7 +12,7 @@ function headerize(depth: number, value: string): string {
 }
 
 function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray): IDoculispParser {
-    function parse(astResult: Result<RootAst | IAstEmpty>): Result<IDoculisp | IEmptyDoculisp> {
+    function parse(astResult: Result<RootAst | IAstEmpty>, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
         }
@@ -63,40 +64,6 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         }
     
         function parseSectionMeta(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], ITitle | ILoad> {
-            function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false): Result<ITitle> {
-                const titles = ast.filter(s => s.value === 'title');
-        
-                if(1 < titles.length) {
-                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, current.documentPath);
-                }
-    
-                if(titles.length === 0) {
-                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} is missing a title block.`, current.documentPath);
-                }
-        
-                const title = titles[0] as AtomAst;
-        
-                if(title.type === 'ast-atom') {
-                    return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, current.documentPath);
-                }
-        
-                if(title.type === 'ast-container') {
-                    const next = title.subStructure[0] as AtomAst;
-                    return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, current.documentPath);
-                }
-    
-                let linkText = getLinkText(title, refLink);
-    
-                return util.ok({
-                    type: 'doculisp-title',
-                    title: title.parameter.value,
-                    documentOrder: title.location,
-                    label: headerize(title.location.documentDepth, title.parameter.value),
-                    ref_link: '#' + (refLink ? refLink : linkText),
-                    subtitle: subtitle ? subtitle : undefined,
-                });
-            }
-    
             function getLinkText(title: IAstCommand, refLink: string | boolean) {
                 let linkText = title.parameter.value.toLowerCase().replaceAll(' ', '-');
                 if (!refLink) {
@@ -137,6 +104,40 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     });
                 }
                 return linkText;
+            }
+            
+            function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false): Result<ITitle> {
+                const titles = ast.filter(s => s.value === 'title');
+        
+                if(1 < titles.length) {
+                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, current.documentPath);
+                }
+    
+                if(titles.length === 0) {
+                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} is missing a title block.`, current.documentPath);
+                }
+        
+                const title = titles[0] as AtomAst;
+        
+                if(title.type === 'ast-atom') {
+                    return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, current.documentPath);
+                }
+        
+                if(title.type === 'ast-container') {
+                    const next = title.subStructure[0] as AtomAst;
+                    return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, current.documentPath);
+                }
+    
+                let linkText = getLinkText(title, refLink);
+    
+                return util.ok({
+                    type: 'doculisp-title',
+                    title: title.parameter.value,
+                    documentOrder: title.location,
+                    label: headerize(title.location.documentDepth, title.parameter.value),
+                    ref_link: '#' + (refLink ? refLink : linkText),
+                    subtitle: subtitle ? subtitle : undefined,
+                });
             }
 
             function parseSubtitle(ast: AtomAst[], location: ILocation, depth: number): Result<string | false> {
@@ -237,6 +238,26 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                 return parseSections(include.subStructure);
             }
+
+            function parseAuthor(ast: AtomAst[], location: ILocation): Result<false> {
+                const authors = ast.filter(a => a.value === 'author');
+
+                for (let index = 0; index < authors.length; index++) {
+                    const author = authors[index] as AtomAst;
+                    if(author.type === 'ast-atom') {
+                        return util.fail(`Author block at '${author.location.documentPath}' Line: ${author.location.line}, Char: ${author.location.char} does not contain the author's name.`, location.documentPath);
+                    }
+
+                    if(author.type === 'ast-container') {
+                        const child = author.subStructure[0] as AtomAst;
+                        return util.fail(`Author block at '${author.location.documentPath}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, location.documentPath);
+                    }
+
+                    variableTable.addValueToList('author', author.parameter.value);
+                }
+
+                return util.ok(false);
+            }
     
             const sectionMeta = input[0] as CoreAst;
 
@@ -267,7 +288,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 return util.fail(`The section-meta block at '${sectionMeta.location.documentPath}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, current.documentPath);
             }
     
-            const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include'].includes(a.value));
+            const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include', 'author'].includes(a.value));
     
             if(0 < badSections.length) {
                 const next = badSections[0] as AtomAst;
@@ -290,6 +311,12 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
             if(!title.success) {
                 return title;
+            }
+
+            const authors = parseAuthor(sectionMeta.subStructure, current);
+
+            if(!authors.success){
+                return authors;
             }
     
             const loaders = parseInclude(sectionMeta.subStructure, current);
