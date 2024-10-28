@@ -31,7 +31,7 @@ async function main() {
         font: 'Cybermedium'
     }) + 
     `\n            Compiler Version: ${version}` +
-    '\n            Language Version: 0.1.0' +
+    '\n            Language Version: 0.2.2' +
     '\n';
 
     program.addHelpText('beforeAll', helptext);
