@@ -1,5 +1,5 @@
 {
-  "documentPath": "/found/C:/bad/extraDl.dlisp",
-  "message": "Doculisp Block at {\"path\":\"C:/bad/extraDl.dlisp\",\"line\":1,\"char\":1} contains an embedded doculisp block at {\"path\":\"C:/bad/extraDl.dlisp\",\"line\":1,\"char\":1}.",
+  "documentPath": "C:/bad/extraDl.dlisp",
+  "message": "Doculisp Block at 'C:/bad/extraDl.dlisp' Line: 1, Char: 1 contains an embedded doculisp block at Line: 1, Char: 1.",
   "success": false
 }

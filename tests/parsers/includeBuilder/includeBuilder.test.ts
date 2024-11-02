@@ -1,4 +1,3 @@
-import path from 'path';
 import { Options } from "approvals/lib/Core/Options";
 import { IDictionary, ITestableContainer } from "../../../src/types/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
@@ -8,15 +7,16 @@ import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
 import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
-import { buildLocation, testable } from '../../testHelpers';
+import { buildProjectLocation, buildPath, testable } from '../../testHelpers';
 import { IVariableSaver, IVariableTable } from '../../../src/types/types.variableTable';
+import { IPath } from '../../../src/types/types.filePath';
 
 describe('includeBuilder', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
 
     let util: IUtil = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
-    let fail: (message: string, documentPath: string) => IFail = undefined as any;
+    let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
     let addPathResult: (filePath: string, result: Result<string>) => void = undefined as any;
     let variableSaver: IVariableSaver = undefined as any;
 
@@ -37,22 +37,23 @@ describe('includeBuilder', () => {
         pathToResult = null as any;
         pathToResult = {};
         addPathResult = (filePath: string, result: Result<string>): void => {
-            pathToResult[path.basename(filePath)] = result;
+            pathToResult[filePath] = result;
         }
         const fileHandler: IFileLoader & IDirectoryHandler = {
-            load(filePath: string): Result<string> {
-                const result = pathToResult[filePath];
+            load(filePath: IPath): Result<string> {
+                const result = pathToResult[filePath.fullName];
                 if(result) {
                     return result;
                 }
 
                 return util.fail(`filePath has not been setup.`, filePath);
             },
-            getProcessWorkingDirectory(): Result<string> { return util.ok('./')},
+            getProcessWorkingDirectory(): Result<IPath> { return util.ok(buildPath('./', false)); },
             setProcessWorkingDirectory(): Result<undefined> { return util.ok(undefined); },
         };
 
         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
+        environment.replaceValue(buildPath, 'pathConstructor');
     }
 
     describe('externalParse', () => {
@@ -63,21 +64,21 @@ describe('includeBuilder', () => {
         });
 
         it('should handle an empty ast', () => {
-            const result = toExternalResult("", buildLocation('C:/_main.dlisp', 1, 1));
+            const result = toExternalResult("", buildProjectLocation('C:/_main.dlisp', 1, 1));
             verifyAsJson(result);
         });
 
         it('should return an error if given an error', () => {
             const builder: IIncludeBuilder = testable.include.parserBuilder(container, setup);
 
-            const expectedResult = fail('This is a failure', 'M:/y/pah.md');
+            const expectedResult = fail('This is a failure',  buildPath('M:/y/pah.md'));
             expect(builder.parseExternals(expectedResult, variableSaver)).toBe(expectedResult);
         });
 
         it('should return an error if there is a file error', () => {
-            const badPath = 'B:/add.md';
+            const badPath = buildPath('B:/add.md');
             const expectedResult = fail('baad file error', badPath);
-            addPathResult(badPath, expectedResult);
+            addPathResult(badPath.fullName, expectedResult);
 
             const doc = `<!--
 (dl
@@ -93,7 +94,7 @@ describe('includeBuilder', () => {
 (content)
 `;
 
-            const result = toExternalResult(doc, buildLocation('C:/_main.md', 1, 1));
+            const result = toExternalResult(doc, buildProjectLocation('C:/_main.md', 1, 1));
             expect(result).toBe(expectedResult);
         });
 
@@ -123,7 +124,7 @@ Hello world!
 (content (toc numbered-labeled))
 `;
 
-            verifyAsJson(toExternalResult(document, buildLocation('C:/_main.dlisp', 1, 1)));
+            verifyAsJson(toExternalResult(document, buildProjectLocation('C:/_main.dlisp', 1, 1)));
         });
 
         it('should parse two sub documents', () => {
@@ -167,7 +168,7 @@ Sub document B text.
 (content)
 `;
 
-            const result = toExternalResult(doc, buildLocation('_main.dlisp', 1, 1));
+            const result = toExternalResult(doc, buildProjectLocation('_main.dlisp', 1, 1));
             verifyAsJson(result);
         });
 
@@ -219,7 +220,7 @@ Hello World!
 (content)
 `;
 
-            const result = toExternalResult(doc, buildLocation('_main.md', 1, 1));
+            const result = toExternalResult(doc, buildProjectLocation('_main.md', 1, 1));
             verifyAsJson(result);
         });
     });
@@ -228,13 +229,14 @@ Hello World!
         let toResult: (filePath: string) => Result<IDoculisp | IEmptyDoculisp> = undefined as any
 
         beforeEach(() => {
-            toResult = testable.include.resultBuilder(container, setup);
+            const builder = testable.include.resultBuilder(container, setup);
+            toResult = (filePath) => builder(buildPath(filePath));
         });
 
         it('should return file error if there is one', () => {
             const docPath = 'C:/bad.md';
 
-            const expectedResult = fail('baad file', docPath);
+            const expectedResult = fail('baad file', buildPath(docPath));
 
             addPathResult(docPath, expectedResult);
 

@@ -1,5 +1,5 @@
 {
-  "documentPath": "/found/./_main.md",
+  "documentPath": "./_main.md",
   "message": "The section-meta block at './_main.md' Line: 2, Char: 2 contains unknown command 'bad' at Line: 4, Char: 10.",
   "success": false
 }

@@ -5,13 +5,14 @@ import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
 import { ITrimArray } from "../types/types.trimArray";
 import { IVariableSaver } from "../types/types.variableTable";
+import { IPath, PathConstructor } from "../types/types.filePath";
 
 function headerize(depth: number, value: string): string {
     const id = ''.padStart(depth, '#');
     return `${id} ${value} ${id}`;
 }
 
-function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray): IDoculispParser {
+function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor): IDoculispParser {
     function parse(astResult: Result<RootAst | IAstEmpty>, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
@@ -47,7 +48,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
     
             if(ast.type !== 'ast-command') {
-                return util.fail(`Dynamic Header at '${ast.location.documentPath}' Line: ${ast.location.line}, Char: ${ast.location.char} is missing the header text`, current.documentPath);
+                return util.fail(`Dynamic Header at '${ast.location.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} is missing the header text`, current.documentPath);
             }
     
             return util.ok({
@@ -110,22 +111,22 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 const titles = ast.filter(s => s.value === 'title');
         
                 if(1 < titles.length) {
-                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, current.documentPath);
+                    return util.fail(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, current.documentPath);
                 }
     
                 if(titles.length === 0) {
-                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} is missing a title block.`, current.documentPath);
+                    return util.fail(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} is missing a title block.`, current.documentPath);
                 }
         
                 const title = titles[0] as AtomAst;
         
                 if(title.type === 'ast-atom') {
-                    return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, current.documentPath);
+                    return util.fail(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, current.documentPath);
                 }
         
                 if(title.type === 'ast-container') {
                     const next = title.subStructure[0] as AtomAst;
-                    return util.fail(`Title block at '${title.location.documentPath}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, current.documentPath);
+                    return util.fail(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, current.documentPath);
                 }
     
                 let linkText = getLinkText(title, refLink);
@@ -148,18 +149,18 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < subtitles.length) {
-                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one subtitle.`, current.documentPath);
+                    return util.fail(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one subtitle.`, current.documentPath);
                 }
     
                 const subtitle = subtitles[0] as AtomAst;
     
                 if(subtitle.type === 'ast-atom') {
-                    return util.fail(`The subtitle block at '${subtitle.location.documentPath}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} is missing the subtitle text.`, current.documentPath);
+                    return util.fail(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} is missing the subtitle text.`, current.documentPath);
                 }
     
                 if(subtitle.type === 'ast-container') {
                     const next = subtitle.subStructure[0] as AtomAst;
-                    return util.fail(`The subtitle block at '${subtitle.location.documentPath}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
+                    return util.fail(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
                 }
     
                 return util.ok(headerize(depth, subtitle.parameter.value));
@@ -173,18 +174,18 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < refLinks.length) {
-                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one ref-link.`, current.documentPath);
+                    return util.fail(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one ref-link.`, current.documentPath);
                 }
     
                 const refLink = refLinks[0] as AtomAst;
     
                 if(refLink.type === 'ast-atom') {
-                    return util.fail(`The subtitle block at '${refLink.location.documentPath}' Line: ${refLink.location.line}, Char: ${refLink.location.char} is missing the ref-link text.`, current.documentPath);
+                    return util.fail(`The subtitle block at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} is missing the ref-link text.`, current.documentPath);
                 }
     
                 if(refLink.type === 'ast-container') {
                     const next = refLink.subStructure[0] as AtomAst;
-                    return util.fail(`The ref-link block at '${refLink.location.documentPath}' Line: ${refLink.location.line}, Char: ${refLink.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
+                    return util.fail(`The ref-link block at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
                 }
     
                 return util.ok(refLink.parameter.value);
@@ -196,7 +197,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                     if(0 < bad.length) {
                         const next = bad[0] as AtomAst;
-                        return util.fail(`Include contains unknown command '${next.value}' at '${next.location.documentPath}' Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
+                        return util.fail(`Include contains unknown command '${next.value}' at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${next.location.char}.`, location.documentPath);
                     }
     
                     const commands = ast as IAstCommand[];
@@ -206,7 +207,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                             type: 'doculisp-load',
                             document: false,
                             documentOrder: rawLoad.location,
-                            path: rawLoad.parameter.value,
+                            path: pathConstructor(rawLoad.parameter.value),
                             sectionLabel: rawLoad.value.replaceAll('-', ' '),
                         }
                     });
@@ -223,7 +224,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < includes.length) {
-                    return util.fail(`The section-meta block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one include.`, current.documentPath);
+                    return util.fail(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one include.`, current.documentPath);
                 }
                 
                 const include = includes[0] as AtomAst;
@@ -233,7 +234,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(include.type === 'ast-command') {
-                    return util.fail(`The include block at '${include.location.documentPath}' Line: ${include.location.line}, Char: ${include.location.char} has unknown parameter '${include.parameter.value}'.`, location.documentPath);
+                    return util.fail(`The include block at '${include.location.documentPath.fullName}' Line: ${include.location.line}, Char: ${include.location.char} has unknown parameter '${include.parameter.value}'.`, location.documentPath);
                 }
     
                 return parseSections(include.subStructure);
@@ -245,12 +246,12 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 for (let index = 0; index < authors.length; index++) {
                     const author = authors[index] as AtomAst;
                     if(author.type === 'ast-atom') {
-                        return util.fail(`Author block at '${author.location.documentPath}' Line: ${author.location.line}, Char: ${author.location.char} does not contain the author's name.`, location.documentPath);
+                        return util.fail(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} does not contain the author's name.`, location.documentPath);
                     }
 
                     if(author.type === 'ast-container') {
                         const child = author.subStructure[0] as AtomAst;
-                        return util.fail(`Author block at '${author.location.documentPath}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, location.documentPath);
+                        return util.fail(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, location.documentPath);
                     }
 
                     variableTable.addValueToList('author', author.parameter.value);
@@ -285,14 +286,14 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
 
             if(hasSectionMeta) {
-                return util.fail(`The section-meta block at '${sectionMeta.location.documentPath}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, current.documentPath);
+                return util.fail(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, current.documentPath);
             }
     
             const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include', 'author'].includes(a.value));
     
             if(0 < badSections.length) {
                 const next = badSections[0] as AtomAst;
-                return util.fail(`The section-meta block at '${sectionMeta.location.documentPath}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
+                return util.fail(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
             }
     
             const subtitle = parseSubtitle(sectionMeta.subStructure, current, sectionMeta.location.documentDepth + 2);
@@ -339,7 +340,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         }
     
         function parseContent(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IContentLocation | ITableOfContents> {
-            function parseBulletStyle(bulletStyle: string | undefined, location: ILocation, documentPath: string) : Result<DoculispBulletStyle> {
+            function parseBulletStyle(bulletStyle: string | undefined, location: ILocation, documentPath: IPath) : Result<DoculispBulletStyle> {
                 if(!bulletStyle) {
                     return util.ok('labeled');
                 }
@@ -355,7 +356,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 ];
     
                 if(!validStyles.includes(bulletStyle as DoculispBulletStyle)) {
-                    return util.fail(`The toc block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has unknown bullet style '${bulletStyle}'.`, documentPath);
+                    return util.fail(`The toc block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has unknown bullet style '${bulletStyle}'.`, documentPath);
                 }
 
                 return util.ok(bulletStyle as DoculispBulletStyle);
@@ -369,7 +370,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < tocs.length) {
-                    return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} has more then one toc.`, location.documentPath);
+                    return util.fail(`The content block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one toc.`, location.documentPath);
                 }
     
                 const toc = tocs[0] as AtomAst;
@@ -377,12 +378,12 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 if(toc.type === 'ast-container') {
                     if(2 < toc.subStructure.length) {
                         const err = toc.subStructure[toc.subStructure.length -1] as AtomAst;
-                        return util.fail(`The content block at '${location.documentPath} Line: ${err.location.line}, Char: ${err.location.char}' has ${toc.subStructure.length} block and can only have 0, 1, or 2 blocks`, location.documentPath);
+                        return util.fail(`The content block at '${location.documentPath.fullName} Line: ${err.location.line}, Char: ${err.location.char}' has ${toc.subStructure.length} block and can only have 0, 1, or 2 blocks`, location.documentPath);
                     }
 
                     const first = toc.subStructure[0] as AtomAst;
                     if(first.type !== 'ast-command' || !['label', 'style'].includes(first.value)){
-                        return util.fail(`The content block at '${location.documentPath}' Line: ${location.line}, Char: ${location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, location.documentPath);
+                        return util.fail(`The content block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, location.documentPath);
                     }
                     
                     let labelText: string | false = false;
@@ -405,11 +406,11 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                         const second = toc.subStructure[1] as AtomAst;
 
                         if(second.type !== 'ast-command' || !['label', 'style'].includes(second.value)) {
-                            return util.fail(`The content block at '${location.documentPath}' Line: ${second.location.line}, Char: ${second.location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, location.documentPath);
+                            return util.fail(`The content block at '${location.documentPath.fullName}' Line: ${second.location.line}, Char: ${second.location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, location.documentPath);
                         }
 
                         if(first.value === second.value) {
-                            return util.fail(`The content block at '${location.documentPath}' Line ${location.line}, Char: ${location.line} has a duplicate '${first.value}' block at Line: ${second.location.line}, Char: ${second.location.char}.`, location.documentPath);
+                            return util.fail(`The content block at '${location.documentPath.fullName}' Line ${location.line}, Char: ${location.line} has a duplicate '${first.value}' block at Line: ${second.location.line}, Char: ${second.location.char}.`, location.documentPath);
                         }
 
                         if(second.value === 'label') {
@@ -471,15 +472,15 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
     
             if(contentBlock.type === 'ast-command') {
-                return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} contains unknown parameter '${contentBlock.parameter.value}'`, current.documentPath);
+                return util.fail(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} contains unknown parameter '${contentBlock.parameter.value}'`, current.documentPath);
             }
 
             if(!hasSectionMeta) {
-                return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists before the section-meta block.`, current.documentPath);
+                return util.fail(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists before the section-meta block.`, current.documentPath);
             }
 
             if(!hasInclude) {
-                return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists without an include block that has external files.`, current.documentPath);
+                return util.fail(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists without an include block that has external files.`, current.documentPath);
             }
 
             const content: IContentLocation = {
@@ -500,7 +501,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
             if(0 < bad.length) {
                 const next = bad[0] as AtomAst;
-                return util.fail(`The content block at '${contentBlock.location.documentPath}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} has unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
+                return util.fail(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} has unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, current.documentPath);
             }
     
             const tocMaybe = parseToc(contentBlock.subStructure, contentBlock.location);
@@ -543,7 +544,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
         if(0 < remaining.remaining.length) {
             const next = remaining.remaining[0] as CoreAst;
-            return util.fail(`Unknown atom '${next.value}' at '${next.location.documentPath}' Line: ${next.location.line}, Char: ${next.location.char}`, next.location.documentPath);
+            return util.fail(`Unknown atom '${next.value}' at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${next.location.char}`, next.location.documentPath);
         }
 
         return util.ok({
@@ -564,10 +565,10 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 }
 
 const doculispParser: IRegisterable = {
-    builder: (internals: IInternals, util: IUtil, trimArray: ITrimArray) => buildAstParser(internals, util, trimArray),
+    builder: (internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor) => buildAstParser(internals, util, trimArray, pathConstructor),
     name: 'astDoculispParse',
     singleton: false,
-    dependencies: ['internals', 'util', 'trimArray']
+    dependencies: ['internals', 'util', 'trimArray', 'pathConstructor']
 };
 
 export {

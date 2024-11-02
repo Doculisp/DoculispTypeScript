@@ -1,5 +1,5 @@
 {
-  "documentPath": "/found/../main.dlisp",
+  "documentPath": "../main.dlisp",
   "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown parameter 'toc'",
   "success": false
 }

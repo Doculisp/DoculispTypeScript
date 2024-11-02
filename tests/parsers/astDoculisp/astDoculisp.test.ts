@@ -4,19 +4,18 @@ import { getVerifier } from "../../tools";
 import { container } from "../../../src/container";
 import { IDoculisp, IDoculispParser, IEmptyDoculisp } from '../../../src/types/types.astDoculisp'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
-import { buildLocation, testable } from "../../testHelpers";
+import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
 import { IAstEmpty, RootAst } from '../../../src/types/types.ast';
-import { IPathHandler } from "../../../src/types/types.fileHandler";
 import { IVariableTestable } from "../../../src/types/types.variableTable";
+import { IPath, PathConstructor } from "../../../src/types/types.filePath";
 
 describe('astDoculisp', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
-    let fail: (message: string, documentPath: string) => IFail = undefined as any;
+    let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
     let util: IUtil = undefined as any;
     let toResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> = undefined as any;
     let variableTable: IVariableTestable = undefined as any;
-
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -27,12 +26,11 @@ describe('astDoculisp', () => {
             variableTable = environment.buildAs<IVariableTestable>('variableTable')
             variableTable.clear();
 
-            const pathHandler: IPathHandler = {
-                resolvePath(filePath) {
-                    return "/found/" + filePath;
-                },
+            const pathHandler: PathConstructor = 
+                function(filePath) {
+                    return buildPath(filePath);
             };
-            environment.replaceValue(pathHandler, 'fileHandler');
+            environment.replaceValue(pathHandler, 'pathConstructor');
             util = environment.buildAs<IUtil>('util');
         });
         
@@ -46,12 +44,10 @@ describe('astDoculisp', () => {
         beforeEach(() => {
             util = null as any;
             parser = testable.doculisp.parserBuilder(container, environment => {
-                const pathHandler: IPathHandler = {
-                    resolvePath(filePath) {
-                        return "/found/" + filePath;
-                    },
+                const pathHandler: PathConstructor = function (filePath) {
+                        return buildPath(filePath);
                 };
-                environment.replaceValue(pathHandler, 'fileHandler');
+                environment.replaceValue(pathHandler, 'pathConstructor');
                 util = environment.buildAs<IUtil>('util');
             });
         });
@@ -67,7 +63,7 @@ describe('astDoculisp', () => {
         });
 
         it('should return failure if given failure', () => {
-            const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
+            const failure = fail('this is a document failure', buildPath('Z:/mybad.dlisp'));
     
             const result = parser.parse(failure, variableTable);
     
@@ -75,7 +71,7 @@ describe('astDoculisp', () => {
         });
     
         it('should parse a value', () => {
-            const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
+            const projectLocation = buildProjectLocation('T:/ext/only.md', 2, 9);
 
             const ast: RootAst = {
                 ast: [
@@ -95,7 +91,7 @@ describe('astDoculisp', () => {
         });
     
         it('should parse multiple value ast elements', () => {
-            const projectLocation = buildLocation('T:/ext/only.md', 4, 8);
+            const projectLocation = buildProjectLocation('T:/ext/only.md', 4, 8);
             const ast: RootAst = {
                 ast: [
                     {
@@ -124,7 +120,7 @@ describe('astDoculisp', () => {
             const contents = `<!--
 (dl (# My heading))
 -->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 1));
+            const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
     
             verifyAsJson(result);
         });
@@ -133,7 +129,7 @@ describe('astDoculisp', () => {
             const contents = `<!--
 (dl (#head My heading))
 -->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 3, 2));
+            const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 3, 2));
     
             verifyAsJson(result);
         });
@@ -142,7 +138,7 @@ describe('astDoculisp', () => {
             const contents = `<!--
 (dl (#))
 -->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 3));
+            const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 3));
     
             verifyAsJson(result);
         });
@@ -167,7 +163,7 @@ describe('astDoculisp', () => {
 (content (toc numbered-labeled))
 `;
 
-            const result = toResult(text, buildLocation('./_main.dlisp', 4, 7));
+            const result = toResult(text, buildProjectLocation('./_main.dlisp', 4, 7));
 
             verifyAsJson(result);
         });
@@ -184,7 +180,7 @@ describe('astDoculisp', () => {
 (title Doculisp is ✨)
 )`;
 
-                const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+                const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
                 verifyAsJson(result);
             });
@@ -199,7 +195,7 @@ describe('astDoculisp', () => {
 )
 `;
                 
-                const result = toResult(content, buildLocation('A:/malformed/file.dlisp', 1, 7));
+                const result = toResult(content, buildProjectLocation('A:/malformed/file.dlisp', 1, 7));
 
                 verifyAsJson(result);
             });
@@ -215,7 +211,7 @@ describe('astDoculisp', () => {
 )
 `;
 
-                const result = toResult(content, buildLocation('./two/sections.dlisp', 3, 2));
+                const result = toResult(content, buildProjectLocation('./two/sections.dlisp', 3, 2));
 
                 verifyAsJson(result);
             });
@@ -237,7 +233,7 @@ A story of a misbehaving parser.
 
 `
 
-                const result = toResult(content, buildLocation('./_main.md', 1, 1));
+                const result = toResult(content, buildProjectLocation('./_main.md', 1, 1));
 
                 verifyAsJson(result);
             });
@@ -245,7 +241,7 @@ A story of a misbehaving parser.
             describe('title', () => {
                 it('should parse a title as a parameter', () => {
                     const contents = `(section-meta My Cool Document)`;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
             
                     verifyAsJson(result);
                 });
@@ -256,21 +252,21 @@ A story of a misbehaving parser.
     (title My Cool Document)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
             
                     verifyAsJson(result);
                 });
             
                 it('should not parse a title without a parameter', () => {
                     const contents = `(section-meta (title))`;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
             
                     verifyAsJson(result);
                 });
 
                 it('should not parse a title with a sub group', () => {
                     const contents = `(section-meta (title (bad group)))`;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
             
                     verifyAsJson(result);
 
@@ -278,7 +274,7 @@ A story of a misbehaving parser.
 
                 it('should not parse multiple titles', () => {
                     const contents = '(section-meta (title A Title) (title B Title))';
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
 
                     verifyAsJson(result);
                 });
@@ -292,7 +288,7 @@ A story of a misbehaving parser.
     (author Jason Kerney)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
                     
                     if(!result.success) {
                         verifyAsJson(result);
@@ -310,7 +306,7 @@ A story of a misbehaving parser.
     (author Chris Stead)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
             
                     if(!result.success) {
                         verifyAsJson(result);
@@ -328,7 +324,7 @@ A story of a misbehaving parser.
 )
 `;
 
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
                                 
                     verifyAsJson(result);
                 });
@@ -344,7 +340,7 @@ A story of a misbehaving parser.
     )
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
                                                     
                     verifyAsJson(result);
                 });
@@ -358,7 +354,7 @@ A story of a misbehaving parser.
 )
 `;
                     
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
                                 
                     if(!result.success) {
                         verifyAsJson(result);
@@ -377,7 +373,7 @@ A story of a misbehaving parser.
     (ref-link my_cool_title)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 3, 10));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
         
                     verifyAsJson(result);
                 });
@@ -389,7 +385,7 @@ A story of a misbehaving parser.
     (title My cool title✨)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 3, 10));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
         
                     verifyAsJson(result);
                 });
@@ -401,7 +397,7 @@ A story of a misbehaving parser.
     (title My cool title✨)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 3, 10));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
                             
                     verifyAsJson(result);
                 });
@@ -413,7 +409,7 @@ A story of a misbehaving parser.
     (ref-link (weird block))
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 3, 11));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 11));
                     verifyAsJson(result);
                 });
 
@@ -425,7 +421,7 @@ A story of a misbehaving parser.
     (ref-link my-cool-title)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
                     verifyAsJson(result);
                 });
 
@@ -438,7 +434,7 @@ A story of a misbehaving parser.
     )
     -->`;
     
-                    const result = toResult(content, buildLocation('./_main.md', 1, 1));
+                    const result = toResult(content, buildProjectLocation('./_main.md', 1, 1));
                     verifyAsJson(result);
                 });
             });
@@ -451,7 +447,7 @@ A story of a misbehaving parser.
     (subtitle This is information)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 4, 4));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 4, 4));
         
                     verifyAsJson(result);
                 });
@@ -463,7 +459,7 @@ A story of a misbehaving parser.
     (title My cool title)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 2, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 2, 7));
         
                     verifyAsJson(result);
                 });
@@ -475,7 +471,7 @@ A story of a misbehaving parser.
     (subtitle)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 10));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 10));
         
                     verifyAsJson(result);
                 });
@@ -487,7 +483,7 @@ A story of a misbehaving parser.
     (subtitle (link-ref tom))
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 10));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 10));
         
                     verifyAsJson(result);
                 })
@@ -500,7 +496,7 @@ A story of a misbehaving parser.
     (subtitle A journey in lisp)
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 2, 7));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 2, 7));
         
                     verifyAsJson(result);
                 });
@@ -517,7 +513,7 @@ A story of a misbehaving parser.
     )
 )`;
 
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
                     verifyAsJson(result);
                 });
@@ -529,7 +525,7 @@ A story of a misbehaving parser.
     (include)
 )`;
 
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
                     verifyAsJson(result);
                 });
@@ -543,7 +539,7 @@ A story of a misbehaving parser.
     )
 )
 `;
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
                     verifyAsJson(result);
                 });
@@ -559,7 +555,7 @@ A story of a misbehaving parser.
     )
 )`;
 
-                    const result = toResult(contents, buildLocation('main.dlisp', 1, 4));
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
                     verifyAsJson(result);
                 });
@@ -579,7 +575,7 @@ A story of a misbehaving parser.
 (content)
 `;
 
-                const result = toResult(text, buildLocation('../main.dlisp', 2, 7));
+                const result = toResult(text, buildProjectLocation('../main.dlisp', 2, 7));
 
                 verifyAsJson(result);
             });
@@ -596,7 +592,7 @@ A story of a misbehaving parser.
 (content toc)
 `;
 
-                const result = toResult(text, buildLocation('../main.dlisp', 2, 7));
+                const result = toResult(text, buildProjectLocation('../main.dlisp', 2, 7));
 
                 verifyAsJson(result);
             });
@@ -613,7 +609,7 @@ A story of a misbehaving parser.
 (content (toc (type bulleted)))
 `;
 
-                const result = toResult(text, buildLocation('../main.dlisp', 2, 7));
+                const result = toResult(text, buildProjectLocation('../main.dlisp', 2, 7));
 
                 verifyAsJson(result);
             });
@@ -630,7 +626,7 @@ A story of a misbehaving parser.
 )
 `;
 
-                const result = toResult(text, buildLocation('../main.dlisp', 4, 2));
+                const result = toResult(text, buildProjectLocation('../main.dlisp', 4, 2));
 
                 verifyAsJson(result);
             });
@@ -644,7 +640,7 @@ A story of a misbehaving parser.
 (content)
 `;
 
-                const result = toResult(text, buildLocation('../noInclude.dlisp', 2, 7));
+                const result = toResult(text, buildProjectLocation('../noInclude.dlisp', 2, 7));
 
                 verifyAsJson(result);
             });
@@ -659,7 +655,7 @@ A story of a misbehaving parser.
 (content)
 `;
 
-                const result = toResult(text, buildLocation('../noInclude.dlisp', 2, 7));
+                const result = toResult(text, buildProjectLocation('../noInclude.dlisp', 2, 7));
 
                 verifyAsJson(result);
             });
@@ -676,7 +672,7 @@ A story of a misbehaving parser.
 (content (toc))
 `;
 
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });
@@ -701,7 +697,7 @@ A story of a misbehaving parser.
 (content (toc ${bulletType}))
 `;
 
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });
@@ -717,7 +713,7 @@ A story of a misbehaving parser.
 
 (content (# Incorrect))
 `;
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });
@@ -734,7 +730,7 @@ A story of a misbehaving parser.
 (content (toc unknown))
 `;
 
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });
@@ -755,7 +751,7 @@ A story of a misbehaving parser.
 )
 `;
 
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });
@@ -776,7 +772,7 @@ A story of a misbehaving parser.
 )
 `;
 
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });
@@ -798,7 +794,7 @@ A story of a misbehaving parser.
 )
 `;
 
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });
@@ -820,7 +816,7 @@ A story of a misbehaving parser.
 )
 `;
 
-                const result = toResult(text, buildLocation('./itty.dlisp', 2, 1));
+                const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
                 verifyAsJson(result);
             });

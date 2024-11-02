@@ -1,5 +1,5 @@
 {
-  "documentPath": "/found/C:/main.dlisp",
-  "message": "Doculisp block at {\"path\":\"C:/main.dlisp\",\"line\":2,\"char\":1} is not closed.",
+  "documentPath": "C:/main.dlisp",
+  "message": "Doculisp block at 'C:/main.dlisp' Line: 2, Char: 1 is not closed.",
   "success": false
 }

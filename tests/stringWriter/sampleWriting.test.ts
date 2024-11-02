@@ -2,7 +2,7 @@ import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
 import { Result } from "../../src/types/types.general";
-import { testable } from "../testHelpers";
+import { buildPath, testable } from "../testHelpers";
 import { container } from "../../src/container";
 import path from "path";
 
@@ -30,7 +30,9 @@ describe('stringWriter writing sample', () => {
     beforeEach(() => {
         workingDir = process.cwd();
         process.chdir('./tests/Sample/simple');
-        toResult = testable.stringWriter.pathParser(container);
+        toResult = function(pathString: string) {
+            return testable.stringWriter.pathParser(container)(buildPath(pathString));
+        };
     });
 
     afterEach(() => {

@@ -1,4 +1,5 @@
 import { IAstEmpty, RootAst } from "./types.ast";
+import { IPath } from "./types.filePath";
 import { ILocation, IProjectLocation, Result } from "./types.general";
 import { IVariableSaver } from "./types.variableTable";
 
@@ -21,7 +22,7 @@ export interface ITitle extends ILocationSortable {
 
 export interface ILoad extends ILocationSortable {
     readonly type: 'doculisp-load';
-    readonly path: string;
+    readonly path: IPath;
     readonly sectionLabel: string;
     document: ISectionWriter | false;
 }

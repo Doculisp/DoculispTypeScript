@@ -1,5 +1,5 @@
 {
-  "documentPath": "/found/./itty.dlisp",
+  "documentPath": "./itty.dlisp",
   "message": "The content block at './itty.dlisp' Line: 9, Char: 2 has unknown command '#' at Line: 9, Char: 11.",
   "success": false
 }

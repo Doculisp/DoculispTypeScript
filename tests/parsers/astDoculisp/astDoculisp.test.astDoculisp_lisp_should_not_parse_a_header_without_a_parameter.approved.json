@@ -1,5 +1,5 @@
 {
-  "documentPath": "/found/S:/ome/file.md",
+  "documentPath": "S:/ome/file.md",
   "message": "Dynamic Header at 'S:/ome/file.md' Line: 2, Char: 2 is missing the header text",
   "success": false
 }

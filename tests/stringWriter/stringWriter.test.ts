@@ -3,18 +3,18 @@ import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
 import { IFail, IProjectLocation, ISuccess, IUtil } from "../../src/types/types.general";
 import { Result } from "../../src/types/types.general";
-import { buildLocation, testable } from "../testHelpers";
+import { buildProjectLocation, testable, buildPath } from "../testHelpers";
 import { IDirectoryHandler, IFileHandler, IFileLoader } from "../../src/types/types.fileHandler";
 import { container } from "../../src/container";
 import { IDictionary } from "../../src/types/types.containers";
-import path from "path";
 import { IVariableTestable } from "../../src/types/types.variableTable";
+import { IPath, PathConstructor } from "../../src/types/types.filePath";
 
 describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
-    let fail: (message: string, documentPath: string) => IFail = undefined as any;
+    let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
     let fileHandler: IFileHandler = null as any;
     let variableTable: IVariableTestable = undefined as any;
 
@@ -37,6 +37,12 @@ describe('stringWriter', () => {
         fail = null as any;
 
         toResult = testable.stringWriter.resultBuilder(container, environment => {
+            const pathConstructor: PathConstructor = (pathString: string): IPath => {
+                return buildPath(pathString);
+            }
+
+            environment.replaceValue(pathConstructor, 'pathConstructor');
+
             const util: IUtil = environment.buildAs<IUtil>('util');
             variableTable = environment.buildAs<IVariableTestable>('variableTable');
             variableTable.clear();
@@ -48,7 +54,7 @@ describe('stringWriter', () => {
 
     describe('basic functionality', () => {
         it('should not write an error', () => {
-            const expectedResult = fail('Some failure', 'S:/ome/path.md');
+            const expectedResult = fail('Some failure', buildPath('S:/ome/path.md'));
             const writer = testable.stringWriter.writer(container);
             const result = writer.writeAst(expectedResult, variableTable);
 
@@ -59,19 +65,19 @@ describe('stringWriter', () => {
     describe('writing markup', () => {
         describe('text block', () => {
             it('should successfully write an empty string', () => {
-                const result = toResult('', buildLocation('C:/my_document.md', 4, 8));
+                const result = toResult('', buildProjectLocation('C:/my_document.md', 4, 8));
 
                 verifyMarkdownResult(result);
             });
 
             it('should write a simple text of "hello"', () =>{
-                const result = toResult('hello', buildLocation('C:/my_document.md', 3, 6));
+                const result = toResult('hello', buildProjectLocation('C:/my_document.md', 3, 6));
 
                 verifyMarkdownResult(result);
             });
 
             it('should write text of "blow fish"', () => {
-                const result = toResult('blow fish', buildLocation('C:/my_document.md', 7, 2));
+                const result = toResult('blow fish', buildProjectLocation('C:/my_document.md', 7, 2));
 
                 verifyMarkdownResult(result);
             });
@@ -89,7 +95,7 @@ describe('stringWriter', () => {
     ## Sub section title
 \`\`\`
 `;
-                const result = toResult(md, buildLocation('C:/markdown/multiline.md', 4, 3));
+                const result = toResult(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
     
                 verifyMarkdownResult(result);
             });
@@ -104,7 +110,7 @@ describe('stringWriter', () => {
     (title My Cool Document)
 )
 `;
-                        const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                        const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
                 
                         verifyMarkdownResult(result);
                     });
@@ -115,7 +121,7 @@ describe('stringWriter', () => {
     (title My Cool Document)
 )
 `;
-                        const result = toResult(contents, buildLocation('main.dlisp', 2, 1));
+                        const result = toResult(contents, buildProjectLocation('main.dlisp', 2, 1));
                 
                         verifyMarkdownResult(result);
                     });
@@ -127,7 +133,7 @@ describe('stringWriter', () => {
     (subtitle A very nice document)
 )
 `;
-                        const result = toResult(contents, buildLocation('main.dlisp', 1, 1));
+                        const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
                 
                         verifyMarkdownResult(result);
                     });
@@ -160,7 +166,7 @@ More words to put to it.
 This is the end
 `;
 
-                    const result = toResult(doc, buildLocation('./_main.md', 1, 1));
+                    const result = toResult(doc, buildProjectLocation('./_main.md', 1, 1));
 
                     verifyMarkdownResult(result);
                 });
@@ -175,7 +181,7 @@ This is the end
                     files = {};
 
                     addFile = (filePath: string, body: string): void => {
-                        files[path.basename(filePath)] = ok(body);
+                        files[filePath] = ok(body);
                     };
 
                     toResult = testable.stringWriter.resultBuilder(container, environment => {
@@ -183,8 +189,8 @@ This is the end
                         ok = util.ok;
 
                         const fileHandler: IFileLoader & IDirectoryHandler = {
-                            load: function(path: string): Result<string> {
-                                const r = files[path];
+                            load: function(path: IPath): Result<string> {
+                                const r = files[path.fullName];
                                 if(r) {
                                     return r;
                                 }
@@ -192,12 +198,18 @@ This is the end
                                 return fail('path not yet setup', path);
                             },
                             getProcessWorkingDirectory() {
-                                return util.ok('./');
+                                return util.ok(buildPath('./', false));
                             },
                             setProcessWorkingDirectory() { return util.ok(undefined); }
                         };
 
                         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', true);
+
+                        const pathConstructor: PathConstructor = (pathString: string): IPath => {
+                            return buildPath(pathString);
+                        }
+            
+                        environment.replaceValue(pathConstructor, 'pathConstructor');
                     });
                 });
 
@@ -235,7 +247,7 @@ a truly divided tail.
 <!-- (dl (content)) -->
 `;
 
-                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    const result = toResult(doc, buildProjectLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
 
@@ -286,7 +298,7 @@ a truly divided tail.
 <!-- (dl (content (toc))) -->
 `;
 
-                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    const result = toResult(doc, buildProjectLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
 
@@ -337,7 +349,7 @@ a truly divided tail.
 <!-- (dl (content (toc unlabeled))) -->
 `;
 
-                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    const result = toResult(doc, buildProjectLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
 
@@ -388,7 +400,7 @@ a truly divided tail.
 <!-- (dl (content (toc numbered))) -->
 `;
 
-                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    const result = toResult(doc, buildProjectLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
 
@@ -439,7 +451,7 @@ a truly divided tail.
 <!-- (dl (content (toc numbered-labeled))) -->
 `;
 
-                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    const result = toResult(doc, buildProjectLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
 
@@ -490,7 +502,7 @@ a truly divided tail.
 <!-- (dl (content (toc bulleted))) -->
 `;
 
-                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    const result = toResult(doc, buildProjectLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
 
@@ -541,7 +553,7 @@ a truly divided tail.
 <!-- (dl (content (toc bulleted-labeled))) -->
 `;
 
-                    const result = toResult(doc, buildLocation(path, 1, 1));
+                    const result = toResult(doc, buildProjectLocation(path, 1, 1));
                     verifyMarkdownResult(result);
                 });
             });
@@ -562,98 +574,98 @@ a truly divided tail.
 
             it('should write the structure part of its own documentation', () => {
                 const filePath = './lang/structure.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the doculisp part of its own documentation', () => {
                 const filePath = './lang/doculisp.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the section-meta part of its own documentation', () => {
                 process.chdir('./lang/section-meta');
                 const filePath = './_main.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the content part of its own documentation', () => {
                 const filePath = './lang/content.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the headings part of its own documentation', () => {
                 const filePath = './lang/headings.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the comment part of its own documentation', () => {
                 const filePath = './lang/comment.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the keywords part of its own documentation', () => {
                 const filePath = './lang/keywords.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
 
             it('should write the whole of its own documentation', () => {
                 const filePath = './_main.md';
-                const doc: Result<string> = fileHandler.load(filePath) as ISuccess<string>;
+                const doc: Result<string> = fileHandler.load(buildPath(filePath)) as ISuccess<string>;
 
                 if(!doc.success) {
                     expect(JSON.stringify(doc, null, 4)).toBe('');
                 }
 
-                const result = toResult(doc.value, buildLocation(filePath, 1, 1));
+                const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
                 verifyMarkdownResult(result);
             });
         });

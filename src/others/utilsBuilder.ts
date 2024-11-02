@@ -1,5 +1,5 @@
 import { IRegisterable } from "../types/types.containers";
-import { IPathHandler } from "../types/types.fileHandler";
+import { IPath } from "../types/types.filePath";
 import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "../types/types.general";
 
 function before() : IsBefore { return isBefore; }
@@ -7,13 +7,13 @@ function after()  : IsAfter  { return isAfter; }
 function same()   : IsSame   { return isSame; }
 
 class Location implements ILocation {
-    private readonly _documentPath: string;
+    private readonly _documentPath: IPath;
     private readonly _documentDepth: number;
     private readonly _documentIndex: number;
     private readonly _line: number;
     private readonly _char: number;
     
-    constructor(documentPath: string, documentDepth: number, documentIndex: number, line: number, char: number) {
+    constructor(documentPath: IPath, documentDepth: number, documentIndex: number, line: number, char: number) {
         this._documentPath = documentPath;
         this._documentDepth = documentDepth;
         this._documentIndex = documentIndex;
@@ -21,7 +21,7 @@ class Location implements ILocation {
         this._char = char;
     }
 
-    public get documentPath(): string {
+    public get documentPath(): IPath {
         return this._documentPath;
     }
 
@@ -107,7 +107,7 @@ class Location implements ILocation {
     }
 }
 
-function location(documentPath: string, documentDepth: number, documentIndex: number, line: number, char: number): ILocation {
+function location(documentPath: IPath, documentDepth: number, documentIndex: number, line: number, char: number): ILocation {
     return new Location(documentPath, documentDepth, documentIndex, line, char);
 }
 
@@ -123,7 +123,7 @@ function getProjectLocation(location: ILocation): IProjectLocation {
     };
 }
 
-function buildGeneral(fileHandler: IPathHandler): IUtil {
+function buildGeneral(): IUtil {
     
 
     function ok<T>(successfulValue: T) : ISuccess<T> {
@@ -133,11 +133,10 @@ function buildGeneral(fileHandler: IPathHandler): IUtil {
         };
     };
 
-    function fail(message: string, documentPath: string) : IFail {
-        const cleanPath = fileHandler.resolvePath(documentPath);
+    function fail(message: string, documentPath?: IPath) : IFail {
         return {
             message,
-            documentPath: cleanPath,
+            documentPath: documentPath,
             success: false,
         };
     };

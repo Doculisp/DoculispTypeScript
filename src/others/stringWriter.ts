@@ -313,7 +313,7 @@ function buildWriter(util: IUtil) : IStringWriter {
         }
 
 
-        let previous: ILocation = util.location('', -1, -1, -1, -1);
+        let previous: ILocation = util.location(astMaybe.value.projectLocation.documentPath, -1, -1, -1, -1);
         sb.addLine(writeSection(previous, section));
         
         sb.addLine();

@@ -1,4 +1,4 @@
-import { IProjectLocation, Result } from "../src/types/types.general";
+import { ILocation, IProjectLocation, Result, IUtil } from "../src/types/types.general";
 import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
 import { TokenFunction, TokenizedDocument } from "../src/types/types.tokens";
@@ -7,13 +7,38 @@ import { IDoculisp, IDoculispParser, IEmptyDoculisp } from "../src/types/types.a
 import { IIncludeBuilder } from "../src/types/types.includeBuilder";
 import { IStringWriter } from "../src/types/types.stringWriter"
 import { IVariableRetriever, IVariableSaver } from "../src/types/types.variableTable";
+import { IPath } from "../src/types/types.filePath";
+import path from "path";
 
-export function buildLocation(path: string, depth: number, index: number) : IProjectLocation {
+export function buildProjectLocation(path: string, depth: number, index: number, extension: string | false = false) : IProjectLocation {
     return {
-        documentPath: path,
+        documentPath: buildPath(path),
         documentDepth: depth,
         documentIndex: index,
     };
+}
+
+export function buildLocation(util: IUtil) {
+    return function (path: string, depth: number, index: number, line: number, char: number) : ILocation{
+        const result: ILocation = util.location(buildPath(path), depth, index, line, char)
+        return result as ILocation;
+    }
+}
+
+export function buildPath(pathString: string, hasExtension: boolean = true): IPath {
+    const extension = hasExtension ? path.extname(pathString) : '';
+    const containingDir = path.dirname(pathString);
+    const result = { 
+        fullName: pathString, 
+        extension: extension.length > 0 ? extension : false, 
+        getContainingDir: () => buildPath(containingDir),
+        getRelativeFrom: undefined as any,
+        toJSON: () => pathString,
+        type: 'path',
+        toString: () => pathString,
+    };
+
+    return result as any as IPath;
 }
 
 function map<T1, T2>(f1: () => T1, f2: (value: T1) => T2): () => T2 {
@@ -90,7 +115,7 @@ function rawStringWriterResultBuilder(environment: ITestableContainer, text: str
     return map(includeBuilder, result => stringWriter.writeAst(result, variableTable));
 }
 
-function rawStringWriterPathResultBuilder(environment: ITestableContainer, filePath: string): () => Result<string> {
+function rawStringWriterPathResultBuilder(environment: ITestableContainer, filePath: IPath): () => Result<string> {
     const astRecursiveBuilder = buildIncludeParser(environment);
     const stringWriter = buildStringWriter(environment);
     const variableTable = environment.buildAs<IVariableSaver & IVariableRetriever>('variableTable');
@@ -147,7 +172,7 @@ function newIncludeParserBuilder(container: IContainer, setup: (environment: ITe
     });
 }
 
-function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<IDoculisp | IEmptyDoculisp> {
+function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: IPath) => Result<IDoculisp | IEmptyDoculisp> {
     return newBuilder(container, setup, environment => {
         const variableTable = environment.buildAs<IVariableSaver>('variableTable');
         return path => buildIncludeParser(environment).parse(path, variableTable);
@@ -190,9 +215,9 @@ function newStringWriterResultBuilder(container: IContainer, setup: (environment
     });
 }
 
-function newStringWriterPathResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: string) => Result<string> {
+function newStringWriterPathResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: IPath) => Result<string> {
     return newBuilder(container, setup, (environment: ITestableContainer) => {
-        return (filePath: string): Result<string> => {
+        return (filePath: IPath): Result<string> => {
             const astBuilder = rawStringWriterPathResultBuilder(environment, filePath);
             return astBuilder();
         };

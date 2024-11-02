@@ -7,17 +7,18 @@ import { IProjectLocation, IUtil, Result } from "../types/types.general";
 import { TokenFunction } from "../types/types.tokens";
 import { IAstParser } from "../types/types.ast";
 import { IVariableSaver } from "../types/types.variableTable";
+import { IPath } from "../types/types.filePath";
 
 function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any, astParser: IAstParser) : IIncludeBuilder {
 
-    function _parse(filePath: string, location: IProjectLocation, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+    function _parse(filePath: IPath, location: IProjectLocation, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();
 
         if(!workingDir.success) {
             return workingDir;
         }
 
-        const targetDir = path.resolve(path.dirname(filePath));
+        const targetDir = filePath.getContainingDir();
         try {
             const success = fileHandler.setProcessWorkingDirectory(targetDir);
 
@@ -25,7 +26,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
                 return success;
             }
 
-            const fileMaybe = fileHandler.load(path.basename(filePath));
+            const fileMaybe = fileHandler.load(filePath);
             if(!fileMaybe.success) {
                 return fileMaybe;
             }
@@ -42,7 +43,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
         }
     }
 
-    function parse(filePath: string, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+    function parse(filePath: IPath, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         return _parse(filePath, { documentDepth: 1, documentIndex: 1, documentPath: filePath }, variableTable);
     }
 

@@ -1,5 +1,5 @@
 {
-  "documentPath": "/found/main.dlisp",
+  "documentPath": "main.dlisp",
   "message": "Author block at 'main.dlisp' Line: 4, Char: 6 contains unknown child block of 'title' at Line: 5, Char: 10.",
   "success": false
 }

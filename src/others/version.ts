@@ -1,14 +1,14 @@
-import path from "path";
 import { IRegisterable } from "../types/types.containers";
 import { IUtil, Result } from "../types/types.general";
 import { IVersion } from "../types/types.version";
+import { PathConstructor } from "../types/types.filePath";
 
-function buildVersion(util: IUtil): IVersion {
+function buildVersion(util: IUtil, pathConstructor: PathConstructor): IVersion {
     function getVersion(): Result<string> {
         const file = require('../../package.json');
 
         if(!file || !file['version']) {
-            return util.fail('Could not find the verions', path.resolve('../../package.json'));
+            return util.fail('Could not find the version', pathConstructor('../../package.json'));
         }
 
         return util.ok(file['version'] as string);
@@ -20,9 +20,9 @@ function buildVersion(util: IUtil): IVersion {
 }
 
 const versionBuilder: IRegisterable = {
-    builder: (util: IUtil) => buildVersion(util),
+    builder: (util: IUtil, pathConstructor: PathConstructor) => buildVersion(util, pathConstructor),
     name: 'version',
-    dependencies: ['util'],
+    dependencies: ['util', 'pathConstructor'],
     singleton: true
 };
 

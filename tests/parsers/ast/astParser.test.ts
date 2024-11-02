@@ -4,14 +4,14 @@ import { getVerifier } from "../../tools";
 import { container } from "../../../src/container";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { TokenizedDocument } from "../../../src/types/types.tokens";
-import { buildLocation, testable } from "../../testHelpers";
+import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
 import { IAstParser, IAstEmpty, RootAst } from '../../../src/types/types.ast';
-import { IPathHandler } from "../../../src/types/types.fileHandler";
+import { IPath, PathConstructor } from "../../../src/types/types.filePath";
 
 describe('ast', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
-    let fail: (message: string, documentPath: string) => IFail = undefined as any;
+    let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
     let util: IUtil = undefined as any;
     let toResult: (text: string, projectLocation: IProjectLocation) => Result<RootAst | IAstEmpty> = undefined as any;
 
@@ -21,12 +21,6 @@ describe('ast', () => {
 
     beforeEach(() => {
         toResult = testable.ast.resultBuilder(container, environment => {
-            const pathHandler: IPathHandler = {
-                resolvePath(filePath) {
-                    return "/found/" + filePath;
-                },
-            };
-            environment.replaceValue(pathHandler, 'fileHandler');
             util = environment.buildAs<IUtil>('util');
         });
         
@@ -40,19 +34,17 @@ describe('ast', () => {
         beforeEach(() => {
             util = null as any;
             parser = testable.ast.parserBuilder(container, environment => {
-                const pathHandler: IPathHandler = {
-                    resolvePath(filePath) {
-                        return "/found/" + filePath;
-                    },
+                const pathHandler: PathConstructor = function (filePath): IPath {
+                        return buildPath(filePath)
                 };
-                environment.replaceValue(pathHandler, 'fileHandler');
+                environment.replaceValue(pathHandler, 'pathConstructor');
                 util = environment.buildAs<IUtil>('util');
             });
         });
     
         it('should return an empty doculisp if there was no tokens', () => {
             const tokens: Result<TokenizedDocument> = ok({
-                projectLocation: buildLocation('A:/empty/doc.md', 4, 10),
+                projectLocation: buildProjectLocation('A:/empty/doc.md', 4, 10),
                 tokens: []
             });
     
@@ -62,7 +54,7 @@ describe('ast', () => {
         });
 
         it('should return failure if given failure', () => {
-            const failure = fail('this is a document failure', 'Z:/mybad.dlisp');
+            const failure = fail('this is a document failure', buildPath('Z:/mybad.dlisp'));
     
             const result = parser.parse(failure);
     
@@ -70,7 +62,7 @@ describe('ast', () => {
         });
     
         it('should parse a text token', () => {
-            const projectLocation = buildLocation('T:/ext/only.md', 2, 9);
+            const projectLocation = buildProjectLocation('T:/ext/only.md', 2, 9);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,
                 tokens: [
@@ -88,7 +80,7 @@ describe('ast', () => {
         });
     
         it('should parse multiple text tokens', () => {
-            const projectLocation = buildLocation('T:/ext/only.md', 4, 8);
+            const projectLocation = buildProjectLocation('T:/ext/only.md', 4, 8);
             const tokens: Result<TokenizedDocument> = ok({
                 projectLocation: projectLocation,
                 tokens: [
@@ -116,20 +108,20 @@ describe('ast', () => {
             const contents = `<!--
 (dl (# My heading))
 -->`;
-            const result = toResult(contents, buildLocation('S:/ome/file.md', 2, 1));
+            const result = toResult(contents, buildProjectLocation('S:/ome/file.md',2, 1));
     
             verifyAsJson(result);
         });
 
         it('should parse a basic atom', () => {
             const text = '(content)';
-            const result = toResult(text, buildLocation('./_main.dlisp', 1, 1));
+            const result = toResult(text, buildProjectLocation('./_main.dlisp', 1, 1));
             verifyAsJson(result);
         });
 
         it('should parse a container with a basic atom', () => {
             const text = '(section-meta (title))';
-            const result = toResult(text, buildLocation('./_main.dlisp', 1, 1));
+            const result = toResult(text, buildProjectLocation('./_main.dlisp', 1, 1));
             verifyAsJson(result);
         });
 
@@ -140,7 +132,7 @@ describe('ast', () => {
 )
 `;
 
-            const result = toResult(text, buildLocation('./_main.dlisp', 1, 6));
+            const result = toResult(text, buildProjectLocation('./_main.dlisp', 1, 6));
             verifyAsJson(result);
         });
 
@@ -164,7 +156,7 @@ describe('ast', () => {
 (content (toc numbered-labeled))
 `;
 
-            const result = toResult(text, buildLocation('./_main.dlisp', 4, 7));
+            const result = toResult(text, buildProjectLocation('./_main.dlisp', 4, 7));
 
             verifyAsJson(result);
         });

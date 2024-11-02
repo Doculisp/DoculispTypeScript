@@ -83,14 +83,15 @@ A language for Readme.
 5. Language: [Section Meta Block](#section-meta-block)
 6. Language: [Content Block](#content-block)
 7. Language: [Dynamic Headings](#dynamic-headings)
-8. Language: [Comment Block](#comment-block)
-9. Language: [Key Atoms by Depth](#key-atoms-by-depth)
-10. Structure: [".dlisp" files](#dlisp-files)
-11. Recognition: [Contributors ✨](#contributors-)
+8. Language: [Get](#get)
+9. Language: [Comment Block](#comment-block)
+10. Language: [Key Atoms by Depth](#key-atoms-by-depth)
+11. Structure: [".dlisp" files](#dlisp-files)
+12. Recognition: [Contributors ✨](#contributors-)
 
 ### Language Version ###
 
-Doculisp version 0.1.0
+Doculisp version 0.3.0
 
 ### What Problem Does Doculisp Solve? ###
 
@@ -173,7 +174,29 @@ Example
 
 #### Title (required) ####
 
-This is the only sub block required for the `section-meta` block. The title is followed by a title that ends at a `)`. Every thing following the white space after the word title and until a new line or a close parenthesis is the title.
+This is required, however it has two ways of being provided. The simple way, as a parameter to `section-meta`, or as a block if other blocks are also provided.
+
+##### Simple Way #####
+
+The simple way is to provide the title as a parameter to the `section-meta` block.
+
+```doculisp
+(section-meta Doculisp a Short Description)
+```
+
+##### Structured Way #####
+
+If the `section-meta` block has any other sub blocks, then it is required that it also contains a `title` block. The title is followed by a title that ends at a `)`. Every thing following the white space after the word title and until a new line or a close parenthesis is the title.
+
+```doculisp
+(section-meta
+    (title Doculisp How To)
+    (subtitle A Short Description)
+    (include
+        (Section ./design.md)
+    )
+)
+```
 
 #### Ref-Link ####
 
@@ -242,19 +265,83 @@ This will create a subsection called `sub section` that is built using the file 
 
 This will create a subsection called `section` that is built using the file `./two.md`.
 
+#### Reference ####
+
+The `reference` block indicates external documents that are both to be compiled and are linked to from within the section or its subsections. The reference block has at least one `file` sub-block.
+
+##### File Sub-Block #####
+
+The `file` sub-block contains three sub-blocks. An `id` block, a `source` block, and a `target` block.
+
+The `id` block contains the unique name that can be used to insert the output path into this section or its subsections.
+
+The `source` block contains the path of the source files to be compiled. This path is in reference to the current file.
+
+The `target` block indicates the output file and path. This path is in reference to the current file.
+
+##### Reference Example #####
+
+```doculisp
+(section-meta
+    (title References)
+    (reference
+        (file
+            (id contribDoc)
+            (source ./contrib/_main)
+            (target ../../contrib.md)
+        )
+    )
+)
+```
+
+#### Author ####
+
+Author is an optional block in the section meta that puts the author's name in the comments at the top and bottom of the document. This block can be included multiple times and each will have a separate comment line.
+
+```doculisp
+(section-meta
+    (title An example of the Author Block)
+    (author Jason Kerney)
+    (author Chris Stead)
+)
+```
+
 #### Exception to the Rule ####
 
 Comment block breaks this rule slightly. The astrict character is a special character that cause all atoms that start with to be treated as a comment, and all parameters and sub blocks to be ignored.
 
 ### Content Block ###
 
-The content block signifies where to build the document from the included documents. This block has only one optional subblock.
+The content block signifies where to insert the compiled included documents. This block has only one optional subblock.
 
 #### Table of Contents ####
 
 The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.
 
-The structure of the table of contents is `(toc)` there is an optional parameter that can have one of the following values, `labeled` is the default:
+##### Simple Usage #####
+
+The simple usage of the table of contents is `(toc)` may have an optional bullet style as a parameter. The default style is `labeled`.
+
+```doculisp
+(content (toc numbered))
+```
+
+##### Complex Usage #####
+
+The complex usage of table of contents allows you to specify an optional `label` that will appear as a heading directly above the table of contents. You can all so specify an optional `style` which will be a bullet style.
+
+```doculisp
+(content
+    (label Table of Contents)
+    (style numbered)
+)
+```
+
+The default label will be not to include a label, and the default style is `labeled`
+
+#### Bullet Style ####
+
+The bullet style argument can have one of the following values:
 
 * no-table
 * unlabeled
@@ -263,16 +350,6 @@ The structure of the table of contents is `(toc)` there is an optional parameter
 * numbered-labeled
 * bulleted
 * bulleted-labeled
-
-Examples
-
-```doculisp
-(contents (toc))
-```
-
-```doculisp
-(contents (toc bulleted-labeled))
-```
 
 Any of the options with `labled` on it will use the name of the subsection.
 
@@ -337,6 +414,36 @@ However if this document reprended a subsection directly under the Title, then "
 #### Max Heading Depth ####
 
 Currently, the maximum heading depth recognized by Markdown is H6. However Doculisp will not restrict you to that depth. If the total depth is more then H6 you may get unexpected results.
+
+### Get ###
+
+The `get` block is an unusual block as its parameter is an id representing dynamic text that will be put into its place.
+
+#### The Reference Block ####
+
+The id in the get must be one of the ids given in a reference block. It will be replaced with the relative path to the target file.
+
+#### Example ####
+
+```markdown
+<!--
+(dl
+    (section-main
+        (title Some title)
+        (reference
+            (file
+                (id contribLink)
+                (source ./contrib/_main.dlisp)
+                (target ../../contrib.md)
+            )
+        )
+    )
+)
+-->
+
+How to [contribute](<!-- (dl (get contribLink)) -->)
+
+```
 
 ### Comment Block ###
 
@@ -403,7 +510,10 @@ Here is a list of all the key atoms by depth:
     * `*`
   * `content`
     * `toc` bullet style
+       * `label` label text
+       * `style` bullet style
   * `#` text
+  * `get` id
   * `*`
 * `*`
 
