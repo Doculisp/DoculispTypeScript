@@ -56,7 +56,7 @@ describe('includeBuilder', () => {
         environment.replaceValue(buildPath, 'pathConstructor');
     }
 
-    describe('externalParse', () => {
+    describe('includeParse', () => {
         let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> = undefined as any;
 
         beforeEach(() => {
