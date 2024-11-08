@@ -127,6 +127,26 @@ Hello world!
             verifyAsJson(toExternalResult(document, buildProjectLocation('C:/_main.dlisp', 1, 1)));
         });
 
+        it('should not an included document not a markdown or dlisp', () =>{
+            const subDocument = `<h1>Hello World</h1>`;
+            const subDocumentPath = 'C:/sub.docx';
+
+            addPathResult(subDocumentPath, ok(subDocument));
+
+            const document = `
+(section-meta
+    (title Main Document)
+    (include
+        (Section ${subDocumentPath})
+    )
+)
+
+(content (toc numbered-labeled))
+`;
+
+            verifyAsJson(toExternalResult(document, buildProjectLocation('C:/_main.dlisp', 1, 1)));
+        });
+
         it('should parse two sub documents', () => {
             const subA = `<!--
 (dl

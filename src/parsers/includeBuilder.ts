@@ -9,7 +9,7 @@ import { IAstParser } from "../types/types.ast";
 import { IVariableSaver } from "../types/types.variableTable";
 import { IPath } from "../types/types.filePath";
 
-function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any, astParser: IAstParser) : IIncludeBuilder {
+function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, astParser: IAstParser) : IIncludeBuilder {
 
     function _parse(filePath: IPath, location: IProjectLocation, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();
@@ -59,6 +59,10 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
                 continue;
             }
 
+            if(load.path.extension !== '.md' && load.path.extension !== '.dlisp') {
+                return util.fail(`In include block at '${doculisp.documentOrder.documentPath}' Line: ${load.documentOrder.line}, Char ${load.documentOrder.char} contains invalid file type. Included files must be markdown or dlisp files. '${load.path.fullName}'`);
+            }
+
             const astResult = _parse(load.path, { documentDepth: doculisp.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path}, variableTable);
             if(!astResult.success) {
                 return astResult;
@@ -103,10 +107,10 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
 }
 
 const astBuilder : IRegisterable = {
-    builder: (util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, path: any, astParser: IAstParser) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, path, astParser),
+    builder: (util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, astParser: IAstParser) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, astParser),
     name: 'includeBuilder',
     singleton: true,
-    dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'path', 'astParser']
+    dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'astParser']
 };
 
 export {
