@@ -5,9 +5,9 @@ import { IFileWriter } from "../types/types.fileHandler";
 import { IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
 import { IVariableRetriever, IVariableSaver } from "../types/types.variableTable";
-import { IPath, PathConstructor } from "../types/types.filePath";
+import { IPath } from "../types/types.filePath";
 
-function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, pathConstructor: PathConstructor): IController {
+function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver): IController {
     function _compile(sourcePath: IPath, destinationPath: IPath | false): Result<string | false> {
         const doculisp = astBuilder.parse(sourcePath, variableTable);
         const document = stringWrter.writeAst(doculisp, variableTable);
@@ -25,15 +25,12 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
         return util.ok((destinationPath as IPath).fullName);
     }
 
-    function compile(sourcePath: string, destinationPath: string): Result<string> {
-        const source: IPath = pathConstructor(sourcePath);
-        const destination: IPath = pathConstructor(destinationPath);
-        return _compile(source, destination) as Result<string>;
+    function compile(sourcePath: IPath, destinationPath: IPath): Result<string> {
+        return _compile(sourcePath, destinationPath) as Result<string>;
     }
 
-    function test(sourcePath: string): Result<false> {
-        const source: IPath = pathConstructor(sourcePath);
-        return _compile(source, false) as Result<false>;
+    function test(sourcePath: IPath): Result<false> {
+        return _compile(sourcePath, false) as Result<false>;
     }
 
     return {
@@ -43,9 +40,9 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 }
 
 const controllerBuilder: IRegisterable = {
-    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, pathConstructor: PathConstructor) => buildLoader(util, handler, astBuilder, stringWriter, variableTable, pathConstructor),
+    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver) => buildLoader(util, handler, astBuilder, stringWriter, variableTable),
     name: 'controller',
-    dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter', 'variableTable', 'pathConstructor'],
+    dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter', 'variableTable'],
     singleton: true
 };
 

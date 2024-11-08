@@ -1,6 +1,7 @@
+import { IPath } from "./types.filePath";
 import { Result } from "./types.general";
 
 export interface IController {
-    compile(sourcePath: string, destinationPath: string): Result<string>;
-    test(sourcePath: string): Result<false>;
+    compile(sourcePath: IPath, destinationPath: IPath): Result<string>;
+    test(sourcePath: IPath): Result<false>;
 }

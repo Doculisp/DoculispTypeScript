@@ -8,9 +8,11 @@ import childProcess from 'child_process';
 import Registry from '@slimio/npm-registry';
 import figlet from 'figlet';
 import path from 'path';
+import { PathConstructor } from './types/types.filePath';
 
 const program = new Command();
 const controller = container.buildAs<IController>('controller');
+const pathConstructor = container.buildAs<PathConstructor>('pathConstructor');
 const versionGetter = container.buildAs<IVersion>('version');
 const versionMaybe = versionGetter.getVersion();
 
@@ -73,7 +75,10 @@ async function main() {
         .argument('[output]', 'the path to the output location including output file name')
         .option('-t, --test', 'runs the compiler without generating the output file')
         .option('--update', 'updates doculisp')
-        .action(async (sourcePath: string | undefined, outputPath: string | undefined, options: OptionValues) => {
+        .action(async (sourcePathString: string | undefined, outputPathString: string | undefined, options: OptionValues) => {
+            const sourcePath = !sourcePathString ? undefined : pathConstructor(sourcePathString);
+            const outputPath = !outputPathString ? undefined : pathConstructor(outputPathString);
+
             if (options['update']){
                 const updateCommand = isCli ? 'npm update doculisp -g' : 'npm update doculisp';
                 childProcess.execSync(updateCommand, { stdio: 'inherit' });
@@ -84,7 +89,7 @@ async function main() {
             }
             else if (options['test']) {
                 if(!sourcePath) {
-                    console.log('Error: The `--test` option requires a source path.');
+                    console.error('Error: The `--test` option requires a source path.');
                 }
                 else {
                     const result = controller.test(sourcePath);
@@ -93,10 +98,16 @@ async function main() {
             }
             else {
                 if(!sourcePath) {
-                    console.log('Error: The source path is required.');
+                    console.error('Error: The source path is required.');
+                }
+                else if(sourcePath.extension !== '.md' && sourcePath.extension !== '.dlisp') {
+                    console.error(`Error: The source file must be either a markdown or a dlisp file.\n\t'${sourcePath.fullName}`)
                 }
                 else if(!outputPath) {
-                    console.log('Error: The output path is required.');
+                    console.error('Error: The output path is required.');
+                }
+                else if(outputPath.extension !== '.md') {
+                    console.error(`Error: THe output file must be a markdown file.\n\t'${outputPath.fullName}'`);
                 }
                 else{
                     const result = controller.compile(sourcePath, outputPath);
