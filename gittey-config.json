@@ -25,7 +25,7 @@
         },
         {
             "name": "push",
-            "command": "gittey build && gittey docs && gittey test && git push && git push --tags",
+            "command": "gittey build && gittey test && git push && git push --tags",
             "description": "performs a git push if tests are passing"
         },
         {
@@ -40,7 +40,7 @@
         },
         {
             "name": "build",
-            "command": "cls; npm run compile",
+            "command": "cls; npm run compile && gittey docs",
             "description": "builds output directory"
         },
         {
