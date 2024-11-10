@@ -826,7 +826,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
 
         const partParsers = getPartParsers(projectLocation, doesIt, parserBuilder, util);
         const documentPath = projectLocation.documentPath;
-        const isDoculispFile = documentPath.extension === '.dlisp';
+        const isDoculispFile = documentPath.extension === '.dlisp' || documentPath.extension === '.dlproj';
         const toParse: string =
             isDoculispFile ?
             `${documentText})` :
