@@ -196,5 +196,15 @@ describe('controller', () => {
     
             verifyAsJson(getTestResult(result));
         });
+
+        it('should fail if writing the file fails', () => {
+            const sourcePath = pathConstructor('./someFile.md');
+            const destinationPath = pathConstructor('./README.md');
+            fileConfig.result = util.fail('Unable to write file', destinationPath);
+
+            const result = sut.compile(sourcePath, destinationPath);
+
+            verifyAsJson(getTestResult(result));
+        });
     });
 });
