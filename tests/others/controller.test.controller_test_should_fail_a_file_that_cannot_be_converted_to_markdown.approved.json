@@ -1,14 +1,8 @@
 {
-  "fileConfig": {},
-  "finalResult": {
-    "documentPath": "./someFile.md",
-    "message": "Unable to write",
-    "success": false
-  },
-  "includeConfig": {
+  "01 Parse Ast": {
     "sourcePath": "./someFile.md"
   },
-  "writerConfig": {
+  "02 Convert to Markdown": {
     "astMaybe": {
       "success": true,
       "value": {
@@ -20,5 +14,11 @@
       "message": "Unable to write",
       "success": false
     }
+  },
+  "03 Write to File": {},
+  "04 Final Result": {
+    "documentPath": "./someFile.md",
+    "message": "Unable to write",
+    "success": false
   }
 }

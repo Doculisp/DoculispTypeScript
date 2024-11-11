@@ -1,11 +1,5 @@
 {
-  "fileConfig": {},
-  "finalResult": {
-    "documentPath": "./someFile.md",
-    "message": "A bad parse",
-    "success": false
-  },
-  "includeConfig": {
+  "01 Parse Ast": {
     "parseResult": {
       "documentPath": "./someFile.md",
       "message": "A bad parse",
@@ -13,11 +7,17 @@
     },
     "sourcePath": "./someFile.md"
   },
-  "writerConfig": {
+  "02 Convert to Markdown": {
     "astMaybe": {
       "documentPath": "./someFile.md",
       "message": "A bad parse",
       "success": false
     }
+  },
+  "03 Write to File": {},
+  "04 Final Result": {
+    "documentPath": "./someFile.md",
+    "message": "A bad parse",
+    "success": false
   }
 }

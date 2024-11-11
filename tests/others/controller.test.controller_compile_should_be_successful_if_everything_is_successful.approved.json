@@ -1,20 +1,20 @@
 {
-  "fileConfig": {
-    "fileText": {
-      "success": true,
-      "value": "# Good Document #\n\nHello"
-    },
-    "outputPath": "./README.md"
-  },
-  "includeConfig": {
+  "01 Parse Ast": {
     "sourcePath": "./someFile.md"
   },
-  "writerConfig": {
+  "02 Convert to Markdown": {
     "astMaybe": {
       "success": true,
       "value": {
         "type": "doculisp-empty"
       }
     }
+  },
+  "03 Write to File": {
+    "fileText": {
+      "success": true,
+      "value": "# Good Document #\n\nHello"
+    },
+    "outputPath": "./README.md"
   }
 }

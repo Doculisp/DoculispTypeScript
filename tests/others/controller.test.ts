@@ -51,10 +51,10 @@ describe('controller', () => {
     
     function getTestResult(finalResult?: any) {
         return {
-            fileConfig,
-            includeConfig,
-            writerConfig,
-            finalResult,
+            '01 Parse Ast': includeConfig,
+            '02 Convert to Markdown': writerConfig,
+            '03 Write to File': fileConfig,
+            '04 Final Result': finalResult,
         };
     }
 

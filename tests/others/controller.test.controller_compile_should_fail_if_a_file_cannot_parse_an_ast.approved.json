@@ -1,18 +1,5 @@
 {
-  "fileConfig": {
-    "fileText": {
-      "documentPath": "./someFile.md",
-      "message": "Unable to parse ast",
-      "success": false
-    },
-    "outputPath": "./README.md"
-  },
-  "finalResult": {
-    "documentPath": "./someFile.md",
-    "message": "Unable to parse ast",
-    "success": false
-  },
-  "includeConfig": {
+  "01 Parse Ast": {
     "parseResult": {
       "documentPath": "./someFile.md",
       "message": "Unable to parse ast",
@@ -20,11 +7,24 @@
     },
     "sourcePath": "./someFile.md"
   },
-  "writerConfig": {
+  "02 Convert to Markdown": {
     "astMaybe": {
       "documentPath": "./someFile.md",
       "message": "Unable to parse ast",
       "success": false
     }
+  },
+  "03 Write to File": {
+    "fileText": {
+      "documentPath": "./someFile.md",
+      "message": "Unable to parse ast",
+      "success": false
+    },
+    "outputPath": "./README.md"
+  },
+  "04 Final Result": {
+    "documentPath": "./someFile.md",
+    "message": "Unable to parse ast",
+    "success": false
   }
 }

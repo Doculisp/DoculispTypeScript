@@ -1,21 +1,8 @@
 {
-  "fileConfig": {
-    "fileText": {
-      "documentPath": "./someFile.md",
-      "message": "Unable to write",
-      "success": false
-    },
-    "outputPath": "./README.md"
-  },
-  "finalResult": {
-    "documentPath": "./someFile.md",
-    "message": "Unable to write",
-    "success": false
-  },
-  "includeConfig": {
+  "01 Parse Ast": {
     "sourcePath": "./someFile.md"
   },
-  "writerConfig": {
+  "02 Convert to Markdown": {
     "astMaybe": {
       "success": true,
       "value": {
@@ -27,5 +14,18 @@
       "message": "Unable to write",
       "success": false
     }
+  },
+  "03 Write to File": {
+    "fileText": {
+      "documentPath": "./someFile.md",
+      "message": "Unable to write",
+      "success": false
+    },
+    "outputPath": "./README.md"
+  },
+  "04 Final Result": {
+    "documentPath": "./someFile.md",
+    "message": "Unable to write",
+    "success": false
   }
 }
