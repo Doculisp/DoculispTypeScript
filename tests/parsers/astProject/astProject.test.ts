@@ -23,4 +23,44 @@ describe('astProject', () => {
 
         verifyAsJson(result);
     });
+
+    it('should handle an empty documents block', () => {
+        const result = parser('(documents)', buildProjectLocation('./test.dlproj', 1, 1));
+
+        verifyAsJson(result);
+    });
+
+    describe.skip('basic project documents', () => {
+        it('should parse a single document', () => {
+            const project = `
+(documents
+    (document
+        (source ./myReadme.md)
+        (output ./README.md)
+    )
+)
+`;
+            const result = parser(project, buildProjectLocation('./myProject.dlproj', 1, 1));
+
+            verifyAsJson(result);
+        });
+        
+        it('should parse a two document', () => {
+            const project = `
+(documents
+    (document
+        (source ./myReadme.md)
+        (output ./README.md)
+    )
+    (document
+        (source ./howTo.md)
+        (output ./contrib.md)
+    )
+)
+`;
+            const result = parser(project, buildProjectLocation('./myProject.dlproj', 1, 1));
+
+            verifyAsJson(result);
+        });
+    });
 });
