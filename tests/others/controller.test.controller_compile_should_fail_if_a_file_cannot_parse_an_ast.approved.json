@@ -1,0 +1,30 @@
+{
+  "fileConfig": {
+    "fileText": {
+      "documentPath": "./someFile.md",
+      "message": "Unable to parse ast",
+      "success": false
+    },
+    "outputPath": "./README.md"
+  },
+  "finalResult": {
+    "documentPath": "./someFile.md",
+    "message": "Unable to parse ast",
+    "success": false
+  },
+  "includeConfig": {
+    "parseResult": {
+      "documentPath": "./someFile.md",
+      "message": "Unable to parse ast",
+      "success": false
+    },
+    "sourcePath": "./someFile.md"
+  },
+  "writerConfig": {
+    "astMaybe": {
+      "documentPath": "./someFile.md",
+      "message": "Unable to parse ast",
+      "success": false
+    }
+  }
+}

@@ -67,6 +67,11 @@ describe('controller', () => {
             write: function (path: IPath, text: Result<string>): Result<string> {
                 fileConfig.outputPath = path;
                 fileConfig.fileText = text;
+
+                if(!text.success) {
+                    return text;
+                }
+
                 return fileConfig.fileResult ?? util.ok(path.fullName);
             }
         };
@@ -160,6 +165,16 @@ describe('controller', () => {
             sut.compile(sourcePath, destinationPath);
     
             verifyAsJson(getTestResult());
-        })
+        });
+
+        it('should fail if a file cannot parse an ast', () => {
+            const sourcePath = pathConstructor('./someFile.md');
+            const destinationPath = pathConstructor('./README.md');
+            includeConfig.parseResult = util.fail('Unable to parse ast', sourcePath);
+
+            const result = sut.compile(sourcePath, destinationPath);
+
+            verifyAsJson(getTestResult(result));
+        });
     });
 });
