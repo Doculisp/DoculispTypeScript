@@ -14,8 +14,7 @@
       "success": false
     }
   },
-  "03 Write to File": {},
-  "04 Final Result": {
+  "03 Final Result": {
     "documentPath": "./someFile.md",
     "message": "A bad parse",
     "success": false

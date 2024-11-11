@@ -15,8 +15,7 @@
       "success": false
     }
   },
-  "03 Write to File": {},
-  "04 Final Result": {
+  "03 Final Result": {
     "documentPath": "./someFile.md",
     "message": "Unable to write",
     "success": false

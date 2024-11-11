@@ -1,4 +1,4 @@
-import { ITestableContainer } from "../../src/types/types.containers";
+import { IDictionary, ITestableContainer } from "../../src/types/types.containers";
 import { IFileWriter } from "../../src/types/types.fileHandler";
 import { IPath, PathConstructor } from "../../src/types/types.filePath";
 import { IUtil, Result } from "../../src/types/types.general";
@@ -49,13 +49,23 @@ describe('controller', () => {
         verifyAsJson = getVerifier(configure);
     });
     
-    function getTestResult(finalResult?: any) {
-        return {
-            '01 Parse Ast': includeConfig,
-            '02 Convert to Markdown': writerConfig,
-            '03 Write to File': fileConfig,
-            '04 Final Result': finalResult,
-        };
+    function getTestResult(finalResult: any = {}) {
+        const result: IDictionary<any> = {};
+        let cnt = 1;
+        function add(name: string, value: any) {
+            if(0 < Object.keys(value).length) {
+                const index = `0${cnt} ${name}`;
+                result[index] = value;
+                cnt++;
+            }
+        }
+
+        add('Parse Ast', includeConfig);
+        add('Convert to Markdown', writerConfig);
+        add('Write to File', fileConfig);
+        add('Final Result', finalResult);
+
+        return result;
     }
 
     beforeEach(() =>{
