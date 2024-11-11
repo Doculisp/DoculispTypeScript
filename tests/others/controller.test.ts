@@ -128,26 +128,28 @@ describe('controller', () => {
         sut = testable.buildAs<IController>('controller');
     });
 
-    it('should test a markdown file to see if it will compile', () => {
-        const sourcePath = pathConstructor('./someFile.md');
-        sut.test(sourcePath);
-
-        verifyAsJson(getTestResult());
-    });
-
-    it('should fail a file that cannot parse an ast', () => {
-        const sourcePath = pathConstructor('./someFile.md');
-        includeConfig.parseResult = util.fail('A bad parse', sourcePath);
-        const result = sut.test(sourcePath);
-
-        verifyAsJson(getTestResult(result));
-    });
-
-    it('should fail a file that cannot beWritten', () => {
-        const sourcePath = pathConstructor('./someFile.md');
-        writerConfig.writeResult = util.fail('Unable to write', sourcePath);
-        const result = sut.test(sourcePath);
-
-        verifyAsJson(getTestResult(result));
+    describe('test', () => {
+        it('should test handle a successful file', () => {
+            const sourcePath = pathConstructor('./someFile.md');
+            sut.test(sourcePath);
+    
+            verifyAsJson(getTestResult());
+        });
+    
+        it('should fail a file that cannot parse an ast', () => {
+            const sourcePath = pathConstructor('./someFile.md');
+            includeConfig.parseResult = util.fail('A bad parse', sourcePath);
+            const result = sut.test(sourcePath);
+    
+            verifyAsJson(getTestResult(result));
+        });
+    
+        it('should fail a file that cannot be converted to markdown', () => {
+            const sourcePath = pathConstructor('./someFile.md');
+            writerConfig.writeResult = util.fail('Unable to write', sourcePath);
+            const result = sut.test(sourcePath);
+    
+            verifyAsJson(getTestResult(result));
+        });
     });
 });
