@@ -5,7 +5,8 @@ import { getVerifier } from "../../tools";
 import { DocumentParser } from "../../../src/types/types.document";
 import { buildProjectLocation, testable } from "../../testHelpers";
 
-describe('document parse dlproj file', () => {let parse: DocumentParser = undefined as any;
+describe('document parse dlproj file', () => {
+    let parse: DocumentParser = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
 
     beforeAll(() => {

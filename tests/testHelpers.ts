@@ -8,6 +8,7 @@ import { IIncludeBuilder } from "../src/types/types.includeBuilder";
 import { IStringWriter } from "../src/types/types.stringWriter"
 import { IVariableRetriever, IVariableSaver } from "../src/types/types.variableTable";
 import { IPath } from "../src/types/types.filePath";
+import { IProjectDocuments, IProjectParser } from "../src/types/types.astProject";
 import path from "path";
 
 export function buildProjectLocation(path: string, depth: number, index: number, extension: string | false = false) : IProjectLocation {
@@ -69,6 +70,10 @@ function buildDoculispParser(environment: ITestableContainer): IDoculispParser {
     return environment.buildAs<IDoculispParser>('astDoculispParse');
 }
 
+function buildProjectParser(environment: ITestableContainer): IProjectParser {
+    return environment.buildAs<IProjectParser>('astProjectParse');
+}
+
 function buildIncludeParser(environment: ITestableContainer) : IIncludeBuilder {
     return environment.buildAs<IIncludeBuilder>('includeBuilder');
 }
@@ -105,6 +110,13 @@ function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, t
     const variableTable = environment.buildAs<IVariableSaver>('variableTable');
 
     return map(astResultParser, result => astRecursiveBuilder.parseExternals(result, variableTable));
+}
+
+function rawAstProjectParser(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IProjectDocuments> {
+    const astResultParser = rawAstResultBuilder(environment, text, location);
+    const projectParser = buildProjectParser(environment);
+
+    return map(astResultParser, projectParser.parse);
 }
 
 function rawStringWriterResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<string> {
@@ -172,6 +184,12 @@ function newIncludeParserBuilder(container: IContainer, setup: (environment: ITe
     });
 }
 
+function newAstProjectBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IProjectParser {
+    return newBuilder(container, setup, environment => {
+        return buildProjectParser(environment);
+    });
+}
+
 function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: IPath) => Result<IDoculisp | IEmptyDoculisp> {
     return newBuilder(container, setup, environment => {
         const variableTable = environment.buildAs<IVariableSaver>('variableTable');
@@ -200,6 +218,12 @@ function newDoculispResultBuilder(container: IContainer, setup: (environment: IT
 function newIncludeExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstRecursiveExternalResultBuilder(environment, text, location)();
+    });
+}
+
+function newAstProjectResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IProjectDocuments> {
+    return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
+        return rawAstProjectParser(environment, text, location)();
     });
 }
 
@@ -239,6 +263,10 @@ const testable = {
     doculisp: {
         parserBuilder: newDoculispParserBuilder,
         resultBuilder: newDoculispResultBuilder,
+    },
+    project: {
+        parseBuilder: newAstProjectBuilder,
+        resultBuilder: newAstProjectResultBuilder,
     },
     include: {
         parserBuilder: newIncludeParserBuilder,
