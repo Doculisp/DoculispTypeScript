@@ -9,7 +9,7 @@
   "scripts": {
     "precompile": "rimraf src/**/*.js test/**/*.js dist/**/* -g",
     "compile": "tsc",
-    "test": "jest tests",
+    "test": "jest tests --coverage",
     "start": "ts-node ./src/index.ts"
   },
   "repository": {
