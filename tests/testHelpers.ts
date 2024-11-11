@@ -11,7 +11,7 @@ import { IPath } from "../src/types/types.filePath";
 import { IProjectDocuments, IProjectParser } from "../src/types/types.astProject";
 import path from "path";
 
-export function buildProjectLocation(path: string, depth: number, index: number, extension: string | false = false) : IProjectLocation {
+export function buildProjectLocation(path: string, depth: number = 1, index: number = 1, extension: string | false = false) : IProjectLocation {
     return {
         documentPath: buildPath(path),
         documentDepth: depth,
