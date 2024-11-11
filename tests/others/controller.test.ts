@@ -152,4 +152,14 @@ describe('controller', () => {
             verifyAsJson(getTestResult(result));
         });
     });
+
+    describe('compile', () => {
+        it('should be successful if everything is successful', () => {
+            const sourcePath = pathConstructor('./someFile.md');
+            const destinationPath = pathConstructor('./README.md');
+            sut.compile(sourcePath, destinationPath);
+    
+            verifyAsJson(getTestResult());
+        })
+    });
 });

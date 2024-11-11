@@ -1,0 +1,20 @@
+{
+  "fileConfig": {
+    "fileText": {
+      "success": true,
+      "value": "# Good Document #\n\nHello"
+    },
+    "outputPath": "./README.md"
+  },
+  "includeConfig": {
+    "sourcePath": "./someFile.md"
+  },
+  "writerConfig": {
+    "astMaybe": {
+      "success": true,
+      "value": {
+        "type": "doculisp-empty"
+      }
+    }
+  }
+}
