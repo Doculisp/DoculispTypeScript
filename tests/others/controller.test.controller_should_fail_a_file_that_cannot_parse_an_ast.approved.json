@@ -1,0 +1,23 @@
+{
+  "fileConfig": {},
+  "finalResult": {
+    "documentPath": "./someFile.md",
+    "message": "A bad parse",
+    "success": false
+  },
+  "includeConfig": {
+    "parseResult": {
+      "documentPath": "./someFile.md",
+      "message": "A bad parse",
+      "success": false
+    },
+    "sourcePath": "./someFile.md"
+  },
+  "writerConfig": {
+    "astMaybe": {
+      "documentPath": "./someFile.md",
+      "message": "A bad parse",
+      "success": false
+    }
+  }
+}

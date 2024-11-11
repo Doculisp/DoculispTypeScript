@@ -49,11 +49,12 @@ describe('controller', () => {
         verifyAsJson = getVerifier(configure);
     });
     
-    function getTestResult() {
+    function getTestResult(finalResult?: any) {
         return {
             fileConfig,
             includeConfig,
             writerConfig,
+            finalResult,
         };
     }
 
@@ -69,7 +70,7 @@ describe('controller', () => {
                 return fileConfig.fileResult ?? util.ok(path.fullName);
             }
         };
-        environment.replaceValue(fileWriter, 'fileHandler')
+        testable.replaceValue(fileWriter, 'fileHandler')
 
         includeConfig = {};
         const emptyResult: IEmptyDoculisp = {
@@ -83,19 +84,26 @@ describe('controller', () => {
             },
             parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.doculisp = doculisp;
+                if(!doculisp.success) {
+                    return doculisp;
+                }
+
                 return includeConfig.parseResult ?? util.ok(emptyResult);
             }
         };
-        environment.replaceValue(includeBuilder, 'includeBuilder')
+        testable.replaceValue(includeBuilder, 'includeBuilder')
 
         writerConfig = {};
         const stringWriter: IStringWriter = {
             writeAst: function (astMaybe: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableRetriever): Result<string> {
                 writerConfig.astMaybe = astMaybe;
+                if(!astMaybe.success) {
+                    return astMaybe;
+                }
                 return writerConfig.writeResult ?? util.ok('# Good Document #\n\nHello');
             }
         };
-        environment.replaceValue(stringWriter, 'stringWriter');
+        testable.replaceValue(stringWriter, 'stringWriter');
 
         pathConstructor = function(pathString: string): IPath {
             const t: IPath = {
@@ -115,9 +123,9 @@ describe('controller', () => {
 
             return t;
         };
-        environment.replaceValue(pathConstructor, 'pathConstructor');
+        testable.replaceValue(pathConstructor, 'pathConstructor');
 
-        sut = environment.buildAs<IController>('controller');
+        sut = testable.buildAs<IController>('controller');
     });
 
     it('should test a markdown file to see if it will compile', () => {
@@ -125,5 +133,13 @@ describe('controller', () => {
         sut.test(sourcePath);
 
         verifyAsJson(getTestResult());
+    });
+
+    it('should fail a file that cannot parse an ast', () => {
+        const sourcePath = pathConstructor('./someFile.md');
+        includeConfig.parseResult = util.fail('A bad parse', sourcePath);
+        const result = sut.test(sourcePath);
+
+        verifyAsJson(getTestResult(result));
     });
 });
