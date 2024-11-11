@@ -176,5 +176,15 @@ describe('controller', () => {
 
             verifyAsJson(getTestResult(result));
         });
+    
+        it('should fail a file that cannot be converted to markdown', () => {
+            const sourcePath = pathConstructor('./someFile.md');
+            const destinationPath = pathConstructor('./README.md');
+            writerConfig.writeResult = util.fail('Unable to write', sourcePath);
+            
+            const result = sut.compile(sourcePath, destinationPath);
+    
+            verifyAsJson(getTestResult(result));
+        });
     });
 });

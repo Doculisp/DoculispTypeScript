@@ -1,0 +1,31 @@
+{
+  "fileConfig": {
+    "fileText": {
+      "documentPath": "./someFile.md",
+      "message": "Unable to write",
+      "success": false
+    },
+    "outputPath": "./README.md"
+  },
+  "finalResult": {
+    "documentPath": "./someFile.md",
+    "message": "Unable to write",
+    "success": false
+  },
+  "includeConfig": {
+    "sourcePath": "./someFile.md"
+  },
+  "writerConfig": {
+    "astMaybe": {
+      "success": true,
+      "value": {
+        "type": "doculisp-empty"
+      }
+    },
+    "writeResult": {
+      "documentPath": "./someFile.md",
+      "message": "Unable to write",
+      "success": false
+    }
+  }
+}
