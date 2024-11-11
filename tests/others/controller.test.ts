@@ -17,18 +17,18 @@ import path from "path";
 type FileConfig = {
     outputPath?: IPath | undefined;
     fileText?: Result<string> | undefined;
-    fileResult?: Result<string> | undefined;
+    result?: Result<string> | undefined;
 };
 
 type IncludeConfig = {
     sourcePath?: IPath | undefined;
     doculisp? : Result<IDoculisp | IEmptyDoculisp> | undefined;
-    parseResult?: Result<IDoculisp | IEmptyDoculisp> | undefined;
+    result?: Result<IDoculisp | IEmptyDoculisp> | undefined;
 };
 
 type WriterConfig = {
     astMaybe?: Result<IDoculisp | IEmptyDoculisp> | undefined;
-    writeResult?: Result<string> | undefined;
+    result?: Result<string> | undefined;
 };
 
 describe('controller', () => {
@@ -72,7 +72,7 @@ describe('controller', () => {
                     return text;
                 }
 
-                return fileConfig.fileResult ?? util.ok(path.fullName);
+                return fileConfig.result ?? util.ok(path.fullName);
             }
         };
         testable.replaceValue(fileWriter, 'fileHandler')
@@ -85,7 +85,7 @@ describe('controller', () => {
         const includeBuilder: IIncludeBuilder = {
             parse: function (path: IPath, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.sourcePath = path;
-                return includeConfig.parseResult ?? util.ok(emptyResult);
+                return includeConfig.result ?? util.ok(emptyResult);
             },
             parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.doculisp = doculisp;
@@ -93,7 +93,7 @@ describe('controller', () => {
                     return doculisp;
                 }
 
-                return includeConfig.parseResult ?? util.ok(emptyResult);
+                return includeConfig.result ?? util.ok(emptyResult);
             }
         };
         testable.replaceValue(includeBuilder, 'includeBuilder')
@@ -105,7 +105,7 @@ describe('controller', () => {
                 if(!astMaybe.success) {
                     return astMaybe;
                 }
-                return writerConfig.writeResult ?? util.ok('# Good Document #\n\nHello');
+                return writerConfig.result ?? util.ok('# Good Document #\n\nHello');
             }
         };
         testable.replaceValue(stringWriter, 'stringWriter');
@@ -143,7 +143,7 @@ describe('controller', () => {
     
         it('should fail a file that cannot parse an ast', () => {
             const sourcePath = pathConstructor('./someFile.md');
-            includeConfig.parseResult = util.fail('A bad parse', sourcePath);
+            includeConfig.result = util.fail('A bad parse', sourcePath);
             const result = sut.test(sourcePath);
     
             verifyAsJson(getTestResult(result));
@@ -151,7 +151,7 @@ describe('controller', () => {
     
         it('should fail a file that cannot be converted to markdown', () => {
             const sourcePath = pathConstructor('./someFile.md');
-            writerConfig.writeResult = util.fail('Unable to write', sourcePath);
+            writerConfig.result = util.fail('Unable to write', sourcePath);
             const result = sut.test(sourcePath);
     
             verifyAsJson(getTestResult(result));
@@ -170,7 +170,7 @@ describe('controller', () => {
         it('should fail if a file cannot parse an ast', () => {
             const sourcePath = pathConstructor('./someFile.md');
             const destinationPath = pathConstructor('./README.md');
-            includeConfig.parseResult = util.fail('Unable to parse ast', sourcePath);
+            includeConfig.result = util.fail('Unable to parse ast', sourcePath);
 
             const result = sut.compile(sourcePath, destinationPath);
 
@@ -180,7 +180,7 @@ describe('controller', () => {
         it('should fail a file that cannot be converted to markdown', () => {
             const sourcePath = pathConstructor('./someFile.md');
             const destinationPath = pathConstructor('./README.md');
-            writerConfig.writeResult = util.fail('Unable to write', sourcePath);
+            writerConfig.result = util.fail('Unable to write', sourcePath);
             
             const result = sut.compile(sourcePath, destinationPath);
     

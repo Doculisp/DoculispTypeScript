@@ -9,7 +9,7 @@
         "type": "doculisp-empty"
       }
     },
-    "writeResult": {
+    "result": {
       "documentPath": "./someFile.md",
       "message": "Unable to write",
       "success": false

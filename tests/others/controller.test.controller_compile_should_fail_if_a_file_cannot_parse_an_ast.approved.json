@@ -1,6 +1,6 @@
 {
   "01 Parse Ast": {
-    "parseResult": {
+    "result": {
       "documentPath": "./someFile.md",
       "message": "Unable to parse ast",
       "success": false
