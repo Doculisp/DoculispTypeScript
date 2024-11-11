@@ -142,4 +142,12 @@ describe('controller', () => {
 
         verifyAsJson(getTestResult(result));
     });
+
+    it('should fail a file that cannot beWritten', () => {
+        const sourcePath = pathConstructor('./someFile.md');
+        writerConfig.writeResult = util.fail('Unable to write', sourcePath);
+        const result = sut.test(sourcePath);
+
+        verifyAsJson(getTestResult(result));
+    });
 });
