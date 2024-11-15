@@ -6,7 +6,8 @@
         (include
             (CLI ./cli.md)
             (*Next ./next.md)
-            (Language ../../lang/docs/_main.md)
+            (Language ../../lang/docs/readme/_main.md)
+            (Project ../../lang/docs/prj/_main.dlisp)
         )
     )
 )
