@@ -1,0 +1,5 @@
+{
+  "documentPath": "./project.dlproj",
+  "message": "Document identifier block at './project.dlproj' Line: 3, Char: 6 does not contain a source block.",
+  "success": false
+}

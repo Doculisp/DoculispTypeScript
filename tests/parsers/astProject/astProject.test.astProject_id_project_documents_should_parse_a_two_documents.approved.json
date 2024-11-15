@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "value": {
+    "documents": [
+      {
+        "destinationPath": "../README.md",
+        "id": "readme",
+        "location": {
+          "char": 10,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "/docs.dlproj",
+          "line": 4
+        },
+        "sourcePath": "./_main.dlisp",
+        "type": "project-document"
+      },
+      {
+        "destinationPath": "../contrib.md",
+        "id": "contrib",
+        "location": {
+          "char": 10,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "/docs.dlproj",
+          "line": 10
+        },
+        "sourcePath": "./contrib/_main.dlisp",
+        "type": "project-document"
+      }
+    ],
+    "location": {
+      "char": 2,
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "/docs.dlproj",
+      "line": 2
+    },
+    "type": "project-documents"
+  }
+}

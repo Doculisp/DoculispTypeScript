@@ -166,7 +166,10 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
 
         const tokenDoc = tokenMaybe.value;
         if(tokenDoc.tokens.length === 0) {
-            return util.ok({ type: 'ast-Empty' });
+            return util.ok({
+                type: 'ast-Empty',
+                location: tokenMaybe.value.projectLocation
+            });
         }
 
         const parser = internals.createArrayParser<Token, CoreAst>(parseText, parseCommand, parseAtom, parseContainer);

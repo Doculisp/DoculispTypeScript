@@ -1,6 +1,11 @@
 {
   "success": true,
   "value": {
+    "location": {
+      "documentDepth": 4,
+      "documentIndex": 10,
+      "documentPath": "A:/empty/doc.md"
+    },
     "type": "ast-Empty"
   }
 }

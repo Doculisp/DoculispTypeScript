@@ -55,6 +55,7 @@ describe('astDoculisp', () => {
         it('should return an empty doculisp if given empty ast', () => {
             const empty: IAstEmpty = {
                 type: 'ast-Empty',
+                location: buildProjectLocation('./myDoc.md'),
             };
     
             const result = parser.parse(ok(empty), variableTable);

@@ -2,6 +2,13 @@
   "success": true,
   "value": {
     "documents": [],
+    "location": {
+      "char": 0,
+      "documentDepth": 1,
+      "documentIndex": 1,
+      "documentPath": "./test.dlproj",
+      "line": 0
+    },
     "type": "project-documents"
   }
 }

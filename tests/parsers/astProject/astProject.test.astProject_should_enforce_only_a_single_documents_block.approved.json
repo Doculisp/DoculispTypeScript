@@ -1,0 +1,5 @@
+{
+  "documentPath": "./myBad.dlproj",
+  "message": "Project file may only contain a single documents block. Duplicate documents block detected at './myBad.dlproj' Line: 3, Char: 2.",
+  "success": false
+}

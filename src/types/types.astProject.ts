@@ -1,16 +1,18 @@
 import { IAstEmpty, RootAst } from "./types.ast";
 import { IPath } from "./types.filePath"
-import { Result } from "./types.general";
+import { ILocation, Result } from "./types.general";
 
 export interface IProjectDocument {
     id?: string | undefined
     sourcePath: IPath;
     destinationPath: IPath;
+    location: ILocation;
     type: 'project-document';
 };
 
 export interface IProjectDocuments {
     documents: IProjectDocument[];
+    location: ILocation;
     type: 'project-documents';
 };
 

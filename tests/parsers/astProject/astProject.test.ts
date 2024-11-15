@@ -2,36 +2,62 @@ import { container } from "../../../src/container";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifier } from "../../tools";
-import { buildProjectLocation, testable } from "../../testHelpers";
-import { IProjectDocuments } from "../../../src/types/types.astProject";
-import { IProjectLocation, Result } from "../../../src/types/types.general";
+import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
+import { IProjectDocuments, IProjectParser } from "../../../src/types/types.astProject";
+import { IProjectLocation, IUtil, Result } from "../../../src/types/types.general";
 
 describe('astProject', () => {
-    let parser: (text: string, projectLocation: IProjectLocation) => Result<IProjectDocuments>;
+    let resultBuilder: (text: string, projectLocation: IProjectLocation) => Result<IProjectDocuments>;
     let verifyAsJson: (data: any, options?: Options) => void;
+    let parser: IProjectParser;
+    let util: IUtil;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
     });
 
     beforeEach(() => {
-        parser = testable.project.resultBuilder(container);
+        resultBuilder = testable.project.resultBuilder(container, environment => {
+            environment.replaceValue(buildPath, 'pathConstructor');
+        });
+
+        parser = testable.project.parseBuilder(container, environment => {
+            util = environment.buildAs<IUtil>('util');
+        });
     });
 
     it('should handle an empty project file', () => {
-        const result = parser('', buildProjectLocation('./test.dlproj'));
+        const result = resultBuilder('', buildProjectLocation('./test.dlproj'));
 
         verifyAsJson(result);
     });
 
     it('should handle an empty documents block', () => {
-        const result = parser('(documents)', buildProjectLocation('./test.dlproj'));
+        const result = resultBuilder('(documents)', buildProjectLocation('./test.dlproj'));
+
+        verifyAsJson(result);
+    });
+
+    it('should return an error when given an error', () => {
+        const tokenResults = util.fail('No good.');
+        const result = parser.parse(tokenResults);
+
+        expect(result).toBe(tokenResults);
+    });
+
+    it('should enforce only a single documents block', () => {
+        const project = `
+(documents)
+(documents)
+`;
+
+        const result = resultBuilder(project, buildProjectLocation('./myBad.dlproj'));
 
         verifyAsJson(result);
     });
 
     describe('basic project documents', () => {
-        it.skip('should parse a single document', () => {
+        it('should parse a single document', () => {
             const project = `
 (documents
     (document
@@ -40,12 +66,12 @@ describe('astProject', () => {
     )
 )
 `;
-            const result = parser(project, buildProjectLocation('./myProject.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('./myProject.dlproj'));
 
             verifyAsJson(result);
         });
         
-        it.skip('should parse a two document', () => {
+        it('should parse a two document', () => {
             const project = `
 (documents
     (document
@@ -58,12 +84,12 @@ describe('astProject', () => {
     )
 )
 `;
-            const result = parser(project, buildProjectLocation('./myProject.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('./myProject.dlproj'));
 
             verifyAsJson(result);
         });
 
-        it.skip('should fail if document block is missing the source block', () => {
+        it('should fail if document block is missing the source block', () => {
             const project = `
 (documents
     (document
@@ -72,12 +98,12 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('./project.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('./project.dlproj'));
 
             verifyAsJson(result);
         });
 
-        it.skip('should fail if document block is missing the output block', () => {
+        it('should fail if document block is missing the output block', () => {
             const project = `
 (documents
     (document
@@ -86,14 +112,14 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('./project.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('./project.dlproj'));
 
             verifyAsJson(result);
         });
     });
 
     describe('id project documents', () => {
-        it.skip('should parse a single document', () => {
+        it('should parse a single document', () => {
             const project = `
 (documents
     (document
@@ -105,12 +131,12 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('/docs.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
 
             verifyAsJson(result);
         });
         
-        it.skip('should parse a two documents', () => {
+        it('should parse a two documents', () => {
             const project = `
 (documents
     (document
@@ -128,12 +154,12 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('/docs.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
 
             verifyAsJson(result);
         });
         
-        it.skip('should parse a two documents one simple', () => {
+        it('should parse a two documents one simple', () => {
             const project = `
 (documents
     (document
@@ -149,12 +175,12 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('/docs.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
 
             verifyAsJson(result);
         });
         
-        it.skip('should fail if missing source', () => {
+        it('should fail if missing source', () => {
             const project = `
 (documents
     (document
@@ -165,12 +191,12 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('/docs.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
 
             verifyAsJson(result);
         });
         
-        it.skip('should fail if missing output', () => {
+        it('should fail if missing output', () => {
             const project = `
 (documents
     (document
@@ -181,12 +207,12 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('/docs.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
 
             verifyAsJson(result);
         });
         
-        it.skip('should fail if identifier is not unique', () => {
+        it('should fail if identifier is not unique', () => {
             const project = `
 (documents
     (document
@@ -204,7 +230,7 @@ describe('astProject', () => {
 )
 `;
 
-            const result = parser(project, buildProjectLocation('/docs.dlproj'));
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
 
             verifyAsJson(result);
         });

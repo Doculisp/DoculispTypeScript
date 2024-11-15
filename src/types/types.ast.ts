@@ -34,6 +34,7 @@ export interface IAstValue {
 };
 
 export interface IAstEmpty {
+    readonly location: IProjectLocation;
     readonly type: 'ast-Empty';
 }
 
