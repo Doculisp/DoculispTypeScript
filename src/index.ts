@@ -80,11 +80,16 @@ async function main() {
             const outputPath = !outputPathString ? undefined : pathConstructor(outputPathString);
 
             if (options['update']){
-                const updateCommand = isCli ? 'npm update doculisp -g' : 'npm update doculisp';
-                childProcess.execSync(updateCommand, { stdio: 'inherit' });
-                const updateCommand2 = isCli ? 'npm i doculisp@latest -g' : 'npm i doculisp@latest'
-                childProcess.execFileSync(updateCommand2, {stdio: 'inherit'});
-                console.log('Updated!');
+                try {
+                    const updateCommand = isCli ? 'npm update doculisp -g' : 'npm update doculisp';
+                    childProcess.execSync(updateCommand, { stdio: 'inherit' });
+                    const updateCommand2 = isCli ? 'npm i doculisp@latest -g' : 'npm i doculisp@latest'
+                    childProcess.execFileSync(updateCommand2, {stdio: 'inherit'});
+                    console.log('Updated!');
+                }
+                catch {
+                    // intentionally left blank
+                }
                 return;
             }
             else if (options['test']) {
