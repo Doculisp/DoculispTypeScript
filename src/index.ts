@@ -100,17 +100,18 @@ async function main() {
                 if(!sourcePath) {
                     console.error('Error: The source path is required.');
                 }
-                else if(sourcePath.extension !== '.md' && sourcePath.extension !== '.dlisp') {
-                    console.error(`Error: The source file must be either a markdown or a dlisp file.\n\t'${sourcePath.fullName}`)
+                else if(sourcePath.extension !== '.md' && sourcePath.extension !== '.dlisp' && sourcePath.extension !== '.dlproj') {
+                    console.error(`Error: The source file must be either a markdown, dlisp, or a dlproj file.\n\t'${sourcePath.fullName}`)
                 }
-                else if(!outputPath) {
-                    console.error('Error: The output path is required.');
-                }
-                else if(outputPath.extension !== '.md') {
+                else if(outputPath && outputPath.extension !== '.md') {
                     console.error(`Error: THe output file must be a markdown file.\n\t'${outputPath.fullName}'`);
                 }
-                else{
+                else if(outputPath) {
                     const result = controller.compile(sourcePath, outputPath);
+                    reportResult(result);
+                }
+                else {
+                    const result = controller.compile(sourcePath);
                     reportResult(result);
                 }
             }

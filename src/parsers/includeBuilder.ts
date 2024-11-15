@@ -8,8 +8,9 @@ import { TokenFunction } from "../types/types.tokens";
 import { IAstParser } from "../types/types.ast";
 import { IVariableSaver } from "../types/types.variableTable";
 import { IPath } from "../types/types.filePath";
+import { IProjectDocuments, IProjectParser } from "../types/types.astProject";
 
-function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, astParser: IAstParser) : IIncludeBuilder {
+function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, astParser: IAstParser, astProjectParse: IProjectParser) : IIncludeBuilder {
 
     function _parse(filePath: IPath, location: IProjectLocation, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();
@@ -100,17 +101,50 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
         return util.ok(doculisp);
     }
 
+    function parseProject(filePath: IPath): Result<IProjectDocuments> {
+        const workingDir = fileHandler.getProcessWorkingDirectory();
+
+        if(!workingDir.success) {
+            return workingDir;
+        }
+
+        const targetDir = filePath.getContainingDir();
+        try {
+            const success = fileHandler.setProcessWorkingDirectory(targetDir);
+
+            if(!success.success) {
+                return success;
+            }
+
+            const fileMaybe = fileHandler.load(filePath);
+            if(!fileMaybe.success) {
+                return fileMaybe;
+            }
+    
+            const documentResult = documentParse(fileMaybe.value, { documentDepth: 1, documentIndex: 1, documentPath: filePath });
+            const tokens = tokenizer(documentResult);
+            const ast = astParser.parse(tokens);
+            const project = astProjectParse.parse(ast);
+
+            return project;
+            
+        } finally {
+            fileHandler.setProcessWorkingDirectory(workingDir.value);
+        }
+    }
+
     return {
         parse,
         parseExternals,
+        parseProject,
     };
 }
 
 const astBuilder : IRegisterable = {
-    builder: (util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, astParser: IAstParser) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, astParser),
+    builder: (util: IUtil, astParse: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, astParser: IAstParser, astProjectParse: IProjectParser) => buildAstBuilder(util, astParse, documentParse, tokenizer, fileHandler, astParser, astProjectParse),
     name: 'includeBuilder',
     singleton: true,
-    dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'astParser']
+    dependencies: ['util', 'astDoculispParse', 'documentParse', 'tokenizer', 'fileHandler', 'astParser', 'astProjectParse']
 };
 
 export {

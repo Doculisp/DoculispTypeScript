@@ -13,6 +13,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../tools";
 import path from "path";
+import { IProjectDocuments } from "../../src/types/types.astProject";
 
 type FileConfig = {
     outputPath?: IPath | undefined;
@@ -99,11 +100,14 @@ describe('controller', () => {
             },
             parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.doculisp = doculisp;
-                if(!doculisp.success) {
+                if (!doculisp.success) {
                     return doculisp;
                 }
 
                 return includeConfig.result ?? util.ok(emptyResult);
+            },
+            parseProject: function (path: IPath): Result<IProjectDocuments> {
+                throw new Error("parseProject intentionally not implemented.");
             }
         };
         testable.replaceValue(includeBuilder, 'includeBuilder')
