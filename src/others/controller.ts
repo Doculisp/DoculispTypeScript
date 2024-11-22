@@ -44,7 +44,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
             }
 
             const result = _compile(document.sourcePath, document.destinationPath)
-            if(!result) {
+            if(!result.success) {
                 return result;
             }
 
