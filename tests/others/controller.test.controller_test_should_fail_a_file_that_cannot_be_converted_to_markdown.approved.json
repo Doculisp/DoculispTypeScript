@@ -15,9 +15,11 @@
       "success": false
     }
   },
-  "03 Final Result": {
-    "documentPath": "./someFile.md",
-    "message": "Unable to write",
-    "success": false
-  }
+  "03 Final Result": [
+    {
+      "documentPath": "./someFile.md",
+      "message": "Unable to write",
+      "success": false
+    }
+  ]
 }

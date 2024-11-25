@@ -22,9 +22,11 @@
       "success": false
     }
   },
-  "04 Final Result": {
-    "documentPath": "./README.md",
-    "message": "Unable to write file",
-    "success": false
-  }
+  "04 Final Result": [
+    {
+      "documentPath": "./README.md",
+      "message": "Unable to write file",
+      "success": false
+    }
+  ]
 }

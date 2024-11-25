@@ -6,10 +6,10 @@ import { IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
 import { IVariableRetriever, IVariableSaver } from "../types/types.variableTable";
 import { IPath } from "../types/types.filePath";
-import { IProjectDocument, IProjectParser } from "../types/types.astProject";
+import { IProjectDocument } from "../types/types.astProject";
 import { StringBuilderConstructor } from "../types/types.sringBuilder";
 
-function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, astProjectParse: IProjectParser, stringBuilderConstructor: StringBuilderConstructor): IController {
+function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, stringBuilderConstructor: StringBuilderConstructor): IController {
     function _compile(sourcePath: IPath, destinationPath: IPath | false): Result<string | false> {
         const doculisp = astBuilder.parse(sourcePath, variableTable);
         const document = stringWrter.writeAst(doculisp, variableTable);
@@ -27,15 +27,14 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
         return util.ok((destinationPath as IPath).fullName);
     }
 
-    function _compileProject(sourcePath: IPath): Result<string> {
+    function _compileProject(sourcePath: IPath): Result<string>[] {
         const project = astBuilder.parseProject(sourcePath);
 
         if(!project.success) {
-            return project;
+            return [project];
         }
 
-        const sb = stringBuilderConstructor();
-        sb.addLine();
+        const results: Result<string>[] = [];
 
         for (let index = 0; index < project.value.documents.length; index++) {
             const document = project.value.documents[index] as IProjectDocument;
@@ -45,36 +44,33 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
             const result = _compile(document.sourcePath, document.destinationPath)
             if(!result.success) {
-                return result;
+                results.push(result);
             }
 
-            sb.addLine(`\t${document.destinationPath.fullName}`);
+            results.push(util.ok(document.destinationPath.fullName));
         }
 
-        if(1 < sb.lineLength) {
-            sb.addLine();
-        }
-        return util.ok(sb.toString());
+        return results;
     }
 
-    function compile(sourcePath: IPath, destinationPath: IPath | false = false): Result<string> {
+    function compile(sourcePath: IPath, destinationPath: IPath | false = false): Result<string>[] {
         if(sourcePath.extension !== '.dlproj' && !destinationPath) {
-            return util.fail(`Must have a destination file.`, sourcePath);
+            return [util.fail(`Must have a destination file.`, sourcePath)];
         }
 
         if(sourcePath.extension === '.dlproj' && destinationPath) {
-            return util.fail('A project file cannot have a destination path', sourcePath);
+            return [util.fail('A project file cannot have a destination path', sourcePath)];
         }
 
         if(sourcePath.extension === '.dlproj') {
             return _compileProject(sourcePath);
         }
 
-        return _compile(sourcePath, destinationPath) as Result<string>;
+        return [_compile(sourcePath, destinationPath) as Result<string>];
     }
 
-    function test(sourcePath: IPath): Result<false> {
-        return _compile(sourcePath, false) as Result<false>;
+    function test(sourcePath: IPath): Result<false>[] {
+        return [_compile(sourcePath, false) as Result<false>];
     }
 
     return {
@@ -84,9 +80,9 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 }
 
 const controllerBuilder: IRegisterable = {
-    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, astProjectParse: IProjectParser, stringBuilderConstructor: StringBuilderConstructor) => buildLoader(util, handler, astBuilder, stringWriter, variableTable, astProjectParse, stringBuilderConstructor),
+    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, stringBuilderConstructor: StringBuilderConstructor) => buildLoader(util, handler, astBuilder, stringWriter, variableTable, stringBuilderConstructor),
     name: 'controller',
-    dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter', 'variableTable', 'astProjectParse', 'stringBuilder'],
+    dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter', 'variableTable', 'stringBuilder'],
     singleton: true
 };
 

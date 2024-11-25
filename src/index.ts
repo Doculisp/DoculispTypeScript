@@ -98,7 +98,7 @@ async function main() {
                 }
                 else {
                     const result = controller.test(sourcePath);
-                    reportResult(result);
+                    reportResult(...result);
                 }
             }
             else {
@@ -113,11 +113,11 @@ async function main() {
                 }
                 else if(outputPath) {
                     const result = controller.compile(sourcePath, outputPath);
-                    reportResult(result);
+                    reportResult(...result);
                 }
                 else {
                     const result = controller.compile(sourcePath);
-                    reportResult(result);
+                    reportResult(...result);
                 }
             }
 
@@ -126,14 +126,21 @@ async function main() {
         .parseAsync(process.argv);
 
 
-    function reportResult(result: Result<string | false>) {
-        if (result.success) {
-            const message = !!result.value ? `Ok! ${result.value} successfully written` : 'Ok!';
-            console.log(message);
-        }
-        else {
-            console.error(`Error in file: ${result.documentPath}`);
-            console.error(result.message);
+    function reportResult(...results: Result<string | false>[]) {
+        let failed = false;
+        results.forEach(result => {
+            if (result.success) {
+                const message = !!result.value ? `Ok! ${result.value} successfully written` : 'Ok!';
+                console.log(message);
+            }
+            else {
+                console.error(`Error in file: ${result.documentPath}`);
+                console.error(result.message);
+                failed = true;
+            }
+        });
+
+        if(failed) {
             process.exit(1);
         }
     }

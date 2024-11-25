@@ -22,9 +22,11 @@
     },
     "outputPath": "./README.md"
   },
-  "04 Final Result": {
-    "documentPath": "./someFile.md",
-    "message": "Unable to parse ast",
-    "success": false
-  }
+  "04 Final Result": [
+    {
+      "documentPath": "./someFile.md",
+      "message": "Unable to parse ast",
+      "success": false
+    }
+  ]
 }
