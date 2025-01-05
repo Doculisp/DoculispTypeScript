@@ -25,7 +25,7 @@
         },
         {
             "name": "push",
-            "command": "gittey build && gittey test && git push && git push --tags",
+            "command": "cls && gittey pull && gittey build && gittey test && git push && git push --tags",
             "description": "performs a git push if tests are passing"
         },
         {

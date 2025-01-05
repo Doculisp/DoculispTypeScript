@@ -374,9 +374,9 @@ The table of contents would contain a line that looked like:
 
 ### Dynamic Headings ###
 
-Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the `(#` block, or dynamic headinlg block.
+Sometimes you want to create structure aware headings such that only heading of lesser importance are under your title. this is accomplished by the `(#` block, or dynamic heading block.
 
-The dynamic heading block works differently then other blocks. The number of `#` signs determins how far it is beneith the current sub/section heading.
+The dynamic heading block works differently then other blocks. The number of `#` signs determine how far it is beneath the current sub/section heading.
 
 Example
 
@@ -399,17 +399,17 @@ Example
 
 A cool summary of maths.
 
-<!-- (dl (## Resons For Document)) -->
+<!-- (dl (## Reasons For Document)) -->
 
-An explination why to have the document.
+An explanation why to have the document.
 
 
 <!-- (dl (content (toc unlabled))) -->
 ```
 
-If this example was the top level document, then the title of the document, Heading 1, would be "Maths an intro". "Summray" would then be created as a Heading 2, and  "Resons For Document" as Heading 3.
+If this example was the top level document, then the title of the document, Heading 1, would be "Maths an intro". "Summary" would then be created as a Heading 2, and  "Reasons For Document" as Heading 3.
 
-However if this document reprended a subsection directly under the Title, then "Maths an intro" would be Heading 2, "Summary" heading 3, and "Reasons For Document" would be Heading 4.
+However if this document represented a subsection directly under the Title, then "Maths an intro" would be Heading 2, "Summary" heading 3, and "Reasons For Document" would be Heading 4.
 
 #### Max Heading Depth ####
 
@@ -417,7 +417,7 @@ Currently, the maximum heading depth recognized by Markdown is H6. However Docul
 
 ### Comment Block ###
 
-The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics `*` just after an open parenthisis and end when the block and all its subblocks are closed.
+The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics `*` just after an open parenthesis and end when the block and all its subblocks are closed.
 
 Example:
 
@@ -437,9 +437,9 @@ Example:
 -->
 ```
 
-In this example the `section-meta` block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in peices.
+In this example the `section-meta` block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in pieces.
 
-xample:
+Example:
 
 ```markdown
 <!--
