@@ -91,7 +91,7 @@ A language for Readme.
 
 ### Language Version ###
 
-Doculisp version 1.0.0
+Doculisp version 1.1.0
 
 ### What Problem Does Doculisp Solve? ###
 
@@ -410,6 +410,30 @@ An explanation why to have the document.
 If this example was the top level document, then the title of the document, Heading 1, would be "Maths an intro". "Summary" would then be created as a Heading 2, and  "Reasons For Document" as Heading 3.
 
 However if this document represented a subsection directly under the Title, then "Maths an intro" would be Heading 2, "Summary" heading 3, and "Reasons For Document" would be Heading 4.
+
+#### Ids ####
+
+You can add an ID to a heading.
+
+**THIS IS NOT USED YET** and is reserved for future use.
+
+the id follows the hash-mark (`#`).
+
+##### Restrictions #####
+
+The id must meet the following restrictions:
+
+* It must be lowercase.
+* It must not contain any symbols other then underscore `_` or hyphen `-`.
+
+##### Example #####
+
+```doculisp
+<!-- info.md -->
+<!-- (dl (#heading-id Information About Heading Ids)) -->
+
+Some text here.
+```
 
 #### Max Heading Depth ####
 
