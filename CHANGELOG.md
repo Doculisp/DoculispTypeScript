@@ -15,6 +15,10 @@
 
 * Added project files `.dlproj`
 
+### ⠏ ###
+
+some text
+
 <!-- Written By: jason-kerney -->
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
