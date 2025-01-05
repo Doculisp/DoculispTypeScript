@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "value": {
+    "projectLocation": {
+      "documentDepth": 2,
+      "documentIndex": 1,
+      "documentPath": "S:/ome/file.md"
+    },
+    "section": {
+      "doculisp": [
+        {
+          "depthCount": 8,
+          "documentOrder": {
+            "char": 2,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "S:/ome/file.md",
+            "line": 2
+          },
+          "id": "first",
+          "text": "My heading",
+          "type": "doculisp-header"
+        }
+      ],
+      "documentOrder": {
+        "char": 1,
+        "documentDepth": 2,
+        "documentIndex": 1,
+        "documentPath": "S:/ome/file.md",
+        "line": 1
+      },
+      "include": [],
+      "type": "doculisp-section"
+    },
+    "type": "doculisp-root"
+  }
+}

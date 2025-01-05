@@ -57,6 +57,7 @@ export interface IHeader extends ILocationSortable {
     readonly type: 'doculisp-header'
     readonly depthCount: number;
     readonly text: string;
+    readonly id?: string | undefined;
 };
 
 export interface IContentLocation extends ILocationSortable {

@@ -225,7 +225,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
             }
 
             if(!textHelper.isLowercase(id)) {
-                return util.fail(`Id must be lowercase '${id}' did you mean '${id.toLocaleLowerCase()}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}`)
+                return util.fail(`Id must be lowercase '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}. Did you mean '${id.toLocaleLowerCase()}'?`)
             }
 
             if(ids[id]) {

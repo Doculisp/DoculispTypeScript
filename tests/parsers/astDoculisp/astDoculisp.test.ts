@@ -117,31 +117,51 @@ describe('astDoculisp', () => {
     });
 
     describe('lisp', () => {
-        it('should simple ast', () => {
-            const contents = `<!--
+        describe('header', () => {
+            it('should parse simple ast', () => {
+                const contents = `<!--
 (dl (# My heading))
 -->`;
-            const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
-    
-            verifyAsJson(result);
-        });
-    
-        it('should not parse a bad header', () => {
-            const contents = `<!--
-(dl (#head My heading))
--->`;
-            const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 3, 2));
-    
-            verifyAsJson(result);
-        });
-    
-        it('should not parse a header without a parameter', () => {
-            const contents = `<!--
+                const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
+        
+                verifyAsJson(result);
+            });
+        
+            it('should not parse a header without a parameter', () => {
+                const contents = `<!--
 (dl (#))
 -->`;
-            const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 3));
-    
-            verifyAsJson(result);
+                const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 3));
+        
+                verifyAsJson(result);
+            });
+            
+            it('should parse a header with an id', () => {
+                const contents = `<!--
+(dl (#first My heading))
+-->`;
+                const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
+        
+                verifyAsJson(result);
+            });
+            
+            it('should not parse a header with an id that contains uppercase letters', () => {
+                const contents = `<!--
+(dl (#First My heading))
+-->`;
+                const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
+        
+                verifyAsJson(result);
+            });
+            
+            it('should not parse a header with an id that contains a symbol', () => {
+                const contents = `<!--
+(dl (#F|rst My heading))
+-->`;
+                const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
+        
+                verifyAsJson(result);
+            });
         });
 
         it('should parse a document with all the parts', () => {
@@ -590,6 +610,7 @@ A story of a misbehaving parser.
                     const result = toResult(contents, buildProjectLocation('main.md', 1, 1));
                     verifyAsJson(result);
                 });
+
                 it('should not parse the id command if it contains symbols.', () => {
                     const contents = `
 <!-- (dl

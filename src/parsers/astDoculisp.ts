@@ -1,6 +1,6 @@
-import { AtomAst, CoreAst, IAstCommand, IAstEmpty, RootAst } from "../types/types.ast";
+import { Ast, AtomAst, CoreAst, IAstCommand, IAstEmpty, RootAst } from "../types/types.ast";
 import { DoculispBulletStyle, DoculispPart, IContentLocation, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
-import { IRegisterable } from "../types/types.containers";
+import { IDictionary, IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
 import { ITrimArray } from "../types/types.trimArray";
@@ -11,6 +11,19 @@ import { TextHelper } from "../types/types.textHelpers";
 function headerize(depth: number, value: string): string {
     const id = ''.padStart(depth, '#');
     return `${id} ${value} ${id}`;
+}
+
+function getSymbolErrorMessage<T extends Ast>(typeId: string, word: string, current: ILocation, ast: T, textHelper: TextHelper): string | false {
+    let symbols = textHelper.symbolLocation(word);
+
+    if(symbols) {
+        let symbolKeys = Object.keys(symbols);
+        let badMsg = symbolKeys.map(badS => `'${badS}' @ id char ${(symbols as IDictionary<number>)[badS]}`).join('\n\t');
+
+        return `Symbol(s) in ${typeId} id ${word}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char}\n${badMsg}`;
+    }
+
+    return false;
 }
 
 function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper): IDoculispParser {
@@ -44,14 +57,27 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         function parseHeader(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IHeader> {
             const ast = input[0] as CoreAst;
     
-            if(ast.value.replaceAll('#', '').length !== 0) {
+            if(ast.value.charAt(0) !== '#') {
                 return internals.noResultFound();
             }
     
             if(ast.type !== 'ast-command') {
                 return util.fail(`Dynamic Header at '${ast.location.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} is missing the header text`, current.documentPath);
             }
-    
+
+            const id = ast.value.replace(/^#+/, '');
+
+            if(0 < id.length) {
+                let errorMsg = getSymbolErrorMessage('heading', id, current, ast, textHelper);
+                if(errorMsg) {
+                    return util.fail(errorMsg, current.documentPath);
+                }
+
+                if(!textHelper.isLowercase(id)) {
+                    return util.fail(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`)
+                }
+            }
+
             return util.ok({
                 type: 'parse result',
                 subResult: {
@@ -59,6 +85,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     depthCount: current.documentDepth + ast.value.length,
                     documentOrder: ast.location,
                     text: ast.parameter.value,
+                    id: 0 < id.length ? id : undefined,
                 },
                 location: current,
                 rest: trimArray.trim(1, input),
@@ -251,16 +278,13 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
                 const id = idAtom.parameter.value;
 
-                const symbols = textHelper.symbolLocation(id);
-                if(!!symbols) {
-                    let symbolKeys = Object.keys(symbols);
-                    let badMsg = symbolKeys.map(badS => `'${badS}' @ id char ${symbols[badS]}`).join('\n\t');
-    
-                    return util.fail(`Symbol(s) in section id ${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char}\n${badMsg}`, current.documentPath);
+                const errorMsg = getSymbolErrorMessage('section', id, current, idAtom, textHelper);
+                if(errorMsg) {
+                    return util.fail(errorMsg, current.documentPath);
                 }
 
                 if(!textHelper.isLowercase(id)) {
-                    return util.fail(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains must be lowercase. Did you mean '${id.toLocaleLowerCase()}'`, current.documentPath)
+                    return util.fail(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, current.documentPath)
                 }
 
                 return util.ok(id);
