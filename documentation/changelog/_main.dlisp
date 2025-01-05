@@ -2,6 +2,7 @@
     (title Changelog)
     (include
         (release ./2_9_0.md)
+        (release ./2_9_1.md)
     )
 )
 

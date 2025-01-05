@@ -10,10 +10,15 @@
 ## Releases ##
 
 * release: [Version 2.9.0](#version-290)
+* release: [Version 2.9.1](#version-291)
 
 ## Version 2.9.0 ##
 
 * Added project files `.dlproj`
+
+## Version 2.9.1 ##
+
+* Better symbol detection for link
 
 <!-- Written By: jason-kerney -->
 <!-- markdownlint-restore -->
