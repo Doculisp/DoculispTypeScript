@@ -9,10 +9,15 @@
 
 ## Releases ##
 
+* release: [Version 3.2.0](#version-320)
 * release: [Version 3.1.0](#version-310)
 * release: [Version 3.0.0](#version-300)
 * release: [Version 2.9.1](#version-291)
 * release: [Version 2.9.0](#version-290)
+
+## Version 3.2.0 ##
+
+* Added header ids.
 
 ## Version 3.1.0 ##
 
