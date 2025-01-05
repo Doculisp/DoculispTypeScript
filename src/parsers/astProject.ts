@@ -216,22 +216,12 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             const id = ast.value;
 
-            const symbols = textHelper.containsSymbols(id);
-
-            if(!!symbols) {
-                let table : IDictionary<number> = {};
-                symbols.forEach(s => {
-                    if(!!table[s]) {
-                        return;
-                    }
-
-                    table[s] = symbols.indexOf(s) + 1;
-                });
-
+            const table = textHelper.symbolLocation(id)
+            if(!!table) {
                 let bads = Object.keys(table);
-                let badMesg = bads.map(badS => `'${badS}' @ id char ${table[badS]}`).join('\n\t');
+                let badMsg = bads.map(badS => `'${badS}' @ id char ${table[badS]}`).join('\n\t');
 
-                return util.fail(`Symbol(s) in id ${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}\n${badMesg}`);
+                return util.fail(`Symbol(s) in document id ${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}\n${badMsg}`);
             }
 
             if(!textHelper.isLowercase(id)) {

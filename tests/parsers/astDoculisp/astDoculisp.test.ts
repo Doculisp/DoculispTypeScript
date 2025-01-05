@@ -561,6 +561,49 @@ A story of a misbehaving parser.
                     verifyAsJson(result);
                 });
             });
+
+            describe('id', () => {
+                it('should parse the id command', () => {
+                    const contents = `
+<!-- (dl
+(section-meta
+    (title The use of IDs)
+    (id my-id)
+)
+) -->
+`;
+
+                    const result = toResult(contents, buildProjectLocation('main.md', 1, 1));
+                    verifyAsJson(result);
+                });
+
+                it('should not parse the id command it it contains capital letters', () => {
+                    const contents = `
+<!-- (dl
+(section-meta
+    (title The use of IDs)
+    (id my-Id)
+)
+) -->
+`;
+
+                    const result = toResult(contents, buildProjectLocation('main.md', 1, 1));
+                    verifyAsJson(result);
+                });
+                it('should not parse the id command if it contains symbols.', () => {
+                    const contents = `
+<!-- (dl
+(section-meta
+    (title The use of IDs)
+    (id my-✨-id)
+)
+) -->
+`;
+
+                    const result = toResult(contents, buildProjectLocation('main.md', 1, 1));
+                    verifyAsJson(result);
+                });
+            });
         });
 
         describe('content', () => {

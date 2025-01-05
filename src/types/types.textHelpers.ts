@@ -1,3 +1,5 @@
+import { IDictionary } from "./types.containers";
+
 export interface IMarkupSearches {
     readonly startWithOpenComment: RegExp;
     readonly startWithCloseComment: RegExp;
@@ -33,4 +35,5 @@ export type TextHelper = {
     removeSymbols(word: string): string;
     containsSymbols(word: string): string[] | false;
     isLowercase(word: string): Boolean;
+    symbolLocation(word: string): IDictionary<number>|false;
 };

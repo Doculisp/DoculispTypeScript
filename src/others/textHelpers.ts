@@ -1,4 +1,4 @@
-import { IRegisterable } from "../types/types.containers";
+import { IDictionary, IRegisterable } from "../types/types.containers";
 import { TextHelper } from "../types/types.textHelpers";
 
 function isLetter(charCode: number) : Boolean {
@@ -150,12 +150,39 @@ function isLowercase(word: string): boolean {
     return (word === word.toLocaleLowerCase())
 }
 
+function symbolLocation(word: string): IDictionary<number>|false {
+    let table : IDictionary<number> = {};
+    let found = false;
+
+    let bad = containsSymbols(word);
+
+    if(!bad) {
+        return false;
+    }
+
+    bad.forEach(s => {
+        if(!!table[s]) {
+            return;
+        }
+
+        table[s] = word.indexOf(s) + 1;
+        found = true;
+    });
+
+    if(found) {
+        return table;
+    }
+
+    return false;
+}
+
 function build(): TextHelper {
     return {
         isLetter,
         removeSymbols,
         containsSymbols,
         isLowercase,
+        symbolLocation,
     }
 }
 

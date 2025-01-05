@@ -74,7 +74,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 return linkText;
             }
             
-            function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false): Result<ITitle> {
+            function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false, id: string | false): Result<ITitle> {
                 const titles = ast.filter(s => s.value === 'title');
         
                 if(1 < titles.length) {
@@ -105,6 +105,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     label: headerize(title.location.documentDepth, title.parameter.value),
                     ref_link: '#' + (refLink ? refLink : linkText),
                     subtitle: subtitle ? subtitle : undefined,
+                    id: id ? id : undefined,
                 });
             }
 
@@ -226,6 +227,44 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
                 return util.ok(false);
             }
+
+            function parseId(ast: AtomAst[], location: ILocation): Result<string | false> {
+                const ids = ast.filter(a => a.value === 'id');
+
+                if(ids.length === 0) {
+                    return util.ok(false);
+                }
+                
+                if(1 < ids.length) {
+                    return util.fail(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one id.`, current.documentPath);
+                }
+                
+                const idAtom = ids[0] as AtomAst;
+
+                if(idAtom.type === 'ast-container') {
+                    return util.fail(`The section id block at '${idAtom.location.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains sub blocks.`, current.documentPath);
+                }
+
+                if(idAtom.type === 'ast-atom') {
+                    return util.fail(`The section id block at '${idAtom.location.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} is missing identifier text parameter.`, current.documentPath);
+                }
+
+                const id = idAtom.parameter.value;
+
+                const symbols = textHelper.symbolLocation(id);
+                if(!!symbols) {
+                    let symbolKeys = Object.keys(symbols);
+                    let badMsg = symbolKeys.map(badS => `'${badS}' @ id char ${symbols[badS]}`).join('\n\t');
+    
+                    return util.fail(`Symbol(s) in section id ${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char}\n${badMsg}`, current.documentPath);
+                }
+
+                if(!textHelper.isLowercase(id)) {
+                    return util.fail(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains must be lowercase. Did you mean '${id.toLocaleLowerCase()}'`, current.documentPath)
+                }
+
+                return util.ok(id);
+            }
     
             const sectionMeta = input[0] as CoreAst;
 
@@ -256,7 +295,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 return util.fail(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, current.documentPath);
             }
     
-            const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include', 'author'].includes(a.value));
+            const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include', 'author', 'id'].includes(a.value));
     
             if(0 < badSections.length) {
                 const next = badSections[0] as AtomAst;
@@ -274,8 +313,13 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             if(!refLink.success) {
                 return refLink;
             }
+
+            const id = parseId(sectionMeta.subStructure, current);
+            if(!id.success) {
+                return id;
+            }
     
-            const title = parseTitle(sectionMeta.subStructure, current, refLink.value, subtitle.value);
+            const title = parseTitle(sectionMeta.subStructure, current, refLink.value, subtitle.value, id.value);
     
             if(!title.success) {
                 return title;

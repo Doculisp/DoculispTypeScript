@@ -16,6 +16,7 @@ export interface ITitle extends ILocationSortable {
     readonly type: 'doculisp-title';
     readonly title: string;
     readonly label: string;
+    readonly id?: string|undefined;
     readonly ref_link: string;
     readonly subtitle?: string | undefined;
 };
