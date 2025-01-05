@@ -27,3 +27,10 @@ export type Searcher = {
     searchDocumentFor: IDocumentSearches,
     searchLispFor: ILispSearches,
 }
+
+export type TextHelper = {
+    isLetter(charCode: number) : Boolean;
+    removeSymbols(word: string): string;
+    containsSymbols(word: string): string[] | false;
+    isLowercase(word: string): Boolean;
+};

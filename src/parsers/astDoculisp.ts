@@ -6,13 +6,14 @@ import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
 import { ITrimArray } from "../types/types.trimArray";
 import { IVariableSaver } from "../types/types.variableTable";
 import { IPath, PathConstructor } from "../types/types.filePath";
+import { TextHelper } from "../types/types.textHelpers";
 
 function headerize(depth: number, value: string): string {
     const id = ''.padStart(depth, '#');
     return `${id} ${value} ${id}`;
 }
 
-function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor): IDoculispParser {
+function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper): IDoculispParser {
     function parse(astResult: Result<RootAst | IAstEmpty>, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
@@ -63,136 +64,12 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 rest: trimArray.trim(1, input),
             });
         }
-
-        function isLetter(c: number) : Boolean {
-            if(c == 45) {
-                return true;
-            }
-
-            //latin
-            if(48 <= c && c <= 57) {
-                return true;
-            }
-
-            if(65 <= c && c <= 90) {
-                return true;
-            }
-
-            if(97 <= c && c <= 122) {
-                return true;
-            }
-
-            //latin supplement
-            if(192 <= c && c <= 246) {
-                return true;
-            }
-
-            if(248 <= c && c <= 255) {
-                return true;
-            }
-
-            //latin extend-a
-            if(256 <= c && c <= 305) {
-                return true;
-            }
-
-            if(308 <= c && c <= 337) {
-                return true;
-            }
-
-            if(340 <= c && c <= 383) {
-                return true;
-            }
-
-            //latin extend-b
-            if(384 <= c && c <= 591) {
-                return true;
-            }
-
-            //latin ipa
-            if(592 <= c && c <= 685) {
-                return true;
-            }
-
-            //diacritical marks
-            if(768 <= c && c <= 879) {
-                return true;
-            }
-
-            //creek and coptic
-            if(880 <= c && c <= 883) {
-                return true;
-            }
-
-            if(886 <= c && c <= 887) {
-                return true;
-            }
-
-            if(902 == c) {
-                return true;
-            }
-
-            if(904 <= c && c <= 974) {
-                return true;
-            }
-
-            if(984 <= c && c <= 1007) {
-                return true;
-            }
-
-            if(1015 <= c && c <= 1016) {
-                return true;
-            }
-
-            if(1018 <= c && c <= 1019) {
-                return true;
-            }
-
-            //Cyrillic / Slavonic / Slavic
-            if(1024 <= c && c <= 1153) {
-                return true;
-            }
-
-            if(1162 <= c && c <= 1187) {
-                return true;
-            }
-
-            if(1190 <= c && c <= 1203) {
-                return true;
-            }
-
-            if(1206 <= c && c <= 1235) {
-                return true;
-            }
-
-            if(1238 < c && c <= 1279) {
-                return true;
-            }
-
-            //Cyrillic Supplement
-            if(1280 <= c && c <= 1319) {
-                return true;
-            }
-
-            return false;
-        }
     
         function parseSectionMeta(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], ITitle | ILoad> {
             function getLinkText(title: IAstCommand, refLink: string | boolean) {
                 let linkText = title.parameter.value.toLowerCase().replaceAll(' ', '-');
                 if (!refLink) {
-                    let toRemove: string[] = [];
-
-                    for (let index = 0; index < linkText.length; index++) {
-                        const c = linkText.codePointAt(index);
-                        if(!c || isLetter(c)) {
-                            continue;
-                        }
-
-                        toRemove.push(linkText[index] as string)
-                    }
-
-                    toRemove.forEach(r => linkText = linkText.replaceAll(r, ''))
+                    linkText = textHelper.removeSymbols(linkText);
                 }
                 return linkText;
             }
@@ -655,10 +532,10 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 }
 
 const doculispParser: IRegisterable = {
-    builder: (internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor) => buildAstParser(internals, util, trimArray, pathConstructor),
+    builder: (internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper) => buildAstParser(internals, util, trimArray, pathConstructor, textHelper),
     name: 'astDoculispParse',
     singleton: false,
-    dependencies: ['internals', 'util', 'trimArray', 'pathConstructor']
+    dependencies: ['internals', 'util', 'trimArray', 'pathConstructor', 'textHelpers']
 };
 
 export {
