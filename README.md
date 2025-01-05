@@ -91,7 +91,7 @@ A language for Readme.
 
 ### Language Version ###
 
-Doculisp version 0.2.3
+Doculisp version 1.0.0
 
 ### What Problem Does Doculisp Solve? ###
 
@@ -585,6 +585,13 @@ The document identifier block is a very different kind of block. It is an option
 If this block is contained within the `document` block then it is the only block that is a child of the `documents` block.
 
 The document identifier block is _**currently is not used.**_ Though it is reserved for future use.
+
+###### Restrictions ######
+
+The document identifier must meet the following restrictions:
+
+* Document identifier must be lowercase.
+* Document identifier must contain no symbols.
 
 ###### Document Identifier Example ######
 
