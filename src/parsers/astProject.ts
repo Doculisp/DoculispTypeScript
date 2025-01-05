@@ -4,6 +4,7 @@ import { IDictionary, IRegisterable } from "../types/types.containers";
 import { IPath, PathConstructor } from "../types/types.filePath";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
+import { TextHelper } from "../types/types.textHelpers";
 import { ITrimArray } from "../types/types.trimArray";
 
 interface ISource {
@@ -18,7 +19,7 @@ interface IOutput {
     type: 'i-output',
 }
 
-function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor): IProjectParser {
+function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper): IProjectParser {
     function parse(tokenResults: Result<RootAst | IAstEmpty>): Result<IProjectDocuments> {
         const ids: IDictionary<boolean> = {};
 
@@ -215,6 +216,28 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             const id = ast.value;
 
+            const symbols = textHelper.containsSymbols(id);
+
+            if(!!symbols) {
+                let table : IDictionary<number> = {};
+                symbols.forEach(s => {
+                    if(!!table[s]) {
+                        return;
+                    }
+
+                    table[s] = symbols.indexOf(s) + 1;
+                });
+
+                let bads = Object.keys(table);
+                let badMesg = bads.map(badS => `'${badS}' @ id char ${table[badS]}`).join('\n\t');
+
+                return util.fail(`Symbol(s) in id ${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}\n${badMesg}`);
+            }
+
+            if(!textHelper.isLowercase(id)) {
+                return util.fail(`Id must be lowercase '${id}' did you mean '${id.toLocaleLowerCase()}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}`)
+            }
+
             if(ids[id]) {
                 return util.fail(`Duplicate id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}.`, current.documentPath);
             }
@@ -308,10 +331,10 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 }
 
 const doculispParser: IRegisterable = {
-    builder: (internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor) => buildAstProject(internals, util, trimArray, pathConstructor),
+    builder: (internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper) => buildAstProject(internals, util, trimArray, pathConstructor, textHelper),
     name: 'astProjectParse',
     singleton: false,
-    dependencies: ['internals', 'util', 'trimArray', 'pathConstructor']
+    dependencies: ['internals', 'util', 'trimArray', 'pathConstructor', 'textHelpers']
 };
 
 export {

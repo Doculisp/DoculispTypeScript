@@ -123,7 +123,7 @@ describe('astProject', () => {
             const project = `
 (documents
     (document
-        (readme
+        (readmeβ
             (source ./_main.dlisp)
             (output ../README.md)
         )
@@ -232,6 +232,36 @@ describe('astProject', () => {
 
             const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
 
+            verifyAsJson(result);
+        });
+
+        it('should not parse a document with a capitalized id', () => {
+            const project = `
+(documents
+    (document
+        (Readme
+            (source ./_main.dlisp)
+            (output ../README.md)
+        )
+    )
+)
+`;
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
+            verifyAsJson(result);
+        });
+
+        it('should not parse a document with an id that contains a symbol', () => {
+            const project = `
+(documents
+    (document
+        (readmeϐ
+            (source ./_main.dlisp)
+            (output ../README.md)
+        )
+    )
+)
+`;
+            const result = resultBuilder(project, buildProjectLocation('/docs.dlproj'));
             verifyAsJson(result);
         });
     });
