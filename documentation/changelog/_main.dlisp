@@ -1,0 +1,13 @@
+(section-meta
+    (title Changelog)
+    (include
+        (release ./2_9_0.md)
+    )
+)
+
+(content
+    (toc
+        (label Releases)
+        (style bulleted-labeled)
+    )
+)

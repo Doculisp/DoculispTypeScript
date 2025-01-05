@@ -29,6 +29,11 @@
             "description": "performs a git push if tests are passing"
         },
         {
+            "name": "save",
+            "command": "gittey push",
+            "description": "performs a git push if tests are passing"
+        },
+        {
             "name": "check",
             "command": "cls; gittey build && npm test",
             "description": "runs tests"
@@ -45,7 +50,7 @@
         },
         {
             "name": "docs",
-            "command": "node ./dist/index.js ./documentation/_main.md ./README.md"
+            "command": "node ./dist/index.js ./documentation/doculisp.dlproj"
         }
     ],
     "collaborators": []

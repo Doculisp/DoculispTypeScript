@@ -1,0 +1,14 @@
+(documents
+    (document
+        (readme
+            (source ./readme/_main.md)
+            (output ../README.md)
+        )
+    )
+    (document
+        (changelog
+            (source ./changelog/_main.dlisp)
+            (output ../CHANGELOG.md)
+        )
+    )
+)
