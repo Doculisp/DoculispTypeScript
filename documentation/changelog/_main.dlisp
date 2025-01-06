@@ -6,7 +6,7 @@
         (release ./3_1_0.md)
         (release ./3_0_0.md)
         (release ./2_9_1.md)
-        (release ./2_9_0.md)
+        (release ./earlier.md)
     )
 )
 

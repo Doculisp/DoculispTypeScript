@@ -13,7 +13,7 @@
 * release: [Version 3.1.0](#version-310)
 * release: [Version 3.0.0](#version-300)
 * release: [Version 2.9.1](#version-291)
-* release: [Version 2.9.0](#version-290)
+* release: [Earlier Version](#earlier-version)
 
 ## Version 3.3.0 ##
 
@@ -38,7 +38,7 @@
 
 * Better symbol detection for link
 
-## Version 2.9.0 ##
+## Earlier Version ##
 
 * Added project files `.dlproj`
 
