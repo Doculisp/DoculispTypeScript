@@ -101,7 +101,7 @@ function rawDoculispResultBuilder(environment: ITestableContainer, text: string,
     const astParser = buildDoculispParser(environment);
     const variableTable = environment.buildAs<IVariableSaver>('variableTable');
 
-    return map(astResultParser, result =>  astParser.parse(result, variableTable));
+    return map(astResultParser, result =>  astParser.parse(result, false, variableTable));
 }
 
 function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp | IEmptyDoculisp> {

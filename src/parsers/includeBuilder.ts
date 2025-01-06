@@ -35,7 +35,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             const documentResult = documentParse(fileMaybe.value, location);
             const tokens = tokenizer(documentResult);
             const ast = astParser.parse(tokens);
-            const doculisp = doculispParser.parse(ast, variableTable);
+            const doculisp = doculispParser.parse(ast, destination, variableTable);
 
             return parseExternals(doculisp, destination, variableTable);
         }

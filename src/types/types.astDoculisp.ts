@@ -83,5 +83,5 @@ export interface IDoculisp {
 }
 
 export interface IDoculispParser {
-    parse(tokenResults: Result<RootAst | IAstEmpty>, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp>;
+    parse(tokenResults: Result<RootAst | IAstEmpty>, destinationPath: IPath | false, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp>;
 };

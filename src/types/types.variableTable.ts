@@ -12,6 +12,11 @@ export interface IVariablePath {
     type: 'variable-path';
 };
 
+export interface IVariableEmptyId {
+    value: '';
+    type: 'variable-empty-id';
+}
+
 export interface IVariableString {
     value: string;
     type: 'variable-string'
@@ -26,7 +31,7 @@ export interface IVariableExists {
     hasKey(key: string): boolean
 };
 
-export type Savable = IVariableId | IStringArray | IVariablePath | IVariableString;
+export type Savable = IVariableId | IStringArray | IVariablePath | IVariableString | IVariableEmptyId;
 
 export interface IVariableSaver extends IVariableExists {
     addValue<T extends Savable>(key: string, value: T): IVariableExists;

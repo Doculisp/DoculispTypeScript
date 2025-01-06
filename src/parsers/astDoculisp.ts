@@ -27,13 +27,14 @@ function getSymbolErrorMessage<T extends Ast>(typeId: string, word: string, curr
 }
 
 function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper): IDoculispParser {
-    function parse(astResult: Result<RootAst | IAstEmpty>, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+    function parse(astResult: Result<RootAst | IAstEmpty>, destinationPath: IPath | false, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
         }
 
         let hasSectionMeta = false;
         let hasInclude = false;
+        let sectionLinkText: string | false = false;
 
         function parseValue(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IWrite> {
             const ast = input[0] as CoreAst;
@@ -76,6 +77,16 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 if(!textHelper.isLowercase(id)) {
                     return util.fail(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`)
                 }
+
+                if(variableTable.hasKey(id)) {
+                    return util.fail(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} has already been used.`, current.documentPath);
+                }
+
+                if(!destinationPath) {
+                    variableTable.addGlobalValue(id, { value: '', type: 'variable-empty-id' });
+                } else {
+                    variableTable.addGlobalValue(id, { type: 'variable-id', documentPath: destinationPath, value: id, headerLinkText: textHelper.removeSymbols(ast.parameter.value) })
+                }
             }
 
             return util.ok({
@@ -98,10 +109,12 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 if (!refLink) {
                     linkText = textHelper.removeSymbols(linkText);
                 }
+
+                sectionLinkText = linkText;
                 return linkText;
             }
             
-            function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false, id: string | false): Result<ITitle> {
+            function parseTitle(ast: AtomAst[], location: ILocation, refLink: string | false, subtitle: string | false): Result<ITitle> {
                 const titles = ast.filter(s => s.value === 'title');
         
                 if(1 < titles.length) {
@@ -124,6 +137,13 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 let linkText = getLinkText(title, refLink);
+
+                const idResult = parseId(ast, current);
+                if(!idResult.success) {
+                    return idResult;
+                }
+
+                const id = idResult.value;
     
                 return util.ok({
                     type: 'doculisp-title',
@@ -287,6 +307,16 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     return util.fail(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, current.documentPath)
                 }
 
+                if(variableTable.hasKey(id)) {
+                    return util.fail(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} has already been used.`, current.documentPath);
+                }
+
+                if(!destinationPath) {
+                    variableTable.addGlobalValue(id, { value: '', type: 'variable-empty-id' });
+                } else {
+                    variableTable.addGlobalValue(id, { value: id, documentPath: destinationPath, type: 'variable-id', headerLinkText: sectionLinkText ? sectionLinkText : undefined });
+                }
+
                 return util.ok(id);
             }
     
@@ -338,12 +368,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 return refLink;
             }
 
-            const id = parseId(sectionMeta.subStructure, current);
-            if(!id.success) {
-                return id;
-            }
-    
-            const title = parseTitle(sectionMeta.subStructure, current, refLink.value, subtitle.value, id.value);
+            const title = parseTitle(sectionMeta.subStructure, current, refLink.value, subtitle.value);
     
             if(!title.success) {
                 return title;
