@@ -82,7 +82,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 type: 'parse result',
                 subResult: {
                     type: 'doculisp-header',
-                    depthCount: current.documentDepth + ast.value.length,
+                    depthCount: current.documentDepth + ast.value.length - id.length,
                     documentOrder: ast.location,
                     text: ast.parameter.value,
                     id: 0 < id.length ? id : undefined,
