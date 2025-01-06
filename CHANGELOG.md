@@ -3,7 +3,6 @@
 <!-- markdownlint-disable -->
 
 <!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->
-<!-- Written By: jason-kerney -->
 
 # Changelog #
 
@@ -37,7 +36,6 @@
 
 * Added project files `.dlproj`
 
-<!-- Written By: jason-kerney -->
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 <!-- GENERATED DOCUMENT DO NOT EDIT! -->
