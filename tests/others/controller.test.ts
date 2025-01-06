@@ -94,11 +94,11 @@ describe('controller', () => {
         };
 
         const includeBuilder: IIncludeBuilder = {
-            parse: function (path: IPath, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+            parse: function (path: IPath, _destinationPath: IPath | false, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.sourcePath = path;
                 return includeConfig.result ?? util.ok(emptyResult);
             },
-            parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+            parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _destinationPath: IPath | false, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.doculisp = doculisp;
                 if (!doculisp.success) {
                     return doculisp;

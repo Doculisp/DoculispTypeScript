@@ -12,7 +12,7 @@ import { IProjectDocuments, IProjectParser } from "../types/types.astProject";
 
 function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentParse: DocumentParser, tokenizer: TokenFunction, fileHandler: IFileHandler, astParser: IAstParser, astProjectParse: IProjectParser) : IIncludeBuilder {
 
-    function _parse(filePath: IPath, location: IProjectLocation, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+    function _parse(filePath: IPath, destination: IPath | false, location: IProjectLocation, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         const workingDir = fileHandler.getProcessWorkingDirectory();
 
         if(!workingDir.success) {
@@ -37,18 +37,18 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             const ast = astParser.parse(tokens);
             const doculisp = doculispParser.parse(ast, variableTable);
 
-            return parseExternals(doculisp, variableTable);
+            return parseExternals(doculisp, destination, variableTable);
         }
         finally {
             fileHandler.setProcessWorkingDirectory(workingDir.value);
         }
     }
 
-    function parse(filePath: IPath, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
-        return _parse(filePath, { documentDepth: 1, documentIndex: 1, documentPath: filePath }, variableTable);
+    function parse(filePath: IPath, destination: IPath | false, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+        return _parse(filePath, destination, { documentDepth: 1, documentIndex: 1, documentPath: filePath }, variableTable);
     }
 
-    function parseSection(doculisp: ISectionWriter, variableTable: IVariableSaver): Result<ISectionWriter> {
+    function parseSection(doculisp: ISectionWriter, destination: IPath | false, variableTable: IVariableSaver): Result<ISectionWriter> {
         for (let index = 0; index < doculisp.include.length; index++) {
             const load = doculisp.include[index];
             if(!load) {
@@ -56,7 +56,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             }
 
             if(load.document) {
-                parseSection(load.document, variableTable);
+                parseSection(load.document, destination, variableTable);
                 continue;
             }
 
@@ -64,7 +64,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
                 return util.fail(`In include block at '${doculisp.documentOrder.documentPath}' Line: ${load.documentOrder.line}, Char ${load.documentOrder.char} contains invalid file type. Included files must be markdown or dlisp files. '${load.path.fullName}'`);
             }
 
-            const astResult = _parse(load.path, { documentDepth: doculisp.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path}, variableTable);
+            const astResult = _parse(load.path, destination, { documentDepth: doculisp.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path}, variableTable);
             if(!astResult.success) {
                 return astResult;
             }
@@ -80,7 +80,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
         return util.ok(doculisp);
     }
 
-    function parseExternals(astResult: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+    function parseExternals(astResult: Result<IDoculisp | IEmptyDoculisp>, destination: IPath | false, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
         }
@@ -90,7 +90,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             return astResult;
         }
 
-        const newSection = parseSection(doculisp.section, variableTable);
+        const newSection = parseSection(doculisp.section, destination, variableTable);
 
         if(!newSection.success) {
             return newSection;

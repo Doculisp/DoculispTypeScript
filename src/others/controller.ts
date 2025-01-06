@@ -35,7 +35,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
     }
     
     function _compile(sourcePath: IPath, destinationPath: IPath | false, variableTable: IVariableTable): Result<string | false> {
-        const doculisp = astBuilder.parse(sourcePath, variableTable);
+        const doculisp = astBuilder.parse(sourcePath, destinationPath, variableTable);
         
         return _write(doculisp, destinationPath, variableTable);
     }
@@ -57,12 +57,12 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
                     results.push(util.fail(`Document id ('${document.id}') is a duplicate in project file '${sourcePath.fullName}'`, sourcePath));
                 }
                 else {
-                    variableTable.addValue(document.id, { value: document.id, documentPath: document.destinationPath, type: 'variable-id' });
+                    variableTable.addGlobalValue(document.id, { value: document.id, documentPath: document.destinationPath, type: 'variable-id' });
                 }
             }
 
             const table = variableTable.createChild();
-            const result = astBuilder.parse(document.sourcePath, table);
+            const result = astBuilder.parse(document.sourcePath, document.destinationPath, table);
             if(!result.success) {
                 results.push(result);
             }

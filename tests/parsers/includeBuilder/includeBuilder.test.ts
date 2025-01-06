@@ -72,7 +72,7 @@ describe('includeBuilder', () => {
             const builder: IIncludeBuilder = testable.include.parserBuilder(container, setup);
 
             const expectedResult = fail('This is a failure',  buildPath('M:/y/pah.md'));
-            expect(builder.parseExternals(expectedResult, variableSaver)).toBe(expectedResult);
+            expect(builder.parseExternals(expectedResult, false, variableSaver)).toBe(expectedResult);
         });
 
         it('should return an error if there is a file error', () => {
