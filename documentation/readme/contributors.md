@@ -3,6 +3,7 @@
     (section-meta
         (title Contributors ✨)
         (ref-link contributors-)
+        (id contributors)
     )
 )
 -->

@@ -31,6 +31,8 @@ export type Savable = IVariableId | IStringArray | IVariablePath | IVariableStri
 export interface IVariableSaver extends IVariableExists {
     addValue<T extends Savable>(key: string, value: T): IVariableExists;
     addValueToStringList(key: string, value: IVariableString): IVariableExists;
+    addGlobalValue<T extends Savable>(key: string, value: T): IVariableExists;
+    addGlobalValueToStringList(key: string, value: IVariableString): IVariableExists;
 };
 
 export interface IVariableRetriever extends IVariableExists {
@@ -40,6 +42,7 @@ export interface IVariableRetriever extends IVariableExists {
 
 
 export interface IVariableTable extends IVariableSaver, IVariableRetriever {
+    createChild(): IVariableTable;
 };
 
 export interface IVariableTestable extends IVariableTable {

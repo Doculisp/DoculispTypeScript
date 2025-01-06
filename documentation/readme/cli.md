@@ -1,17 +1,22 @@
-<!-- (dl (section-meta Using the Command Line Interface)) -->
-<!-- (dl (# To Install Doculisp)) -->
+<!-- (dl
+(section-meta
+  (title Using the Command Line Interface)
+  (id cli)
+)
+) -->
+<!-- (dl (#cli-install To Install Doculisp)) -->
 
 To install the cli globally run the following command: `npm i -g doculisp`
 
 To install the cli locally run the following command: `npm i doculisp --save-dev`
 
-<!-- (dl (# Running the Doculisp compiler)) -->
+<!-- (dl (#cli-running Running the Doculisp compiler)) -->
 
 If you have Doculisp installed globally then you can run `doculisp` from the command line.
 
 If you have Doculisp installed locally then you can run `node ./node_modules/doculisp/dist/index.js` from the command line.
 
-<!-- (dl (# Using the Doculisp compiler)) -->
+<!-- (dl (#cli-using Using the Doculisp compiler)) -->
 
 If you run Doculisp with the help option : `doculisp --help` you will see the following:
 

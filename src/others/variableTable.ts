@@ -1,64 +1,101 @@
 import { IDictionary, IRegisterable } from "../types/types.containers";
-import { IVariableExists, IVariableString, IVariableTestable, Savable } from "../types/types.variableTable";
+import { IVariableExists, IVariableString, IVariableTable, IVariableTestable, Savable } from "../types/types.variableTable";
 
 function buildVariableTable(): IVariableTestable {
-    const table: IDictionary<Savable> = {};
-0
-    const variableTable: IVariableTestable = {
+    class VariableTable implements IVariableTable, IVariableTestable {
+        private table: IDictionary<Savable> = {};
+        private parent: IVariableTable | false = false;
+
+        constructor();
+        constructor(baseTable: (IVariableTable & IVariableTestable));
+        constructor(baseTable?: (IVariableTable & IVariableTestable)) {
+            if(!baseTable) {
+                return;
+            }
+
+            const baseKeys = baseTable.getKeys();
+
+            baseKeys.forEach(key => this.table[key] = baseTable.getValue(key) as Savable);
+            this.parent = baseTable;
+        }
+
+        createChild(): IVariableTable {
+            return new VariableTable(this);
+        }
+        
         addValue<T extends Savable>(key: string, value: T): IVariableExists {
-            table[key] = value;
-            return variableTable;
-        },
+            this.table[key] = value;
+            return this;
+        }
 
         addValueToStringList(key: string, value: IVariableString): IVariableExists {
-            if(table[key]) {
-                let tableValue = table[key] as Savable;
+            if(this.table[key]) {
+                let tableValue = this.table[key] as Savable;
                 if(tableValue.type === 'variable-array-string')
                     if(!tableValue.value.some(t => t.value == value.value)) {
                         tableValue.value.push(value);
                     }
             }
             else {
-                table[key] = { value: [value], type: 'variable-array-string' };
+                this.table[key] = { value: [value], type: 'variable-array-string' };
             }
-            return variableTable;
-        },
+            return this;
+        }
 
         hasKey(key: string): boolean {
-            return !!table[key];
-        },
+            return !!this.table[key];
+        }
 
         getValue<T extends Savable>(key: string): T | false {
-            if(!!table[key]) {
-                return table[key] as T;
+            if(!!this.table[key]) {
+                return this.table[key] as T;
             }
 
             return false;
-        },
-
-        getKeys(): string[] {
-            return Object.keys(table);
-        },
+        }
 
         asJson(): any {
-            const keys = Object.keys(table);
+            const keys = Object.keys(this.table);
             const ret: IDictionary<any> = {};
 
-            keys.forEach(key => ret[key] = table[key]);
+            keys.forEach(key => ret[key] = this.table[key]);
 
             return ret;
-        },
-
-        clear() {
-            const keys = Object.keys(table);
-
-            keys.forEach(key => delete table[key]);
-
-            return variableTable;
         }
-    };
 
-    return variableTable;
+        clear(): IVariableTestable {
+            const keys = Object.keys(this.table);
+
+            keys.forEach(key => delete this.table[key]);
+
+            return this;
+        }
+
+        addGlobalValue<T extends Savable>(key: string, value: T): IVariableExists {
+            if(this.parent) {
+                this.parent.addGlobalValue(key, value);
+            }
+
+            this.addValue(key, value);
+            return this;
+        }
+
+        addGlobalValueToStringList(key: string, value: IVariableString): IVariableExists {
+            if(this.parent) {
+                this.parent.addGlobalValueToStringList(key, value);
+            }
+
+            this.addValueToStringList(key, value);
+
+            return this;
+        }
+        
+        getKeys(): string[] {
+            return Object.keys(this.table);
+        }
+    }
+
+    return new VariableTable();
 }
 
 const variableBuilder: IRegisterable = {

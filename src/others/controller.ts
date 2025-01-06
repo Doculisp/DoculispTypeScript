@@ -4,7 +4,7 @@ import { IController } from "../types/types.controller";
 import { IFileWriter } from "../types/types.fileHandler";
 import { IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
-import { IVariableRetriever, IVariableSaver } from "../types/types.variableTable";
+import { IVariableTable } from "../types/types.variableTable";
 import { IPath } from "../types/types.filePath";
 import { IProjectDocument } from "../types/types.astProject";
 import { StringBuilderConstructor } from "../types/types.sringBuilder";
@@ -14,10 +14,11 @@ type CompileResult = {
     compiled: IDoculisp | IEmptyDoculisp;
     destinationPath: IPath;
     id?: string | undefined;
+    table: IVariableTable;
 };
 
-function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, stringBuilderConstructor: StringBuilderConstructor): IController {
-    function _write(doculisp: Result<IDoculisp | IEmptyDoculisp>, destinationPath: IPath | false): Result<string | false> {
+function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableTable, stringBuilderConstructor: StringBuilderConstructor): IController {
+    function _write(doculisp: Result<IDoculisp | IEmptyDoculisp>, destinationPath: IPath | false, variableTable: IVariableTable): Result<string | false> {
         const document = stringWrter.writeAst(doculisp, variableTable);
 
         if(!!destinationPath){
@@ -33,10 +34,10 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
         return util.ok((destinationPath as IPath).fullName);
     }
     
-    function _compile(sourcePath: IPath, destinationPath: IPath | false): Result<string | false> {
+    function _compile(sourcePath: IPath, destinationPath: IPath | false, variableTable: IVariableTable): Result<string | false> {
         const doculisp = astBuilder.parse(sourcePath, variableTable);
         
-        return _write(doculisp, destinationPath);
+        return _write(doculisp, destinationPath, variableTable);
     }
 
     function _compileProject(sourcePath: IPath): Result<string>[] {
@@ -52,10 +53,16 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
         for (let index = 0; index < project.value.documents.length; index++) {
             const document = project.value.documents[index] as IProjectDocument;
             if(document.id) {
-                variableTable.addValue(document.id, { value: document.destinationPath, type: 'variable-path'});
+                if(variableTable.hasKey(document.id)) {
+                    results.push(util.fail(`Document id ('${document.id}') is a duplicate in project file '${sourcePath.fullName}'`, sourcePath));
+                }
+                else {
+                    variableTable.addValue(document.id, { value: document.id, documentPath: document.destinationPath, type: 'variable-id' });
+                }
             }
 
-            const result = astBuilder.parse(document.sourcePath, variableTable);
+            const table = variableTable.createChild();
+            const result = astBuilder.parse(document.sourcePath, table);
             if(!result.success) {
                 results.push(result);
             }
@@ -64,6 +71,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
                     compiled: result.value,
                     destinationPath: document.destinationPath,
                     id: document.id,
+                    table: table,
                 });
             }
         }
@@ -74,7 +82,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
         for (let index = 0; index < compileResult.length; index++) {
             const compiledDocument = compileResult[index] as CompileResult;
-            const writeResult = _write(util.ok(compiledDocument.compiled), compiledDocument.destinationPath);
+            const writeResult = _write(util.ok(compiledDocument.compiled), compiledDocument.destinationPath, compiledDocument.table);
             if(!writeResult.success) {
                 results.push(writeResult);
             } else {
@@ -98,11 +106,11 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
             return _compileProject(sourcePath);
         }
 
-        return [_compile(sourcePath, destinationPath) as Result<string>];
+        return [_compile(sourcePath, destinationPath, variableTable) as Result<string>];
     }
 
     function test(sourcePath: IPath): Result<false>[] {
-        return [_compile(sourcePath, false) as Result<false>];
+        return [_compile(sourcePath, false, variableTable) as Result<false>];
     }
 
     return {
@@ -112,7 +120,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 }
 
 const controllerBuilder: IRegisterable = {
-    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, stringBuilderConstructor: StringBuilderConstructor) => buildLoader(util, handler, astBuilder, stringWriter, variableTable, stringBuilderConstructor),
+    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableTable, stringBuilderConstructor: StringBuilderConstructor) => buildLoader(util, handler, astBuilder, stringWriter, variableTable, stringBuilderConstructor),
     name: 'controller',
     dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter', 'variableTable', 'stringBuilder'],
     singleton: true
