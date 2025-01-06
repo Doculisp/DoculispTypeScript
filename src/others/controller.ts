@@ -8,10 +8,16 @@ import { IVariableRetriever, IVariableSaver } from "../types/types.variableTable
 import { IPath } from "../types/types.filePath";
 import { IProjectDocument } from "../types/types.astProject";
 import { StringBuilderConstructor } from "../types/types.sringBuilder";
+import { IDoculisp, IEmptyDoculisp } from "../types/types.astDoculisp";
+
+type CompileResult = {
+    compiled: IDoculisp | IEmptyDoculisp;
+    destinationPath: IPath;
+    id?: string | undefined;
+};
 
 function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableRetriever & IVariableSaver, stringBuilderConstructor: StringBuilderConstructor): IController {
-    function _compile(sourcePath: IPath, destinationPath: IPath | false): Result<string | false> {
-        const doculisp = astBuilder.parse(sourcePath, variableTable);
+    function _write(doculisp: Result<IDoculisp | IEmptyDoculisp>, destinationPath: IPath | false): Result<string | false> {
         const document = stringWrter.writeAst(doculisp, variableTable);
 
         if(!!destinationPath){
@@ -26,6 +32,12 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
         return util.ok((destinationPath as IPath).fullName);
     }
+    
+    function _compile(sourcePath: IPath, destinationPath: IPath | false): Result<string | false> {
+        const doculisp = astBuilder.parse(sourcePath, variableTable);
+        
+        return _write(doculisp, destinationPath);
+    }
 
     function _compileProject(sourcePath: IPath): Result<string>[] {
         const project = astBuilder.parseProject(sourcePath);
@@ -34,20 +46,40 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
             return [project];
         }
 
+        const compileResult: CompileResult[] = [];
         const results: Result<string>[] = [];
 
         for (let index = 0; index < project.value.documents.length; index++) {
             const document = project.value.documents[index] as IProjectDocument;
             if(document.id) {
-                variableTable.addValue(document.id, document.destinationPath);
+                variableTable.addValue(document.id, { value: document.destinationPath, type: 'variable-path'});
             }
 
-            const result = _compile(document.sourcePath, document.destinationPath)
+            const result = astBuilder.parse(document.sourcePath, variableTable);
             if(!result.success) {
                 results.push(result);
             }
+            else {
+                compileResult.push({
+                    compiled: result.value,
+                    destinationPath: document.destinationPath,
+                    id: document.id,
+                });
+            }
+        }
 
-            results.push(util.ok(document.destinationPath.fullName));
+        if(0 < results.length) {
+            return results;
+        }
+
+        for (let index = 0; index < compileResult.length; index++) {
+            const compiledDocument = compileResult[index] as CompileResult;
+            const writeResult = _write(util.ok(compiledDocument.compiled), compiledDocument.destinationPath);
+            if(!writeResult.success) {
+                results.push(writeResult);
+            } else {
+                results.push(util.ok(compiledDocument.destinationPath.fullName));
+            }
         }
 
         return results;

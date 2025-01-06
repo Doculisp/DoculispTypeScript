@@ -1,6 +1,15 @@
 {
-  "author": [
-    "Jason Kerney",
-    "Chris Stead"
-  ]
+  "author": {
+    "type": "variable-array-string",
+    "value": [
+      {
+        "type": "variable-string",
+        "value": "Jason Kerney"
+      },
+      {
+        "type": "variable-string",
+        "value": "Chris Stead"
+      }
+    ]
+  }
 }

@@ -1,23 +1,25 @@
 import { IDictionary, IRegisterable } from "../types/types.containers";
-import { IVariableExists, IVariableTestable } from "../types/types.variableTable";
+import { IVariableExists, IVariableString, IVariableTestable, Savable } from "../types/types.variableTable";
 
 function buildVariableTable(): IVariableTestable {
-    const table: IDictionary<any> = {};
+    const table: IDictionary<Savable> = {};
 0
     const variableTable: IVariableTestable = {
-        addValue<T>(key: string, value: T): IVariableExists {
+        addValue<T extends Savable>(key: string, value: T): IVariableExists {
             table[key] = value;
             return variableTable;
         },
 
-        addValueToList<T>(key: string, value: T): IVariableExists {
-            if(!!table[key]) {
-                if(!(table[key] as any[]).includes(value)){
-                    (table[key] as any[]).push(value);
-                }
+        addValueToStringList(key: string, value: IVariableString): IVariableExists {
+            if(table[key]) {
+                let tableValue = table[key] as Savable;
+                if(tableValue.type === 'variable-array-string')
+                    if(!tableValue.value.some(t => t.value == value.value)) {
+                        tableValue.value.push(value);
+                    }
             }
             else {
-                table[key] = [value];
+                table[key] = { value: [value], type: 'variable-array-string' };
             }
             return variableTable;
         },
@@ -26,9 +28,9 @@ function buildVariableTable(): IVariableTestable {
             return !!table[key];
         },
 
-        getValue<T>(key: string): T | false {
+        getValue<T extends Savable>(key: string): T | false {
             if(!!table[key]) {
-                return table[key];
+                return table[key] as T;
             }
 
             return false;

@@ -3,7 +3,7 @@ import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IStringBuilder, StringBuilderConstructor } from "../types/types.sringBuilder";
 import { IStringWriter } from "../types/types.stringWriter";
-import { IVariableRetriever } from "../types/types.variableTable";
+import { IStringArray, IVariableRetriever } from "../types/types.variableTable";
 
 function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstructor) : IStringWriter {
 
@@ -225,11 +225,13 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
     }
 
     function buildAuthorTable(variableTable: IVariableRetriever): string | false {
-        const authors = variableTable.getValue<string[]>('author');
+        const authorsVariable = variableTable.getValue<IStringArray>('author');
 
-        if(!authors){
+        if(!authorsVariable){
             return false;
         }
+
+        const authors = authorsVariable.value.map(v => v.value);
 
         if(authors.length === 0) {
             return false;

@@ -249,7 +249,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                         return util.fail(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, location.documentPath);
                     }
 
-                    variableTable.addValueToList('author', author.parameter.value);
+                    variableTable.addValueToStringList('author', { value: author.parameter.value, type: 'variable-string' });
                 }
 
                 return util.ok(false);

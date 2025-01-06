@@ -1,5 +1,11 @@
 {
-  "author": [
-    "Jason Kerney"
-  ]
+  "author": {
+    "type": "variable-array-string",
+    "value": [
+      {
+        "type": "variable-string",
+        "value": "Jason Kerney"
+      }
+    ]
+  }
 }
