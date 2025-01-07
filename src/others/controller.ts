@@ -41,7 +41,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
     }
 
     function _compileProject(sourcePath: IPath): Result<string>[] {
-        const project = astBuilder.parseProject(sourcePath);
+        const project = astBuilder.parseProject(sourcePath, variableTable);
 
         if(!project.success) {
             return [project];
@@ -52,14 +52,6 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
         for (let index = 0; index < project.value.documents.length; index++) {
             const document = project.value.documents[index] as IProjectDocument;
-            if(document.id) {
-                if(variableTable.hasKey(document.id)) {
-                    results.push(util.fail(`Document id ('${document.id}') is a duplicate in project file '${sourcePath.fullName}'`, sourcePath));
-                }
-                else {
-                    variableTable.addGlobalValue(document.id, { value: document.id, documentPath: document.destinationPath, type: 'variable-id' });
-                }
-            }
 
             const table = variableTable.createChild();
             const result = astBuilder.parse(document.sourcePath, document.destinationPath, table);

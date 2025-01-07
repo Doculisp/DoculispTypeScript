@@ -1,11 +1,12 @@
 import { AtomAst, CoreAst, IAstEmpty, RootAst } from "../types/types.ast";
 import { IProjectDocument, IProjectDocuments, IProjectParser } from "../types/types.astProject";
-import { IDictionary, IRegisterable } from "../types/types.containers";
+import { IRegisterable } from "../types/types.containers";
 import { IPath, PathConstructor } from "../types/types.filePath";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
 import { TextHelper } from "../types/types.textHelpers";
 import { ITrimArray } from "../types/types.trimArray";
+import { IVariableTable } from "../types/types.variableTable";
 
 interface ISource {
     source: IPath,
@@ -20,9 +21,7 @@ interface IOutput {
 }
 
 function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper): IProjectParser {
-    function parse(tokenResults: Result<RootAst | IAstEmpty>): Result<IProjectDocuments> {
-        const ids: IDictionary<boolean> = {};
-
+    function parse(tokenResults: Result<RootAst | IAstEmpty>, variableTable: IVariableTable): Result<IProjectDocuments> {
         if(!tokenResults.success) {
             return tokenResults;
         }
@@ -190,6 +189,10 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 const source = sources[0] as ISource;
                 const output = outputs[0] as IOutput;
 
+                if(id){
+                    variableTable.addGlobalValue(id, { type: 'variable-id', value: output.output, source: current });
+                }
+
                 const found: IProjectDocument = {
                     type: 'project-document',
                     destinationPath: output.output,
@@ -228,12 +231,16 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 return util.fail(`Id must be lowercase '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}. Did you mean '${id.toLocaleLowerCase()}'?`)
             }
 
-            if(ids[id]) {
-                return util.fail(`Duplicate id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}.`, current.documentPath);
+            if(variableTable.hasKey(id)) {
+                let orig = variableTable.getValue(id);
+                let msg = '';
+
+                if(orig && orig.type === 'variable-id') {
+                    msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
+                }
+
+                return util.fail(`Duplicate id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}.${msg}`, current.documentPath);
             }
-
-            ids[id] = true;
-
             return parseDocumentByParts(current, input, id)(ast.subStructure, (ast.subStructure[0] as AtomAst).location);
         }
 

@@ -3,7 +3,7 @@ import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IStringBuilder, StringBuilderConstructor } from "../types/types.sringBuilder";
 import { IStringWriter } from "../types/types.stringWriter";
-import { IStringArray, IVariableRetriever } from "../types/types.variableTable";
+import { IStringArray, IVariableTable } from "../types/types.variableTable";
 
 function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstructor) : IStringWriter {
 
@@ -224,7 +224,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         return sb.toString();
     }
 
-    function buildAuthorTable(variableTable: IVariableRetriever): string | false {
+    function buildAuthorTable(variableTable: IVariableTable): string | false {
         const authorsVariable = variableTable.getValue<IStringArray>('author');
 
         if(!authorsVariable){
@@ -244,7 +244,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
 
         return sb.toString();
     }
-    function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableRetriever): Result<string> {
+    function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string> {
         if(!astMaybe.success) {
             return astMaybe;
         }

@@ -1,8 +1,9 @@
 import { IPath } from "./types.filePath";
+import { ILocation } from "./types.general";
 
 export interface IVariableId {
-    value: string;
-    documentPath: IPath;
+    value: IPath;
+    source: ILocation;
     headerLinkText?: string | undefined;
     type: 'variable-id';
 };
@@ -27,26 +28,16 @@ export interface IStringArray {
     type: 'variable-array-string';
 }
 
-export interface IVariableExists {
-    hasKey(key: string): boolean
-};
-
 export type Savable = IVariableId | IStringArray | IVariablePath | IVariableString | IVariableEmptyId;
 
-export interface IVariableSaver extends IVariableExists {
-    addValue<T extends Savable>(key: string, value: T): IVariableExists;
-    addValueToStringList(key: string, value: IVariableString): IVariableExists;
-    addGlobalValue<T extends Savable>(key: string, value: T): IVariableExists;
-    addGlobalValueToStringList(key: string, value: IVariableString): IVariableExists;
-};
-
-export interface IVariableRetriever extends IVariableExists {
+export interface IVariableTable {
+    hasKey(key: string): boolean
+    addValue<T extends Savable>(key: string, value: T): IVariableTable;
+    addValueToStringList(key: string, value: IVariableString): IVariableTable;
+    addGlobalValue<T extends Savable>(key: string, value: T): IVariableTable;
+    addGlobalValueToStringList(key: string, value: IVariableString): IVariableTable;
     getValue<T extends Savable>(key: string): T | false;
     getKeys(): string[];
-};
-
-
-export interface IVariableTable extends IVariableSaver, IVariableRetriever {
     createChild(): IVariableTable;
 };
 

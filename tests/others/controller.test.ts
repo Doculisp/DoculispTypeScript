@@ -4,7 +4,7 @@ import { IPath, PathConstructor } from "../../src/types/types.filePath";
 import { IUtil, Result } from "../../src/types/types.general";
 import { IIncludeBuilder } from "../../src/types/types.includeBuilder";
 import { IDoculisp, IEmptyDoculisp } from "../../src/types/types.astDoculisp";
-import { IVariableRetriever, IVariableSaver } from "../../src/types/types.variableTable";
+import { IVariableTable } from "../../src/types/types.variableTable";
 import { IStringWriter } from "../../src/types/types.stringWriter";
 import { IController } from "../../src/types/types.controller";
 
@@ -94,11 +94,11 @@ describe('controller', () => {
         };
 
         const includeBuilder: IIncludeBuilder = {
-            parse: function (path: IPath, _destinationPath: IPath | false, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+            parse: function (path: IPath, _destinationPath: IPath | false, _variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.sourcePath = path;
                 return includeConfig.result ?? util.ok(emptyResult);
             },
-            parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _destinationPath: IPath | false, _variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+            parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _destinationPath: IPath | false, _variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.doculisp = doculisp;
                 if (!doculisp.success) {
                     return doculisp;
@@ -114,7 +114,7 @@ describe('controller', () => {
 
         writerConfig = {};
         const stringWriter: IStringWriter = {
-            writeAst: function (astMaybe: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableRetriever): Result<string> {
+            writeAst: function (astMaybe: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableTable): Result<string> {
                 writerConfig.astMaybe = astMaybe;
                 if(!astMaybe.success) {
                     return astMaybe;

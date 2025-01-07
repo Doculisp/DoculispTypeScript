@@ -1,5 +1,5 @@
 {
   "documentPath": "/docs.dlproj",
-  "message": "Duplicate id 'readme' at '/docs.dlproj' Line: 10, Char: 10.",
+  "message": "Duplicate id 'readme' at '/docs.dlproj' Line: 10, Char: 10.\n\tOriginal us of Id was in '/docs.dlproj' Line: 5, Char: 14.",
   "success": false
 }

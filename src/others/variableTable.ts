@@ -1,5 +1,5 @@
 import { IDictionary, IRegisterable } from "../types/types.containers";
-import { IVariableExists, IVariableString, IVariableTable, IVariableTestable, Savable } from "../types/types.variableTable";
+import { IVariableString, IVariableTable, IVariableTestable, Savable } from "../types/types.variableTable";
 
 function buildVariableTable(): IVariableTestable {
     class VariableTable implements IVariableTable, IVariableTestable {
@@ -23,12 +23,12 @@ function buildVariableTable(): IVariableTestable {
             return new VariableTable(this);
         }
         
-        addValue<T extends Savable>(key: string, value: T): IVariableExists {
+        addValue<T extends Savable>(key: string, value: T): IVariableTable {
             this.table[key] = value;
             return this;
         }
 
-        addValueToStringList(key: string, value: IVariableString): IVariableExists {
+        addValueToStringList(key: string, value: IVariableString): IVariableTable {
             if(this.table[key]) {
                 let tableValue = this.table[key] as Savable;
                 if(tableValue.type === 'variable-array-string')
@@ -85,13 +85,13 @@ function buildVariableTable(): IVariableTestable {
             }
         }
 
-        addGlobalValue<T extends Savable>(key: string, value: T): IVariableExists {
+        addGlobalValue<T extends Savable>(key: string, value: T): IVariableTable {
             this.addValueToParent(key, value);
             this.addValue(key, value);
             return this;
         }
 
-        addGlobalValueToStringList(key: string, value: IVariableString): IVariableExists {
+        addGlobalValueToStringList(key: string, value: IVariableString): IVariableTable {
             if(this.parent) {
                 this.parent.addGlobalValueToStringList(key, value);
             }

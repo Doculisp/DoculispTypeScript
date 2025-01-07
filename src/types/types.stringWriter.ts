@@ -1,7 +1,7 @@
 import { IDoculisp, IEmptyDoculisp } from "./types.astDoculisp";
 import { Result } from "./types.general";
-import { IVariableRetriever } from "./types.variableTable";
+import { IVariableTable } from "./types.variableTable";
 
 export interface IStringWriter {
-    writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableRetriever): Result<string>;
+    writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string>;
 };

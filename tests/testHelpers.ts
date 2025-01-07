@@ -6,7 +6,7 @@ import { IAstParser, RootAst, IAstEmpty } from "../src/types/types.ast";
 import { IDoculisp, IDoculispParser, IEmptyDoculisp } from "../src/types/types.astDoculisp";
 import { IIncludeBuilder } from "../src/types/types.includeBuilder";
 import { IStringWriter } from "../src/types/types.stringWriter"
-import { IVariableRetriever, IVariableSaver } from "../src/types/types.variableTable";
+import { IVariableTable } from "../src/types/types.variableTable";
 import { IPath } from "../src/types/types.filePath";
 import { IProjectDocuments, IProjectParser } from "../src/types/types.astProject";
 import path from "path";
@@ -99,7 +99,7 @@ function rawAstResultBuilder(environment: ITestableContainer, text: string, loca
 function rawDoculispResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp | IEmptyDoculisp> {
     const astResultParser = rawAstResultBuilder(environment, text, location);
     const astParser = buildDoculispParser(environment);
-    const variableTable = environment.buildAs<IVariableSaver>('variableTable');
+    const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
     return map(astResultParser, result =>  astParser.parse(result, false, variableTable));
 }
@@ -107,7 +107,7 @@ function rawDoculispResultBuilder(environment: ITestableContainer, text: string,
 function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp | IEmptyDoculisp> {
     const astResultParser = rawDoculispResultBuilder(environment, text, location);
     const astRecursiveBuilder = buildIncludeParser(environment);
-    const variableTable = environment.buildAs<IVariableSaver>('variableTable');
+    const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
     return map(astResultParser, result => astRecursiveBuilder.parseExternals(result, false, variableTable));
 }
@@ -115,14 +115,15 @@ function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, t
 function rawAstProjectParser(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IProjectDocuments> {
     const astResultParser = rawAstResultBuilder(environment, text, location);
     const projectParser = buildProjectParser(environment);
+    const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
-    return map(astResultParser, projectParser.parse);
+    return map(astResultParser, result => projectParser.parse(result, variableTable));
 }
 
 function rawStringWriterResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<string> {
     const includeBuilder = rawAstRecursiveExternalResultBuilder(environment, text, location);
     const stringWriter = buildStringWriter(environment);
-    const variableTable = environment.buildAs<IVariableRetriever>('variableTable');
+    const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
     return map(includeBuilder, result => stringWriter.writeAst(result, variableTable));
 }
@@ -130,7 +131,7 @@ function rawStringWriterResultBuilder(environment: ITestableContainer, text: str
 function rawStringWriterPathResultBuilder(environment: ITestableContainer, filePath: IPath): () => Result<string> {
     const astRecursiveBuilder = buildIncludeParser(environment);
     const stringWriter = buildStringWriter(environment);
-    const variableTable = environment.buildAs<IVariableSaver & IVariableRetriever>('variableTable');
+    const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
     return map(() => astRecursiveBuilder.parse(filePath, false, variableTable), result => stringWriter.writeAst(result, variableTable));
 }
@@ -192,7 +193,7 @@ function newAstProjectBuilder(container: IContainer, setup: (environment: ITesta
 
 function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: IPath) => Result<IDoculisp | IEmptyDoculisp> {
     return newBuilder(container, setup, environment => {
-        const variableTable = environment.buildAs<IVariableSaver>('variableTable');
+        const variableTable = environment.buildAs<IVariableTable>('variableTable');
         return path => buildIncludeParser(environment).parse(path, false, variableTable);
     });
 }

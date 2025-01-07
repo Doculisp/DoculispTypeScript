@@ -4,7 +4,7 @@ import { IDictionary, IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
 import { ITrimArray } from "../types/types.trimArray";
-import { IVariableSaver } from "../types/types.variableTable";
+import { IVariableTable } from "../types/types.variableTable";
 import { IPath, PathConstructor } from "../types/types.filePath";
 import { TextHelper } from "../types/types.textHelpers";
 
@@ -27,7 +27,7 @@ function getSymbolErrorMessage<T extends Ast>(typeId: string, word: string, curr
 }
 
 function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper): IDoculispParser {
-    function parse(astResult: Result<RootAst | IAstEmpty>, destinationPath: IPath | false, variableTable: IVariableSaver): Result<IDoculisp | IEmptyDoculisp> {
+    function parse(astResult: Result<RootAst | IAstEmpty>, destinationPath: IPath | false, variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
         }
@@ -79,13 +79,19 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
 
                 if(variableTable.hasKey(id)) {
-                    return util.fail(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} has already been used.`, current.documentPath);
+                    let orig = variableTable.getValue(id);
+                    let msg = '';
+    
+                    if(orig && orig.type === 'variable-id') {
+                        msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
+                    }
+                    return util.fail(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} has already been used.${msg}`, current.documentPath);
                 }
 
                 if(!destinationPath) {
                     variableTable.addGlobalValue(id, { value: '', type: 'variable-empty-id' });
                 } else {
-                    variableTable.addGlobalValue(id, { type: 'variable-id', documentPath: destinationPath, value: id, headerLinkText: textHelper.toLinkText(ast.parameter.value) })
+                    variableTable.addGlobalValue(id, { type: 'variable-id', value: destinationPath, source: current, headerLinkText: textHelper.toLinkText(ast.parameter.value) })
                 }
             }
 
@@ -305,13 +311,19 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
 
                 if(variableTable.hasKey(id)) {
-                    return util.fail(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} has already been used.`, current.documentPath);
+                    let orig = variableTable.getValue(id);
+                    let msg = '';
+    
+                    if(orig && orig.type === 'variable-id') {
+                        msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
+                    }
+                    return util.fail(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} has already been used.${msg}`, current.documentPath);
                 }
 
                 if(!destinationPath) {
                     variableTable.addGlobalValue(id, { value: '', type: 'variable-empty-id' });
                 } else {
-                    variableTable.addGlobalValue(id, { value: id, documentPath: destinationPath, type: 'variable-id', headerLinkText: sectionLinkText ? sectionLinkText : undefined });
+                    variableTable.addGlobalValue(id, { value: destinationPath, source: location, type: 'variable-id', headerLinkText: sectionLinkText ? sectionLinkText : undefined });
                 }
 
                 return util.ok(id);

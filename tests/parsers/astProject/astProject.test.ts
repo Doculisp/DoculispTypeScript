@@ -5,12 +5,14 @@ import { getVerifier } from "../../tools";
 import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
 import { IProjectDocuments, IProjectParser } from "../../../src/types/types.astProject";
 import { IProjectLocation, IUtil, Result } from "../../../src/types/types.general";
+import { IVariableTable } from "../../../src/types/types.variableTable";
 
 describe('astProject', () => {
     let resultBuilder: (text: string, projectLocation: IProjectLocation) => Result<IProjectDocuments>;
     let verifyAsJson: (data: any, options?: Options) => void;
     let parser: IProjectParser;
     let util: IUtil;
+    let variableTable: IVariableTable = null as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -23,6 +25,7 @@ describe('astProject', () => {
 
         parser = testable.project.parseBuilder(container, environment => {
             util = environment.buildAs<IUtil>('util');
+            variableTable = environment.buildAs<IVariableTable>('variableTable').createChild();
         });
     });
 
@@ -40,7 +43,7 @@ describe('astProject', () => {
 
     it('should return an error when given an error', () => {
         const tokenResults = util.fail('No good.');
-        const result = parser.parse(tokenResults);
+        const result = parser.parse(tokenResults, variableTable);
 
         expect(result).toBe(tokenResults);
     });

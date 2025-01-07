@@ -8,7 +8,7 @@ import { configure } from "approvals/lib/config";
 import { container } from "../../../src/container";
 import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
 import { buildProjectLocation, buildPath, testable } from '../../testHelpers';
-import { IVariableSaver, IVariableTable } from '../../../src/types/types.variableTable';
+import { IVariableTestable } from '../../../src/types/types.variableTable';
 import { IPath } from '../../../src/types/types.filePath';
 
 describe('includeBuilder', () => {
@@ -18,7 +18,7 @@ describe('includeBuilder', () => {
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
     let addPathResult: (filePath: string, result: Result<string>) => void = undefined as any;
-    let variableSaver: IVariableSaver = undefined as any;
+    let variableSaver: IVariableTestable = undefined as any;
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -28,7 +28,8 @@ describe('includeBuilder', () => {
         util = null as any;
         util = environment.buildAs<IUtil>('util');
 
-        variableSaver = environment.buildAs<IVariableTable>('variableTable');
+        variableSaver = environment.buildAs<IVariableTestable>('variableTable');
+        variableSaver.clear();
 
         ok = util.ok;
         fail = util.fail;
