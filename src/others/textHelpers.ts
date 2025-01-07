@@ -114,16 +114,16 @@ function isLetter(charCode: number) : Boolean {
     return false;
 }
 
-function removeSymbols(word: string): string {
-    let toRemove = containsSymbols(word);
+function toLinkText(word: string): string {
+    let start = word.toLowerCase().replaceAll(' ', '-');
+    let toRemove = containsSymbols(start);
 
     if(!toRemove) {
-        return word;
+        return start;
     }
 
-    let newWord = word;
-    toRemove.forEach(r => newWord = newWord.replaceAll(r, ''))
-    return newWord;
+    toRemove.forEach(r => start = start.replaceAll(r, ''))
+    return start;
 }
 
 function containsSymbols(word: string): string[] | false {
@@ -179,7 +179,7 @@ function symbolLocation(word: string): IDictionary<number>|false {
 function build(): TextHelper {
     return {
         isLetter,
-        removeSymbols,
+        toLinkText,
         containsSymbols,
         isLowercase,
         symbolLocation,

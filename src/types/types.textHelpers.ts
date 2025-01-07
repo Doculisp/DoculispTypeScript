@@ -32,7 +32,7 @@ export type Searcher = {
 
 export type TextHelper = {
     isLetter(charCode: number) : Boolean;
-    removeSymbols(word: string): string;
+    toLinkText(word: string): string;
     containsSymbols(word: string): string[] | false;
     isLowercase(word: string): Boolean;
     symbolLocation(word: string): IDictionary<number>|false;

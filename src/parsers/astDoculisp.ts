@@ -85,7 +85,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 if(!destinationPath) {
                     variableTable.addGlobalValue(id, { value: '', type: 'variable-empty-id' });
                 } else {
-                    variableTable.addGlobalValue(id, { type: 'variable-id', documentPath: destinationPath, value: id, headerLinkText: textHelper.removeSymbols(ast.parameter.value) })
+                    variableTable.addGlobalValue(id, { type: 'variable-id', documentPath: destinationPath, value: id, headerLinkText: textHelper.toLinkText(ast.parameter.value) })
                 }
             }
 
@@ -105,10 +105,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
         function parseSectionMeta(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], ITitle | ILoad> {
             function getLinkText(title: IAstCommand, refLink: string | boolean) {
-                let linkText = title.parameter.value.toLowerCase().replaceAll(' ', '-');
-                if (!refLink) {
-                    linkText = textHelper.removeSymbols(linkText);
-                }
+                let linkText = textHelper.toLinkText(title.parameter.value);
 
                 sectionLinkText = linkText;
                 return linkText;
