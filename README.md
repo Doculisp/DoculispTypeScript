@@ -18,7 +18,7 @@ A Compiler for Doculisp Lang.
 ## Table of Contents ##
 
 1. CLI: [Using the Command Line Interface](#using-the-command-line-interface)
-2. Language: [Doculisp](#doculisp)
+2. Language: [Doculisp Language](#doculisp-language)
 3. Project: [The Doculisp Project File](#the-doculisp-project-file)
 
 ## Using the Command Line Interface ##
@@ -65,7 +65,7 @@ Options:
 When using `--test` only the source path if mandatory.
 When compiling both the source and destination are mandatory.
 
-## Doculisp ##
+## Doculisp Language ##
 
 ```
 ___  ____ ____ _  _ _    _ ____ ___
