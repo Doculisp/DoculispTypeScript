@@ -42,8 +42,16 @@ function buildVariableTable(): IVariableTestable {
             return this;
         }
 
+        private parentHasKey(key: string): boolean {
+            return !!this.parent && !!this.parent.hasKey(key);
+        }
+
         hasKey(key: string): boolean {
-            return !!this.table[key];
+            return !!this.table[key] || this.parentHasKey(key);
+        }
+
+        private getValueFromParent<T extends Savable>(key: string): T | false {
+            return !!this.parent ? this.parent.getValue(key) : false;
         }
 
         getValue<T extends Savable>(key: string): T | false {
@@ -51,7 +59,7 @@ function buildVariableTable(): IVariableTestable {
                 return this.table[key] as T;
             }
 
-            return false;
+            return this.getValueFromParent(key);
         }
 
         asJson(): any {
@@ -71,11 +79,14 @@ function buildVariableTable(): IVariableTestable {
             return this;
         }
 
-        addGlobalValue<T extends Savable>(key: string, value: T): IVariableExists {
+        private addValueToParent<T extends Savable>(key: string, value: T): void {
             if(this.parent) {
                 this.parent.addGlobalValue(key, value);
             }
+        }
 
+        addGlobalValue<T extends Savable>(key: string, value: T): IVariableExists {
+            this.addValueToParent(key, value);
             this.addValue(key, value);
             return this;
         }
@@ -89,9 +100,22 @@ function buildVariableTable(): IVariableTestable {
 
             return this;
         }
+
+        private getParentKeys(): string[] {
+            if(!this.parent) {
+                return [];
+            }
+
+            return this.parent.getKeys();
+        }
         
         getKeys(): string[] {
-            return Object.keys(this.table);
+            const mine = Object.keys(this.table);
+            const theirs = this.getParentKeys();
+
+            const both = new Set([...mine, ...theirs]);
+
+            return Array.from(both);
         }
     }
 
