@@ -40,7 +40,8 @@
 
 ## Earlier Version ##
 
-* Added project files `.dlproj`
+* 2.9.0
+  * Added project files `.dlproj`
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
