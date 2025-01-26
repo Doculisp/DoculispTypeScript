@@ -7,7 +7,6 @@ import { IStringWriter } from "../types/types.stringWriter";
 import { IVariableTable } from "../types/types.variableTable";
 import { IPath } from "../types/types.filePath";
 import { IProjectDocument } from "../types/types.astProject";
-import { StringBuilderConstructor } from "../types/types.sringBuilder";
 import { IDoculisp, IEmptyDoculisp } from "../types/types.astDoculisp";
 
 type CompileResult = {
@@ -17,7 +16,7 @@ type CompileResult = {
     table: IVariableTable;
 };
 
-function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableTable, stringBuilderConstructor: StringBuilderConstructor): IController {
+function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableTable): IController {
     function _write(doculisp: Result<IDoculisp | IEmptyDoculisp>, destinationPath: IPath | false, variableTable: IVariableTable): Result<string | false> {
         const document = stringWrter.writeAst(doculisp, variableTable);
 
@@ -112,9 +111,9 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 }
 
 const controllerBuilder: IRegisterable = {
-    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableTable, stringBuilderConstructor: StringBuilderConstructor) => buildLoader(util, handler, astBuilder, stringWriter, variableTable, stringBuilderConstructor),
+    builder: (util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWriter: IStringWriter, variableTable: IVariableTable) => buildLoader(util, handler, astBuilder, stringWriter, variableTable),
     name: 'controller',
-    dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter', 'variableTable', 'stringBuilder'],
+    dependencies: ['util', 'fileHandler', 'includeBuilder', 'stringWriter', 'variableTable'],
     singleton: true
 };
 
