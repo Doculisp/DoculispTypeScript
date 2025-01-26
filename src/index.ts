@@ -9,6 +9,7 @@ import Registry from '@slimio/npm-registry';
 import figlet from 'figlet';
 import path from 'path';
 import { PathConstructor } from './types/types.filePath';
+import { IVariableTable, sourceKey } from './types/types.variableTable';
 
 const program = new Command();
 const controller = container.buildAs<IController>('controller');
@@ -97,7 +98,9 @@ async function main() {
                     console.error('Error: The `--test` option requires a source path.');
                 }
                 else {
-                    const result = controller.test(sourcePath);
+                    const variableTable = container.buildAs<IVariableTable>('variableTable').createChild();
+                    variableTable.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
+                    const result = controller.test(variableTable);
                     reportResult(...result);
                 }
             }

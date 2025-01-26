@@ -4,7 +4,7 @@ import { IPath, PathConstructor } from "../../src/types/types.filePath";
 import { IUtil, Result } from "../../src/types/types.general";
 import { IIncludeBuilder } from "../../src/types/types.includeBuilder";
 import { IDoculisp, IEmptyDoculisp } from "../../src/types/types.astDoculisp";
-import { IVariableTable } from "../../src/types/types.variableTable";
+import { IVariablePath, IVariableTable, sourceKey } from "../../src/types/types.variableTable";
 import { IStringWriter } from "../../src/types/types.stringWriter";
 import { IController } from "../../src/types/types.controller";
 
@@ -14,6 +14,7 @@ import { configure } from "approvals/lib/config";
 import { getVerifier } from "../tools";
 import path from "path";
 import { IProjectDocuments } from "../../src/types/types.astProject";
+import { buildPath } from "../testHelpers";
 
 type FileConfig = {
     outputPath?: IPath | undefined;
@@ -42,6 +43,7 @@ describe('controller', () => {
     let fileConfig: FileConfig = undefined as any;
     let includeConfig: IncludeConfig = undefined as any;
     let writerConfig: WriterConfig = undefined as any;
+    let table: IVariableTable = undefined as any;
 
     let pathConstructor: PathConstructor = undefined as any;
     let sut: IController = undefined as any;
@@ -94,11 +96,15 @@ describe('controller', () => {
         };
 
         const includeBuilder: IIncludeBuilder = {
-            parse: function (path: IPath, _destinationPath: IPath | false, _variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
-                includeConfig.sourcePath = path;
+            parse: function (variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
+                includeConfig.sourcePath = (
+                    variableTable.hasKey(sourceKey) ?
+                    (variableTable.getValue(sourceKey) as IVariablePath).value :
+                    buildPath('path not provided', false)
+                );
                 return includeConfig.result ?? util.ok(emptyResult);
             },
-            parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _destinationPath: IPath | false, _variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
+            parseExternals: function (doculisp: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
                 includeConfig.doculisp = doculisp;
                 if (!doculisp.success) {
                     return doculisp;
@@ -144,13 +150,16 @@ describe('controller', () => {
         };
         testable.replaceValue(pathConstructor, 'pathConstructor');
 
+        table = testable.buildAs<IVariableTable>('variableTable').createChild();
+
         sut = testable.buildAs<IController>('controller');
     });
 
     describe('test', () => {
         it('should test handle a successful file', () => {
             const sourcePath = pathConstructor('./someFile.md');
-            sut.test(sourcePath);
+            table.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
+            sut.test(table);
     
             verifyAsJson(getTestResult());
         });
@@ -158,7 +167,8 @@ describe('controller', () => {
         it('should fail a file that cannot parse an ast', () => {
             const sourcePath = pathConstructor('./someFile.md');
             includeConfig.result = util.fail('A bad parse', sourcePath);
-            const result = sut.test(sourcePath);
+            table.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
+            const result = sut.test(table);
     
             verifyAsJson(getTestResult(result));
         });
@@ -166,7 +176,8 @@ describe('controller', () => {
         it('should fail a file that cannot be converted to markdown', () => {
             const sourcePath = pathConstructor('./someFile.md');
             writerConfig.result = util.fail('Unable to write', sourcePath);
-            const result = sut.test(sourcePath);
+            table.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
+            const result = sut.test(table);
     
             verifyAsJson(getTestResult(result));
         });

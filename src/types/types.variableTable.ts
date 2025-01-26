@@ -30,6 +30,9 @@ export interface IStringArray {
 
 export type Savable = IVariableId | IStringArray | IVariablePath | IVariableString | IVariableEmptyId;
 
+export const sourceKey = ' source';
+export const destKey = ' destination';
+
 export interface IVariableTable {
     hasKey(key: string): boolean
     addValue<T extends Savable>(key: string, value: T): IVariableTable;

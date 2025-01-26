@@ -4,7 +4,7 @@ import { IController } from "../types/types.controller";
 import { IFileWriter } from "../types/types.fileHandler";
 import { IUtil, Result } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
-import { IVariableTable } from "../types/types.variableTable";
+import { destKey, IVariablePath, IVariableTable, sourceKey } from "../types/types.variableTable";
 import { IPath } from "../types/types.filePath";
 import { IProjectDocument } from "../types/types.astProject";
 import { IDoculisp, IEmptyDoculisp } from "../types/types.astDoculisp";
@@ -17,26 +17,36 @@ type CompileResult = {
 };
 
 function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableTable): IController {
-    function _write(doculisp: Result<IDoculisp | IEmptyDoculisp>, destinationPath: IPath | false, variableTable: IVariableTable): Result<string | false> {
+    function _write(doculisp: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string | false> {
         const document = stringWrter.writeAst(doculisp, variableTable);
 
-        if(!!destinationPath){
+        const destinationPath = (
+            variableTable.hasKey(destKey) ?
+            (variableTable.getValue(destKey) as IVariablePath).value :
+            false
+        );
+
+        if(!document.success) {
+            return document;
+        }
+
+        if(destinationPath){
             const result = handler.write(destinationPath, document);
 
             if(!result.success) {
                 return result;
             }
-        } else if(!document.success) {
-            return document;
-        }
 
-        return util.ok((destinationPath as IPath).fullName);
+            return util.ok((destinationPath as IPath).fullName);
+        } 
+        
+        return util.ok('Good');
     }
     
-    function _compile(sourcePath: IPath, destinationPath: IPath | false, variableTable: IVariableTable): Result<string | false> {
-        const doculisp = astBuilder.parse(sourcePath, destinationPath, variableTable);
+    function _compile(variableTable: IVariableTable): Result<string | false> {
+        const doculisp = astBuilder.parse(variableTable);
         
-        return _write(doculisp, destinationPath, variableTable);
+        return _write(doculisp, variableTable);
     }
 
     function _compileProject(sourcePath: IPath): Result<string>[] {
@@ -53,7 +63,9 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
             const document = project.value.documents[index] as IProjectDocument;
 
             const table = variableTable.createChild();
-            const result = astBuilder.parse(document.sourcePath, document.destinationPath, table);
+            table.addValue(sourceKey, { type: 'variable-path', value: document.sourcePath });
+            table.addValue(' destination', { type: 'variable-path', value: document.destinationPath });
+            const result = astBuilder.parse(table);
             if(!result.success) {
                 results.push(result);
             }
@@ -73,7 +85,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
         for (let index = 0; index < compileResult.length; index++) {
             const compiledDocument = compileResult[index] as CompileResult;
-            const writeResult = _write(util.ok(compiledDocument.compiled), compiledDocument.destinationPath, compiledDocument.table);
+            const writeResult = _write(util.ok(compiledDocument.compiled), compiledDocument.table);
             if(!writeResult.success) {
                 results.push(writeResult);
             } else {
@@ -97,11 +109,20 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
             return _compileProject(sourcePath);
         }
 
-        return [_compile(sourcePath, destinationPath, variableTable) as Result<string>];
+        variableTable.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
+        if(destinationPath) {
+            variableTable.addValue(destKey, { type: 'variable-path', value: destinationPath })
+        }
+
+        return [_compile(variableTable) as Result<string>];
     }
 
-    function test(sourcePath: IPath): Result<false>[] {
-        return [_compile(sourcePath, false, variableTable) as Result<false>];
+    function test(variableTable: IVariableTable): Result<false>[] {
+        if(!variableTable.hasKey(sourceKey)) {
+            return [util.fail('A source file must be given')];
+        }
+
+        return [_compile(variableTable) as Result<false>];
     }
 
     return {

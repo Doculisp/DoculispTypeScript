@@ -23,7 +23,7 @@ describe('astDoculisp', () => {
 
     beforeEach(() => {
         toResult = testable.doculisp.resultBuilder(container, environment => {
-            variableTable = environment.buildAs<IVariableTestable>('variableTable')
+            variableTable = environment.buildAs<IVariableTestable>('variableTable');
             variableTable.clear();
 
             const pathHandler: PathConstructor = 
@@ -58,7 +58,7 @@ describe('astDoculisp', () => {
                 location: buildProjectLocation('./myDoc.md'),
             };
     
-            const result = parser.parse(ok(empty), false, variableTable);
+            const result = parser.parse(ok(empty), variableTable);
     
             verifyAsJson(result);
         });
@@ -66,7 +66,7 @@ describe('astDoculisp', () => {
         it('should return failure if given failure', () => {
             const failure = fail('this is a document failure', buildPath('Z:/mybad.dlisp'));
     
-            const result = parser.parse(failure, false, variableTable);
+            const result = parser.parse(failure, variableTable);
     
             verifyAsJson(result);
         });
@@ -86,7 +86,7 @@ describe('astDoculisp', () => {
                 type: 'RootAst'
             };
     
-            const result = parser.parse(ok(ast), false, variableTable);
+            const result = parser.parse(ok(ast), variableTable);
     
             verifyAsJson(result);
         });
@@ -110,7 +110,7 @@ describe('astDoculisp', () => {
                 location: projectLocation,
             };
     
-            const result = parser.parse(ok(ast), false, variableTable);
+            const result = parser.parse(ok(ast), variableTable);
     
             verifyAsJson(result);
         });
