@@ -4,7 +4,7 @@ import { ILocation } from "./types.general";
 export interface IVariableId {
     value: IPath;
     source: ILocation;
-    headerLinkText?: string | undefined;
+    headerLinkText: string | false;
     type: 'variable-id';
 };
 

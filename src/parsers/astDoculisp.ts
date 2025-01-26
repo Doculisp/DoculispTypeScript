@@ -1,5 +1,5 @@
 import { Ast, AtomAst, CoreAst, IAstCommand, IAstEmpty, RootAst } from "../types/types.ast";
-import { DoculispBulletStyle, DoculispPart, IContentLocation, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
+import { DoculispBulletStyle, DoculispPart, IContentLocation, IDoculisp, IDoculispParser, IEmptyDoculisp, IHeader, ILoad, IPathId, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IDictionary, IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IInternals, IKeeper, StepParseResult } from "../types/types.internal";
@@ -335,7 +335,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 if(!destinationPath) {
                     variableTable.addGlobalValue(id, { value: '', type: 'variable-empty-id' });
                 } else {
-                    variableTable.addGlobalValue(id, { value: destinationPath, source: location, type: 'variable-id', headerLinkText: sectionLinkText ? sectionLinkText : undefined });
+                    variableTable.addGlobalValue(id, { value: destinationPath, source: location, type: 'variable-id', headerLinkText: sectionLinkText ? sectionLinkText : false });
                 }
 
                 return util.ok(id);
@@ -607,6 +607,36 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 rest: trimArray.trim(1, input),
             });
         }
+
+        function parsePath(input: CoreAst[], current: ILocation): StepParseResult<CoreAst[], IPathId> {
+            const pathIdBlock = input[0] as CoreAst;
+            if(pathIdBlock.type === 'ast-value') {
+                return internals.noResultFound();
+            }
+
+            if(pathIdBlock.value !== 'get-path') {
+                return internals.noResultFound();
+            }
+
+            if(pathIdBlock.type === 'ast-atom') {
+                return util.fail(`get-path command at "${current.documentPath.fullName}" line: ${pathIdBlock.location.line}, char: ${pathIdBlock.location.char} is missing parameter.`, current.documentPath);
+            }
+
+            if(pathIdBlock.type === 'ast-container') {
+                return util.fail(`get-path command at "${current.documentPath.fullName}" line: ${pathIdBlock.location.line}, char: ${pathIdBlock.location.char} contains unknown sub structure.`);
+            }
+
+            return util.ok({
+                type: 'parse result',
+                location: current,
+                subResult: {
+                    type: 'doculisp-path-id',
+                    id: pathIdBlock.parameter.value,
+                    documentOrder: pathIdBlock.location,
+                },
+                rest: trimArray.trim(1, input),
+            });
+        }
         
         if(astResult.value.type === 'ast-Empty'){
             return util.ok({ type: 'doculisp-empty' });
@@ -614,7 +644,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
         const astRoot = astResult.value;
         
-        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue, parseHeader, parseSectionMeta, parseContent);
+        const parser = internals.createArrayParser<CoreAst, DoculispPart | ILoad>(parseValue, parseHeader, parseSectionMeta, parseContent, parsePath);
         const parsed = parser.parse(astRoot.ast, util.toLocation(astRoot.location, 0, 0));
 
         if(!parsed.success) {

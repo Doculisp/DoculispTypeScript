@@ -190,7 +190,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 const output = outputs[0] as IOutput;
 
                 if(id){
-                    variableTable.addGlobalValue(id, { type: 'variable-id', value: output.output, source: current });
+                    variableTable.addGlobalValue(id, { type: 'variable-id', value: output.output, source: current, headerLinkText: false });
                 }
 
                 const found: IProjectDocument = {

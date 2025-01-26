@@ -54,17 +54,22 @@ export interface ITableOfContents extends ILocationSortable {
 };
 
 export interface IHeader extends ILocationSortable {
-    readonly type: 'doculisp-header'
+    readonly type: 'doculisp-header';
     readonly depthCount: number;
     readonly text: string;
     readonly id?: string | undefined;
 };
 
 export interface IContentLocation extends ILocationSortable {
-    readonly type: 'doculisp-content'
+    readonly type: 'doculisp-content';
 }
 
-export type DoculispPart = IWrite | ITitle | ITableOfContents | IContentLocation | IHeader;
+export interface IPathId extends ILocationSortable {
+    readonly type: 'doculisp-path-id';
+    readonly id: string;
+}
+
+export type DoculispPart = IWrite | ITitle | ITableOfContents | IContentLocation | IHeader | IPathId;
 
 export interface ISectionWriter extends ILocationSortable {
     readonly doculisp: DoculispPart[];
