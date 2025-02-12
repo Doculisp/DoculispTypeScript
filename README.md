@@ -86,12 +86,13 @@ A language for Readme.
 7. Language: [Dynamic Headings](#dynamic-headings)
 8. Language: [Comment Block](#comment-block)
 9. Language: [Key Atoms by Depth](#key-atoms-by-depth)
-10. Structure: [".dlisp" files](#dlisp-files)
-11. Recognition: [Contributors ✨](#contributors-)
+10. Language: [Dynamic Document Linking](#dynamic-document-linking)
+11. Structure: [".dlisp" files](#dlisp-files)
+12. Recognition: [Contributors ✨](#contributors-)
 
 ### Language Version ###
 
-Doculisp version 1.1.0
+Doculisp version 1.2.0
 
 ### What Problem Does Doculisp Solve? ###
 
@@ -269,7 +270,7 @@ This will create a subsection called `section` that is built using the file `./t
 
 Id is an optional block. It allows you to set an id for the section.
 
-**NOT CURRENTLY USED** This is for future use.
+These ids can be used to create dynamic links to the section from within the document or from other compiled documents. [Example how to do that here.](#dynamic-document-linking)
 
 ##### Restrictions #####
 
@@ -413,11 +414,9 @@ However if this document represented a subsection directly under the Title, then
 
 #### Ids ####
 
-You can add an ID to a heading.
+You can add an ID to a heading. These ids can be used to create dynamic linking to the header from this document or other compiled documents. [Example how to do that here.](#dynamic-document-linking)
 
-**THIS IS NOT USED YET** and is reserved for future use.
-
-the id follows the hash-mark (`#`).
+The id follows the hash-mark (`#`).
 
 ##### Restrictions #####
 
@@ -515,6 +514,22 @@ Here is a list of all the key atoms by depth:
   * `#` text
   * `*`
 * `*`
+
+### Dynamic Document Linking ###
+
+You can convert ids to link text that will link to the file and appropriate header if used from outside of the file, and become a header link only when used within in the file.
+
+```doculisp
+(get-path id)
+```
+
+This will return the path needed to get to the document / header combination. This would best be used in a link as follows:
+
+```md
+[Main Document](<!-- (dl (get-path main)) -->)
+```
+
+In the above example you will have link to correct document and the correct heading.
 
 ### ".dlisp" files ###
 
@@ -635,7 +650,7 @@ The document identifier block is a very different kind of block. It is an option
 
 If this block is contained within the `document` block then it is the only block that is a child of the `documents` block.
 
-The document identifier block is _**currently is not used.**_ Though it is reserved for future use.
+The document identifier block is used to create a dynamic link to the document from other any compiled document.
 
 ###### Restrictions ######
 
