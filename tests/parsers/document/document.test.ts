@@ -218,6 +218,20 @@ describe('document', () => {
                 const result = parse(content, buildProjectLocation('./_main.md', 2, 1));
                 verifyAsJson(result);
             });
+
+            it('should parse Doculisp that contains a get-path in a link', () => {
+                const text = `<!-- (dl
+(section-meta
+    (title Using Dynamic Path)
+)
+) -->
+
+[back](<!-- (dl (get-path readme)) -->)
+                `;
+
+                const result = parse(text, buildProjectLocation('./_main.md', 2, 1));
+                verifyAsJson(result);
+            });
         });
     });
 

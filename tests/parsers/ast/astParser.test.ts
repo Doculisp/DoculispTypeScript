@@ -136,6 +136,20 @@ describe('ast', () => {
             verifyAsJson(result);
         });
 
+        it('should parse a file with a get-path', () => {
+            const text = `<!-- (dl
+(section-meta
+    (title Using Dynamic Path)
+)
+) -->
+
+[back](<!-- (dl (get-path readme)) -->)
+`;
+
+            const result = toResult(text, buildProjectLocation('./_main.md', 1, 6));
+            verifyAsJson(result);
+        });
+
         it('should parse a document with all the parts', () => {
             const text = `
 (section-meta

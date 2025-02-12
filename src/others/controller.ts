@@ -64,7 +64,17 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
             const table = variableTable.createChild();
             table.addValue(sourceKey, { type: 'variable-path', value: document.sourcePath });
-            table.addValue(' destination', { type: 'variable-path', value: document.destinationPath });
+            table.addValue(destKey, { type: 'variable-path', value: document.destinationPath });
+            
+            if(!!document.id) {
+                table.addGlobalValue(document.id, {
+                    type: 'variable-id',
+                    headerLinkText: false,
+                    value: document.destinationPath,
+                    source: document.location,
+                });
+            }
+
             const result = astBuilder.parse(table);
             if(!result.success) {
                 results.push(result);

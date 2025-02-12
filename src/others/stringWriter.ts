@@ -1,9 +1,9 @@
-import { DoculispPart, IDoculisp, IEmptyDoculisp, IHeader, ILoad, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
+import { DoculispPart, IDoculisp, IEmptyDoculisp, IHeader, ILoad, IPathId, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
 import { ILocation, IUtil, Result } from "../types/types.general";
 import { IStringBuilder, StringBuilderConstructor } from "../types/types.sringBuilder";
 import { IStringWriter } from "../types/types.stringWriter";
-import { IStringArray, IVariableTable } from "../types/types.variableTable";
+import { destKey, IStringArray, IVariableEmptyId, IVariableId, IVariablePath, IVariableTable } from "../types/types.variableTable";
 
 function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstructor) : IStringWriter {
 
@@ -14,13 +14,13 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
     function writeAstTitle(astTitle: ITitle): string {
         const sb = stringBuilderConstructor();
     
-        sb.add(astTitle.label);
+        sb.addLine(astTitle.label);
     
         if(astTitle.subtitle) {
             sb.addLine();
             sb.addLine(astTitle.subtitle);
         }
-    
+
         return sb.toString();
     }
     
@@ -142,7 +142,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         
     }
     
-    function writeContent(loads: ILoad[]): string {
+    function writeContent(loads: ILoad[], variableTable: IVariableTable): Result<string> {
         const sb = stringBuilderConstructor();
     
         for (let index = 0; index < loads.length; index++) {
@@ -161,16 +161,58 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
             if(0 < sb.length) {
                 sb.addLine();
             }
+
+            const sectionResult = writeSection(previous, doc, variableTable);
+
+            if(!sectionResult.success) {
+                return sectionResult;
+            }
     
-            sb.add(writeSection(previous, doc));
+            sb.addLine(sectionResult.value);
         }
     
-        return sb.toString().trim();
+        return util.ok(sb.toString().trim());
+    }
+
+    function writeGetPath(astIdPath: IPathId, table: IVariableTable): Result<string> {
+        if(!table.hasKey(astIdPath.id)) {
+            util.fail(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, astIdPath.documentOrder.documentPath);
+        }
+
+        const output = (
+            table.hasKey(destKey) ?
+            (table.getValue(destKey) as IVariablePath) :
+            false
+        );
+
+        const idPathVariable = table.getValue(astIdPath.id) as IVariableId | IVariableEmptyId
+
+        if(idPathVariable.type === 'variable-empty-id' || !output) {
+            return util.ok('');
+        }
+
+        const idPath = idPathVariable.value.getContainingDir();
+        const outPutPath = output.value.getContainingDir();
+
+        if(idPath.fullName === outPutPath.fullName) {
+            return util.ok(
+                idPathVariable.headerLinkText ? 
+                '#' + idPathVariable.headerLinkText : 
+                ''
+            );
+        }
+
+        return util.ok(idPath.getRelativeFrom(outPutPath));
     }
     
-    function writeSection(previous: ILocation, section: ISectionWriter): string {
+    function writeSection(previous: ILocation, section: ISectionWriter, variableTable: IVariableTable): Result<string> {
         const sb = stringBuilderConstructor();
         let previousType = '';
+        let previousLine = (
+            !!section.doculisp?.length
+            ? section.doculisp[0]?.documentOrder.line as number
+            : 0
+        );
     
         for (let index = 0; index < section.doculisp.length; index++) {
             const doculisp = section.doculisp[index];
@@ -178,9 +220,13 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
                 continue;
             }
     
-            sb.addLine();
+            if (previousLine < doculisp.documentOrder.line) {
+                sb.addLine();
+            }
+
+            previousLine = doculisp.documentOrder.line;
     
-            if(previousType === 'doculisp-write' && doculisp.type === 'doculisp-write') {
+            if((previousType === 'doculisp-write' || previousType === 'doculisp-path-id') && (doculisp.type === 'doculisp-write' || doculisp.type === 'doculisp-path-id')) {
                 if(previous.documentPath !== doculisp.documentOrder.documentPath
                    || (previous.line + 2) <= doculisp.documentOrder.line
                    || (doculisp.documentOrder.line + 2) <= previous.line
@@ -206,11 +252,26 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
                     break;
     
                 case 'doculisp-content':
-                    sb.add(writeContent(section.include));
+                    const contentResult = writeContent(section.include, variableTable);
+                    if(!contentResult.success) {
+                        return contentResult;
+                    }
+
+                    sb.add(contentResult.value);
                     break;
     
                 case 'doculisp-toc':
                     sb.add(writeTableOfContents(doculisp, section.include));
+                    sb.addLine();
+                    break;
+
+                case 'doculisp-path-id':
+                    const pathResult = writeGetPath(doculisp, variableTable);
+                    if(!pathResult.success) {
+                        return pathResult;
+                    }
+
+                    sb.add(pathResult.value);
                     break;
             
                 default:
@@ -221,7 +282,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
             previous = doculisp.documentOrder;
         }
     
-        return sb.toString();
+        return util.ok(sb.toString());
     }
 
     function buildAuthorTable(variableTable: IVariableTable): string | false {
@@ -244,6 +305,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
 
         return sb.toString();
     }
+
     function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string> {
         if(!astMaybe.success) {
             return astMaybe;
@@ -266,10 +328,17 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         if(authorsMaybe){
             sb.addLine(authorsMaybe);
         }
+        sb.addLine();
 
 
         let previous: ILocation = util.location(astMaybe.value.projectLocation.documentPath, -1, -1, -1, -1);
-        sb.addLine(writeSection(previous, section));
+        const writeResult = writeSection(previous, section, variableTable);
+
+        if(!writeResult.success) {
+            return writeResult;
+        }
+
+        sb.addLine(writeResult.value);
         
         sb.addLine();
         if(authorsMaybe){

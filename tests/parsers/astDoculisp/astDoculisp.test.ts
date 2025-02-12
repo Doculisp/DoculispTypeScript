@@ -6,7 +6,7 @@ import { IDoculisp, IDoculispParser, IEmptyDoculisp } from '../../../src/types/t
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
 import { IAstEmpty, RootAst } from '../../../src/types/types.ast';
-import { IVariableTestable } from "../../../src/types/types.variableTable";
+import { destKey, IVariableTestable, sourceKey } from "../../../src/types/types.variableTable";
 import { IPath, PathConstructor } from "../../../src/types/types.filePath";
 
 describe('astDoculisp', () => {
@@ -886,5 +886,31 @@ A story of a misbehaving parser.
                 verifyAsJson(result);
             });
         })
+
+        describe('get-path', () => {
+            it('should get the id path', () => {
+                const readMeOutput = './readme.md';
+
+                const contribSource = './src/contrib/_main.md';
+                const contribOutput = './contrib.md';
+
+                const contribText = `<!-- (dl
+(section-meta
+    (title Using Dynamic Path)
+)
+) -->
+
+[back](<!-- (dl (get-path readme)) -->)
+`;
+
+                variableTable.addGlobalValue('readme', { type: 'variable-id', headerLinkText: false, value: buildPath(readMeOutput), source: util.location(buildPath('./project.dlproj', true), 1, 1, 3, 5) });
+                variableTable.addValue(sourceKey, { type: 'variable-path', value: buildPath(contribSource) });
+                variableTable.addValue(destKey, { type: 'variable-path', value: buildPath(contribOutput) });
+
+                const result = toResult(contribText, buildProjectLocation('../main.md', 2, 7));
+
+                verifyAsJson(result);
+            });
+        });
     });
 });

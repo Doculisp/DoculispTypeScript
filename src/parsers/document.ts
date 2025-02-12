@@ -96,15 +96,15 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     function isDiscardedWhiteSpace(): HandleStringValue<DocumentPart> {
         const createParser = internals.createStringParser<DocumentPart>;
         return function (input: string, current: ILocation): StringStepParseResult<DocumentPart> {
-            const isWindows = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l.increaseLine());
+            const isWindows  = doesItStartWithDiscarded(doesIt.startWithWindowsNewline, l => l.increaseLine());
             const isLinux = doesItStartWithDiscarded(doesIt.startWithLinuxNewline, l => l.increaseLine());
-            const isMac = doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l.increaseLine());
-            const isWhiteSpace = doesItStartWithDiscarded(doesIt.startWithNonNewLineWhiteSpace, (l, f) => l.increaseChar(f));
+            const isMac  =  doesItStartWithDiscarded(doesIt.startWithMacsNewline, l => l.increaseLine());
+            const isWhiteSpace  =  doesItStartWithDiscarded(doesIt.startWithNonNewLineWhiteSpace, (l, f) => l.increaseChar(f));
     
-            const whiteSpaceParser = createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
-            const parsed = whiteSpaceParser.parse(input, current);
+            const whiteSpaceParser  =  createParser(isWindows, isLinux, isMac, isWhiteSpace, isStopParsingWhiteSpace);
+            const parsed = whiteSpaceParser. parse(input, current);
             if(parsed.success) {
-                const [_, leftovers] = parsed.value;
+                const [_, leftovers]  = parsed.value;
                 if(leftovers.remaining === input) {
                     return internals.noResultFound();
                 } else {
@@ -578,7 +578,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             function tryParseWhiteSpace(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(opened && doesIt.startWithAnyWhiteSpace.test(input)) {
-                    return stripWhiteSpace(input, current);
+                     return stripWhiteSpace(input, current);
                 }
                 return internals.noResultFound();
             }
@@ -759,7 +759,7 @@ function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPa
         let next: DocumentPart = parts[i] as DocumentPart;
         let line: DocumentPart[] = [part];
 
-        while (i < parts.length && next.location.line === start.line) {
+        while (i < parts.length && next.location.line === start.line && next.type === 'text') {
             line.push(next);
             i++;
             next = parts[i] as DocumentPart;

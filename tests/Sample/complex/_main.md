@@ -7,6 +7,7 @@
             (CLI ./cli.md)
             (Language ./lang/_main.md)
         )
+        (id main)
     )
 )
 -->
@@ -18,6 +19,8 @@ ___  ____ ____ _  _ _    _ ____ ___
 ```
 
 A Compiler for Doculisp Lang.
+
+[Back](<!-- (dl (get-path main)) -->)
 
 <!--
 (dl

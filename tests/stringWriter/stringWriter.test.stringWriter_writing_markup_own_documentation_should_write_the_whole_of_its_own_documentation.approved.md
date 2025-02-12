@@ -15,6 +15,8 @@ ___  ____ ____ _  _ _    _ ____ ___
 
 A Compiler for Doculisp Lang.
 
+[Back](#doculisp)
+
 ## Table of Contents ##
 
 1. CLI: [Using the Command Line Interface](#using-the-command-line-interface)
