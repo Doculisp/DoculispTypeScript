@@ -86,13 +86,14 @@ A language for Readme.
 7. Language: [Dynamic Headings](#dynamic-headings)
 8. Language: [Comment Block](#comment-block)
 9. Language: [Key Atoms by Depth](#key-atoms-by-depth)
-10. Language: [Dynamic Document Linking](#dynamic-document-linking)
-11. Structure: [".dlisp" files](#dlisp-files)
-12. Recognition: [Contributors ✨](#contributors-)
+10. Language: [Path Ids](#path-ids)
+11. Language: [Dynamic Document Linking](#dynamic-document-linking)
+12. Structure: [".dlisp" files](#dlisp-files)
+13. Recognition: [Contributors ✨](#contributors-)
 
 ### Language Version ###
 
-Doculisp version 1.2.0
+Doculisp version 1.2.1
 
 ### What Problem Does Doculisp Solve? ###
 
@@ -266,33 +267,6 @@ This will create a subsection called `sub section` that is built using the file 
 
 This will create a subsection called `section` that is built using the file `./two.md`.
 
-#### Section Id ####
-
-Id is an optional block. It allows you to set an id for the section.
-
-These ids can be used to create dynamic links to the section from within the document or from other compiled documents. [Example how to do that here.](#dynamic-document-linking)
-
-##### Restrictions #####
-
-The id block must meet the following restrictions:
-
-* It must be lowercase.
-* It must not contain any symbols other then underscore `_` or hyphen `-`.
-
-##### Example #####
-
-```doculisp
-<!--
-example.md
-(dl
-(section-meta
-    (title An Example of an ID)
-    (id my-id)
-)
-)
--->
-```
-
 #### Author ####
 
 Author is an optional block in the section meta that puts the author's name in the comments at the top and bottom of the document. This block can be included multiple times and each will have a separate comment line.
@@ -412,28 +386,6 @@ If this example was the top level document, then the title of the document, Head
 
 However if this document represented a subsection directly under the Title, then "Maths an intro" would be Heading 2, "Summary" heading 3, and "Reasons For Document" would be Heading 4.
 
-#### Ids ####
-
-You can add an ID to a heading. These ids can be used to create dynamic linking to the header from this document or other compiled documents. [Example how to do that here.](#dynamic-document-linking)
-
-The id follows the hash-mark (`#`).
-
-##### Restrictions #####
-
-The id must meet the following restrictions:
-
-* It must be lowercase.
-* It must not contain any symbols other then underscore `_` or hyphen `-`.
-
-##### Example #####
-
-```doculisp
-<!-- info.md -->
-<!-- (dl (#heading-id Information About Heading Ids)) -->
-
-Some text here.
-```
-
 #### Max Heading Depth ####
 
 Currently, the maximum heading depth recognized by Markdown is H6. However Doculisp will not restrict you to that depth. If the total depth is more then H6 you may get unexpected results.
@@ -514,6 +466,59 @@ Here is a list of all the key atoms by depth:
   * `#` text
   * `*`
 * `*`
+
+### Path Ids ###
+
+#### What are Path Ids? ####
+
+Path Ids are a way to create a link to a document or a part of a document without knowing what the final path will be. This allows the final path to change, either by changing the output location, or by simply taking a subsection and turning it into a separate document. It also relieves the burden of the author of having to correctly type the path, and allowing them instead to focus on what they want to link to.
+
+How to use document Ids to create links is [given later](#dynamic-document-linking) within this document.
+
+There are a couple of ways to define path ids based on what you want to identify.
+
+#### Section Meta Ids ####
+
+The first place that a path id can be included is within a `section-meta` block. It is added though the use of an `id` block.
+
+##### Section Id #####
+
+The Id block is an optional block. It allows you to set an id for the section.
+
+##### Example #####
+
+```doculisp
+<!--
+example.md
+(dl
+(section-meta
+    (title An Example of an ID)
+    (id my-id)
+)
+)
+-->
+```
+
+#### Dynamic Heading Ids ####
+
+You can add an Id to a heading by following the hash-mark (`#`) with your id.
+
+###### Example ######
+
+```doculisp
+<!-- info.md -->
+<!-- (dl (#heading-id Information About Heading Ids)) -->
+
+Some text here.
+```
+
+#### Id Requirements ####
+
+The id block must meet the following requirements:
+
+* It must be lowercase.
+* It must not contain any symbols other then underscore `_` or hyphen `-`.
+* It must be globally unique.
 
 ### Dynamic Document Linking ###
 
