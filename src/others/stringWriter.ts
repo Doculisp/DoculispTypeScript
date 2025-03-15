@@ -185,7 +185,11 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
             false
         );
 
-        const idPathVariable = table.getValue(astIdPath.id) as IVariableId | IVariableEmptyId
+        const idPathVariable = table.getValue(astIdPath.id) as IVariableId | IVariableEmptyId | false;
+
+        if(!idPathVariable) {
+            return util.fail(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, astIdPath.documentOrder.documentPath);
+        }
 
         if(idPathVariable.type === 'variable-empty-id' || !output) {
             return util.ok('');

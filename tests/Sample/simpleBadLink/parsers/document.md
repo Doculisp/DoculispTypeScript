@@ -29,4 +29,4 @@ These tests veify that comment block can be identified and removed. The one tric
 
 Doculisp files are interesting because they do not contain any Markdown.
 
-[back](<!-- (dl (get-link mains)) -->)<!-- this is a bad link. -->
+[back](<!-- (dl (get-path mains)) -->)<!-- this is a bad link. -->

@@ -82,14 +82,22 @@ describe('when writing', () => {
         process.chdir(workingDir);
     });
     
-    describe.skip('a file with a bad link', () => {
+    describe('a file with a bad link', () => {
         beforeEach(() => {
             changeDir('simpleBadLink');
             setupOutPut('readme.md');
         });
 
-        it.skip('should return an error object', () => {
+        it('should return an error object', () => {
+            const filePath = './_main.dlisp';
+            const doc: Result<string> = loadFile(filePath);
 
+            if(!doc.success) {
+                expect(JSON.stringify(doc, null, 4)).toBe('');
+            }
+
+            const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
+            verifyMarkdownResult(result);
         });
     });
 
