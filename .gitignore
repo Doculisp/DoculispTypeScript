@@ -87,3 +87,5 @@ tests/cases/user/prettier/prettier
 *v8.log
 dist
 *.received.*
+tests/**/.approval_tests_temp/*
+.approval_tests_temp/*
