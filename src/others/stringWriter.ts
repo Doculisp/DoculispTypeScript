@@ -195,8 +195,8 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
             return util.ok('');
         }
 
-        const idPath = idPathVariable.value.getContainingDir();
-        const outPutPath = output.value.getContainingDir();
+        const idPath = idPathVariable.value;
+        const outPutPath = output.value;
 
         if(idPath.fullName === outPutPath.fullName) {
             return util.ok(
@@ -206,7 +206,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
             );
         }
 
-        return util.ok(idPath.getRelativeFrom(outPutPath));
+        return util.ok(idPath.getRelativeFrom(outPutPath.getContainingDir()));
     }
     
     function writeSection(previous: ILocation, section: ISectionWriter, variableTable: IVariableTable): Result<string> {

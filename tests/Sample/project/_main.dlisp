@@ -1,0 +1,9 @@
+(section-meta
+    (title A Linked Document)
+    (id link-head)
+    (include
+        (Section ./info.md)
+    )
+)
+
+(content)

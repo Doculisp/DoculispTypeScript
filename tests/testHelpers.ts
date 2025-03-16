@@ -9,6 +9,7 @@ import { IStringWriter } from "../src/types/types.stringWriter"
 import { IVariableTable, sourceKey } from "../src/types/types.variableTable";
 import { IPath } from "../src/types/types.filePath";
 import { IProjectDocuments, IProjectParser } from "../src/types/types.astProject";
+import { IController } from "../src/types/types.controller";
 import path from "path";
 
 export function buildProjectLocation(path: string, depth: number = 1, index: number = 1, extension: string | false = false) : IProjectLocation {
@@ -82,6 +83,10 @@ function buildStringWriter(environment: ITestableContainer): IStringWriter {
     return environment.buildAs<IStringWriter>('stringWriter');
 }
 
+function buildController(environment: ITestableContainer): IController {
+    return environment.buildAs<IController>('controller');
+}
+
 function rawTokenResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<TokenizedDocument> {
     const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
     const tokenParser = buildTokenResultParser(environment);
@@ -138,63 +143,95 @@ function rawStringWriterPathResultBuilder(environment: ITestableContainer, fileP
     return map(() => astRecursiveBuilder.parse(variableTable), result => stringWriter.writeAst(result, variableTable));
 }
 
-function newBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer) => T): T {
-    if(container.isTestable) {
-        throw new Error('Must not be a testable container');
-    }
+function rawPathCompileResultBuilder(environment: ITestableContainer): (sourcePath: IPath, destinationPath?: IPath | undefined) => Result<string>[] {
+    const controller = buildController(environment);
 
-    const environment: ITestableContainer = container.buildTestable();
-    environment.restoreAll();
-    setup(environment);
-    return buildIt(environment);
+    return function(sourcePath: IPath, destinationPath?: IPath | undefined) {
+        if(!!destinationPath)
+            return controller.compile(sourcePath);
+        else
+            return controller.compile(sourcePath, destinationPath);
+    }
 }
 
-function newTextToResultBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, builderFunction: (environment: ITestableContainer, text: string, location: IProjectLocation) => T): (text: string, location: IProjectLocation) => T {
-    return newBuilder(container, setup, environment => {
+export interface IHelpBuilder {
+    chained: boolean;
+    newBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer) => T): T
+}
+
+function builder() {
+    return {
+        chained: false,
+        newBuilder: function newBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, buildIt: (environment: ITestableContainer) => T): T {
+
+            let environment: ITestableContainer | null = null;
+
+            if(!this.chained){
+                if(container.isTestable) {
+                    throw new Error('Must not be a testable container');
+                }
+
+                environment = container.buildTestable();
+                environment.restoreAll();
+                setup(environment);
+            }
+
+            environment = environment ?? (container as ITestableContainer);
+            if(!environment.isTestable) {
+                throw new Error('Must be a testable container by this point');
+            }
+
+            return buildIt(environment);
+        }
+    } as IHelpBuilder;
+}
+
+function newTextToResultBuilder<T>(container: IContainer, setup: (environment: ITestableContainer) => void, builderFunction: (environment: ITestableContainer, text: string, location: IProjectLocation) => T, b: () => IHelpBuilder = builder): (text: string, location: IProjectLocation) => T {
+    return b().newBuilder(container, setup, environment => {
         return function(text: string, location: IProjectLocation): T {
             return builderFunction(environment, text, location);
         }
     });
 }
 
-function newDocumentResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): DocumentParser {
-    return newBuilder(container, setup, environment => {
+function newDocumentResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): DocumentParser {
+    return b().newBuilder(container, setup, environment => {
         return buildDocumentParser(environment);
     });
 }
 
-function newTokenResultParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): TokenFunction {
-    return newBuilder(container, setup, environment => {
+function newTokenResultParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): TokenFunction {
+    return b().newBuilder(container, setup, environment => {
         return buildTokenResultParser(environment);
     });
 }
 
-function newAstParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IAstParser {
-    return newBuilder(container, setup, environment => {
+function newAstParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): IAstParser {
+    return b().newBuilder(container, setup, environment => {
         return buildAstParser(environment);
     });
 }
 
-function newDoculispParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IDoculispParser {
-    return newBuilder(container, setup, environment => {
+function newDoculispParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): IDoculispParser {
+    return b().newBuilder(container, setup, environment => {
         return buildDoculispParser(environment);
     });
 }
 
-function newIncludeParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IIncludeBuilder {
-    return newBuilder(container, setup, environment => {
+function newIncludeParserBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): IIncludeBuilder {
+    return b().newBuilder(container, setup, environment => {
         return buildIncludeParser(environment);
     });
 }
 
-function newAstProjectBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IProjectParser {
-    return newBuilder(container, setup, environment => {
+function newAstProjectBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): IProjectParser {
+    return b().newBuilder(container, setup, environment => {
         return buildProjectParser(environment);
     });
 }
 
-function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: IPath) => Result<IDoculisp | IEmptyDoculisp> {
-    return newBuilder(container, setup, environment => {
+function newIncludeResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (filePath: IPath) => Result<IDoculisp | IEmptyDoculisp> {
+    return b().newBuilder(container, setup, environment => {
         return path => {
             const variableTable = environment.buildAs<IVariableTable>('variableTable').createChild();
             variableTable.addValue(sourceKey, { type: 'variable-path', value: path });
@@ -203,50 +240,50 @@ function newIncludeResultBuilder(container: IContainer, setup: (environment: ITe
     });
 }
 
-function newTokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
+function newTokenResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (text: string, location: IProjectLocation) => Result<TokenizedDocument> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawTokenResultBuilder(environment, text, location)(); 
-    });
+    }, b);
 }
 
-function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<RootAst | IAstEmpty> {
+function newAstResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (text: string, projectLocation: IProjectLocation) => Result<RootAst | IAstEmpty> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstResultBuilder(environment, text, location)();
-    });
+    }, b);
 }
 
-function newDoculispResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> {
+function newDoculispResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawDoculispResultBuilder(environment, text, location)();
-    });
+    }, b);
 }
 
-function newIncludeExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> {
+function newIncludeExternalResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstRecursiveExternalResultBuilder(environment, text, location)();
-    });
+    }, b);
 }
 
-function newAstProjectResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<IProjectDocuments> {
+function newAstProjectResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (text: string, projectLocation: IProjectLocation) => Result<IProjectDocuments> {
     return newTextToResultBuilder(container, setup, (environment: ITestableContainer, text: string, location: IProjectLocation) => {
         return rawAstProjectParser(environment, text, location)();
-    });
+    }, b);
 }
 
-function newStringWriterBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): IStringWriter {
-    return newBuilder(container, setup, environment => {
+function newStringWriterBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): IStringWriter {
+    return b().newBuilder(container, setup, environment => {
         return buildStringWriter(environment);
     });
 }
 
-function newStringWriterResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (text: string, projectLocation: IProjectLocation) => Result<string> {
+function newStringWriterResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (text: string, projectLocation: IProjectLocation) => Result<string> {
     return newTextToResultBuilder(container, setup, (environment, text, location) => {
         return rawStringWriterResultBuilder(environment, text, location)();
-    });
+    }, b);
 }
 
-function newStringWriterPathResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}): (filePath: IPath) => Result<string> {
-    return newBuilder(container, setup, (environment: ITestableContainer) => {
+function newStringWriterPathResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (filePath: IPath) => Result<string> {
+    return b().newBuilder(container, setup, (environment: ITestableContainer) => {
         return (filePath: IPath): Result<string> => {
             const astBuilder = rawStringWriterPathResultBuilder(environment, filePath);
             return astBuilder();
@@ -254,7 +291,26 @@ function newStringWriterPathResultBuilder(container: IContainer, setup: (environ
     });
 }
 
+function newPathCompileResultBuilder(container: IContainer, setup: (environment: ITestableContainer) => void = () => {}, b: () => IHelpBuilder = builder): (sourcePath: IPath, outPutPath?: IPath | undefined) => Result<string>[] {
+    return b().newBuilder(container, setup, (environment: ITestableContainer) => {
+        return rawPathCompileResultBuilder(environment);
+    });
+}
+
+function chainSetup(container: IContainer, setup: (environment: ITestableContainer) => void, b: () => IHelpBuilder = builder) {
+    let bldr = b();
+    return bldr.newBuilder(container, setup, (environment: ITestableContainer) => {
+        return function<T>(fn: (env: ITestableContainer, _s: (_: ITestableContainer) => void, tb: () => IHelpBuilder) => T) {
+            bldr.chained = true;
+            return fn(environment, setup, () => bldr);
+        }
+    });
+}
+
 const testable = {
+    advanced: {
+        chainSetup
+    },
     document: {
         resultBuilder: newDocumentResultBuilder,
     },
@@ -283,6 +339,7 @@ const testable = {
         writer: newStringWriterBuilder,
         pathParser: newStringWriterPathResultBuilder,
         resultBuilder: newStringWriterResultBuilder,
+        pathCompileResultBuilder: newPathCompileResultBuilder,
     },
 };
 

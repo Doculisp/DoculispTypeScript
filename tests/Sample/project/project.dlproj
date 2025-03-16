@@ -1,0 +1,14 @@
+(documents
+    (document
+        (simple
+            (source ../simple/_main.dlisp)
+            (output ./simple.md)
+        )
+    )
+    (document
+        (linked
+            (source ./_main.dlisp)
+            (output ./linked.md)
+        )
+    )
+)

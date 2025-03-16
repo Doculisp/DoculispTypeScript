@@ -45,6 +45,12 @@ function verifyMarkdownObject(text: string, options?: Options): void {
   verify(text, options);
 }
 
+function verifyText(text: string, options?: Options): void {
+    options = options || new Options();
+    options = options.forFile().withFileExtention(".txt");
+    verify(text, options);
+}
+
 function setupVerifier(configure: (overrideOptions?: Partial<Config> | undefined) => Config): void {
     configure({
         reporters: [new JestReporter()],
@@ -68,5 +74,6 @@ export function getVerifiers(configure: (overrideOptions?: Partial<Config> | und
     return {
         verifyAsJson: verifyJsonObject,
         verifyMarkdown: verifyMarkdownObject,
+        verifyText
     };
 };
