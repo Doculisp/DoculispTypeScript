@@ -3,19 +3,24 @@
 <!-- markdownlint-disable -->
 
 <!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->
+<!-- Written By: Jason Kerney -->
 
 # Changelog #
 
 ## Releases ##
 
-* release: [Version 3.4.2](#version-342)
+* release: [Version 3.4.4](#version-344)
+* release: [Version 3.4.3](#version-343)
 * release: [Version 3.4.2](#version-342)
 * release: [Version 3.4.0](#version-340)
 * release: [Version 3.3.0](#version-330)
-* release: [Version 3.2.0](#version-320)
 * release: [Earlier Version](#earlier-version)
 
-## Version 3.4.2 ##
+## Version 3.4.4 ##
+
+* Fixed issue where path was not always complete in cross document linking using `get-path` function.
+
+## Version 3.4.3 ##
 
 * Fixed bug with cross document linking using the get-path function.
 
@@ -32,10 +37,6 @@
 * Fixed header indent.
 * Isolated Authors in Project Documents.
 
-## Version 3.2.0 ##
-
-* Added header ids.
-
 ## Earlier Version ##
 
 * 2.9.0
@@ -48,7 +49,10 @@
     * Document Ids cannot contain symbols.
 * 3.1.0
   * Added optional Section ID
+* 3.2.0
+  * Added header ids.
 
+<!-- Written By: Jason Kerney -->
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 <!-- GENERATED DOCUMENT DO NOT EDIT! -->

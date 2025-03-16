@@ -10,3 +10,5 @@
     * Document Ids cannot contain symbols.
 * 3.1.0
   * Added optional Section ID
+* 3.2.0
+  * Added header ids.
