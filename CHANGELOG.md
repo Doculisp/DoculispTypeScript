@@ -9,11 +9,15 @@
 ## Releases ##
 
 * release: [Version 3.4.2](#version-342)
+* release: [Version 3.4.2](#version-342)
 * release: [Version 3.4.0](#version-340)
 * release: [Version 3.3.0](#version-330)
 * release: [Version 3.2.0](#version-320)
-* release: [Version 3.1.0](#version-310)
 * release: [Earlier Version](#earlier-version)
+
+## Version 3.4.2 ##
+
+* Fixed bug with cross document linking using the get-path function.
 
 ## Version 3.4.2 ##
 
@@ -32,10 +36,6 @@
 
 * Added header ids.
 
-## Version 3.1.0 ##
-
-* Added optional Section ID
-
 ## Earlier Version ##
 
 * 2.9.0
@@ -46,6 +46,8 @@
   * _**breaking change**_ Document Ids
     * Document Ids must be lowercase.
     * Document Ids cannot contain symbols.
+* 3.1.0
+  * Added optional Section ID
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
