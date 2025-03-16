@@ -8,3 +8,5 @@
   * _**breaking change**_ Document Ids
     * Document Ids must be lowercase.
     * Document Ids cannot contain symbols.
+* 3.1.0
+  * Added optional Section ID
