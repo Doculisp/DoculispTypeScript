@@ -206,7 +206,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
             );
         }
 
-        return util.ok(idPath.getRelativeFrom(outPutPath.getContainingDir()));
+        return util.ok('./' + idPath.getRelativeFrom(outPutPath.getContainingDir()).replaceAll('\\', '/'));
     }
     
     function writeSection(previous: ILocation, section: ISectionWriter, variableTable: IVariableTable): Result<string> {

@@ -11,4 +11,10 @@
             (output ./linked.md)
         )
     )
+    (document
+        (diff
+            (source ./_main2.md)
+            (output ../second.md)
+        )
+    )
 )

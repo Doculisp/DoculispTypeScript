@@ -2,6 +2,8 @@ D:\Development\github\Doculisp\DoculispTypeScript\tests\Sample\project\simple.md
 
 D:\Development\github\Doculisp\DoculispTypeScript\tests\Sample\project\linked.md
 
+D:\Development\github\Doculisp\DoculispTypeScript\tests\Sample\second.md
+
 <!-- GENERATED DOCUMENT DO NOT EDIT! -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -67,7 +69,23 @@ Doculisp files are interesting because they do not contain any Markdown.
 
 ## Info ##
 
-Simple is [here](simple.md).
+Simple is [here](./simple.md).
+Second is [here](./../second.md).
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+
+<!-- GENERATED DOCUMENT DO NOT EDIT! -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->
+
+# Another Document #
+
+[simple](./project/simple.md)
+[linked](./project/linked.md)
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
