@@ -198,15 +198,16 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         const idPath = idPathVariable.value;
         const outPutPath = output.value;
 
+        const headerLinkText = 
+            idPathVariable.headerLinkText ? 
+            '#' + idPathVariable.headerLinkText : 
+            '';
+
         if(idPath.fullName === outPutPath.fullName) {
-            return util.ok(
-                idPathVariable.headerLinkText ? 
-                '#' + idPathVariable.headerLinkText : 
-                ''
-            );
+            return util.ok(headerLinkText);
         }
 
-        return util.ok('./' + idPath.getRelativeFrom(outPutPath.getContainingDir()).replaceAll('\\', '/'));
+        return util.ok('./' + idPath.getRelativeFrom(outPutPath.getContainingDir()).replaceAll('\\', '/') + headerLinkText);
     }
     
     function writeSection(previous: ILocation, section: ISectionWriter, variableTable: IVariableTable): Result<string> {
