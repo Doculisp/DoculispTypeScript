@@ -9,12 +9,17 @@
 
 ## Releases ##
 
+* release: [Version 3.4.5](#version-345)
 * release: [Version 3.4.4](#version-344)
 * release: [Version 3.4.3](#version-343)
 * release: [Version 3.4.2](#version-342)
 * release: [Version 3.4.0](#version-340)
 * release: [Version 3.3.0](#version-330)
 * release: [Earlier Version](#earlier-version)
+
+## Version 3.4.5 ##
+
+* Fixed inter document linking to headers.
 
 ## Version 3.4.4 ##
 
