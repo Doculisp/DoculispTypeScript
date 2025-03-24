@@ -10,6 +10,8 @@ import { buildProjectLocation, testable, buildPath, buildLocation } from "../../
 import { IPath, PathConstructor } from "../../../src/types/types.filePath";
 
 describe('tokenizer', () => {
+    const BASIC_SAMPLE_DOCUMENT = 'D:/comments/simple.md';
+
     let tokenizer: TokenFunction = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
@@ -56,12 +58,12 @@ describe('tokenizer', () => {
 
     it('should tokenize text as text', () => {
         const parseResult: Result<DocumentMap> = ok({
-            projectLocation: buildProjectLocation('D:/comments/simple.md', 6, 8),
+            projectLocation: buildProjectLocation(BASIC_SAMPLE_DOCUMENT, 6, 8),
             parts: [
                 {
                     type: 'text',
                     text: 'hello my text',
-                    location: getLocation('D:/comments/simple.md', 0, 0, 5, 23),
+                    location: getLocation(BASIC_SAMPLE_DOCUMENT, 0, 0, 5, 23),
                 }
             ],
         });
@@ -74,12 +76,12 @@ describe('tokenizer', () => {
     describe('handling Doculisp', () => {
         it('should tokenize an empty comment', () => {
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: buildProjectLocation('D:/comments/simple.md', 1, 5 ),
+                projectLocation: buildProjectLocation(BASIC_SAMPLE_DOCUMENT, 1, 5 ),
                 parts: [
                     {
                         type: 'lisp',
                         text: '(*)',
-                        location: getLocation('D:/comments/simple.md', 0, 0, 2, 1),
+                        location: getLocation(BASIC_SAMPLE_DOCUMENT, 0, 0, 2, 1),
                     },
                 ],
             });
@@ -90,9 +92,9 @@ describe('tokenizer', () => {
         });
         
         it('should tokenize an single atom', () => {
-            const start: ILocation = getLocation('D:/comments/simple.md', 0, 0, 4, 2);
+            const start: ILocation = getLocation(BASIC_SAMPLE_DOCUMENT, 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: buildProjectLocation('D:/comments/simple.md', 2, 7),
+                projectLocation: buildProjectLocation(BASIC_SAMPLE_DOCUMENT, 2, 7),
                 parts: [
                     {
                         type: 'lisp',
@@ -108,9 +110,9 @@ describe('tokenizer', () => {
         });
         
         it('should tokenize an single atom with space after atom', () => {
-            const start: ILocation = getLocation('D:/comments/simple.md', 0, 0, 4, 2);
+            const start: ILocation = getLocation(BASIC_SAMPLE_DOCUMENT, 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: buildProjectLocation('D:/comments/simple.md', 3, 7),
+                projectLocation: buildProjectLocation(BASIC_SAMPLE_DOCUMENT, 3, 7),
                 parts: [
                     {
                         type: 'lisp',
@@ -126,9 +128,9 @@ describe('tokenizer', () => {
         });
         
         it('should tokenize an single atom with new line after atom', () => {
-            const start: ILocation = getLocation('D:/comments/simple.md', 0, 0, 4, 2);
+            const start: ILocation = getLocation(BASIC_SAMPLE_DOCUMENT, 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: buildProjectLocation('D:/comments/simple.md', 7, 4),
+                projectLocation: buildProjectLocation(BASIC_SAMPLE_DOCUMENT, 7, 4),
                 parts: [
                     {
                         type: 'lisp',
@@ -144,9 +146,9 @@ describe('tokenizer', () => {
         });
         
         it('should tokenize an single atom containing only numbers', () => {
-            const start: ILocation = getLocation('D:/comments/simple.md', 0, 0, 4, 2 );
+            const start: ILocation = getLocation(BASIC_SAMPLE_DOCUMENT, 0, 0, 4, 2 );
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: buildProjectLocation('D:/comments/simple.md', 4, 6),
+                projectLocation: buildProjectLocation(BASIC_SAMPLE_DOCUMENT, 4, 6),
                 parts: [
                     {
                         type: 'lisp',
@@ -162,9 +164,9 @@ describe('tokenizer', () => {
         });
         
         it('should tokenize an single atom with hyphen and underscore', () => {
-            const start: ILocation = getLocation('D:/comments/simple.md', 0, 0, 4, 2);
+            const start: ILocation = getLocation(BASIC_SAMPLE_DOCUMENT, 0, 0, 4, 2);
             let parseResult: Result<DocumentMap> = ok({
-                projectLocation: buildProjectLocation('D:/comments/simple.md', 7, 7),
+                projectLocation: buildProjectLocation(BASIC_SAMPLE_DOCUMENT, 7, 7),
                 parts: [
                     {
                         type: 'lisp',

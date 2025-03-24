@@ -97,7 +97,7 @@ Doculisp version 1.2.1
 
 ### What Problem Does Doculisp Solve? ###
 
-Doculisp is designed to solve one problem, making readme files easier to edit and maintain. With Doculisp you can break each read me into multiple smaller files. Every time you have a header or subheader that could be a new file. This allows for the task of documentation to be managed in parts. When a part of the documentation needs to be edited, you can open the file that pertains to that part, and only that part. There is a secondary advantage to this. Whe a change to the documentation happens, you can see what that change effected without looking at file diffs just by examining the files that changed.
+Doculisp is designed to solve one problem, making readme files easier to edit and maintain. With Doculisp you can break each read me into multiple smaller files. Every time you have a header or subheader that could be a new file. This allows for the task of documentation to be managed in parts. When a part of the documentation needs to be edited, you can open the file that pertains to that part, and only that part. There is a secondary advantage to this. When a change to the documentation happens, you can see what that change effected without looking at file diffs just by examining the files that changed.
 
 #### A Word of Advice ####
 
@@ -127,13 +127,42 @@ The first block is the `dl` block. In it `dl` is the atom. It contains the `sect
 
 A parameter is a string of characters that contains no line advancement (`\r` or `\n`) character and no parentheses (unless escaped). A parameter has a max length of 255 characters.
 
-#### Visual Explanation ####
+Example:
+
+```doculisp
+(atom parameter)
+```
+
+To include parentheses within a parameter, escape them with a backslash:
+
+```doculisp
+(atom parameter\))
+```
+
+#### More Visual Explanations ####
 
 ```doculisp
 (atom)
 (atom parameter)
 (atom (atom2))
 (atom (atom2 second parameter))
+```
+
+```mermaid
+graph TD
+    subgraph Basic Atom
+        A(atom)
+    end
+    subgraph Atom with Parameter
+        B(atom) -->|parameter| C
+    end
+    subgraph Atom contains Atom
+        D(atom) --> E(atom2)
+    end
+    subgraph Nested
+        F(atom) --> G(atom2)
+        G -->H(Parameter)
+    end
 ```
 
 ### Doculisp Master Block ###
@@ -148,7 +177,7 @@ Example
     (section-meta
         (title Doculisp)
         (include
-            (section ./doculisp.md)
+            (Section ./doculisp.md)
         )
     )
 
@@ -161,50 +190,51 @@ You will notice that in this example the doculisp contains 2 main blocks, howeve
 
 ### Section Meta Block ###
 
-This block is contained directly within the Doculisp main block. It contains information used to build the current secion. This includes things like title, subtitle, and include.
+The `section-meta` block is a crucial part of the Doculisp DSL. It provides metadata for a section, including the title, author, and included subsections. This block helps organize and structure the documentation by breaking it into manageable parts.
 
-Example
+#### Components of the `section-meta` Block ####
+
+1. Title (title):
+    * Required
+    * Specifies the title of the section.
+    * Example: (title Section Meta Block)
+2. Ref-Link (ref-link):
+    * Optional
+    * Allows you to specify a different link to use in the table of contents.
+    * Useful for handling characters in the title that markdown does not include in its section headers.
+3. Subtitle (subtitle):
+    * Optional
+    * Creates a heading that is two levels of heading less than the title directly beneath the title.
+4. Author (author):
+    * Optional
+    * Specifies the author(s) of the section.
+    * Can be included multiple times for multiple authors.
+    * Example: (author jason-kerney)
+5. Include (include):
+    * If it is used there must be a `content` block.
+    * Lists the files to be included in the section.
+    * Each file is specified with a custom block name followed by the file path.
+6. ID (id):
+    * Optional
+    * Specifies a unique identifier for the section.
+    * Example: (id section-meta)
+    * For more information on ids see [Path Ids](#path-ids)
+    * The `id` block provides a unique identifier for the section, facilitating easy linking and navigation. See [get-path](#dynamic-document-linking) for more details.
+7. Comment (*):
+    * Optional
+    * The comment block breaks the rule slightly. The asterisk character is a special character that causes all atoms that start with it to be treated as a comment, and all parameters and sub-blocks to be ignored.
+
+#### Section-Meta Examples ####
+
+##### Title Example #####
 
 ```doculisp
 (section-meta
-    (title Doculisp a short description)
-    (include
-        (section ./doculisp.md)
-    )
+    (title Section Meta Block)
 )
 ```
 
-#### Title (required) ####
-
-This is required, however it has two ways of being provided. The simple way, as a parameter to `section-meta`, or as a block if other blocks are also provided.
-
-##### Simple Way #####
-
-The simple way is to provide the title as a parameter to the `section-meta` block.
-
-```doculisp
-(section-meta Doculisp a Short Description)
-```
-
-##### Structured Way #####
-
-If the `section-meta` block has any other sub blocks, then it is required that it also contains a `title` block. The title is followed by a title that ends at a `)`. Every thing following the white space after the word title and until a new line or a close parenthesis is the title.
-
-```doculisp
-(section-meta
-    (title Doculisp How To)
-    (subtitle A Short Description)
-    (include
-        (Section ./design.md)
-    )
-)
-```
-
-#### Ref-Link ####
-
-This is the first optional sub block for the `section-meta` block. The ref-link allows you to take over the link to use in the table of contents. Its main purpose is to handle characters in the title that markdown does not include in its section headers. This does not change the section link, but lets you specify a different link to use instead.
-
-Example
+##### Ref-Link Example #####
 
 ```doculisp
 (section-meta
@@ -213,59 +243,62 @@ Example
 )
 ```
 
-#### Subtitle ####
-
-Subtitle creates a heading that is two levels of heading less then the title directly beneath the title.
-
-#### Include ####
-
-This allows you to break each section up into sub-sections that are composed in seperate files. This allows you to limit the scope of work in each file making it easier to find where you need to edit and focus on a single idea.
-
-Example
+#### Subtitle Example ####
 
 ```doculisp
 (section-meta
-    (title Doculisp a short description)
+    (title Section Meta Block)
+    (subtitle A Detailed Explanation)
+)
+```
+
+#### Author Example ####
+
+```doculisp
+(section-meta
+    (title Section Meta Block)
+    (author jason-kerney)
+    (author another-author)
+)
+```
+
+#### Include Example ####
+
+```doculisp
+(section-meta
+    (title Include Sub-Block)
     (include
-        (section ./doculisp.md)
-        (section ./section-meta.md)
+        (Section ./title.md)
+        (Section ./ref-link.md)
+        (Section ./subtitle.md)
+        (Section ./include.md)
+        (*Section ./id.md) ; Commented out
+        (Section ./authors.md)
+        (Section ./comments.md)
     )
 )
 ```
 
-##### Subsections #####
+#### ID Example ####
 
-The `include` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)`.
+(section-meta
+    (title Doculisp: A Short Description)
+    (id doculisp-short-description)
+)
 
-You can add a space (` `) to a name by adding a `-` to the name.
-
-Example
+#### Comment Example ####
 
 ```doculisp
-(include
-    (chapter
-        ./information/one.md
+(*section-meta
+    (title Doculisp)
+    (include
+        (Section ./doculisp.md)
+        (Section ./section-meta.md)
+        (Section ./content.md)
+        (*section ./comment.md)
     )
 )
 ```
-
-This will create a sub-section called `chapter` that is built using the file `./information/one.md`.
-
-Example
-
-```doculisp
-(include
-    (sub-section ./one.md)
-)
-```
-
-This will create a subsection called `sub section` that is built using the file `./one.md`.
-
-```doculisp
-(include (section ./two.md))
-```
-
-This will create a subsection called `section` that is built using the file `./two.md`.
 
 #### Author ####
 
@@ -279,17 +312,71 @@ Author is an optional block in the section meta that puts the author's name in t
 )
 ```
 
-#### Exception to the Rule ####
+#### Include ####
 
-Comment block breaks this rule slightly. The astrict character is a special character that cause all atoms that start with to be treated as a comment, and all parameters and sub blocks to be ignored.
+The `include` block allows you to break each section into sub-sections that are composed in separate files. This modular approach makes it easier to manage and edit documentation by limiting the scope of work in each file.
+
+Example
+
+```doculisp
+(section-meta
+    (title Doculisp a short description)
+    (include
+        (Section ./doculisp.md)
+        (Section ./section-meta.md)
+    )
+)
+```
+
+##### Include's Subsections #####
+
+The `include` block is composed of sub-section blocks. These blocks are different then other doculisp blocks. They are custom named blocks. Which means the name of each block is decided by the programmer the same way a variable name is. The format of these blocks is `(` followed by a name followed by whitespace. After the white space is the file path that leads to the document containing the information on how to build the sub-section. Followed again by an optional new line and whitespace. Ending in `)`.
+
+The `include` block is composed of custom named blocks. These blocks are different from other Doculisp blocks as they are named by the programmer, similar to variable names. The biggest difference is these names can be displayed in the table of contents.
+
+The format of these blocks is `(` followed by a name, whitespace, the file path, optional new line and whitespace, and ending with `)`.
+
+You can add a space (` `) to a name by adding a `-` to the name.
+
+Example:
+
+```doculisp
+(include
+    (Chapter
+        ./information/one.md
+    )
+)
+```
+
+This will create a subsection called `Chapter` that is built using the file `./information/one.md`.
+
+Example:
+
+```doculisp
+(include
+    (Sub-Section ./one.md)
+)
+```
+
+This will create a subsection called `Sub Section` that is built using the file `./one.md`.
+
+```doculisp
+(include (Section ./two.md))
+```
+
+This will create a subsection called `Section` that is built using the file `./two.md`.
+
+#### Section-Meta Summary ####
+
+The section-meta block is essential for organizing and structuring documentation in Doculisp. It allows you to define the title, author, included files, and a unique identifier for each section, making it easier to manage and update documentation.
 
 ### Content Block ###
 
-The content block signifies where to insert the compiled included documents. This block has only one optional subblock.
+The content block signifies where to insert the compiled included documents. This block has only one optional sub-block.
 
 #### Table of Contents ####
 
-The only subblock to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.
+The only sub-block to the content block is the table of contents. This will cause a linked table of contents to appear for the section at its location.
 
 ##### Simple Usage #####
 
@@ -361,10 +448,10 @@ Example
     (section-meta
         (title Maths an intro)
         (include
-            (section ./add.md)
-            (section ./subtract.md)
-            (section ./muliply.md)
-            (section ./divide.md)
+            (Section ./add.md)
+            (Section ./subtract.md)
+            (Section ./muliply.md)
+            (Section ./divide.md)
         )
     )
 )
@@ -392,7 +479,7 @@ Currently, the maximum heading depth recognized by Markdown is H6. However Docul
 
 ### Comment Block ###
 
-The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics `*` just after an open parenthesis and end when the block and all its subblocks are closed.
+The comment block is the only block that can be present at all levels within the Doculisp Main Block. The comment is created by adding an astrics `*` just after an open parenthesis and end when the block and all its sub-blocks are closed.
 
 Example:
 
@@ -402,17 +489,17 @@ Example:
     (*section-meta
         (title Doculisp)
         (include
-            (section ./doculisp.md)
-            (section ./section-meta.md)
-            (section ./content.md)
-            (section ./comment.md)
+            (Section ./doculisp.md)
+            (Section ./section-meta.md)
+            (Section ./content.md)
+            (Section ./comment.md)
         )
     )
 )
 -->
 ```
 
-In this example the `section-meta` block and all of its subblocks are commented out. Comments can also be nested. This allows you to uncomment in pieces.
+In this example the `section-meta` block and all of its sub-blocks are commented out. Comments can also be nested. This allows you to uncomment in pieces.
 
 Example:
 
@@ -422,9 +509,9 @@ Example:
     (*section-meta
         (title Doculisp)
         (*include
-            (section ./doculisp.md)
-            (section ./section-meta.md)
-            (section ./content.md)
+            (Section ./doculisp.md)
+            (Section ./section-meta.md)
+            (Section ./content.md)
             (*section ./comment.md)
         )
     )
@@ -434,7 +521,7 @@ Example:
 
 #### Nested Comments ####
 
-In this example the `section-meta` and all its subblocks are commented out. However when you uncomment `section-meta` then the `include` block will be commented out. When you uncomment that block, then the `section ./comment.md` block will be commented out.
+In this example the `section-meta` and all its sub-blocks are commented out. However when you uncomment `section-meta` then the `include` block will be commented out. When you uncomment that block, then the `section ./comment.md` block will be commented out.
 
 ### Key Atoms by Depth ###
 
