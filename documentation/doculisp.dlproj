@@ -6,6 +6,18 @@
         )
     )
     (document
+        (lang
+            (source ../../lang/docs/readme/_main.md)
+            (output ../LANG.md)
+        )
+    )
+    (document
+        (project
+            (source ../../lang/docs/prj/_main.dlisp)
+            (output ../PROJECT.md)
+        )
+    )
+    (document
         (changelog
             (source ./changelog/_main.dlisp)
             (output ../CHANGELOG.md)

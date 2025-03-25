@@ -4,10 +4,11 @@
         (title Doculisp)
         (author jason-kerney)
         (include
+            (Resources ./other.md)
             (CLI ./cli.md)
             (*Next ./next.md)
-            (Language ../../../lang/docs/readme/_main.md)
-            (Project ../../../lang/docs/prj/_main.dlisp)
+            (*Language ../../../lang/docs/readme/_main.md)
+            (*Project ../../../lang/docs/prj/_main.dlisp)
         )
     )
 )
