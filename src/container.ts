@@ -234,7 +234,7 @@ class Container implements ITestableContainer {
             if (!t) {
                 throw new Error(`No module called "${moduleName}" registered`);
             }
-            this.registerBuilder(() => require(moduleName), [], moduleName);
+            this.registerBuilder(() => t, [], moduleName);
             moduleBuilder = this._registry[moduleName] as IRegisterable;
         }
 
