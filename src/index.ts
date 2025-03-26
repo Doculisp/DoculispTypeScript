@@ -11,17 +11,7 @@ import path from 'path';
 import { PathConstructor } from './types/types.filePath';
 import { IVariableTable, sourceKey } from './types/types.variableTable';
 
-const program = new Command();
-const controller = container.buildAs<IController>('controller');
-const pathConstructor = container.buildAs<PathConstructor>('pathConstructor');
-const versionGetter = container.buildAs<IVersion>('version');
-const versionMaybe = versionGetter.getVersion();
-
-const nodePath = path.dirname(path.resolve(process.argv[0] as string));
-const modulePath = path.resolve(process.argv[1] as string);
-const isCli = modulePath.includes(nodePath);
-
-async function checkVersion(version: string) {
+async function checkVersion(version: string, modulePath: string, isCli: boolean) {
     const npmReg = new Registry();
     const pkg = await npmReg.package("doculisp");
 
@@ -50,6 +40,16 @@ async function checkVersion(version: string) {
 
 
 async function main() {
+    const program = new Command();
+    const controller = container.buildAs<IController>('controller');
+    const pathConstructor = container.buildAs<PathConstructor>('pathConstructor');
+    const versionGetter = container.buildAs<IVersion>('version');
+    const versionMaybe = versionGetter.getVersion();
+    
+    const nodePath = path.dirname(path.resolve(process.argv[0] as string));
+    const modulePath = path.resolve(process.argv[1] as string);
+    const isCli = modulePath.includes(nodePath);
+
     let version = '?.?.?'
 
     if(!versionMaybe.success) {
@@ -124,7 +124,7 @@ async function main() {
                 }
             }
 
-            checkVersion(version);
+            await checkVersion(version, modulePath, isCli);
         })
         .parseAsync(process.argv);
 
