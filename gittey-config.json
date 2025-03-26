@@ -30,7 +30,7 @@
         },
         {
             "name": "save",
-            "command": "cls && gittey pull && gittey build && gittey docs && gittey test",
+            "command": "gittey push",
             "description": "performs a git push if tests are passing"
         },
         {
