@@ -1,46 +1,4 @@
-import path from "node:path";
 import { IContainer, IDependencyContainer, IDependencyManager, IDictionary, IRegisterable, ITestableContainer, Valid } from "./types/types.containers";
-import { globSync } from 'glob';
-
-function importModules(container: IContainer, moduleNames: string[]) {
-    moduleNames.forEach(n => {
-        if(n.endsWith('index')) {
-            return;
-        }
-
-        const module = require(n);
-        const keys = Object.keys(module);
-        keys
-            .filter(key => {
-                let value = module[key];
-                return !!value?.name && !!value?.builder;
-            })
-            .forEach(key => container.register(module[key]));
-    });
-}
-
-function findModules(container: IContainer) {
-    let modulePath = __dirname;
-    if(modulePath.endsWith('src')) {
-        modulePath = path.resolve(path.join(modulePath, '../dist'));
-    }
-
-    if(!modulePath.endsWith('dist')) {
-        modulePath = path.resolve(path.join(modulePath, './dist'));
-    }
-
-    const globPattern = modulePath + '/**/*.js';
-    let moduleNames = (
-        globSync(globPattern)
-        .map(p => {
-            let r = path.resolve(p);
-
-            return r.replace('.js', '').replaceAll('\\', '/');
-        })
-    );
-
-    importModules(container, moduleNames);
-}
 
 class TreeNode {
     _parent: TreeNode[];
@@ -155,9 +113,6 @@ class Container implements ITestableContainer {
         if(!!registry) {
             const keys = Object.keys(registry);
             keys.forEach(key => this._registry[key] = registry[key]);
-        }
-        else {
-            findModules(this);
         }
 
         this._id = Math.random();

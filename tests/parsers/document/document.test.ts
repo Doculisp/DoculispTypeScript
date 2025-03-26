@@ -1,11 +1,13 @@
-import { container } from "../../../src/container";
+import { containerPromise } from "../../../src/moduleLoader";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifier } from "../../tools";
 import { DocumentParser } from "../../../src/types/types.document";
 import { buildProjectLocation, testable } from "../../testHelpers";
+import { IContainer } from "../../../src/types/types.containers";
 
 describe('document', () => {
+    let container: IContainer = null as any;
     let parse: DocumentParser = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
 
@@ -13,7 +15,8 @@ describe('document', () => {
         verifyAsJson = getVerifier(configure);
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        container = await containerPromise;
         parse = testable.document.resultBuilder(container);
     });
 

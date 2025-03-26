@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-import { container } from './container';
+import { containerPromise } from './moduleLoader';
 import { Command, OptionValues } from 'commander';
 import { Result } from './types/types.general';
 import { IController } from './types/types.controller';
@@ -38,9 +38,9 @@ async function checkVersion(version: string, modulePath: string, isCli: boolean)
     }
 }
 
-
 async function main() {
     const program = new Command();
+    const container = await containerPromise;
     const controller = container.buildAs<IController>('controller');
     const pathConstructor = container.buildAs<PathConstructor>('pathConstructor');
     const versionGetter = container.buildAs<IVersion>('version');

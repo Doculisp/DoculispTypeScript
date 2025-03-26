@@ -1,11 +1,11 @@
 import { Options } from "approvals/lib/Core/Options";
-import { IDictionary, ITestableContainer } from "../../../src/types/types.containers";
+import { IContainer, IDictionary, ITestableContainer } from "../../../src/types/types.containers";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { IDoculisp, IEmptyDoculisp } from "../../../src/types/types.astDoculisp";
 import { IIncludeBuilder } from "../../../src/types/types.includeBuilder";
 import { getVerifier } from "../../tools";
 import { configure } from "approvals/lib/config";
-import { container } from "../../../src/container";
+import { containerPromise } from "../../../src/moduleLoader";
 import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
 import { buildProjectLocation, buildPath, testable } from '../../testHelpers';
 import { IVariableTestable } from '../../../src/types/types.variableTable';
@@ -14,6 +14,7 @@ import { IPath } from '../../../src/types/types.filePath';
 describe('includeBuilder', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
 
+    let container: IContainer = null as any;
     let util: IUtil = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
@@ -60,7 +61,8 @@ describe('includeBuilder', () => {
     describe('includeParse', () => {
         let toExternalResult: (text: string, projectLocation: IProjectLocation) => Result<IDoculisp | IEmptyDoculisp> = undefined as any;
 
-        beforeEach(() => {
+        beforeEach(async () => {
+            container = await containerPromise;
             toExternalResult = testable.include.includeResultBuilder(container, setup);
         });
 

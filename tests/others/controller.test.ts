@@ -8,7 +8,7 @@ import { IVariablePath, IVariableTable, sourceKey } from "../../src/types/types.
 import { IStringWriter } from "../../src/types/types.stringWriter";
 import { IController } from "../../src/types/types.controller";
 
-import { container } from "../../src/container";
+import { containerPromise } from "../../src/moduleLoader";
 import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../tools";
@@ -33,8 +33,8 @@ type WriterConfig = {
     result?: Result<string> | undefined;
 };
 
-describe('controller', () => {
-    const environment: ITestableContainer = container as ITestableContainer;
+describe('controller',() => {
+    let environment: ITestableContainer = null as any;
     
     let verifyAsJson: (data: any, options?: Options) => void;
     let testable: ITestableContainer = null as any;
@@ -71,7 +71,8 @@ describe('controller', () => {
         return result;
     }
 
-    beforeEach(() =>{
+    beforeEach(async () =>{
+        environment = await containerPromise as ITestableContainer;
         testable = environment.buildTestable();
         util = testable.buildAs<IUtil>('util');
 

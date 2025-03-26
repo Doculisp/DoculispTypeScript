@@ -1,4 +1,4 @@
-import { container } from "../../../src/container";
+import { containerPromise } from "../../../src/moduleLoader";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifier } from "../../tools";
@@ -13,7 +13,8 @@ describe('document parse dlproj file', () => {
         verifyAsJson = getVerifier(configure);
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        let container = await containerPromise;
         parse = testable.document.resultBuilder(container);
     });
 

@@ -1,4 +1,4 @@
-import { container } from "../../../src/container";
+import { containerPromise } from "../../../src/moduleLoader";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifier } from "../../tools";
@@ -18,7 +18,8 @@ describe('astProject', () => {
         verifyAsJson = getVerifier(configure);
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        let container = await containerPromise;
         resultBuilder = testable.project.resultBuilder(container, environment => {
             environment.replaceValue(buildPath, 'pathConstructor');
         });

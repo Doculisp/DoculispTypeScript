@@ -3,7 +3,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
 import { Result } from "../../src/types/types.general";
 import { buildPath, testable } from "../testHelpers";
-import { container } from "../../src/container";
+import { containerPromise } from "../../src/moduleLoader";
 import path from "path";
 
 describe('stringWriter writing sample', () => {
@@ -27,7 +27,8 @@ describe('stringWriter writing sample', () => {
         verifyMarkdown = verifiers.verifyMarkdown;
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        let container = await containerPromise;
         workingDir = process.cwd();
         process.chdir('./tests/Sample/simple');
         toResult = function(pathString: string) {

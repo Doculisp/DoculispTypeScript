@@ -5,12 +5,13 @@ import { IFail, IProjectLocation, IUtil } from "../../src/types/types.general";
 import { Result } from "../../src/types/types.general";
 import { buildProjectLocation, testable, buildPath } from "../testHelpers";
 import { IDirectoryHandler, IFileLoader } from "../../src/types/types.fileHandler";
-import { container } from "../../src/container";
-import { IDictionary, ITestableContainer } from "../../src/types/types.containers";
+import { containerPromise } from "../../src/moduleLoader";
+import { IContainer, IDictionary, ITestableContainer } from "../../src/types/types.containers";
 import { IVariableTestable } from "../../src/types/types.variableTable";
 import { IPath, PathConstructor } from "../../src/types/types.filePath";
 
 describe('stringWriter', () => {
+    let container: IContainer = null as any;
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
@@ -44,8 +45,9 @@ describe('stringWriter', () => {
         fail = util.fail;
     }
 
-    beforeEach(() => {
+    beforeEach(async () => {
         fail = null as any;
+        container = await containerPromise;
 
         toResult = testable.stringWriter.resultBuilder(container, setupBuilder);
     });
@@ -174,7 +176,8 @@ This is the end
                 let ok: (value: any) => Result<any> = undefined as any;
                 let addFile : (filePath: string, body: string) => void = undefined as any;
 
-                beforeEach(() => {
+                beforeEach(async () => {
+                    let container = await containerPromise;
                     let files: IDictionary<Result<string>> = undefined as any;
                     files = {};
 

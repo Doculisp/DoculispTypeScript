@@ -5,7 +5,7 @@ import { IProjectLocation, ISuccess, IUtil } from "../../src/types/types.general
 import { Result } from "../../src/types/types.general";
 import { buildProjectLocation, testable, buildPath } from "../testHelpers";
 import { IFileHandler } from "../../src/types/types.fileHandler";
-import { container } from "../../src/container";
+import { containerPromise } from "../../src/moduleLoader";
 import { IVariableTestable } from "../../src/types/types.variableTable";
 import { IPath } from "../../src/types/types.filePath";
 import { ITestableContainer } from "../../src/types/types.containers";
@@ -103,8 +103,9 @@ describe('when writing', () => {
         environment.replaceValue(fakeFileHandler, 'fileHandler');
     }
 
-    beforeEach(() => {
+    beforeEach(async () => {
         workingDir = process.cwd();
+        const container = await containerPromise;
         const chain = testable.advanced.chainSetup(container, buildEnvironment);
         toResult = chain(testable.stringWriter.resultBuilder);
         pathToResult = chain(testable.stringWriter.pathCompileResultBuilder);

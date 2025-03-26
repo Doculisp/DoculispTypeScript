@@ -1,15 +1,17 @@
 import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
-import { container } from "../../../src/container";
+import { containerPromise } from "../../../src/moduleLoader";
 import { IDoculisp, IDoculispParser, IEmptyDoculisp } from '../../../src/types/types.astDoculisp'
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
 import { IAstEmpty, RootAst } from '../../../src/types/types.ast';
 import { destKey, IVariableTestable, sourceKey } from "../../../src/types/types.variableTable";
 import { IPath, PathConstructor } from "../../../src/types/types.filePath";
+import { IContainer } from "../../../src/types/types.containers";
 
 describe('astDoculisp', () => {
+    let container: IContainer = null as any;
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
@@ -21,7 +23,8 @@ describe('astDoculisp', () => {
         verifyAsJson = getVerifier(configure);
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        container = await containerPromise;
         toResult = testable.doculisp.resultBuilder(container, environment => {
             variableTable = environment.buildAs<IVariableTestable>('variableTable');
             variableTable.clear();

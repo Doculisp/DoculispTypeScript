@@ -1,8 +1,8 @@
-import { container } from "../../../src/container";
+import { containerPromise } from "../../../src/moduleLoader";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
-import { ITestableContainer } from "../../../src/types/types.containers";
+import { IContainer, ITestableContainer } from "../../../src/types/types.containers";
 import { TokenFunction } from '../../../src/types/types.tokens';
 import { IFail, ILocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { DocumentMap } from "../../../src/types/types.document";
@@ -12,6 +12,7 @@ import { IPath, PathConstructor } from "../../../src/types/types.filePath";
 describe('tokenizer', () => {
     const BASIC_SAMPLE_DOCUMENT = 'D:/comments/simple.md';
 
+    let container: IContainer = null as any;
     let tokenizer: TokenFunction = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
@@ -23,7 +24,8 @@ describe('tokenizer', () => {
         verifyAsJson = getVerifier(configure);
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        container = await containerPromise;
         tokenizer = testable.token.parserBuilder(container, (environment: ITestableContainer) => {
             const pathHandler: PathConstructor = function (filePath) {
                     return buildPath(filePath);

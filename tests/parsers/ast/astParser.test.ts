@@ -1,14 +1,16 @@
 import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
-import { container } from "../../../src/container";
+import { containerPromise } from "../../../src/moduleLoader";
 import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { TokenizedDocument } from "../../../src/types/types.tokens";
 import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
 import { IAstParser, IAstEmpty, RootAst } from '../../../src/types/types.ast';
 import { IPath, PathConstructor } from "../../../src/types/types.filePath";
+import { IContainer } from "../../../src/types/types.containers";
 
 describe('ast', () => {
+    let container: IContainer = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
@@ -19,7 +21,8 @@ describe('ast', () => {
         verifyAsJson = getVerifier(configure);
     });
 
-    beforeEach(() => {
+    beforeEach(async() => {
+        container = await containerPromise;
         toResult = testable.ast.resultBuilder(container, environment => {
             util = environment.buildAs<IUtil>('util');
         });
