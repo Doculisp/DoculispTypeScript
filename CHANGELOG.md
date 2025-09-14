@@ -9,6 +9,7 @@
 
 ## Releases ##
 
+* release: [Version 3.4.6](#version-346)
 * release: [Version 3.4.5](#version-345)
 * release: [Version 3.4.4](#version-344)
 * release: [Version 3.4.3](#version-343)
@@ -16,6 +17,10 @@
 * release: [Version 3.4.0](#version-340)
 * release: [Version 3.3.0](#version-330)
 * release: [Earlier Version](#earlier-version)
+
+## Version 3.4.6 ##
+
+* Fixed `-t` flag now works for project files.
 
 ## Version 3.4.5 ##
 
@@ -56,6 +61,9 @@
   * Added optional Section ID
 * 3.2.0
   * Added header ids.
+* 3.3.0
+  * Fixed header indent.
+  * Isolated Authors in Project Documents.
 
 <!-- Written By: Jason Kerney -->
 <!-- markdownlint-restore -->
