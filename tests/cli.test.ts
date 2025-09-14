@@ -46,6 +46,17 @@ describe('CLI', () => {
             expect(result.stderr).toContain('--test` option requires a source path');
             expect(result.exitCode).toBe(1); // CLI should exit with error code when validation fails
         }, 10000);
+
+        it('should output "Ok! [filename] valid." format for .dlproj files', async () => {
+            const result = await runCLI(['-t', testProjectFile]);
+            
+            // Should show "Ok! [filename] valid." for each file in the project
+            expect(result.exitCode).toBe(0);
+            expect(result.stdout).toMatch(/Ok! .* valid\./);
+            
+            // Should not show "successfully written" (that's for compile mode)
+            expect(result.stdout).not.toContain('successfully written');
+        }, 10000);
     });
 
     describe('compile mode comparison', () => {

@@ -127,7 +127,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
         return [_compile(variableTable) as Result<string>];
     }
 
-    function test(variableTable: IVariableTable): Result<false>[] {
+    function test(variableTable: IVariableTable): Result<string | false>[] {
         if(!variableTable.hasKey(sourceKey)) {
             return [util.fail('A source file must be given')];
         }
@@ -139,17 +139,17 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
             return testProject(sourcePath);
         }
 
-        return [_compile(variableTable) as Result<false>];
+        return [_compile(variableTable) as Result<string | false>];
     }
 
-    function testProject(sourcePath: IPath): Result<false>[] {
+    function testProject(sourcePath: IPath): Result<string | false>[] {
         const project = astBuilder.parseProject(sourcePath, variableTable);
 
         if(!project.success) {
-            return [project as Result<false>];
+            return [project as Result<string | false>];
         }
 
-        const results: Result<false>[] = [];
+        const results: Result<string | false>[] = [];
 
         // Test parsing each document in the project without writing
         for (let index = 0; index < project.value.documents.length; index++) {
@@ -170,15 +170,16 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
             const result = astBuilder.parse(table);
             if(!result.success) {
-                results.push(result as Result<false>);
+                results.push(result as Result<string | false>);
             }
             else {
                 // Test conversion to markdown without writing
                 const writeResult = stringWrter.writeAst(util.ok(result.value), table);
                 if(!writeResult.success) {
-                    results.push(writeResult as Result<false>);
+                    results.push(writeResult as Result<string | false>);
                 } else {
-                    results.push(util.ok(false));
+                    // Return filename + "valid." instead of just false
+                    results.push(util.ok(`${document.destinationPath.fullName} valid.`));
                 }
             }
         }

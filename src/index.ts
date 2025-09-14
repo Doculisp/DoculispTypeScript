@@ -141,8 +141,14 @@ async function main() {
         let failed = false;
         results.forEach(result => {
             if (result.success) {
-                const message = !!result.value ? `Ok! ${result.value} successfully written` : 'Ok!';
-                console.log(message);
+                if (typeof result.value === 'string' && result.value.endsWith(' valid.')) {
+                    // Test mode: value already contains the complete message
+                    console.log(`Ok! ${result.value}`);
+                } else {
+                    // Compile mode: add "successfully written"
+                    const message = !!result.value ? `Ok! ${result.value} successfully written` : 'Ok!';
+                    console.log(message);
+                }
             }
             else {
                 console.error(`Error in file: ${result.documentPath}`);
