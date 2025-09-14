@@ -96,6 +96,11 @@ async function main() {
             else if (options['test']) {
                 if(!sourcePath) {
                     console.error('Error: The `--test` option requires a source path.');
+                    process.exit(1);
+                }
+                else if(sourcePath.extension !== '.md' && sourcePath.extension !== '.dlisp' && sourcePath.extension !== '.dlproj') {
+                    console.error(`Error: The source file must be either a markdown, dlisp, or a dlproj file.\n\t'${sourcePath.fullName}'`)
+                    process.exit(1);
                 }
                 else {
                     const variableTable = container.buildAs<IVariableTable>('variableTable').createChild();
@@ -107,12 +112,15 @@ async function main() {
             else {
                 if(!sourcePath) {
                     console.error('Error: The source path is required.');
+                    process.exit(1);
                 }
                 else if(sourcePath.extension !== '.md' && sourcePath.extension !== '.dlisp' && sourcePath.extension !== '.dlproj') {
                     console.error(`Error: The source file must be either a markdown, dlisp, or a dlproj file.\n\t'${sourcePath.fullName}`)
+                    process.exit(1);
                 }
                 else if(outputPath && outputPath.extension !== '.md') {
                     console.error(`Error: THe output file must be a markdown file.\n\t'${outputPath.fullName}'`);
+                    process.exit(1);
                 }
                 else if(outputPath) {
                     const result = controller.compile(sourcePath, outputPath);

@@ -132,7 +132,58 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
             return [util.fail('A source file must be given')];
         }
 
+        const sourcePath = (variableTable.getValue(sourceKey) as IVariablePath).value;
+        
+        // Handle .dlproj files by testing project parsing without writing
+        if(sourcePath.extension === '.dlproj') {
+            return testProject(sourcePath);
+        }
+
         return [_compile(variableTable) as Result<false>];
+    }
+
+    function testProject(sourcePath: IPath): Result<false>[] {
+        const project = astBuilder.parseProject(sourcePath, variableTable);
+
+        if(!project.success) {
+            return [project as Result<false>];
+        }
+
+        const results: Result<false>[] = [];
+
+        // Test parsing each document in the project without writing
+        for (let index = 0; index < project.value.documents.length; index++) {
+            const document = project.value.documents[index] as IProjectDocument;
+
+            const table = variableTable.createChild();
+            table.addValue(sourceKey, { type: 'variable-path', value: document.sourcePath });
+            table.addValue(destKey, { type: 'variable-path', value: document.destinationPath });
+            
+            if(!!document.id) {
+                table.addGlobalValue(document.id, {
+                    type: 'variable-id',
+                    headerLinkText: false,
+                    value: document.destinationPath,
+                    source: document.location,
+                });
+            }
+
+            const result = astBuilder.parse(table);
+            if(!result.success) {
+                results.push(result as Result<false>);
+            }
+            else {
+                // Test conversion to markdown without writing
+                const writeResult = stringWrter.writeAst(util.ok(result.value), table);
+                if(!writeResult.success) {
+                    results.push(writeResult as Result<false>);
+                } else {
+                    results.push(util.ok(false));
+                }
+            }
+        }
+
+        return results.length > 0 ? results : [util.ok(false)];
     }
 
     return {
