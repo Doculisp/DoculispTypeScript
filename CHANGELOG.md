@@ -13,6 +13,7 @@
 4. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
 5. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
 6. Release: [[3.4.2] - 2025-09-09](#342---2025-09-09)
+7. Older: [Previous Releases](#previous-releases)
 
 ## [3.4.7] - 2025-09-14 ##
 
@@ -60,6 +61,10 @@
   - Added proper validation for path IDs before resolution
   - Improved error messages for missing path references
   - Enhanced stability when processing malformed documents
+
+## Previous Releases ##
+
+[Previous Change Logs](./PREVIOUS-CHANGELOG.md)
 
 <!-- Written By: Jason Kerney -->
 <!-- markdownlint-restore -->
