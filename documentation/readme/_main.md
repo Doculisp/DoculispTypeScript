@@ -3,9 +3,10 @@
     (title Doculisp)
     (author jason-kerney)
     (include
-        (Quick-Tutorial ./quickStart.md)
-        (Setup ./cli.md)
-        (Documentation ./other.md)
+        (Section ../../../lang/docs/readme/why.md)
+        (Section ./quickStart.md)
+        (Section ./cli.md)
+        (Section ./other.md)
         (*Next ./next.md)
         (*Language ../../../lang/docs/readme/_main.md)
         (*Project ../../../lang/docs/prj/_main.dlisp)
