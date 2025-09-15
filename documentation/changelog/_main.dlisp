@@ -1,19 +1,16 @@
 (section-meta
     (title Changelog)
     (include
-        (release ./3_4_6.md)
-        (release ./3_4_5.md)
-        (release ./3_4_4.md)
-        (release ./3_4_3.md)
-        (release ./3_4_2.md)
-        (release ./earlier.md)
+        (Section ./3_4_8.md)
+        (Section ./3_4_7.md)
+        (Section ./3_4_6.md)
+        (Section ./3_4_5.md)
+        (Section ./3_4_4.md)
+        (Section ./3_4_3.md)
+        (Section ./3_4_2.md)
+        (Section ./earlier.md)
     )
     (author Jason Kerney)
 )
 
-(content
-    (toc
-        (label Releases)
-        (style bulleted-labeled)
-    )
-)
+(content (toc numbered-labeled))
