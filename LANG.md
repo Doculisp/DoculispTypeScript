@@ -17,33 +17,108 @@ A language for Readme.
 
 ## Table of Contents ##
 
-1. Version: [Language Version](#language-version)
-2. Intro: [What Problem Does Doculisp Solve?](#what-problem-does-doculisp-solve)
-3. Language: [Basic Structure](#basic-structure)
-4. Language: [Doculisp Master Block](#doculisp-master-block)
-5. Language: [Section Meta Block](#section-meta-block)
-6. Language: [Content Block](#content-block)
-7. Language: [Dynamic Headings](#dynamic-headings)
-8. Language: [Comment Block](#comment-block)
-9. Language: [Key Atoms by Depth](#key-atoms-by-depth)
-10. Language: [Path Ids](#path-ids)
-11. Language: [Dynamic Document Linking](#dynamic-document-linking)
-12. Structure: [".dlisp" files](#dlisp-files)
+1. Intro: [Why Doculisp?](#why-doculisp)
+2. Language: [Syntax Overview](#syntax-overview)
+3. Language: [Doculisp Master Block](#doculisp-master-block)
+4. Language: [Section Meta Block](#section-meta-block)
+5. Language: [Content Block](#content-block)
+6. Language: [Dynamic Headings](#dynamic-headings)
+7. Language: [Comment Block](#comment-block)
+8. Language: [Path Ids](#path-ids)
+9. Language: [Dynamic Document Linking](#dynamic-document-linking)
+10. Language: [Key Atoms by Depth](#key-atoms-by-depth)
+11. Structure: [Native Doculisp Files](#native-doculisp-files)
+12. Version: [Language Specification Version](#language-specification-version)
 13. Recognition: [Contributors ✨](#contributors-)
 
-## Language Version ##
+## Why Doculisp? ##
 
-Doculisp version 1.2.1
+### The Documentation Maintenance Problem ###
 
-## What Problem Does Doculisp Solve? ##
+As developers, we've all been there: staring at a massive README file that's become unwieldy, outdated, and frankly intimidating to update. Traditional documentation approaches create several pain points:
 
-Doculisp is designed to solve one problem, making readme files easier to edit and maintain. With Doculisp you can break each read me into multiple smaller files. Every time you have a header or subheader that could be a new file. This allows for the task of documentation to be managed in parts. When a part of the documentation needs to be edited, you can open the file that pertains to that part, and only that part. There is a secondary advantage to this. When a change to the documentation happens, you can see what that change effected without looking at file diffs just by examining the files that changed.
+- **Monolithic files** that are difficult to navigate and edit
+- **Merge conflicts** when multiple contributors update different sections
+- **Unclear change impact** when reviewing large file diffs
+- **Context switching overhead** when editing unrelated documentation sections
+- **Inconsistent structure** across different projects and teams
 
-### A Word of Advice ###
+Doculisp solves these problems by bringing **modularity and structure** to markdown documentation.
 
-If the text under a subheading is small, I would recommend  not breaking it into a different file. I actually recommend you start with a single readme, and refactor out to different files as the readme grows in size. Remember the point of this is to make updating and managing updates easier.
+### Why Developers Love Doculisp ###
 
-## Basic Structure ##
+#### 🎯 **Focused Editing** ####
+
+Break your README into logical, manageable chunks. Need to update the installation instructions? Open just the `installation.md` file. Working on API documentation? Focus solely on `api.md`. No more scrolling through hundreds of lines to find the section you need.
+
+#### 🔍 **Clear Change Tracking** ####
+
+Git diffs become meaningful again. Instead of seeing "README.md changed 47 lines," you see exactly which conceptual sections were modified: `installation.md`, `troubleshooting.md`, etc.
+
+#### 🤝 **Better Collaboration** ####
+
+Multiple team members can work on different documentation sections simultaneously without merge conflicts. The documentation author editing the introduction won't conflict with the API maintainer updating endpoint documentation.
+
+#### 📐 **Consistent Structure** ####
+
+The `section-meta` blocks enforce consistent organization across all your documentation, making it easier for new team members to contribute and for users to find information.
+
+#### ⚡ **Maintainability** ####
+
+Small, focused files are easier to review, update, and refactor. When documentation grows, you can easily reorganize by moving files rather than cut-and-paste operations in large documents.
+
+#### 🔄 **Effortless Restructuring** ####
+
+Need to promote a section to its own document? Simply move the file and update the `include` block. What starts as a subsection can easily become a standalone document with its own table of contents and structure. No copy-paste, no broken links, no manual reorganization - just move files and update references.
+
+#### 🔗 **Resilient Cross-References** ####
+
+Every section and header can have a unique ID that enables dynamic linking within and across documents. Reference other sections with `(get-path id)` and Doculisp automatically generates the correct links. Best of all: when you restructure documentation and promote sections to standalone documents, as long as the IDs remain the same, all existing links continue to work seamlessly.
+
+### Why Doculisp Over Other Options? ###
+
+#### vs. Traditional Markdown ####
+
+**Traditional approach**: One massive README.md file that becomes harder to manage over time.
+**Doculisp advantage**: Modular files with structured includes, maintaining the simplicity of markdown while adding organization.
+
+#### vs. Documentation Generators (GitBook, Docusaurus, etc.) ####
+
+**Documentation generators**: Complex setup, learning curve, often overkill for project READMEs.
+**Doculisp advantage**: Zero learning curve if you know markdown. Generates standard markdown files that work everywhere GitHub is supported.
+
+#### vs. Wiki Systems ####
+
+**Wiki systems**: Separate from your codebase, requires context switching, can become disconnected from code changes.
+**Doculisp advantage**: Lives in your repository, versioned with your code, integrated into your development workflow.
+
+#### vs. Raw File Splitting ####
+
+**Manual file splitting**: No standard structure, inconsistent organization, manual assembly required.
+**Doculisp advantage**: Structured metadata system, automated assembly, consistent patterns across projects.
+
+### Getting Started: A Practical Approach ###
+
+#### Start Simple, Grow Naturally ####
+
+**Don't over-engineer from day one.** If your current README is manageable, keep it as-is. Doculisp shines when documentation becomes complex enough that modularization provides real value.
+
+**Recommended progression:**
+1. **Single file**: Start with a traditional README.md
+2. **Natural breaking points**: When sections grow large (>50 lines) or become logically distinct, extract them
+3. **Gradual adoption**: Begin with obvious candidates like installation instructions, API documentation, or troubleshooting guides
+4. **Full structure**: Eventually organize into a complete Doculisp project when the benefits are clear
+
+**Signs it's time to modularize:**
+- Your README is over 200 lines
+- Multiple people need to edit different sections
+- You find yourself searching within the file to find specific content
+- Merge conflicts are happening in documentation
+- You're copying documentation patterns between projects
+
+**Pro tip**: The goal is easier maintenance, not complexity. If splitting a small section into its own file makes editing *harder*, don't do it.
+
+## Syntax Overview ##
 
 The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses `(` followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses `)`.
 
@@ -166,7 +241,7 @@ The `section-meta` block is a crucial part of the Doculisp DSL. It provides meta
 
 ### Section-Meta Examples ###
 
-#### Title Example ####
+##### Title Example #####
 
 ```doculisp
 (section-meta
@@ -174,7 +249,7 @@ The `section-meta` block is a crucial part of the Doculisp DSL. It provides meta
 )
 ```
 
-#### Ref-Link Example ####
+##### Ref-Link Example #####
 
 ```doculisp
 (section-meta
@@ -183,7 +258,7 @@ The `section-meta` block is a crucial part of the Doculisp DSL. It provides meta
 )
 ```
 
-### Subtitle Example ###
+##### Subtitle Example #####
 
 ```doculisp
 (section-meta
@@ -192,7 +267,7 @@ The `section-meta` block is a crucial part of the Doculisp DSL. It provides meta
 )
 ```
 
-### Author Example ###
+##### Author Example #####
 
 ```doculisp
 (section-meta
@@ -202,7 +277,7 @@ The `section-meta` block is a crucial part of the Doculisp DSL. It provides meta
 )
 ```
 
-### Include Example ###
+##### Include Example #####
 
 ```doculisp
 (section-meta
@@ -219,14 +294,14 @@ The `section-meta` block is a crucial part of the Doculisp DSL. It provides meta
 )
 ```
 
-### ID Example ###
+##### ID Example #####
 
 (section-meta
     (title Doculisp: A Short Description)
     (id doculisp-short-description)
 )
 
-### Comment Example ###
+##### Comment Example #####
 
 ```doculisp
 (*section-meta
@@ -306,7 +381,7 @@ This will create a subsection called `Sub Section` that is built using the file 
 
 This will create a subsection called `Section` that is built using the file `./two.md`.
 
-### Section-Meta Summary ###
+### Summary ###
 
 The section-meta block is essential for organizing and structuring documentation in Doculisp. It allows you to define the title, author, included files, and a unique identifier for each section, making it easier to manage and update documentation.
 
@@ -463,37 +538,6 @@ Example:
 
 In this example the `section-meta` and all its sub-blocks are commented out. However when you uncomment `section-meta` then the `include` block will be commented out. When you uncomment that block, then the `section ./comment.md` block will be commented out.
 
-## Key Atoms by Depth ##
-
-Here is a list of all the key atoms by depth:
-
-* markdown
-* `dl`
-  * `section-meta`
-    * `title` text
-      * `*`
-    * `subtitle` text
-      * `*`
-    * `ref-link` text
-      * `*`
-    * `include`
-      * name
-      * file path
-      * `*`
-    * `reference`
-      * `file`
-        * `id` text
-        * `source` file path
-        * `target` file path
-    * `*`
-  * `content`
-    * `toc` bullet style
-       * `label` label text
-       * `style` bullet style
-  * `#` text
-  * `*`
-* `*`
-
 ## Path Ids ##
 
 ### What are Path Ids? ###
@@ -563,7 +607,38 @@ This will return the path needed to get to the document / header combination. Th
 
 In the above example you will have link to correct document and the correct heading.
 
-## ".dlisp" files ##
+## Key Atoms by Depth ##
+
+Here is a list of all the key atoms by depth:
+
+* markdown
+* `dl`
+  * `section-meta`
+    * `title` text
+      * `*`
+    * `subtitle` text
+      * `*`
+    * `ref-link` text
+      * `*`
+    * `include`
+      * name
+      * file path
+      * `*`
+    * `reference`
+      * `file`
+        * `id` text
+        * `source` file path
+        * `target` file path
+    * `*`
+  * `content`
+    * `toc` bullet style
+       * `label` label text
+       * `style` bullet style
+  * `#` text
+  * `*`
+* `*`
+
+## Native Doculisp Files ##
 
 If you have a file that contains only Doculisp code blocks without any markdown you can simplify that file. By changing the extension from `.md` to `.dlisp` you can remove the html comments and the opening `(dl` to contain raw Doculisp code.
 
@@ -606,6 +681,10 @@ Can be simplified to:
 
 (content (toc))
 ```
+
+## Language Specification Version ##
+
+Doculisp version 1.2.1
 
 ## Contributors ✨ ##
 
