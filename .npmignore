@@ -1,0 +1,46 @@
+# Source files (keep only compiled JS)
+src/
+*.ts
+!*.d.ts
+
+# Development and build files
+tsconfig.json
+jest.config.js
+esbuild.js
+eslint.config.mjs
+gittey-config.json
+
+# Test files and coverage
+tests/
+coverage/
+*.test.js
+*.spec.js
+
+# Development tools
+.vscode/
+.idea/
+*.log
+
+# Git and CI
+.git/
+.github/
+.gitignore
+
+# Documentation source (keep compiled docs)
+documentation/
+PROJECT.md
+LANG.md
+CHANGELOG.md
+
+# Development dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
