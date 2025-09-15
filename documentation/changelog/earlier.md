@@ -15,3 +15,5 @@
 * 3.3.0
   * Fixed header indent.
   * Isolated Authors in Project Documents.
+* 3.4.0
+  * Added get-path command to allow linking to output documents.

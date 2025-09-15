@@ -14,8 +14,6 @@
 * release: [Version 3.4.4](#version-344)
 * release: [Version 3.4.3](#version-343)
 * release: [Version 3.4.2](#version-342)
-* release: [Version 3.4.0](#version-340)
-* release: [Version 3.3.0](#version-330)
 * release: [Earlier Version](#earlier-version)
 
 ## Version 3.4.6 ##
@@ -38,15 +36,6 @@
 
 * Fixed bug: get-path throws exception if path id does not exist
 
-## Version 3.4.0 ##
-
-* Added get-path command to allow linking to output documents.
-
-## Version 3.3.0 ##
-
-* Fixed header indent.
-* Isolated Authors in Project Documents.
-
 ## Earlier Version ##
 
 * 2.9.0
@@ -64,6 +53,8 @@
 * 3.3.0
   * Fixed header indent.
   * Isolated Authors in Project Documents.
+* 3.4.0
+  * Added get-path command to allow linking to output documents.
 
 <!-- Written By: Jason Kerney -->
 <!-- markdownlint-restore -->

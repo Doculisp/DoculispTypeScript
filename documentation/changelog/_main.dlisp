@@ -6,8 +6,6 @@
         (release ./3_4_4.md)
         (release ./3_4_3.md)
         (release ./3_4_2.md)
-        (release ./3_4_0.md)
-        (release ./3_3_0.md)
         (release ./earlier.md)
     )
     (author Jason Kerney)
