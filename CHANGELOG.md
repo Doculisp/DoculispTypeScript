@@ -7,24 +7,12 @@
 
 # Changelog #
 
-1. Section: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-2. Section: [[3.4.7] - 2025-09-14](#347---2025-09-14)
-3. Section: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-4. Section: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-5. Section: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-6. Section: [[3.4.3] - 2025-09-10](#343---2025-09-10)
-7. Section: [[3.4.2] - 2025-09-09](#342---2025-09-09)
-8. Section: [Earlier Versions](#earlier-versions)
-
-## [3.4.8] - 2025-09-15 ##
-
-### Improved ###
-
-- **Package Distribution**: Added `.npmignore` file to reduce package size and exclude development files from npm distribution
-  - Excludes TypeScript source files, tests, and development configurations
-  - Reduces package download size for end users
-  - Improves installation performance
-  - Only includes essential runtime files in published package
+1. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
+2. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+3. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+4. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+5. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
+6. Release: [[3.4.2] - 2025-09-09](#342---2025-09-09)
 
 ## [3.4.7] - 2025-09-14 ##
 
@@ -72,64 +60,6 @@
   - Added proper validation for path IDs before resolution
   - Improved error messages for missing path references
   - Enhanced stability when processing malformed documents
-
-## Earlier Versions ##
-
-### [3.4.0] - 2025-09-08 ###
-
-#### Added ####
-
-- **Cross-Document Linking**: Added `get-path` command to allow linking to output documents
-  - Enables dynamic path resolution for cross-document references
-  - Supports complex project structures with multiple output locations
-
-### [3.3.0] - 2025-09-07 ###
-
-#### Fixed ####
-
-- **Header Formatting**: Fixed header indent formatting
-- **Author Isolation**: Isolated Authors in Project Documents
-  - Improved author attribution handling across document boundaries
-
-### [3.2.0] - 2025-09-06 ###
-
-#### Added ####
-
-- **Header IDs**: Added support for header ids
-  - Enables precise cross-referencing and anchor linking
-  - Improves navigation within generated documents
-
-### [3.1.0] - 2025-09-05 ###
-
-#### Added ####
-
-- **Section IDs**: Added optional Section ID functionality
-  - Enables unique identification of document sections
-  - Supports advanced cross-referencing capabilities
-
-### [3.0.0] - 2025-09-04 ###
-
-#### Breaking Changes ####
-
-- **Document IDs**: _**Breaking Change**_ - Updated Document ID requirements
-  - Document IDs must now be lowercase
-  - Document IDs cannot contain symbols
-  - Improves consistency and prevents parsing errors
-
-### [2.9.1] - 2025-09-03 ###
-
-#### Improved ####
-
-- **Link Detection**: Better symbol detection for link processing
-  - Enhanced accuracy in link parsing and generation
-
-### [2.9.0] - 2025-09-02 ###
-
-#### Added ####
-
-- **Project Files**: Added support for project files (`.dlproj`)
-  - Enables multi-document project management
-  - Supports batch processing and complex documentation workflows
 
 <!-- Written By: Jason Kerney -->
 <!-- markdownlint-restore -->

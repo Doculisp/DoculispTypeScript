@@ -23,4 +23,10 @@
             (output ../CHANGELOG.md)
         )
     )
+    (document
+        (changelog-old
+            (source ./changelog/_previousMain.dlisp)
+            (output ../PREVIOUS-CHANGELOG.md)
+        )
+    )
 )
