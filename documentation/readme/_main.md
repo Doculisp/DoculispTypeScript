@@ -1,18 +1,17 @@
-<!--
-(dl
-    (section-meta
-        (title Doculisp)
-        (author jason-kerney)
-        (include
-            (Resources ./other.md)
-            (CLI ./cli.md)
-            (*Next ./next.md)
-            (*Language ../../../lang/docs/readme/_main.md)
-            (*Project ../../../lang/docs/prj/_main.dlisp)
-        )
+<!-- (dl
+(section-meta
+    (title Doculisp)
+    (author jason-kerney)
+    (include
+        (QuickStart ./quickStart.md)
+        (Resources ./other.md)
+        (CLI ./cli.md)
+        (*Next ./next.md)
+        (*Language ../../../lang/docs/readme/_main.md)
+        (*Project ../../../lang/docs/prj/_main.dlisp)
     )
 )
--->
+) -->
 
 ```
 ___  ____ ____ _  _ _    _ ____ ___
