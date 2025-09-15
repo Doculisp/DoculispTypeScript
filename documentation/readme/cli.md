@@ -1,6 +1,6 @@
 <!-- (dl
 (section-meta
-  (title Using the Command Line Interface)
+  (title Installation & Usage)
   (id cli)
 )
 ) -->

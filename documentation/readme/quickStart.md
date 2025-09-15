@@ -1,4 +1,4 @@
-<!-- (dl (section-meta Quick Start Guide)) -->
+<!-- (dl (section-meta Get Started)) -->
 
 Get up and running with Doculisp in just 5 minutes! This guide will show you how to transform a simple README into a modular documentation system.
 

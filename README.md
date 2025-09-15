@@ -17,11 +17,11 @@ A Compiler for Doculisp Lang.
 
 ## Table of Contents ##
 
-1. QuickStart: [Quick Start Guide](#quick-start-guide)
-2. Resources: [Other Resources](#other-resources)
-3. CLI: [Using the Command Line Interface](#using-the-command-line-interface)
+1. Quick Tutorial: [Get Started](#get-started)
+2. Setup: [Installation & Usage](#installation--usage)
+3. Documentation: [Learn More](#learn-more)
 
-## Quick Start Guide ##
+## Get Started ##
 
 Get up and running with Doculisp in just 5 minutes! This guide will show you how to transform a simple README into a modular documentation system.
 
@@ -121,12 +121,7 @@ doculisp main.md README.md
 
 **Ready to learn more?** Check out the [Language Documentation](./LANG.md) for complete syntax reference, or see [Project File Format](./PROJECT.md) to compile multiple documents at once.
 
-## Other Resources ##
-
-* [Language Documentation](./LANG.md)
-* [Project File Format](./PROJECT.md)
-
-## Using the Command Line Interface ##
+## Installation & Usage ##
 
 ### To Install Doculisp ###
 
@@ -169,6 +164,11 @@ Options:
 
 When using `--test` only the source path if mandatory.
 When compiling both the source and destination are mandatory.
+
+## Learn More ##
+
+* [Language Documentation](./LANG.md)
+* [Project File Format](./PROJECT.md)
 
 <!-- Written By: jason-kerney -->
 <!-- markdownlint-restore -->
