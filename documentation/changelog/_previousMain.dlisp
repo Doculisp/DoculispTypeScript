@@ -1,7 +1,7 @@
 (section-meta
     (title Previous Releases - Changelog)
     (include
-        (Release ./3_4_8.md)
+        (Release ./3_4_2.md)
         (Release ./3_4_0.md)
         (Release ./3_3_0.md)
         (Release ./3_2_0.md)

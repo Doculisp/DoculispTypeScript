@@ -1,12 +1,12 @@
 (section-meta
     (title Changelog)
     (include
-        (Release ./3_4_7.md)
+        (Release ./3_4_8.md)
+        (Release ./3_4_9.md)
         (Release ./3_4_6.md)
         (Release ./3_4_5.md)
         (Release ./3_4_4.md)
         (Release ./3_4_3.md)
-        (Release ./3_4_2.md)
         (Older ./previous.md)
     )
     (author Jason Kerney)

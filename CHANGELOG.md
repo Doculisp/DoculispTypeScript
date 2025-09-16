@@ -7,19 +7,29 @@
 
 # Changelog #
 
-1. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
-2. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-3. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-4. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-5. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
-6. Release: [[3.4.2] - 2025-09-09](#342---2025-09-09)
+1. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+2. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+3. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+4. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+5. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+6. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
 7. Older: [Previous Releases](#previous-releases)
 
-## [3.4.7] - 2025-09-14 ##
+## [3.4.8] - 2025-09-15 ##
 
 ### Improved ###
 
-- **Documentation**: Updated documentation and improved project structure
+- **Package Distribution**: Added `.npmignore` file to reduce package size and exclude development files from npm distribution
+  - Excludes TypeScript source files, tests, and development configurations
+  - Reduces package download size for end users
+  - Improves installation performance
+  - Only includes essential runtime files in published package
+
+## [3.4.9] - 2025-09-15 ##
+
+### Fixed ###
+
+- Fixed an issue in `quickStart.md` where there was an attempt to nest multiline code blocks, which caused formatting problems. The code blocks are now properly formatted for clarity and compatibility.
 
 ## [3.4.6] - 2025-09-13 ##
 
@@ -52,15 +62,6 @@
 - **Cross-Document Linking**: Fixed bug with cross-document linking using the `get-path` function
   - Improved stability and accuracy of document path resolution
   - Enhanced error handling for invalid path references
-
-## [3.4.2] - 2025-09-09 ##
-
-### Fixed ###
-
-- **Error Handling**: Fixed bug where `get-path` throws exception if path id does not exist
-  - Added proper validation for path IDs before resolution
-  - Improved error messages for missing path references
-  - Enhanced stability when processing malformed documents
 
 ## Previous Releases ##
 
