@@ -164,21 +164,14 @@ Create `install.md`:
 ```markdown
 <!-- (dl (section-meta Installation)) -->
 
-```
-
-bash
 npm install my-project
 ```
 
 Create `usage.md`:
 
-```
+```markdown
+<!-- (dl (section-meta Usage)) -->
 
-markdown
-
-## Usage ##
-
-```javascript
 const myProject = require('my-project');
 myProject.run();
 ```
