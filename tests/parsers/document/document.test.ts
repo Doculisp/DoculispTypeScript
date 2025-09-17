@@ -77,6 +77,40 @@ describe('document', () => {
                 const result = parse('   \r\n blow fish', buildProjectLocation('C:/my_document.md', 1, 8));
                 verifyAsJson(result);
             });
+    
+            it('should parse nested multiline code blocks', () => {
+                const md = `An example of an markdown document with nested code blocks:
+    \`\`\`\`markdown
+    # A document
+    
+    \`\`\`html
+    <a href="www.google.com">Google</a>
+    \`\`\`
+    
+    ## Sub section title
+    \`\`\`\`
+    `;
+                const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
+    
+                verifyAsJson(result);
+            });
+
+            it('should not parse nested multiline code blocks when closing markers are unbalanced', () => {
+                const md = `An example of an markdown document with nested code blocks that do not close:
+    \`\`\`\`markdown
+    # A document
+    
+    \`\`\`html
+    <a href="www.google.com">Google</a>
+    \`\`\`
+    
+    ## Sub section title
+    \`\`\`\`\`
+    `;
+                const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
+    
+                verifyAsJson(result);
+            });
         });
 
         describe('html comments', () => {

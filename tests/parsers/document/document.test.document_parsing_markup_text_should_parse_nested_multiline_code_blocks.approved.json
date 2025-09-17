@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "value": {
+    "parts": [
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 1
+        },
+        "text": "An example of an markdown document with nested code blocks:",
+        "type": "text"
+      },
+      {
+        "location": {
+          "char": 1,
+          "documentDepth": 4,
+          "documentIndex": 3,
+          "documentPath": "C:/markdown/multiline.md",
+          "line": 2
+        },
+        "text": "    ````markdown\n    # A document\n\n    ```html\n    <a href=\"www.google.com\">Google</a>\n    ```\n\n    ## Sub section title\n    ````",
+        "type": "text"
+      }
+    ],
+    "projectLocation": {
+      "documentDepth": 4,
+      "documentIndex": 3,
+      "documentPath": "C:/markdown/multiline.md"
+    }
+  }
+}

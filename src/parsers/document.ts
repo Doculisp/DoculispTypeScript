@@ -227,15 +227,34 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     function isMultiline() : HandleStringValue<DocumentPart> {
         return function(toParse: string, starting: ILocation): StringStepParseResult<DocumentPart> {
             let opened: boolean = false;
+            let foundMarker: string = '';
+            let regex: RegExp;
     
             function tryParseMultiline(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
-                if(doesIt.startWithMultilineMarker.test(input)) {
-                    opened = !opened;
+                if(!opened && doesIt.startWithMultilineMarker.test(input)) {
+                    opened = true;
     
                     const parsed: string = (input.match(doesIt.startWithMultilineMarker) as any)[0];
+                    foundMarker = parsed;
                     const rest = input.slice(parsed.length);
                     const location = current.increaseChar(parsed.length);
+                    regex = new RegExp('^' + foundMarker.replaceAll('`', '\\`') + '\s');
     
+                    return util.ok({
+                        type: 'parse result',
+                        subResult: { location: current, text: parsed, type: 'text' },
+                        rest,
+                        location: location,
+                    });
+                }
+                else if (opened && regex && regex.test(input)) {
+                    opened = false;
+                    const parsed: string = (input.match(regex) as any)[0];
+
+                    const rest = input.slice(parsed.length);
+                    const location = current.increaseChar(parsed.length);
+                    foundMarker = '';
+
                     return util.ok({
                         type: 'parse result',
                         subResult: { location: current, text: parsed, type: 'text' },

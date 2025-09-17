@@ -11,7 +11,7 @@ const documentSearches: IDocumentSearches = {
     startWithOpenComment: /^<!--/,
     startWithCloseComment: /^-->/,
     startWithInlineMarker: /^`/,
-    startWithMultilineMarker: /^```/,
+    startWithMultilineMarker: /^``+/,
     startWithDocuLisp: /^\(dl/,
     startWithOpenLisp: /^\(/,
     startsWithCloseLisp: /^\)/,

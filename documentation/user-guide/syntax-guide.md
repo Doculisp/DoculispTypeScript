@@ -255,7 +255,7 @@ You should see version information printed to the console.
 
 ### File Organization Patterns
 
-<!-- (dl (##simple-project Simple Project (3-5 sections))) -->
+<!-- (dl (##simple-project Simple Project \(3-5 sections\))) -->
 
 ```
 docs/
@@ -266,7 +266,7 @@ docs/
 └── support.md            # Getting help
 ```
 
-<!-- (dl (##complex-project Complex Project (10+ sections))) -->
+<!-- (dl (##complex-project Complex Project \(10+ sections\))) -->
 
 ```
 docs/
