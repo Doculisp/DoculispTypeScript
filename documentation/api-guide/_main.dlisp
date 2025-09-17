@@ -1,0 +1,20 @@
+(section-meta
+    (title DoculispTypeScript API Guide)
+    (subtitle Understanding the Dependency Injection Container and Core Objects)
+    (author Jason Kerney)
+    (include
+        (Introduction ./introduction.md)
+        (Container ./container-basics.md)
+        (Objects ./core-objects.md)
+        (Examples ./examples.md)
+        (Testing ./testing-patterns.md)
+        (Advanced ./advanced-usage.md)
+    )
+)
+
+(content
+    (toc
+        (style bulleted)
+        (label Contents)
+    )
+)

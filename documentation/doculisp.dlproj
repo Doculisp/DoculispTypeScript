@@ -35,4 +35,10 @@
             (output ../PREVIOUS-CHANGELOG.md)
         )
     )
+    (document
+        (api-guide
+            (source ./api-guide/_main.dlisp)
+            (output ../API_GUIDE.md)
+        )
+    )
 )
