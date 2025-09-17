@@ -1,4 +1,5 @@
 <!-- (dl (section-meta Learn More)) -->
 
-* [Language Documentation](<!-- (dl (get-path lang)) -->)
-* [Project File Format](<!-- (dl (get-path project)) -->)
+* [User Guide](<!-- (dl (get-path user-guide)) -->) - Complete guide with tutorials and best practices
+* [Language Documentation](<!-- (dl (get-path lang)) -->) - Language syntax reference
+* [Project File Format](<!-- (dl (get-path project)) -->) - Multi-document compilation
