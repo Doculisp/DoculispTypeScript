@@ -112,6 +112,7 @@ For power users, additional options are available:
     my-project --verbose input.txt output.txt
     my-project --config custom.json input.txt
 ```
+
 **Create `faq.md`:**
 ```markdown
 <!-- (dl (section-meta FAQ)) -->
@@ -216,7 +217,7 @@ If you're still having trouble:
 2. Search existing issues
 3. Create a new issue with details
 ```
-
+d
 **Recompile:**
 ```bash
 doculisp main.md README.md

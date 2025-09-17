@@ -331,6 +331,7 @@ If you're still having trouble:
 3. Create a new issue with details
 ```
 
+d
 **Recompile:**
 ```bash
 doculisp main.md README.md
