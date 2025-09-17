@@ -7,13 +7,22 @@
 
 # Changelog #
 
-1. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-2. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-3. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-4. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-5. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-6. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
+1. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
+2. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+3. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+4. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+5. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+6. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
 7. Older: [Previous Releases](#previous-releases)
+
+## [3.4.10] - 2025-09-16 ##
+
+### Fixed ###
+
+- **Multiline Code Block Parsing**: Fixed a bug where multiline code blocks defined with 4 or more backticks would cause the compiler to fail and report a malformed markdown document
+  - Code blocks with 4+ backticks are now properly recognized and parsed
+  - Closing markers no longer require trailing whitespace and can end at line boundaries
+  - Prevents compilation failures for valid markdown documents containing extended code blocks
 
 ## [3.4.8] - 2025-09-15 ##
 
@@ -54,14 +63,6 @@
 - **Path Resolution**: Fixed issue where path was not always complete in cross-document linking using `get-path` function
   - Improved path resolution accuracy for cross-document references
   - Enhanced reliability of document linking across complex project structures
-
-## [3.4.3] - 2025-09-10 ##
-
-### Fixed ###
-
-- **Cross-Document Linking**: Fixed bug with cross-document linking using the `get-path` function
-  - Improved stability and accuracy of document path resolution
-  - Enhanced error handling for invalid path references
 
 ## Previous Releases ##
 
