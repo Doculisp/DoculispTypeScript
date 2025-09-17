@@ -94,6 +94,22 @@ describe('document', () => {
     
                 verifyAsJson(result);
             });
+    
+            it('should parse nested multiline code blocks that end with the file', () => {
+                const md = `An example of an markdown document with nested code blocks:
+    \`\`\`\`markdown
+    # A document
+    
+    \`\`\`html
+    <a href="www.google.com">Google</a>
+    \`\`\`
+    
+    ## Sub section title
+    \`\`\`\``;
+                const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
+    
+                verifyAsJson(result);
+            });
 
             it('should not parse nested multiline code blocks when closing markers are unbalanced', () => {
                 const md = `An example of an markdown document with nested code blocks that do not close:

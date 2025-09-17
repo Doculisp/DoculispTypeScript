@@ -604,22 +604,19 @@ On Windows, you may need to:
 
 After installation, verify everything works:
 
-```
-
-bash
+```bash
 our-software --version
 ```
 
 You should see version information printed to the console.
 
-<!-- (dl (#common-patterns Common Patterns)) -->
+### Common Patterns ###
 
 ### File Organization Patterns
 
-<!-- (dl (##simple-project Simple Project \(3-5 sections\))) -->
+#### Simple Project (3-5 sections) ####
 
 ```
-
 docs/
 ├── main.md                 # Main entry point
 ├── overview.md            # What the project does
@@ -628,10 +625,9 @@ docs/
 └── support.md            # Getting help
 ```
 
-<!-- (dl (##complex-project Complex Project \(10+ sections\))) -->
+#### Complex Project (10+ sections) ####
 
 ```
-
 docs/
 ├── main.md
 ├── introduction/
@@ -646,9 +642,10 @@ docs/
     ├── configuration.md
     └── troubleshooting.md
 ```
+
 ```
 
-### Common Syntax Mistakes ###
+<!-- (dl (#syntax-mistakes Common Syntax Mistakes)) -->
 
 ### Avoid These Common Mistakes
 

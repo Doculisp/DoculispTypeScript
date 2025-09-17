@@ -238,7 +238,8 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     foundMarker = parsed;
                     const rest = input.slice(parsed.length);
                     const location = current.increaseChar(parsed.length);
-                    regex = new RegExp('^' + foundMarker.replaceAll('`', '\\`') + '\s');
+                    const regexString = '^' + foundMarker + '(?=\\s|$)';
+                    regex = new RegExp(regexString);
     
                     return util.ok({
                         type: 'parse result',
@@ -254,6 +255,18 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     const rest = input.slice(parsed.length);
                     const location = current.increaseChar(parsed.length);
                     foundMarker = '';
+
+                    return util.ok({
+                        type: 'parse result',
+                        subResult: { location: current, text: parsed, type: 'text' },
+                        rest,
+                        location: location,
+                    });
+                }
+                else if(opened && doesIt.startWithMultilineMarker.test(input)) {
+                    const parsed: string = (input.match(doesIt.startWithMultilineMarker) as any)[0];
+                    const rest = input.slice(parsed.length);
+                    const location = current.increaseChar(parsed.length);
 
                     return util.ok({
                         type: 'parse result',
