@@ -178,18 +178,6 @@ All parsed elements must maintain precise location information for error reporti
 ### 4. Immutable Structures
 Most data structures are readonly/immutable for safety and predictability.
 
-### 5. Code Block Limitations (CRITICAL)
-**Doculisp only supports 3-backtick code fences.** This creates nesting issues:
-
-`````markdown
-<!-- THIS FAILS - 4+ backticks not supported -->
-````markdown
-```bash
-echo "hello"
-```
-````
-`````
-
 **Workarounds:**
 - Use indented code blocks for inner examples
 - Avoid nesting fenced code blocks
