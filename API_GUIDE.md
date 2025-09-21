@@ -13,23 +13,113 @@
 ## Contents ##
 
 * [Introduction](#introduction)
-* [Container Basics](#container-basics)
+* [Container Fundamentals](#container-fundamentals)
+* [Architecture Overview](#architecture-overview)
 * [Core Objects Reference](#core-objects-reference)
-* [Parsing Pipeline Chains](#parsing-pipeline-chains)
-* [DocumentParse API Reference](#documentparse-api-reference)
-* [Tokenizer API Reference](#tokenizer-api-reference)
-* [AstParser API Reference](#astparser-api-reference)
+* [Parsing Pipeline Overview](#parsing-pipeline-overview)
+* [Core Pipeline APIs](#core-pipeline-apis)
 * [AstDoculispParser API Reference](#astdoculispparser-api-reference)
 * [StringWriter API Reference](#stringwriter-api-reference)
-* [Usage Examples](#usage-examples)
+* [Usage Patterns and Examples](#usage-patterns-and-examples)
 * [Testing Patterns](#testing-patterns)
 * [Advanced Usage](#advanced-usage)
 
 ## Introduction ##
 
-The DoculispTypeScript project uses a custom **Dependency Injection (DI) Container** to manage object creation, dependencies, and lifecycle. This guide provides comprehensive information about how to work with the container system and understand the core objects available in the compilation pipeline.
+The DoculispTypeScript project provides a comprehensive **TypeScript compiler** for the Doculisp documentation language. This API guide covers the **Dependency Injection Container system** and **core compilation pipeline** that powers the compiler.
 
-### Why Dependency Injection? ###
+### What This Guide Covers ###
+
+This guide provides everything you need to work with the DoculispTypeScript API:
+
+- **Container System**: How to access and work with the dependency injection container
+- **Core Architecture**: Understanding the compilation pipeline and component interactions
+- **Pipeline APIs**: Detailed documentation for DocumentParse, Tokenizer, and AstParser
+- **Usage Patterns**: Practical examples and common integration scenarios
+- **Advanced Topics**: Performance optimization, testing, and custom extensions
+
+### Who Should Use This Guide ###
+
+**Primary Audience:**
+- **Tool Developers**: Building IDE extensions, language servers, or linting tools
+- **Integration Developers**: Incorporating Doculisp compilation into existing toolchains
+- **Advanced Users**: Needing fine-grained control over the compilation process
+- **Contributors**: Working on the DoculispTypeScript project itself
+
+**Alternative Resources:**
+- For basic Doculisp usage: See the [User Guide](../user-guide/_main.md)
+- For language syntax: See the [Language Specification](../../Lang/AI-Assistant-Codex.md)
+- For quick compilation: Use the command-line interface
+
+### Getting Started ###
+
+The fastest way to access the container system:
+
+```typescript
+const { containerPromise } = require('doculisp/dist/moduleLoader');
+
+// Always await the container (it's asynchronous)
+const container = await containerPromise;
+
+// Build any registered object with type safety
+const controller = container.buildAs<IController>('controller');
+const results = controller.compile(sourcePath, destinationPath);
+```
+
+**Critical**: The container is asynchronous because modules are loaded dynamically. Always use `await containerPromise` before accessing container functionality.
+
+### Key Concepts ###
+
+**Dependency Injection Container:**
+- Manages all compilation components and their dependencies
+- Provides type-safe object creation and lifecycle management
+- Enables easy testing through dependency replacement
+- Automatically resolves complex dependency chains
+
+**Compilation Pipeline:**
+- **DocumentParse**: Extracts Doculisp from documents (first stage)
+- **Tokenizer**: Converts content to structured tokens (second stage)
+- **AstParser**: Builds Abstract Syntax Trees (third stage)
+- **Semantic Processing**: Converts AST to Doculisp structures
+- **Output Generation**: Produces final markdown documents
+
+**File Type Support:**
+- **`.dlproj`**: Project files for batch compilation
+- **`.dlisp`**: Pure Doculisp structure files
+- **`.md`**: Markdown with embedded Doculisp blocks
+
+### Important Limitations ###
+
+**Variable System Constraints:**
+The Doculisp compiler has very limited variable support. The variable table only supports:
+
+- **System-generated string variables**: `source` and `destination` (automatically set during compilation)
+- **ID variables**: Used internally for tracking header IDs and ensuring uniqueness
+
+**Custom string variables are NOT supported** - you cannot add arbitrary string variables for use in documents.
+
+### Navigation Guide ###
+
+**Recommended Reading Order:**
+
+1. **[Container Fundamentals](./container-fundamentals.md)** - Start here to understand the foundation
+2. **[Architecture Overview](./architecture-overview.md)** - Learn how components work together
+3. **[Core Pipeline APIs](./core-pipeline-apis.md)** - Deep dive into the main APIs
+4. **[Usage Patterns](./usage-patterns.md)** - See practical examples and patterns
+
+**Reference Sections:**
+- **[Core Objects](./core-objects.md)** - Complete container object reference
+- **[Pipeline Overview](./parsing-pipeline-overview.md)** - Detailed pipeline documentation
+- **[Testing Patterns](./testing-patterns.md)** - Testing strategies and examples
+- **[Advanced Usage](./advanced-usage.md)** - Performance optimization and extensions
+
+## Container Fundamentals ##
+
+### Understanding the Container System ###
+
+The DoculispTypeScript project uses a **Dependency Injection (DI) Container** to manage object creation, dependencies, and lifecycle. This container system is the foundation that orchestrates all compilation pipeline components.
+
+#### Why Dependency Injection? ####
 
 The DI container provides several key benefits:
 
@@ -38,34 +128,114 @@ The DI container provides several key benefits:
 - **Lifecycle Management**: Automatic singleton management and dependency resolution
 - **Circular Dependency Detection**: Built-in protection against dependency cycles
 
-### Container Architecture ###
+#### Container Architecture ####
 
-The container system consists of several interfaces:
+The container system consists of several interfaces that work together:
 
-- `IContainer`: Main interface combining dependency management and registration
-- `IDependencyManager`: Building and retrieving objects
-- `IDependencyContainer`: Registering new modules
-- `ITestableContainer`: Testing-specific features like dependency replacement
+- **`IContainer`**: Main interface combining dependency management and registration
+- **`IDependencyManager`**: Building and retrieving objects
+- **`IDependencyContainer`**: Registering new modules
+- **`ITestableContainer`**: Testing-specific features like dependency replacement
 
-### Getting Started ###
+#### Accessing the Container ####
 
-The container is automatically populated with all available modules when the application starts. You can access it through:
+**Critical**: The container is asynchronous because modules are loaded dynamically. Always use `await containerPromise` before accessing the container.
 
 ```typescript
 const { containerPromise } = require('doculisp/dist/moduleLoader');
 
-// Build any registered object (container is async)
+// Always await the container first
 const container = await containerPromise;
 const parser = container.buildAs<ITokenizer>('tokenizer');
 ```
 
-**Important**: The container is asynchronous because modules are loaded dynamically. Always use `await containerPromise` before accessing the container.
-
 The container automatically resolves all dependencies and ensures proper initialization order.
 
-### TypeScript Types ###
+#### Building Objects ####
 
-When using TypeScript, you can import types from the package:
+The primary way to get objects from the container is using the `build` methods:
+
+```typescript
+// Build with automatic type inference
+const tokenizer = container.build('tokenizer');
+
+// Build with explicit typing (recommended)
+const parser = container.buildAs<IAstParser>('astParser');
+```
+
+#### Registration Patterns ####
+
+Objects are registered automatically by the module loader, but you can also register manually:
+
+##### Registering Values #####
+
+```typescript
+// Register a simple value
+container.registerValue(myConfig, 'config');
+
+// Register an object with a name property
+const logger = { name: 'logger', log: (msg: string) => console.log(msg) };
+container.registerValue(logger);
+```
+
+##### Registering Builders #####
+
+```typescript
+// Register a builder function
+container.registerBuilder(
+    (dep1: IDep1, dep2: IDep2) => new MyService(dep1, dep2),
+    ['dependency1', 'dependency2'],
+    'myService',
+    true // singleton
+);
+```
+
+##### Registration Interface #####
+
+All registered modules implement the `IRegisterable` interface:
+
+```typescript
+interface IRegisterable {
+    readonly builder: (...args: any[]) => Valid<any>;
+    readonly name: string;
+    readonly dependencies?: string[];
+    readonly singleton?: boolean;
+}
+```
+
+#### Error Handling ####
+
+The container throws errors for missing modules rather than returning error objects:
+
+```typescript
+try {
+    const result = container.build('nonExistentModule');
+    // Use result directly - it's the actual object, not a Result<T>
+} catch (error) {
+    console.error('Module not found:', error.message);
+}
+```
+
+**Note**: Unlike other parts of the Doculisp system that use `Result<T>` patterns, the container throws errors for missing modules or circular dependencies.
+
+#### Circular Dependencies ####
+
+The container automatically detects circular dependencies and throws descriptive errors:
+
+```
+Error: Circular dependencies between ("moduleA" => "moduleB" => "moduleA")
+```
+
+#### Object Lifecycle ####
+
+Most objects are registered as **singletons**, meaning:
+- One instance per container
+- Dependencies are resolved once
+- State is maintained across calls
+
+#### TypeScript Integration ####
+
+When using TypeScript, import types from the package:
 
 ```typescript
 // Import common interface types
@@ -86,212 +256,15 @@ import type { IStructure } from 'doculisp/dist/types/types.structure';
 
 The main types are organized across several type definition files in the `doculisp/dist/types/` directory.
 
-### Important Note About Variables ###
+## Architecture Overview ##
 
-The Doculisp compiler has very limited variable support. The variable table only supports:
+### System Architecture ###
 
-- **System-generated string variables**: `source` and `destination` (automatically set during compilation)
-- **ID variables**: Used internally for tracking header IDs and ensuring uniqueness
+The DoculispTypeScript compilation system follows a **pipeline architecture** where each stage transforms input through specialized processing components. Understanding this architecture is essential for effective use of the API.
 
-**Custom string variables are NOT supported** - you cannot add arbitrary string variables for use in documents.
+#### Pipeline Overview ####
 
-## Container Basics ##
-
-### Building Objects ###
-
-The primary way to get objects from the container is using the `build` methods:
-
-```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
-
-// Build with automatic type inference (container is async)
-const container = await containerPromise;
-const tokenizer = container.build('tokenizer');
-
-// Build with explicit typing (recommended)
-const parser = container.buildAs<IAstParser>('astParser');
-```
-
-### Registration Patterns ###
-
-Objects are registered automatically by the module loader, but you can also register manually:
-
-#### Registering Values ####
-
-```typescript
-// Get the container first (container is async)
-const container = await containerPromise;
-
-// Register a simple value
-container.registerValue(myConfig, 'config');
-
-// Register an object with a name property
-const logger = { name: 'logger', log: (msg: string) => console.log(msg) };
-container.registerValue(logger);
-```
-
-#### Registering Builders ####
-
-```typescript
-// Get the container first (container is async)
-const container = await containerPromise;
-
-// Register a builder function
-container.registerBuilder(
-    (dep1: IDep1, dep2: IDep2) => new MyService(dep1, dep2),
-    ['dependency1', 'dependency2'],
-    'myService',
-    true // singleton
-);
-```
-
-#### Registration Interface ####
-
-All registered modules implement the `IRegisterable` interface:
-
-```typescript
-interface IRegisterable {
-    readonly builder: (...args: any[]) => Valid<any>;
-    readonly name: string;
-    readonly dependencies?: string[];
-    readonly singleton?: boolean;
-}
-```
-
-### Error Handling ###
-
-The container throws errors for missing modules rather than returning error objects:
-
-```typescript
-try {
-    const result = container.build('nonExistentModule');
-    // Use result directly - it's the actual object, not a Result<T>
-} catch (error) {
-    console.error('Module not found:', error.message);
-}
-```
-
-**Note**: Unlike other parts of the Doculisp system that use `Result<T>` patterns, the container throws errors for missing modules or circular dependencies.
-
-### Circular Dependencies ###
-
-The container automatically detects circular dependencies and throws descriptive errors:
-
-```
-Error: Circular dependencies between ("moduleA" => "moduleB" => "moduleA")
-```
-
-## Core Objects Reference ##
-
-### Parser Pipeline Objects ###
-
-| Container Key | Interface | Description |
-|---------------|-----------|-------------|
-| `tokenizer` | `ITokenizer` | Converts raw text into tokens (atoms, parentheses, parameters) |
-| `astParser` | `IAstParser` | Builds Abstract Syntax Tree from tokens |
-| `astDoculispParse` | `IAstDoculispParser` | Converts AST to Doculisp semantic structures |
-| `astProjectParse` | `IAstProjectParser` | Parses `.dlproj` project files |
-| `documentParse` | `IDocumentParser` | Extracts Doculisp blocks from markdown documents |
-
-### Output Generation Objects ###
-
-| Container Key | Interface | Description |
-|---------------|-----------|-------------|
-| `stringWriter` | `IStringWriter` | Generates final markdown output from parsed structures |
-| `stringBuilder` | `IStringBuilder` | Utility for building strings with proper formatting |
-
-### File and Path Objects ###
-
-| Container Key | Interface | Description |
-|---------------|-----------|-------------|
-| `fileHandler` | `IFileWriter` | File system operations (read, write, exists) |
-| `pathConstructor` | `IPathConstructor` | Creates and manipulates `IPath` objects |
-
-### Data Management Objects ###
-
-| Container Key | Interface | Description |
-|---------------|-----------|-------------|
-| `variableTable` | `IVariableTable` | Manages system variables (`source`, `destination`) and ID tracking |
-| `includeBuilder` | `IIncludeBuilder` | Processes include statements and builds document trees |
-| `structure` | `IStructure` | Analyzes document structure and relationships |
-
-### Control and Orchestration Objects ###
-
-| Container Key | Interface | Description |
-|---------------|-----------|-------------|
-| `controller` | `IController` | Main compilation controller with compile/test methods |
-| `internals` | `IInternals` | Internal processing utilities and helpers |
-
-### Utility Objects ###
-
-| Container Key | Interface | Description |
-|---------------|-----------|-------------|
-| `util` | `IUtil` | General utilities including Result<T> helpers |
-| `utilBuilder` | `IUtilBuilder` | Utility builders and factory methods |
-| `textHelpers` | `ITextHelpers` | Text processing and formatting utilities |
-| `trimArray` | `ITrimArray` | Array manipulation utilities |
-| `searches` | `ISearches` | Search and lookup utilities |
-| `version` | `IVersion` | Version information and management |
-
-### Object Lifecycle ###
-
-Most objects are registered as **singletons**, meaning:
-- One instance per container
-- Dependencies are resolved once
-- State is maintained across calls
-
-### Key Interface Examples ###
-
-#### ITokenizer ####
-
-```typescript
-interface ITokenizer {
-    tokenize(input: string, path: IPath): Result<Token[]>;
-}
-```
-
-#### IVariableTable ####
-
-```typescript
-interface IVariableTable {
-    getValue<T extends IVariable>(key: string): Result<T>;
-    hasKey(key: string): boolean;
-    // Note: Limited functionality - primarily for system variables and ID tracking
-    // Only supports system-generated string variables: 'source' and 'destination'
-    // Custom string variables are NOT supported
-}
-```
-
-#### IController ####
-
-```typescript
-interface IController {
-    compile(sourcePath: IPath, outputPath?: IPath): Result<string>;
-    test(sourcePaths: IPath[]): Result<string>[];
-}
-```
-
-## Parsing Pipeline Chains ##
-
-Understanding how Doculisp processes different file types is crucial for working with the container system effectively. This section provides comprehensive documentation of the three distinct parsing pipelines and their object chains.
-
-### Overview of File Types ###
-
-Doculisp supports three primary file types, each with its own specialized parsing pipeline:
-
-1. **`.dlproj` Project Files** - Define multi-document projects with source/output mappings
-2. **`.dlisp` Pure Doculisp Files** - Contain only Doculisp structure and metadata
-3. **`.md` Markdown Files** - Standard markdown with embedded Doculisp blocks in HTML comments
-
-Each file type follows a different object chain through the container system, optimized for its specific purpose and content structure.
-
-### Core Parsing Components ###
-
-Before examining the specific pipelines, it's important to understand the common processing components that all file types share. These form the foundation of Doculisp's parsing architecture.
-
-#### Universal Parsing Steps ####
-
-All pipelines follow this core sequence for initial file processing:
+All file types flow through this common sequence:
 
 ```
 1. Controller Entry Point
@@ -306,43 +279,85 @@ All pipelines follow this core sequence for initial file processing:
     ↓ builds Abstract Syntax Tree from tokens
 6. Semantic Parsing
     ↓ converts AST to Doculisp semantic structures
+7. Output Generation
+    ↓ produces final markdown documents
 ```
 
-#### File Extension Detection and Routing ####
+#### File Type Routing ####
 
-The controller uses file extensions to automatically select the appropriate processing pipeline:
+The controller automatically selects processing pipelines based on file extension:
+
+| Extension | Pipeline | Purpose |
+|-----------|----------|---------|
+| `.dlproj` | Project Pipeline | Multi-document batch processing |
+| `.dlisp` | Pure Doculisp Pipeline | Structure-only documents |
+| `.md` | Markdown Pipeline | Mixed content with embedded Doculisp |
+
+#### Core Processing Components ####
+
+##### Universal Components #####
+
+These components are shared across all pipelines:
+
+- **Controller**: Entry point and orchestration
+- **FileHandler**: File I/O and working directory management
+- **VariableTable**: System variables and ID tracking
+- **IncludeBuilder**: Recursive include processing
+
+##### Pipeline-Specific Components #####
+
+Different file types use specialized processing:
+
+**Project Files (.dlproj):**
+- AstProjectParse for project structure
+- Batch coordination for multiple documents
+
+**Pure Doculisp Files (.dlisp):**
+- Optimized parsing (no HTML extraction)
+- Structure-only validation
+
+**Markdown Files (.md):**
+- Dual content extraction
+- Text preservation alongside Doculisp processing
+
+#### Variable Management ####
+
+The system maintains consistent variable tables across all processing:
+
+##### System Variables #####
+
+- **`' source`** (note leading space): Source file path
+- **`' destination`** (note leading space): Output file path
+- **Document IDs**: For cross-reference resolution
+- **`author`**: Author information for attribution
+
+##### Variable Scope Hierarchy #####
 
 ```typescript
-// Primary routing logic in Controller.compile()
-if (sourcePath.extension === '.dlproj') {
-    return _compileProject(sourcePath);  // Project pipeline
-}
+// Root table for main document
+const rootTable = container.buildAs<IVariableTable>('variableTable');
 
-// Standard document routing in Controller._compile()
-variableTable.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
-if (destinationPath) {
-    variableTable.addValue(destKey, { type: 'variable-path', value: destinationPath });
-}
-return [_compile(variableTable)];
+// Child table for each included document
+const childTable = rootTable.createChild();
+childTable.addValue(sourceKey, { type: 'variable-path', value: includePath });
 
-// Parser selection in DocumentParse
-const isDoculispFile = documentPath.extension === '.dlisp' ||
-                      documentPath.extension === '.dlproj';
-
-if (isDoculispFile) {
-    // Use pure Doculisp parser (no HTML comment extraction)
-    parser = createStringParser(isDoculisp(true));
-} else {
-    // Use markdown parser (extract Doculisp from HTML comments)
-    parser = createStringParser(isMultiline(), isInline(), isComment(), isWord());
+// Global ID registration (available to all children)
+if (documentId) {
+    rootTable.addGlobalValue(documentId, {
+        type: 'variable-id',
+        headerLinkText: false,
+        value: outputPath,
+        source: sourcePath
+    });
 }
 ```
 
-#### Working Directory Management ####
+#### Include Processing ####
 
-All pipelines implement consistent working directory management for relative path resolution:
+Include processing follows a recursive pattern that maintains context:
 
-**Common Pattern:**
+##### Working Directory Management #####
+
 ```typescript
 function processFile(filePath: IPath): Result<T> {
     const workingDir = fileHandler.getProcessWorkingDirectory();
@@ -364,17 +379,360 @@ function processFile(filePath: IPath): Result<T> {
 - Thread-safe with automatic restoration
 - Consistent behavior across all file types
 
-#### Variable Table Setup and Lifecycle ####
+##### Include Validation #####
 
-Variable tables follow consistent patterns across all pipelines:
+Include processing enforces strict rules:
+- Only `.md` and `.dlisp` files can be included
+- Circular dependencies are detected and prevented
+- Include depth is tracked for proper nesting
+- Relative paths resolved from including file's directory
 
-**Core Variables:**
-- `' source'` (note leading space): Source file path
-- `' destination'` (note leading space): Output file path
-- Document IDs: For cross-reference resolution
-- `author`: Author information for attribution
+#### Error Handling Strategy ####
 
-**Table Hierarchy:**
+All pipeline components use consistent error handling with the `Result<T>` pattern:
+
+```typescript
+// Standard error flow
+const fileResult = fileHandler.load(path);
+if (!fileResult.success) return fileResult;
+
+const parseResult = parser.parse(fileResult.value);
+if (!parseResult.success) return parseResult;
+
+// Success case
+return util.ok(finalResult);
+```
+
+**Error Standards:**
+- Include file path and line/character position when available
+- Clear description of what failed and why
+- Propagate original error context through call stack
+- No exceptions thrown - all errors returned as `Result<T>` failures
+
+#### Output Generation ####
+
+After parsing is complete, all pipelines converge on common output generation:
+
+```
+Parsed Doculisp Structure
+    ↓ passed to writeAst()
+StringWriter
+    ↓ processes document structure
+StringBuilder
+    ↓ assembles markdown content
+Generated Markdown Output
+    ↓ written via Controller._write()
+FileHandler
+    ↓ saves to destination
+Final Markdown File
+```
+
+#### Performance Characteristics ####
+
+##### Pipeline Efficiency #####
+
+- **Project files**: Highest overhead (multiple document processing) but efficient for batch operations
+- **Doculisp files**: Fastest parsing (no HTML extraction) with moderate include overhead
+- **Markdown files**: Moderate parsing overhead (dual extraction) with full feature support
+
+##### Memory Management #####
+
+- All pipelines use streaming processing to minimize memory footprint
+- Include processing loads files on-demand rather than pre-loading
+- Variable tables use copy-on-write for efficient child scope management
+- Most container objects are singletons - created once and reused
+
+## Core Objects Reference ##
+
+This section provides a comprehensive reference to all objects available in the DoculispTypeScript container system. Objects are organized by functional category to help you understand their roles in the compilation pipeline.
+
+### High-Level Controllers ###
+
+| Container Key | Interface | Primary Purpose |
+|---------------|-----------|-----------------|
+| `controller` | `IController` | **Main entry point** - orchestrates entire compilation process |
+| `includeBuilder` | `IIncludeBuilder` | **Include coordination** - processes include statements and builds document trees |
+
+**Usage Pattern:**
+```typescript
+// Most common usage - high-level compilation
+const controller = container.buildAs<IController>('controller');
+const results = controller.compile(sourcePath, destinationPath);
+```
+
+### Core Pipeline Components ###
+
+These objects form the heart of the compilation pipeline, processing documents through sequential transformation stages:
+
+| Container Key | Interface | Pipeline Stage | Transforms |
+|---------------|-----------|----------------|------------|
+| `documentParse` | `IDocumentParser` | **Stage 1** | Raw text → Document parts |
+| `tokenizer` | `ITokenizer` | **Stage 2** | Document parts → Tokens |
+| `astParser` | `IAstParser` | **Stage 3** | Tokens → Abstract Syntax Tree |
+| `astDoculispParse` | `IAstDoculispParser` | **Stage 4** | AST → Doculisp structures |
+| `stringWriter` | `IStringWriter` | **Stage 5** | Doculisp structures → Markdown |
+
+**Usage Pattern:**
+```typescript
+// Direct pipeline access for custom processing
+const documentParser = container.buildAs<DocumentParser>('documentParse');
+const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+const astParser = container.buildAs<IAstParser>('astParser');
+```
+
+### Specialized Parsers ###
+
+| Container Key | Interface | Specialized Purpose |
+|---------------|-----------|---------------------|
+| `astProjectParse` | `IAstProjectParser` | Parses `.dlproj` project configuration files |
+
+### File System and I/O ###
+
+| Container Key | Interface | Functionality |
+|---------------|-----------|---------------|
+| `fileHandler` | `IFileWriter` | File operations (read, write, exists), working directory management |
+| `pathConstructor` | `IPathConstructor` | Creates and manipulates `IPath` objects, path resolution |
+
+**Usage Pattern:**
+```typescript
+// File system operations
+const fileHandler = container.buildAs<IFileWriter>('fileHandler');
+const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+const path = pathConstructor.buildPath('./docs/readme.md');
+const content = fileHandler.load(path);
+```
+
+### Data and State Management ###
+
+| Container Key | Interface | Manages |
+|---------------|-----------|---------|
+| `variableTable` | `IVariableTable` | System variables (`source`, `destination`), document IDs, cross-references |
+| `structure` | `IStructure` | Document structure analysis and relationships |
+
+**Important Variable Limitation:**
+The variable table only supports system-generated variables and IDs. Custom string variables are NOT supported.
+
+### Output Generation ###
+
+| Container Key | Interface | Purpose |
+|---------------|-----------|---------|
+| `stringWriter` | `IStringWriter` | **Primary output generator** - converts Doculisp structures to markdown |
+| `stringBuilder` | `IStringBuilder` | **Utility** - efficient string building with formatting |
+
+### Internal Processing Utilities ###
+
+| Container Key | Interface | Internal Purpose |
+|---------------|-----------|------------------|
+| `internals` | `IInternals` | Internal processing utilities and array parsers |
+| `util` | `IUtil` | Core utilities including `Result<T>` helpers |
+| `utilBuilder` | `IUtilBuilder` | Utility builders and factory methods |
+| `textHelpers` | `ITextHelpers` | Text processing and formatting utilities |
+| `trimArray` | `ITrimArray` | Array manipulation utilities for token processing |
+| `searches` | `ISearches` | Search and lookup utilities for content analysis |
+
+### System Information ###
+
+| Container Key | Interface | Provides |
+|---------------|-----------|----------|
+| `version` | `IVersion` | DoculispTypeScript version information |
+
+### Object Lifecycle and Dependencies ###
+
+**Singleton Behavior:**
+Most objects are registered as **singletons**, meaning:
+- One instance per container
+- Dependencies are resolved once
+- State is maintained across calls
+- Efficient resource usage
+
+**Exception:** `stringWriter` is NOT a singleton - new instance created per operation for thread safety.
+
+**Dependency Resolution:**
+The container automatically resolves dependencies using these patterns:
+- Objects specify their dependencies in registration
+- Container builds dependencies before dependent objects
+- Circular dependency detection prevents infinite loops
+- Lazy loading - objects created only when needed
+
+### Key Interface Examples ###
+
+#### IController - Main Entry Point ####
+
+```typescript
+interface IController {
+    compile(sourcePath: IPath, outputPath?: IPath): Result<string>[];
+    test(sourcePaths: IPath[]): Result<string>[];
+}
+
+// Usage
+const controller = container.buildAs<IController>('controller');
+const results = controller.compile(sourcePath, destinationPath);
+if (results[0].success) {
+    console.log('Compilation successful');
+}
+```
+
+#### IVariableTable - State Management ####
+
+```typescript
+interface IVariableTable {
+    getValue<T extends IVariable>(key: string): Result<T>;
+    hasKey(key: string): boolean;
+    createChild(): IVariableTable;
+    addValue(key: string, variable: IVariable): void;
+    addGlobalValue(key: string, variable: IVariable): void;
+}
+
+// Usage - system variables only
+const table = container.buildAs<IVariableTable>('variableTable');
+const sourceVar = table.getValue(' source'); // Note: leading space required
+```
+
+#### IFileWriter - File Operations ####
+
+```typescript
+interface IFileWriter {
+    load(path: IPath): Result<string>;
+    write(path: IPath, content: string): Result<void>;
+    exists(path: IPath): Result<boolean>;
+    getProcessWorkingDirectory(): Result<IPath>;
+    setProcessWorkingDirectory(path: IPath): void;
+}
+
+// Usage
+const fileHandler = container.buildAs<IFileWriter>('fileHandler');
+const content = fileHandler.load(filePath);
+```
+
+#### IPathConstructor - Path Management ####
+
+```typescript
+interface IPathConstructor {
+    buildPath(path: string): IPath;
+}
+
+// Usage
+const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+const docPath = pathConstructor.buildPath('./docs/readme.md');
+```
+
+### Access Patterns ###
+
+**Standard Container Access:**
+```typescript
+const { containerPromise } = require('doculisp/dist/moduleLoader');
+const container = await containerPromise;
+
+// Type-safe access (recommended)
+const controller = container.buildAs<IController>('controller');
+
+// Untyped access (use sparingly)
+const controller = container.build('controller');
+```
+
+**Batch Object Creation:**
+```typescript
+// Efficient when needing multiple objects
+const container = await containerPromise;
+const [controller, fileHandler, pathConstructor] = [
+    container.buildAs<IController>('controller'),
+    container.buildAs<IFileWriter>('fileHandler'),
+    container.buildAs<IPathConstructor>('pathConstructor')
+];
+```
+
+## Parsing Pipeline Overview ##
+
+Understanding how Doculisp processes different file types is crucial for working with the system effectively. This overview explains the three distinct parsing pipelines and how they coordinate to transform source documents into compiled markdown.
+
+### Pipeline Architecture ###
+
+Doculisp supports three file types, each with its own specialized pipeline optimized for specific use cases:
+
+#### File Type Overview ####
+
+| File Type | Extension | Purpose | Content Rules |
+|-----------|-----------|---------|---------------|
+| **Project Files** | `.dlproj` | Multi-document coordination | Project structure definitions only |
+| **Pure Doculisp** | `.dlisp` | Structure definitions | Doculisp syntax only - no text content |
+| **Markdown Files** | `.md` | Mixed content | Text + embedded Doculisp in HTML comments |
+
+#### Universal Processing Foundation ####
+
+All pipelines share these core processing steps:
+
+```
+1. Controller Entry Point
+    ↓ detects file extension and routes to appropriate pipeline
+2. FileHandler Operations
+    ↓ loads file content and manages working directory
+3. DocumentParse Processing
+    ↓ extracts/prepares content based on file type
+4. Tokenization
+    ↓ converts Doculisp content to token streams
+5. AST Generation
+    ↓ builds Abstract Syntax Tree from tokens
+6. Semantic Parsing
+    ↓ converts AST to Doculisp semantic structures
+```
+
+#### Pipeline Selection Logic ####
+
+The controller automatically routes files based on extension:
+
+```typescript
+// Primary routing in Controller.compile()
+if (sourcePath.extension === '.dlproj') {
+    return _compileProject(sourcePath);  // Project pipeline
+}
+
+// Standard document processing for .dlisp and .md files
+variableTable.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
+if (destinationPath) {
+    variableTable.addValue(destKey, { type: 'variable-path', value: destinationPath });
+}
+return [_compile(variableTable)];
+```
+
+### Working Directory Management ###
+
+All pipelines implement consistent working directory management for proper relative path resolution:
+
+```typescript
+function processFile(filePath: IPath): Result<T> {
+    const workingDir = fileHandler.getProcessWorkingDirectory();
+    const targetDir = filePath.getContainingDir();
+
+    try {
+        fileHandler.setProcessWorkingDirectory(targetDir);
+        // Process file with relative paths resolved correctly
+        return processContent();
+    } finally {
+        fileHandler.setProcessWorkingDirectory(workingDir.value);
+    }
+}
+```
+
+**Benefits:**
+- Enables relative paths in include statements
+- Maintains proper context for nested includes
+- Thread-safe with automatic restoration
+- Consistent behavior across all file types
+
+### Variable Table Management ###
+
+Variable tables follow consistent patterns across all pipelines to manage document context and cross-references:
+
+#### Core Variables ####
+
+- **`' source`** (note leading space): Source file path
+- **`' destination`** (note leading space): Output file path
+- **Document IDs**: For cross-reference resolution
+- **`author`**: Author information for attribution
+
+#### Table Hierarchy ####
+
 ```typescript
 // Root table for main document
 const rootTable = container.buildAs<IVariableTable>('variableTable');
@@ -395,11 +753,10 @@ if (documentId) {
 }
 ```
 
-#### Include Processing Pattern ####
+### Include Processing Pattern ###
 
 Include processing follows the same recursive pattern across `.dlisp` and `.md` files:
 
-**Common Include Logic:**
 ```typescript
 function parseExternals(doculisp: IDoculisp, variableTable: IVariableTable): Result<IDoculisp> {
     for (const load of doculisp.section.include) {
@@ -427,13 +784,12 @@ function parseExternals(doculisp: IDoculisp, variableTable: IVariableTable): Res
 - Include depth is tracked for proper nesting
 - Relative paths resolved from including file's directory
 
-#### Error Handling Patterns ####
+### Error Handling Standards ###
 
 All pipelines use consistent error handling with the `Result<T>` pattern:
 
-**Standard Error Flow:**
 ```typescript
-// Early return on any failure
+// Standard error flow
 const fileResult = fileHandler.load(path);
 if (!fileResult.success) return fileResult;
 
@@ -453,556 +809,46 @@ return util.ok(finalResult);
 - Propagate original error context through call stack
 - No exceptions thrown - all errors returned as `Result<T>` failures
 
-### Project File Pipeline for dlproj Files ###
+### Performance Characteristics ###
 
-Project files define collections of documents and are processed through a specialized pipeline that handles project-level orchestration. Unlike individual document files, project files manage multiple source/output mappings and coordinate batch processing.
+#### Pipeline Efficiency ####
 
-#### Object Chain for dlproj Files ####
+Each pipeline is optimized for its specific use case:
 
-The project pipeline extends the core parsing components with project-specific processing:
-
-```
-Controller (IController)
-    ↓ detects .dlproj extension
-IncludeBuilder.parseProject()
-    ↓ [CORE: FileHandler → DocumentParse → Tokenizer → AstParser]
-AstProjectParse (IProjectParser)
-    ↓ parses project structure into document definitions
-[Project-Specific: Multi-document coordination]
-    ↓ for each document in project
-IncludeBuilder.parse()
-    ↓ [CORE: Standard .dlisp or .md pipeline]
-StringWriter.writeAst()
-    ↓ [CORE: Output generation for each document]
-```
-
-#### Project-Specific Processing ####
-
-**Unique Characteristics:**
-- **No destination path**: Project files embed output paths in their structure
-- **Multi-document orchestration**: Processes multiple source files in single operation
-- **Batch variable table management**: Creates child tables for each document
-- **Specialized parsing**: Uses `AstProjectParse` instead of `AstDoculispParse`
-
-**Project Structure Extraction:**
-```typescript
-// Project files define document collections like:
-(documents
-    (document
-        (source ./readme/_main.dlisp)
-        (output ../README.md)
-    )
-    (document
-        (source ./api/_main.dlisp)
-        (output ../API_GUIDE.md)
-    )
-)
-```
-
-**Batch Processing Flow:**
-1. Parse project structure into `IProjectDocuments`
-2. For each document definition:
-   - Create child variable table with source/destination
-   - Add document ID to global scope (if specified)
-   - Process source file using appropriate pipeline (`.dlisp` or `.md`)
-   - Generate output using `StringWriter.writeAst()`
-3. Return array of results (one per document)
-
-### Pure Doculisp File Pipeline for dlisp Files ###
-
-Pure Doculisp files contain only structure and metadata - no text content allowed. They use the core parsing pipeline with optimizations for pure Doculisp syntax.
-
-#### Object Chain for dlisp Files ####
-
-The `.dlisp` pipeline follows the standard core pattern with Doculisp-specific enhancements:
-
-```
-Controller (IController)
-    ↓ detects .dlisp extension, sets source/destination variables
-IncludeBuilder.parse()
-    ↓ [CORE: FileHandler → DocumentParse → Tokenizer → AstParser]
-AstDoculispParse (IAstDoculispParser)
-    ↓ converts AST to Doculisp semantic structures
-IncludeBuilder.parseExternals()
-    ↓ [CORE: Include processing pattern]
-StringWriter.writeAst()
-    ↓ [CORE: Output generation]
-```
-
-#### Doculisp-Specific Processing ####
-
-**Unique Characteristics:**
-- **Pure Doculisp parsing**: No HTML comment extraction needed
-- **Automatic parenthesis wrapping**: `DocumentParse` adds closing parenthesis for proper parsing
-- **Structure-only content**: No text content preservation required
-- **Optimized parser**: Uses `isDoculisp(true)` parser instead of mixed content parser
-
-**Content Preparation:**
-```typescript
-// .dlisp files get wrapped for proper parsing
-const isDoculispFile = documentPath.extension === '.dlisp';
-const toParse = isDoculispFile ? `${documentText})` : documentText;
-
-// Uses specialized Doculisp parser
-const parser = isDoculispFile ?
-    createStringParser(isDoculisp(true)) :           // Pure Doculisp
-    createStringParser(isMultiline(), isComment());  // Mixed content
-```
-
-**Processing Advantages:**
-- Faster parsing (no HTML comment extraction)
-- Direct Doculisp syntax (no `dl` wrapper needed)
-- Stricter validation (structure-only enforcement)
-- Clean separation of concerns (structure vs content)
-
-### Markdown File Pipeline for md Files ###
-
-Markdown files contain text content with embedded Doculisp blocks in HTML comments. This pipeline handles dual content extraction and processing.
-
-#### Object Chain for md Files ####
-
-The markdown pipeline uses the core processing with specialized content extraction:
-
-```
-Controller (IController)
-    ↓ detects .md extension, sets source/destination variables
-IncludeBuilder.parse()
-    ↓ [CORE: FileHandler → DocumentParse → Tokenizer → AstParser]
-    ↓ [SPECIAL: Dual content extraction]
-AstDoculispParse (IAstDoculispParser)
-    ↓ processes extracted Doculisp blocks only
-IncludeBuilder.parseExternals()
-    ↓ [CORE: Include processing pattern]
-StringWriter.writeAst()
-    ↓ [CORE: Output generation + text preservation]
-```
-
-#### Markdown-Specific Processing ####
-
-**Unique Characteristics:**
-- **Dual content extraction**: Separates Doculisp blocks from text content
-- **HTML comment parsing**: Extracts `<!-- (dl ...) -->` blocks
-- **Text preservation**: Maintains original text content through pipeline
-- **Mixed parser strategy**: Uses multiple parser types for different content
-
-**Content Extraction Process:**
-```typescript
-// Markdown files use mixed content parser
-const parser = createStringParser(
-    isMultiline(),           // Multi-line text blocks
-    isInline(),              // Inline text content
-    isComment(),             // HTML comments (Doculisp blocks)
-    isWord(),                // Individual words
-    isDiscardedNewline(),    // Formatting whitespace
-    isKeptWhiteSpaceNoNewLines()  // Preserved whitespace
-);
-
-// Results in mixed content:
-// - IText parts: Preserved text content
-// - ILispBlock parts: Extracted Doculisp code
-```
-
-**Processing Flow:**
-1. **Content Separation**: Extract Doculisp from `<!-- (dl ...) -->` comments
-2. **Doculisp Processing**: Parse extracted blocks using standard pipeline
-3. **Text Preservation**: Maintain original text as `IText` parts
-4. **Include Integration**: Recursively process includes from Doculisp blocks
-5. **Output Merging**: Combine processed Doculisp with preserved text
-
-**HTML Comment Format:**
-```markdown
-<!-- (dl (section-meta My Document)) -->
-Regular markdown text here.
-<!-- (dl (# Dynamic Header)) -->
-More text content.
-<!-- (dl (content (toc numbered-labeled))) -->
-```
-
-### Document Output Generation ###
-
-After parsing is complete, all pipelines converge on a common output generation process that transforms the parsed Doculisp structures into final markdown documents.
-
-#### Output Pipeline Architecture ####
-
-The output generation follows a consistent pattern across all file types:
-
-```
-Parsed Doculisp Structure (IDoculisp | IEmptyDoculisp)
-    ↓ passed to writeAst()
-StringWriter (IStringWriter)
-    ↓ processes document structure
-StringBuilder (IStringBuilder)
-    ↓ assembles markdown content
-Generated Markdown Output
-    ↓ written via Controller._write()
-FileHandler (IFileWriter)
-    ↓ saves to destination
-Final Markdown File
-```
-
-#### StringWriter Processing ####
-
-The `StringWriter` is the core output generation component that handles the transformation from Doculisp structures to markdown:
-
-**Document Structure Processing**
-- Processes the main document section (`ISectionWriter`)
-- Handles all Doculisp components: titles, headers, content, includes, TOCs
-- Manages text content preservation (for `.md` files)
-- Resolves cross-references and path links
-
-**Markdown Generation Features**
-- **Document Headers**: Adds standard generated document warnings and metadata
-- **Author Attribution**: Includes author information from variable table
-- **Table of Contents**: Generates TOCs with various styles (numbered, bulleted, labeled)
-- **Cross-References**: Resolves `get-path` references to relative links
-- **Include Processing**: Merges included content into final output
-- **Text Preservation**: Maintains original text content alongside generated structures
-
-#### Output Generation Flow ####
-
-**Step 1: Structure Validation**
-```typescript
-function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string> {
-    if (!astMaybe.success) {
-        return astMaybe; // Pass through parsing errors
-    }
-
-    if (astMaybe.value.type === 'doculisp-empty') {
-        return util.ok(''); // Empty document
-    }
-
-    // Continue with document generation...
-}
-```
-
-**Step 2: Document Header Generation**
-- Adds `<!-- GENERATED DOCUMENT DO NOT EDIT! -->` warning
-- Includes prettier and markdownlint directives
-- Adds Doculisp compiler attribution
-- Processes author information from variable table
-
-**Step 3: Content Section Processing**
-- Iterates through document sections (`writeSection()`)
-- Processes each Doculisp component type:
-  - `doculisp-write`: Text content output
-  - `doculisp-title`: Document titles with optional subtitles
-  - `doculisp-header`: Dynamic headers with proper nesting
-  - `doculisp-content`: Include processing and content placement
-  - `doculisp-toc`: Table of contents generation
-  - `doculisp-path-id`: Cross-reference link resolution
-
-**Step 4: Include Content Integration**
-- Recursively processes included documents
-- Maintains proper document hierarchy
-- Preserves section boundaries
-- Handles nested includes with proper indentation
-
-**Step 5: Footer Generation**
-- Adds closing markdownlint and prettier directives
-- Repeats author attribution
-- Adds final generated document warning
-
-#### Output Formatting and Structure ####
-
-**Generated Document Structure**
-```markdown
-<!-- GENERATED DOCUMENT DO NOT EDIT! -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->
-<!-- Written By: Author 1 -->
-<!-- Written By: Author 2 -->
-
-# Document Title #
-
-### Optional Subtitle ###
-
-## Contents ##
-* [Section 1](#section-1)
-* [Section 2](#section-2)
-
-## Section 1 ##
-[Document content...]
-
-## Section 2 ##
-[Document content...]
-
-<!-- Written By: Jason Kerney -->
-<!-- Written By: GitHub Copilot -->
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-<!-- GENERATED DOCUMENT DO NOT EDIT! -->
-```
-
-**Header Level Management**
-- Dynamic headers adjust level based on document hierarchy
-- `#` creates level 1 headers, `##` creates level 2, etc.
-- Proper nesting maintained through include processing
-- Headers include both opening and closing hash marks
-
-**Table of Contents Styles**
-- `no-table`: No TOC generated
-- `unlabeled`: Links only, no section labels
-- `labeled`: Section names with links
-- `numbered`: Numbered list with links
-- `numbered-labeled`: Numbers, labels, and links
-- `bulleted`: Bulleted list with links
-- `bulleted-labeled`: Bullets, labels, and links
-
-#### Cross-Reference Resolution ####
-
-The output generation handles sophisticated cross-reference resolution through the `writeGetPath()` function:
-
-**Path Resolution Logic**
-```typescript
-function writeGetPath(astIdPath: IPathId, table: IVariableTable): Result<string> {
-    // 1. Look up ID in variable table
-    const idPathVariable = table.getValue(astIdPath.id) as IVariableId;
-
-    // 2. Get output destination path
-    const output = table.getValue(destKey) as IVariablePath;
-
-    // 3. Calculate relative path
-    if (idPath.fullName === outPutPath.fullName) {
-        return util.ok(headerLinkText); // Same document - header link only
-    }
-
-    // 4. Generate relative file path + header link
-    return util.ok('./' + idPath.getRelativeFrom(outPutPath.getContainingDir()) + headerLinkText);
-}
-```
-
-**Reference Types**
-- **Same Document**: `#header-id` for within-document links
-- **Cross Document**: `./relative/path.md#header-id` for external documents
-- **Empty References**: Return empty string for missing or invalid IDs
-
-#### Variable Table in Output ####
-
-The variable table plays a crucial role in output generation:
-
-**System Variables Used**
-- `' source'`: Source file path (with leading space)
-- `' destination'`: Output file path (with leading space)
-- `author`: Array of author names for attribution
-- Document IDs: For cross-reference resolution
-
-**Variable Scope**
-- Global variables: Available across all documents in a project
-- Document variables: Scoped to individual documents
-- Include variables: Inherited by included documents
-
-#### Error Handling in Output ####
-
-Output generation includes comprehensive error handling:
-
-**Validation Errors**
-- Missing variable references → Detailed error with location
-- Invalid cross-references → Error with ID and document location
-- File write failures → File system error propagation
-
-**Recovery Strategies**
-- Invalid IDs return empty strings rather than failing entire compilation
-- Missing includes skip gracefully with warnings
-- File write errors halt compilation with clear error messages
-
-#### Performance Considerations ####
-
-**Output Optimization**
-- `StringBuilder` uses efficient string concatenation
-- Minimal string copying during generation process
-- Lazy evaluation of cross-references
-- Streaming output for large documents
-
-**Memory Management**
-- Document sections processed sequentially
-- Include content loaded on-demand
-- Variable tables use copy-on-write for child scopes
-
-### Pipeline Comparison and Selection ###
-
-Now that we've covered the core components and individual pipelines, let's examine how they compare and when each is used.
-
-#### Pipeline Selection Logic ####
-
-The controller automatically selects the appropriate pipeline based on file extension and context:
-
-```typescript
-// Primary routing in Controller.compile()
-if (sourcePath.extension === '.dlproj') {
-    return _compileProject(sourcePath);  // Project pipeline
-}
-
-if (sourcePath.extension !== '.dlproj' && !destinationPath) {
-    return [util.fail('Must have a destination file.')];
-}
-
-// Standard document processing
-variableTable.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
-if (destinationPath) {
-    variableTable.addValue(destKey, { type: 'variable-path', value: destinationPath });
-}
-return [_compile(variableTable)];  // .dlisp or .md pipeline
-```
-
-#### Pipeline Comparison ####
-
-| Aspect | .dlproj Files | .dlisp Files | .md Files |
-|--------|---------------|--------------|-----------|
-| **Primary Purpose** | Multi-document coordination | Pure structure definition | Mixed content documents |
-| **Content Type** | Project definitions | Doculisp structure only | Text + embedded Doculisp |
-| **Parser Strategy** | Project structure extraction | Pure Doculisp parsing | Dual content extraction |
-| **Include Support** | Via individual documents | Direct recursive includes | Direct recursive includes |
-| **Output** | Multiple files (batch) | Single file | Single file |
-| **Destination** | Embedded in project | Required parameter | Required parameter |
-| **Text Content** | Not applicable | Not allowed | Fully supported |
-
-#### Performance Characteristics ####
-
-**Pipeline Efficiency:**
 - **Project files**: Highest overhead (multiple document processing) but efficient for batch operations
 - **Doculisp files**: Fastest parsing (no HTML extraction) with moderate include overhead
 - **Markdown files**: Moderate parsing overhead (dual extraction) with full feature support
 
-**Memory Usage:**
-- All pipelines use streaming processing to minimize memory footprint
-- Include processing loads files on-demand rather than pre-loading
-- Variable tables use copy-on-write for efficient child scope management
+#### Memory Management ####
 
-The controller automatically selects the appropriate pipeline based on file extension:
+- Document sections processed sequentially
+- Include content loaded on-demand
+- Variable tables use copy-on-write for child scopes
+- Token streams processed sequentially, not stored entirely in memory
 
-```typescript
-// In Controller.compile()
-if (sourcePath.extension === '.dlproj') {
-    return _compileProject(sourcePath);  // Project pipeline
-}
+For detailed information about each specific pipeline, see:
+- [Project Pipeline Details](./pipeline-details/project-pipeline.md)
+- [Doculisp Pipeline Details](./pipeline-details/doculisp-pipeline.md)
+- [Markdown Pipeline Details](./pipeline-details/markdown-pipeline.md)
 
-// In IncludeBuilder._parse() and DocumentParse
-const isDoculispFile = documentPath.extension === '.dlisp' ||
-                      documentPath.extension === '.dlproj';
+## Core Pipeline APIs ##
 
-if (isDoculispFile) {
-    // Use Doculisp parser - no HTML comment extraction
-    parser = parserBuilder.createStringParser(
-        partParsers.isDiscardedNewline(),
-        partParsers.isKeptWhiteSpaceNoNewLines(),
-        partParsers.isDoculisp(true)
-    );
-} else {
-    // Use markdown parser - extract Doculisp from HTML comments
-    parser = parserBuilder.createStringParser(
-        partParsers.isDiscardedNewline(),
-        partParsers.isKeptWhiteSpaceNoNewLines(),
-        partParsers.isMultiline(),
-        partParsers.isInline(),
-        partParsers.isComment(),
-        partParsers.isWord()
-    );
-}
-```
+This section provides comprehensive API documentation for the core components of the DoculispTypeScript compilation pipeline: DocumentParse, Tokenizer, and AstParser.
 
-### Performance and Memory Considerations ###
+### DocumentParse API ###
 
-**Container Object Lifecycle**
-- Most objects are singletons - created once and reused
-- `stringWriter` is NOT singleton - new instance per operation
-- Working directory changes are thread-safe via try/finally blocks
+The **DocumentParse** is the **first stage** that extracts and processes content from text documents, separating text content from embedded Doculisp blocks.
 
-**Memory Management**
-- Token streams are processed sequentially, not stored entirely in memory
-- AST structures are built incrementally
-- Large files are processed in chunks where possible
-
-**Dependency Resolution**
-- Container automatically resolves all dependencies
-- Circular dependency detection prevents infinite loops
-- Lazy loading - objects created only when needed
-
-### Debugging and Troubleshooting ###
-
-**Common Issues by Pipeline**
-
-**Project Files (.dlproj)**
-- Invalid project syntax → `AstProjectParse` errors
-- Missing source files → `FileHandler` load errors
-- Circular project references → Include validation errors
-
-**Doculisp Files (.dlisp)**
-- Unclosed parentheses → `DocumentParse` wrapping errors
-- Invalid Doculisp syntax → `AstDoculispParse` errors
-- Invalid include paths → `IncludeBuilder` validation errors
-
-**Markdown Files (.md)**
-- Malformed HTML comments → `DocumentParse` extraction errors
-- Mixed content issues → Parser strategy conflicts
-- Invalid embedded Doculisp → `AstDoculispParse` errors
-
-**Debugging Container Issues**
-```typescript
-// Get container debugging info
-const container = await containerPromise;
-const modules = container.getModuleList();
-console.log('Available modules:', modules);
-
-// Test individual pipeline components
-const tokenizer = container.buildAs<ITokenizer>('tokenizer');
-const result = tokenizer.tokenize(content, path);
-```
-
-### Extension Points ###
-
-The pipeline architecture supports extension through the container system:
-
-**Custom Parsers**
-- Register new parsers for additional file types
-- Extend existing parsers with additional syntax support
-- Override default parsing behavior for specific use cases
-
-**Custom Output Generators**
-- Replace `stringWriter` with custom output formats
-- Add post-processing steps
-- Integrate with external tooling
-
-**Custom File Handlers**
-- Support additional file systems or protocols
-- Add caching or optimization layers
-- Integrate with version control systems
-
-```typescript
-// Example: Register custom output generator
-const container = await containerPromise;
-container.registerBuilder(
-    (util: IUtil) => new CustomOutputGenerator(util),
-    ['util'],
-    'customWriter',
-    true
-);
-```
-
-This comprehensive understanding of the parsing pipelines enables effective use of the container system and provides the foundation for extending Doculisp's capabilities.
-
-## DocumentParse API Reference ##
-
-### DocumentParse API Reference ###
-
-The **DocumentParse** is the **first stage** of the DoculispTypeScript compilation pipeline that extracts and processes content from text documents. It's responsible for separating text content from embedded Doculisp blocks and preparing them for further processing in the compilation pipeline.
-
-### Overview ###
-
-`DocumentParse` is the first stage in the Doculisp compilation pipeline that handles raw document text. It determines the file type, applies appropriate parsing strategies, and creates a structured representation of the document content that can be processed by subsequent pipeline stages.
+#### Overview ####
 
 **Primary Responsibilities:**
 - Detect file type based on extension (`.md`, `.dlisp`, `.dlproj`)
 - Extract Doculisp blocks from HTML comments in markdown files
 - Parse pure Doculisp syntax in `.dlisp` files
 - Preserve text content alongside extracted structure
-- Handle nested code blocks and preserve formatting
 - Validate document structure and syntax
 
 #### Container Registration ####
-
-DocumentParse is registered in the container system as:
 
 ```typescript
 {
@@ -1010,1007 +856,86 @@ DocumentParse is registered in the container system as:
     singleton: true,
     dependencies: ['searches', 'internals', 'util', 'trimArray']
 }
-```
 
-Access it from the container:
-```typescript
-const container = await containerPromise;
+// Access from container
 const documentParser = container.buildAs<DocumentParser>('documentParse');
 ```
-
-### Type Definitions ###
-
-Understanding the types used by DocumentParse is essential for working with it effectively.
 
 #### Core Interface ####
 
 ```typescript
 type DocumentParser = (text: string, projectLocation: IProjectLocation) => Result<DocumentMap>;
-```
 
-The `DocumentParser` is a function that takes document text and location information, returning either a successful `DocumentMap` or an error.
-
-#### Input Types ####
-
-**Primary Parameters:**
-
-```typescript
-// Raw document text content
-text: string
-
-// Location context for the document
-projectLocation: IProjectLocation
-```
-
-**IProjectLocation Interface:**
-```typescript
 interface IProjectLocation {
     readonly documentPath: IPath;      // File path with extension
     readonly documentDepth: number;    // Inclusion nesting level (1+)
     readonly documentIndex: number;    // Document sequence number (1+)
 }
-```
 
-**Key Constraints:**
-- `documentDepth` must be ≥ 1 (validates document is properly nested)
-- `documentIndex` must be ≥ 1 (validates document ordering)
-- `documentPath` must have valid file extension (`.md`, `.dlisp`, `.dlproj`)
-
-#### Output Types ####
-
-**Success Result:**
-```typescript
-Result<DocumentMap> = {
-    success: true,
-    value: DocumentMap
-}
-```
-
-**DocumentMap Structure:**
-```typescript
 type DocumentMap = {
     readonly parts: DocumentPart[];           // Parsed content segments
     readonly projectLocation: IProjectLocation; // Original location context
 }
-```
 
-**DocumentPart Union:**
-```typescript
 type DocumentPart = IText | ILispBlock;
-
-// Text content (preserved from markdown)
-interface IText {
-    readonly text: string;        // Original text content
-    readonly location: ILocation; // Position in source
-    readonly type: 'text';
-}
-
-// Extracted Doculisp code
-interface ILispBlock {
-    readonly text: string;        // Doculisp code content
-    readonly location: ILocation; // Position in source
-    readonly type: 'lisp';
-}
 ```
 
-**Location Information:**
-```typescript
-interface ILocation extends IProjectLocation {
-    readonly line: number;                    // Line number (1-based)
-    readonly char: number;                    // Character position (1-based)
-    increaseLine(by?: number): ILocation;     // Create new location with line offset
-    increaseChar(by?: number): ILocation;     // Create new location with char offset
-    compare(other: ILocation): IsOrder;       // Compare positions (-1, 0, 1)
-}
-```
+#### Processing Strategy ####
 
-**Error Result:**
-```typescript
-Result<DocumentMap> = {
-    success: false,
-    message: string,              // Detailed error description
-    documentPath?: IPath          // File where error occurred
-}
-```
+DocumentParse uses different strategies based on file type:
 
-### Parsing Strategies by File Type ###
+**Markdown Files (.md):**
+- Dual content extraction - separates text from embedded Doculisp blocks
+- Text content preserved in `IText` parts
+- Doculisp blocks extracted from `<!-- (dl ...) -->` comments into `ILispBlock` parts
 
-DocumentParse uses different parsing strategies based on file extension, each optimized for the specific content type and use case.
-
-#### Markdown Files ####
-
-**Strategy:** Dual content extraction - separates text from embedded Doculisp blocks
-
-**Input Processing:**
-```typescript
-// Original text is preserved as-is
-const toParse = documentText;
-
-// Uses mixed content parser
-const parser = parserBuilder.createStringParser(
-    partParsers.isDiscardedNewline(),      // Handle formatting newlines
-    partParsers.isKeptWhiteSpaceNoNewLines(), // Preserve significant whitespace
-    partParsers.isMultiline(),             // Multi-line code blocks
-    partParsers.isInline(),                // Inline code spans
-    partParsers.isComment(),               // HTML comments (Doculisp blocks)
-    partParsers.isWord()                   // Individual words
-);
-```
-
-**Content Extraction:**
-- Text content: Preserved in `IText` parts
-- Doculisp blocks: Extracted from `<!-- (dl ...) -->` comments into `ILispBlock` parts
-- Code blocks: Treated as text content (not processed as Doculisp)
-- Formatting: Whitespace and newlines preserved appropriately
-
-**Example Input:**
-````markdown
-# My Document
-
-Some introductory text here.
-
-<!-- (dl (section-meta My Section)) -->
-
-More content after the Doculisp block.
-
-```typescript
-console.log("This code block is preserved as text");
-```
-
-<!-- (dl (# Dynamic Header)) -->
-
-Final paragraph.
-````
-
-**Resulting DocumentPart Array:**
-```typescript
-[
-    { type: 'text', text: '# My Document\n\nSome introductory text here.\n\n', location: {...} },
-    { type: 'lisp', text: '(section-meta My Section)', location: {...} },
-    { type: 'text', text: '\n\nMore content after the Doculisp block.\n\n```typescript\nconsole.log("This code block is preserved as text");\n```\n\n', location: {...} },
-    { type: 'lisp', text: '(# Dynamic Header)', location: {...} },
-    { type: 'text', text: '\n\nFinal paragraph.', location: {...} }
-]
-```
-
-#### Pure Doculisp Files ####
-
-**Strategy:** Pure structure parsing - processes only Doculisp syntax
-
-**Input Processing:**
-```typescript
-// Closing parenthesis added for proper parsing
-const toParse = `${documentText})`;
-
-// Uses Doculisp-only parser
-const parser = parserBuilder.createStringParser(
-    partParsers.isDiscardedNewline(),         // Handle formatting
-    partParsers.isKeptWhiteSpaceNoNewLines(), // Preserve whitespace
-    partParsers.isDoculisp(true)              // Pure Doculisp parsing
-);
-```
-
-**Content Processing:**
-- Only Doculisp syntax allowed - no text content
+**Pure Doculisp Files (.dlisp):**
+- Pure structure parsing - only Doculisp syntax allowed
 - Automatic parenthesis balancing
-- Strict syntax validation
 - All content becomes `ILispBlock` parts
 
-**Example Input:**
-```lisp
-(section-meta
-    (title My Document)
-    (include
-        (Section ./intro.md)
-        (Section ./examples.md)
-    )
-)
-
-(content
-    (toc numbered-labeled)
-)
-
-(# Main Header)
-
-(## Sub Header)
-```
-
-**Resulting DocumentPart Array:**
-```typescript
-[
-    { type: 'lisp', text: '(section-meta\n    (title My Document)\n    (include\n        (Section ./intro.md)\n        (Section ./examples.md)\n    )\n)', location: {...} },
-    { type: 'lisp', text: '(content\n    (toc numbered-labeled)\n)', location: {...} },
-    { type: 'lisp', text: '(# Main Header)', location: {...} },
-    { type: 'lisp', text: '(## Sub Header)', location: {...} }
-]
-```
-
-**Validation Rules:**
-- All content must be valid Doculisp syntax
-- No text content outside parentheses allowed
-- Parentheses must balance correctly
-- No `(dl ...)` wrappers allowed (unlike in markdown comments where they are required)
-
-#### Project Files ####
-
-**Strategy:** Project structure parsing - similar to `.dlisp` but with project-specific validation
-
-**Input Processing:**
-```typescript
-// Same as .dlisp files
-const toParse = `${documentText})`;
-
-// Uses same parser as .dlisp files
-const parser = parserBuilder.createStringParser(
-    partParsers.isDiscardedNewline(),
-    partParsers.isKeptWhiteSpaceNoNewLines(),
-    partParsers.isDoculisp(true)
-);
-```
-
-**Content Requirements:**
+**Project Files (.dlproj):**
+- Project structure parsing - similar to `.dlisp` but with project-specific validation
 - Must contain `(documents ...)` structure
-- Each document must specify `source` and `output` paths
-- Optional document `id` for cross-referencing
 
-**Example Input:**
-```lisp
-(documents
-    (document
-        (id readme)
-        (source ./readme/_main.dlisp)
-        (output ../README.md)
-    )
-    (document
-        (id api-guide)
-        (source ./api-guide/_main.dlisp)
-        (output ../API_GUIDE.md)
-    )
-)
-```
-
-### Basic Usage ###
-
-Practical examples showing how to use DocumentParse in different scenarios.
-
-#### Simple Parsing ####
+#### Basic Usage ####
 
 ```typescript
-import { containerPromise } from 'doculisp/dist/moduleLoader';
-
 async function parseDocument() {
-    // Initialize container
     const container = await containerPromise;
     const documentParser = container.buildAs<DocumentParser>('documentParse');
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-    // Create project location
-    const documentPath = pathConstructor.buildPath('./example.md');
     const projectLocation = {
-        documentPath,
-        documentDepth: 1,      // Top-level document
-        documentIndex: 1       // First document in sequence
+        documentPath: pathConstructor.buildPath('./example.md'),
+        documentDepth: 1,
+        documentIndex: 1
     };
 
-    // Parse document
     const content = `# My Document\n\n<!-- (dl (section-meta Example)) -->\n\nContent here.`;
     const result = documentParser(content, projectLocation);
 
     if (result.success) {
-        console.log('Parsed successfully:', result.value);
         result.value.parts.forEach(part => {
             console.log(`${part.type}: ${part.text}`);
         });
-    } else {
-        console.error('Parse failed:', result.message);
     }
 }
 ```
 
-#### Processing Different File Types ####
+### Tokenizer API ###
 
-**Markdown File Processing:**
-```typescript
-async function parseMarkdownFile() {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+The **Tokenizer** is the **second stage** that converts parsed document content into structured tokens, transforming Doculisp blocks into individual tokens while preserving text content.
 
-    const markdownContent = `
-# Welcome to My Project
-
-This is regular markdown content that will be preserved.
-
-<!-- (dl (section-meta Documentation)) -->
-
-More markdown content here.
-
-\`\`\`typescript
-// This code block is preserved as text
-function example() {
-    return "hello";
-}
-\`\`\`
-
-<!-- (dl (# Overview)) -->
-
-Final content.
-`;
-
-    const projectLocation = {
-        documentPath: pathConstructor.buildPath('./docs/readme.md'),
-        documentDepth: 1,
-        documentIndex: 1
-    };
-
-    const result = documentParser(markdownContent, projectLocation);
-
-    if (result.success) {
-        // Will contain alternating IText and ILispBlock parts
-        const textParts = result.value.parts.filter(p => p.type === 'text');
-        const lispParts = result.value.parts.filter(p => p.type === 'lisp');
-
-        console.log(`Found ${textParts.length} text sections`);
-        console.log(`Found ${lispParts.length} Doculisp blocks`);
-    }
-}
-```
-
-**Pure Doculisp File Processing:**
-```typescript
-async function parseDoculispFile() {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    const doculispContent = `
-(section-meta
-    (title API Reference)
-    (include
-        (Section ./overview.md)
-        (Section ./examples.md)
-    )
-)
-
-(content
-    (toc numbered-labeled)
-)
-
-(# Introduction)
-
-(## Getting Started)
-`;
-
-    const projectLocation = {
-        documentPath: pathConstructor.buildPath('./docs/_main.dlisp'),
-        documentDepth: 1,
-        documentIndex: 1
-    };
-
-    const result = documentParser(doculispContent, projectLocation);
-
-    if (result.success) {
-        // All parts will be ILispBlock type
-        const allLisp = result.value.parts.every(p => p.type === 'lisp');
-        console.log('All parts are Doculisp blocks:', allLisp);
-
-        result.value.parts.forEach((part, index) => {
-            console.log(`Block ${index + 1}:`, part.text);
-        });
-    }
-}
-```
-
-**Project File Processing:**
-```typescript
-async function parseProjectFile() {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    const projectContent = `
-(documents
-    (document
-        (id main-readme)
-        (source ./readme/_main.dlisp)
-        (output ../README.md)
-    )
-    (document
-        (id api-guide)
-        (source ./api-guide/_main.dlisp)
-        (output ../API_GUIDE.md)
-    )
-    (document
-        (source ./changelog/_main.dlisp)
-        (output ../CHANGELOG.md)
-    )
-)
-`;
-
-    const projectLocation = {
-        documentPath: pathConstructor.buildPath('./docs/docs.dlproj'),
-        documentDepth: 1,
-        documentIndex: 1
-    };
-
-    const result = documentParser(projectContent, projectLocation);
-
-    if (result.success) {
-        // Contains project structure as Doculisp blocks
-        console.log('Project structure parsed successfully');
-
-        // Note: Further processing by AstProjectParse would extract
-        // the document definitions from these Doculisp blocks
-    }
-}
-```
-
-#### Advanced Usage with Error Handling ####
-
-```typescript
-async function robustDocumentParsing(filePath: string, content: string) {
-    try {
-        const container = await containerPromise;
-        const documentParser = container.buildAs<DocumentParser>('documentParse');
-        const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-        // Validate inputs
-        if (!content.trim()) {
-            console.warn('Empty document content');
-        }
-
-        // Create project location with validation
-        const documentPath = pathConstructor.buildPath(filePath);
-        const projectLocation = {
-            documentPath,
-            documentDepth: 1,
-            documentIndex: 1
-        };
-
-        // Parse with comprehensive error handling
-        const result = documentParser(content, projectLocation);
-
-        if (result.success) {
-            const documentMap = result.value;
-
-            // Analyze parsing results
-            const stats = {
-                totalParts: documentMap.parts.length,
-                textParts: documentMap.parts.filter(p => p.type === 'text').length,
-                lispParts: documentMap.parts.filter(p => p.type === 'lisp').length,
-                fileType: documentPath.extension
-            };
-
-            console.log('Parse statistics:', stats);
-
-            // Validate expected content based on file type
-            if (documentPath.extension === '.dlisp' && stats.textParts > 0) {
-                console.warn('Pure Doculisp file contains text content');
-            }
-
-            if (documentPath.extension === '.md' && stats.lispParts === 0) {
-                console.warn('Markdown file contains no Doculisp blocks');
-            }
-
-            return { success: true, documentMap, stats };
-
-        } else {
-            // Handle specific error types
-            console.error(`Parse failed for ${filePath}:`, result.message);
-
-            if (result.message.includes('Document Depth')) {
-                console.error('Invalid document depth - must be ≥ 1');
-            } else if (result.message.includes('Document Index')) {
-                console.error('Invalid document index - must be ≥ 1');
-            } else if (result.message.includes('parenthesis')) {
-                console.error('Doculisp syntax error - check parentheses balancing');
-            }
-
-            return { success: false, error: result.message };
-        }
-
-    } catch (error) {
-        console.error('Unexpected error during parsing:', error);
-        return { success: false, error: error.message };
-    }
-}
-```
-
-### When to Use DocumentParse ###
-
-Understanding when and why to use DocumentParse directly versus through higher-level APIs.
-
-#### Direct Usage Scenarios ####
-
-**1. Custom Processing Pipelines**
-- Building custom compilation tools
-- Implementing alternative output formats
-- Creating specialized validation tools
-- Developing IDE language support
-
-**2. Content Analysis**
-- Extracting metrics from documentation
-- Validating Doculisp syntax
-- Analyzing document structure
-- Building documentation tooling
-
-**3. Testing and Development**
-- Unit testing Doculisp syntax
-- Validating parsing behavior
-- Debugging compilation issues
-- Performance analysis
-
-**Example - Content Analysis Tool:**
-```typescript
-async function analyzeDoculispUsage(files: string[]) {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    const analysis = {
-        totalFiles: files.length,
-        totalDoculispBlocks: 0,
-        syntaxErrors: 0,
-        filesByType: { md: 0, dlisp: 0, dlproj: 0 }
-    };
-
-    for (const [index, filePath] of files.entries()) {
-        try {
-            const content = await fs.readFile(filePath, 'utf-8');
-            const documentPath = pathConstructor.buildPath(filePath);
-
-            const projectLocation = {
-                documentPath,
-                documentDepth: 1,
-                documentIndex: index + 1
-            };
-
-            const result = documentParser(content, projectLocation);
-
-            if (result.success) {
-                const lispBlocks = result.value.parts.filter(p => p.type === 'lisp');
-                analysis.totalDoculispBlocks += lispBlocks.length;
-
-                const extension = documentPath.extension.slice(1); // Remove dot
-                if (extension in analysis.filesByType) {
-                    analysis.filesByType[extension]++;
-                }
-            } else {
-                analysis.syntaxErrors++;
-                console.error(`Error in ${filePath}: ${result.message}`);
-            }
-
-        } catch (error) {
-            console.error(`Failed to process ${filePath}:`, error.message);
-        }
-    }
-
-    return analysis;
-}
-```
-
-#### Alternative APIs ####
-
-**High-Level Controller API:**
-```typescript
-// For most compilation tasks
-const controller = container.buildAs<IController>('controller');
-const results = controller.compile(sourcePath, destinationPath);
-```
-
-**IncludeBuilder API:**
-```typescript
-// For processing with includes and variable context
-const includeBuilder = container.buildAs<IIncludeBuilder>('includeBuilder');
-const result = includeBuilder.parse(variableTable);
-```
-
-**Use DocumentParse directly when:**
-- You need fine-grained control over parsing
-- Working with raw content (not files)
-- Building custom tools or analysis
-- Testing specific parsing scenarios
-- Performance-critical applications requiring minimal overhead
-
-**Use higher-level APIs when:**
-- Standard compilation workflows
-- File-based processing
-- Include resolution needed
-- Variable substitution required
-- Full pipeline processing desired
-
-### Common Error Patterns ###
-
-Understanding common mistakes and how to avoid them.
-
-#### Validation Errors ####
-
-**Invalid Project Location:**
-```typescript
-// ❌ Invalid - depth and index must be ≥ 1
-const invalidLocation = {
-    documentPath: pathConstructor.buildPath('./test.md'),
-    documentDepth: 0,    // Must be ≥ 1
-    documentIndex: 0     // Must be ≥ 1
-};
-
-// ✅ Valid
-const validLocation = {
-    documentPath: pathConstructor.buildPath('./test.md'),
-    documentDepth: 1,
-    documentIndex: 1
-};
-```
-
-**Incorrect File Extensions:**
-```typescript
-// ❌ Unsupported file extension
-const unsupportedPath = pathConstructor.buildPath('./document.txt');
-
-// ✅ Supported extensions
-const markdownPath = pathConstructor.buildPath('./document.md');
-const doculispPath = pathConstructor.buildPath('./document.dlisp');
-const projectPath = pathConstructor.buildPath('./project.dlproj');
-```
-
-#### Syntax Errors ####
-
-**Doculisp Syntax Issues:**
-```typescript
-// ❌ Unbalanced parentheses in .dlisp file
-const badDoculisp = `
-(section-meta
-    (title My Document)
-    (include
-        (Section ./intro.md)
-    // Missing closing parenthesis
-)
-`;
-
-// ✅ Properly balanced
-const goodDoculisp = `
-(section-meta
-    (title My Document)
-    (include
-        (Section ./intro.md)
-    )
-)
-`;
-```
-
-**HTML Comment Issues in Markdown:**
-```typescript
-// ❌ Unclosed HTML comment
-const badMarkdown = `
-# Title
-<!-- (dl (section-meta Example))
-Content here.
-`;
-
-// ✅ Properly closed comment
-const goodMarkdown = `
-# Title
-<!-- (dl (section-meta Example)) -->
-Content here.
-`;
-```
-
-#### Content Type Mismatches ####
-
-**Text in Pure Doculisp Files:**
-```typescript
-// ❌ Text content not allowed in .dlisp files
-const badDlisp = `
-(section-meta Title)
-
-This text content will cause parsing errors.
-
-(content (toc))
-`;
-
-// ✅ Only Doculisp structure
-const goodDlisp = `
-(section-meta Title)
-
-(content (toc))
-`;
-```
-
-**Invalid Doculisp in Comments:**
-```typescript
-// ❌ Invalid Doculisp syntax in comment
-const badComment = `
-# Title
-<!-- (dl section-meta Missing Parentheses) -->
-Content.
-`;
-
-// ✅ Valid Doculisp syntax
-const goodComment = `
-# Title
-<!-- (dl (section-meta Proper Parentheses)) -->
-Content.
-`;
-```
-
-### Advanced Usage ###
-
-#### Error Handling Patterns ####
-
-Robust error handling for DocumentParse operations:
-
-```typescript
-function parseWithErrorHandling(content: string, projectLocation: IProjectLocation): void {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-
-    try {
-        const result = documentParser(content, projectLocation);
-
-        if (!result.success) {
-            console.error(`Parse error: ${result.message}`);
-            if (result.documentPath) {
-                console.error(`At: ${result.documentPath.fullName}`);
-            }
-            return;
-        }
-
-        // Process successful result
-        if (result.value.parts.length === 0) {
-            console.log('Document contains no parseable content');
-        } else {
-            console.log(`Parsed ${result.value.parts.length} document parts`);
-        }
-    } catch (error) {
-        console.error('Unexpected parsing error:', error);
-    }
-}
-```
-
-#### Custom Content Processing ####
-
-Process document parts with custom logic:
-
-```typescript
-function processDocumentParts(documentMap: DocumentMap, processor: (part: DocumentPart) => void): void {
-    documentMap.parts.forEach(part => {
-        if (part.type === 'text') {
-            // Custom text processing
-            processor(part);
-        } else if (part.type === 'lisp') {
-            // Custom Doculisp processing
-            processor(part);
-        }
-    });
-}
-```
-
-### Integration Patterns ###
-
-**DocumentParse** serves as the **first stage** in the parsing pipeline, providing structured input for subsequent stages:
-
-```typescript
-async function parseToTokensPipeline(text: string, projectLocation: IProjectLocation): Promise<TokenizedDocument | null> {
-    const container = await containerPromise;
-
-    // Stage 1: Parse the document structure
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const documentMap = documentParser(text, projectLocation);
-
-    if (!documentMap.success) {
-        console.error('Document parsing failed:', documentMap.message);
-        return null;
-    }
-
-    // Stage 2: Tokenize the parsed content
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const tokenizedResult = tokenizer(documentMap);
-
-    if (!tokenizedResult.success) {
-        console.error('Tokenization failed:', tokenizedResult.message);
-        return null;
-    }
-
-    // Note: Additional pipeline stages exist beyond tokenization
-    return tokenizedResult.value;
-}
-```
-
-### Common Patterns ###
-
-#### File Type Detection ####
-
-Detect and handle different file types appropriately:
-
-```typescript
-function getFileTypeStrategy(filePath: string): 'markdown' | 'doculisp' | 'project' {
-    const extension = path.extname(filePath);
-    switch (extension) {
-        case '.md': return 'markdown';
-        case '.dlisp': return 'doculisp';
-        case '.dlproj': return 'project';
-        default: throw new Error(`Unsupported file type: ${extension}`);
-    }
-}
-```
-
-#### Batch Processing ####
-
-Process multiple documents efficiently:
-
-```typescript
-async function processBatch(documents: Array<{content: string, location: IProjectLocation}>) {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-
-    const results = [];
-    for (const doc of documents) {
-        const result = documentParser(doc.content, doc.location);
-        results.push({ ...doc, result });
-    }
-
-    return results;
-}
-```
-
-### Performance Considerations ###
-
-Best practices for optimal performance when using DocumentParse.
-
-#### Memory Management ####
-
-**Large Document Handling:**
-```typescript
-// For very large documents, consider chunking
-async function parseChunkedDocument(content: string, chunkSize = 10000) {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-
-    if (content.length <= chunkSize) {
-        // Small document - parse normally
-        return documentParser(content, projectLocation);
-    }
-
-    // Large document - implement custom chunking strategy
-    // Note: This is a simplified example - real implementation
-    // would need to handle Doculisp block boundaries properly
-    const chunks = [];
-    for (let i = 0; i < content.length; i += chunkSize) {
-        chunks.push(content.slice(i, i + chunkSize));
-    }
-
-    // Process chunks and merge results
-    // Implementation details depend on specific requirements
-}
-```
-
-**Container Reuse:**
-```typescript
-// ✅ Reuse container and parser instances
-class DocumentProcessor {
-    private container: any;
-    private documentParser: DocumentParser;
-
-    async initialize() {
-        this.container = await containerPromise;
-        this.documentParser = this.container.buildAs<DocumentParser>('documentParse');
-    }
-
-    parseDocument(content: string, location: IProjectLocation) {
-        // Reuse parser instance for multiple documents
-        return this.documentParser(content, location);
-    }
-}
-
-// ❌ Creating new parser for each document
-async function inefficientParsing(documents: Array<{content: string, location: IProjectLocation}>) {
-    for (const doc of documents) {
-        const container = await containerPromise;  // Expensive!
-        const parser = container.buildAs<DocumentParser>('documentParse');
-        parser(doc.content, doc.location);
-    }
-}
-```
-
-#### Parser Strategy Optimization ####
-
-**Content Type Detection:**
-```typescript
-// Optimize by detecting content type early
-function getOptimalParsingStrategy(filePath: string, content: string) {
-    const extension = path.extname(filePath);
-
-    if (extension === '.dlisp' || extension === '.dlproj') {
-        return 'doculisp-only';  // Fastest - no HTML comment extraction
-    }
-
-    if (extension === '.md') {
-        // Check if document actually contains Doculisp blocks
-        if (!content.includes('<!-- (dl ')) {
-            return 'text-only';     // Could optimize for pure text
-        }
-        return 'mixed-content';     // Full markdown parsing needed
-    }
-
-    return 'unknown';
-}
-```
-
-**Batch Processing:**
-```typescript
-// Efficient batch processing pattern
-async function processBatch(documents: DocumentInput[]) {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    const results = [];
-
-    // Group by file type for optimized processing
-    const grouped = documents.reduce((acc, doc) => {
-        const ext = path.extname(doc.filePath);
-        (acc[ext] = acc[ext] || []).push(doc);
-        return acc;
-    }, {});
-
-    // Process each group with type-specific optimizations
-    for (const [extension, docs] of Object.entries(grouped)) {
-        for (const [index, doc] of docs.entries()) {
-            const documentPath = pathConstructor.buildPath(doc.filePath);
-            const projectLocation = {
-                documentPath,
-                documentDepth: doc.depth || 1,
-                documentIndex: index + 1
-            };
-
-            const result = documentParser(doc.content, projectLocation);
-            results.push({ ...doc, result });
-        }
-    }
-
-    return results;
-}
-```
-
-This comprehensive guide provides everything needed to understand and effectively use the DocumentParse API in Doculisp applications.
-
-### Dependencies ###
-
-DocumentParse requires these container dependencies:
-
-- **searches**: Text search utilities for content pattern matching
-- **internals**: Internal parsing utilities and array parsers
-- **util**: Core utilities for Result types and location handling
-- **trimArray**: Array manipulation utilities for token consumption
-
-### Related Components ###
-
-- **Tokenizer**: Consumes DocumentParse output (DocumentMap) to create tokens
-- **Controller**: High-level API that orchestrates DocumentParse with other components
-- **IncludeBuilder**: Uses DocumentParse for processing included files
-- **FileHandler**: Provides file I/O services that often precede DocumentParse
-
-## Tokenizer API Reference ##
-
-### Tokenizer API Reference ###
-
-The **Tokenizer** is the **second stage** of the DoculispTypeScript compilation pipeline that converts parsed document content into structured tokens. It takes the output from `DocumentParse` and transforms Doculisp blocks into individual tokens (atoms, parameters, parentheses) while preserving text content and location information.
-
-### Overview ###
-
-The Tokenizer bridges the gap between raw document parsing and Abstract Syntax Tree (AST) generation. It processes `DocumentMap` structures and creates `TokenizedDocument` outputs that contain discrete tokens representing each element of the Doculisp syntax.
+#### Overview ####
 
 **Primary Responsibilities:**
-- Convert Doculisp blocks into individual tokens
+- Convert Doculisp blocks into individual tokens (atoms, parameters, parentheses)
 - Preserve text content as text tokens
-- Handle nested parentheses and comments
-- Process escaped characters in parameters
+- Handle nested parentheses and escape sequences
 - Maintain precise location tracking for error reporting
-- Validate Doculisp syntax at the token level
 
 #### Container Registration ####
-
-Tokenizer is registered in the container system as:
 
 ```typescript
 {
@@ -2018,1566 +943,232 @@ Tokenizer is registered in the container system as:
     singleton: true,
     dependencies: ['searches', 'internals', 'util']
 }
-```
 
-Access it from the container:
-```typescript
-const container = await containerPromise;
+// Access from container
 const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 ```
-
-### Type Definitions ###
-
-Understanding the types used by the Tokenizer is essential for working with it effectively.
 
 #### Core Interface ####
 
 ```typescript
 type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocument>;
-```
 
-The `TokenFunction` is a function that takes a parsed document map and returns either a successful `TokenizedDocument` or an error.
-
-#### Input Types ####
-
-**Primary Parameter:**
-
-```typescript
-// Result from DocumentParse containing parsed content
-documentMap: Result<DocumentMap>
-```
-
-**DocumentMap Structure (from DocumentParse):**
-```typescript
-type DocumentMap = {
-    readonly parts: DocumentPart[];           // Content segments
-    readonly projectLocation: IProjectLocation; // Document context
-}
-
-type DocumentPart = IText | ILispBlock;
-
-interface IText {
-    readonly text: string;        // Original text content
-    readonly location: ILocation; // Position in source
-    readonly type: 'text';
-}
-
-interface ILispBlock {
-    readonly text: string;        // Doculisp code content
-    readonly location: ILocation; // Position in source
-    readonly type: 'lisp';
-}
-```
-
-#### Output Types ####
-
-**Success Result:**
-```typescript
-Result<TokenizedDocument> = {
-    success: true,
-    value: TokenizedDocument
-}
-```
-
-**TokenizedDocument Structure:**
-```typescript
 type TokenizedDocument = {
     readonly tokens: Token[];                    // Array of individual tokens
     readonly projectLocation: IProjectLocation; // Original document context
 }
-```
 
-**Token Union Type:**
-```typescript
 type Token = TextToken | CloseParenthesisToken | AtomToken | ParameterToken;
 ```
 
-**Individual Token Types:**
-```typescript
-// Text content (preserved from markdown)
-type TextToken = {
-    readonly text: string;        // Original text content
-    readonly location: ILocation; // Position in source
-    readonly type: 'token - text';
-}
+#### Token Types ####
 
-// Doculisp atoms (function names, keywords)
+**Atom Tokens** - Function names or keywords:
+```typescript
+// (section-meta) → AtomToken: "section-meta"
+// (title My Document) → AtomToken: "title"
 type AtomToken = {
-    readonly text: string;        // Atom name (e.g., "section-meta", "title")
+    readonly text: string;        // Atom name
     readonly location: ILocation; // Position in source
     readonly type: 'token - atom';
 }
+```
 
-// Parameters (arguments to atoms)
+**Parameter Tokens** - Arguments passed to atoms:
+```typescript
+// (title My Document Title) → ParameterToken: "My Document Title"
 type ParameterToken = {
     readonly text: string;        // Parameter value (processed/unescaped)
     readonly location: ILocation; // Position in source
     readonly type: 'token - parameter';
 }
+```
 
-// Closing parentheses
+**Text Tokens** - Preserved markdown content:
+```typescript
+type TextToken = {
+    readonly text: string;        // Original text content
+    readonly location: ILocation; // Position in source
+    readonly type: 'token - text';
+}
+```
+
+**Parenthesis Tokens** - Structure markers:
+```typescript
 type CloseParenthesisToken = {
     readonly location: ILocation; // Position in source
     readonly type: 'token - close parenthesis';
 }
 ```
 
-**Error Result:**
-```typescript
-Result<TokenizedDocument> = {
-    success: false,
-    message: string,              // Detailed error description
-    documentPath?: IPath          // File where error occurred
-}
-```
-
-### Tokenization Process ###
-
-The Tokenizer processes document content through several specialized parsing functions, each handling different types of content.
-
-#### Token Processing Strategy ####
-
-The Tokenizer uses a multi-pass strategy to convert content:
+#### Basic Usage ####
 
 ```typescript
-// High-level tokenization flow
-function tokenize(documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
-    // 1. Validate input
-    if (!documentMap.success) return documentMap;
-
-    // 2. Process each document part
-    for (const part of documentMap.value.parts) {
-        if (part.type === 'text') {
-            // Add text content as single text token
-            addTextToken(part);
-        } else if (part.type === 'lisp') {
-            // Parse Doculisp block into individual tokens
-            const tokens = tokenizeDoculispBlock(part);
-            addTokens(tokens);
-        }
-    }
-
-    // 3. Return tokenized document
-    return createTokenizedDocument();
-}
-```
-
-#### Text Token Processing ####
-
-Text content from markdown files is preserved as-is in text tokens:
-
-**Input Processing:**
-```typescript
-// Text parts are passed through unchanged
-if (part.type === 'text') {
-    totalTokens.addToken({
-        type: 'token - text',
-        text: part.text,           // Original text preserved
-        location: part.location,   // Original location preserved
-    });
-}
-```
-
-**Characteristics:**
-- **Direct preservation**: Text content is not processed or modified
-- **Location tracking**: Original line/character positions maintained
-- **Single token per part**: Each text part becomes one text token
-- **Whitespace preservation**: All formatting and spacing preserved
-
-#### Doculisp Block Tokenization ####
-
-Doculisp blocks undergo detailed parsing to extract individual syntax elements:
-
-**Processing Pipeline:**
-```typescript
-// Doculisp tokenization uses specialized parsers
-const parser = internals.createStringParser(
-    tokenizeWhiteSpace,      // Handle spaces and newlines
-    tokenizeComment,         // Process commented blocks
-    tokenizeParenthesis,     // Handle opening/closing parentheses
-    tokenizeParameter,       // Extract parameter values
-    tokenizeAtom            // Extract atom names
-);
-```
-
-**Token Extraction Rules:**
-
-1. **Whitespace Handling**: Spaces and newlines are discarded but used for location tracking
-2. **Parentheses Processing**: Opening parentheses trigger atom parsing, closing parentheses create tokens
-3. **Atom Recognition**: First non-whitespace content after opening parenthesis
-4. **Parameter Extraction**: Content following atoms, with escape sequence processing
-5. **Comment Processing**: Handles `(*...)` comment blocks with nested parsing
-
-### Token Types and Examples ###
-
-Understanding how different Doculisp constructs become tokens.
-
-#### Atom Tokens ####
-
-Atoms are the function names or keywords in Doculisp syntax:
-
-**Input Examples:**
-```doculisp
-(section-meta)          → AtomToken: "section-meta"
-(title My Document)     → AtomToken: "title"
-(# Header)              → AtomToken: "#"
-(include)               → AtomToken: "include"
-(content)               → AtomToken: "content"
-```
-
-**Token Generation:**
-```typescript
-// Atom recognition pattern
-const atomPattern = /^[^\(\)\s]+/;
-
-// Example atom token result
-{
-    type: 'token - atom',
-    text: 'section-meta',
-    location: { documentPath, line: 1, char: 2, ... }
-}
-```
-
-**Atom Rules:**
-- Must be first element after opening parenthesis
-- Cannot contain parentheses, spaces, or whitespace
-- Case-sensitive
-- Can include hyphens, underscores, numbers, and special characters (except parentheses)
-
-#### Parameter Tokens ####
-
-Parameters are the arguments passed to atoms:
-
-**Input Examples:**
-```doculisp
-(title My Document Title)         → ParameterToken: "My Document Title"
-(author John Doe)                 → ParameterToken: "John Doe"
-(id my-unique-identifier)         → ParameterToken: "my-unique-identifier"
-(Section ./docs/intro.md)         → ParameterToken: "./docs/intro.md"
-```
-
-**Escape Sequence Processing:**
-```doculisp
-(title The Great \(Escape\))      → ParameterToken: "The Great (Escape)"
-(title Contains \\backslash)       → ParameterToken: "Contains \backslash"
-(title C:\Windows\System32)        → ParameterToken: "C:\Windows\System32"
-```
-
-**Parameter Processing:**
-```typescript
-// Parameter recognition pattern
-const paramPattern = /^([^\s\(\)\\]+|\\\)|\\\(|\\\w|\\\\)+([^\(\)\\]+|\\\)|\\\(|\\\w|\\\\)*/;
-
-// Escape sequence handling
-const processedText = parameterValue
-    .trim()
-    .replace('\\(', '(')     // Unescape opening parenthesis
-    .replace('\\)', ')')     // Unescape closing parenthesis
-    .replace('\\\\', '\\');  // Unescape backslash
-
-// Example parameter token
-{
-    type: 'token - parameter',
-    text: 'My Document Title',  // Processed/unescaped text
-    location: { documentPath, line: 1, char: 7, ... }
-}
-```
-
-**Parameter Rules:**
-- Follow atoms in Doculisp expressions
-- Can contain any characters except unescaped parentheses
-- Whitespace is preserved within parameters
-- Must escape parentheses and backslashes with backslash
-- Parameters are trimmed and unescaped during processing
-
-#### Parenthesis Tokens ####
-
-Parentheses structure the Doculisp syntax and create parsing context:
-
-**Opening Parentheses:**
-- Do not generate tokens directly
-- Trigger atom parsing for the following content
-- Set parsing state to expect atom next
-
-**Closing Parentheses:**
-```typescript
-// Closing parenthesis token
-{
-    type: 'token - close parenthesis',
-    location: { documentPath, line: 1, char: 15, ... }
-    // Note: no text property - just marks structure
-}
-```
-
-**Nested Structure Example:**
-```doculisp
-(section-meta
-    (title My Document)
-    (include
-        (Section ./intro.md)
-    )
-)
-```
-
-**Resulting Token Sequence:**
-1. AtomToken: "section-meta"
-2. AtomToken: "title"
-3. ParameterToken: "My Document"
-4. CloseParenthesisToken
-5. AtomToken: "include"
-6. AtomToken: "Section"
-7. ParameterToken: "./intro.md"
-8. CloseParenthesisToken
-9. CloseParenthesisToken
-10. CloseParenthesisToken
-
-#### Text Tokens ####
-
-Text tokens preserve markdown content from mixed-content files:
-
-**Input Example:**
-```markdown
-# My Document
-
-Some introductory text.
-
-<!-- (dl (section-meta Example)) -->
-
-More content here.
-```
-
-**Resulting Tokens:**
-```typescript
-[
-    {
-        type: 'token - text',
-        text: '# My Document\n\nSome introductory text.\n\n',
-        location: { line: 1, char: 1, ... }
-    },
-    {
-        type: 'token - atom',
-        text: 'section-meta',
-        location: { line: 5, char: 10, ... }
-    },
-    {
-        type: 'token - parameter',
-        text: 'Example',
-        location: { line: 5, char: 23, ... }
-    },
-    {
-        type: 'token - close parenthesis',
-        location: { line: 5, char: 31, ... }
-    },
-    {
-        type: 'token - text',
-        text: '\n\nMore content here.\n',
-        location: { line: 5, char: 35, ... }
-    }
-]
-```
-
-### Basic Usage ###
-
-Practical examples showing how to use the Tokenizer in different scenarios.
-
-#### Simple Tokenization ####
-
-```typescript
-import { containerPromise } from 'doculisp/dist/moduleLoader';
-
 async function tokenizeDocument() {
-    // Initialize container
     const container = await containerPromise;
     const documentParser = container.buildAs<DocumentParser>('documentParse');
     const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    // Create project location
-    const documentPath = pathConstructor.buildPath('./example.md');
-    const projectLocation = {
-        documentPath,
-        documentDepth: 1,
-        documentIndex: 1
-    };
 
     // Parse document first
-    const content = `# My Document\n\n<!-- (dl (section-meta Example)) -->\n\nContent here.`;
     const documentMap = documentParser(content, projectLocation);
-
-    if (!documentMap.success) {
-        console.error('Document parsing failed:', documentMap.message);
-        return;
-    }
+    if (!documentMap.success) return;
 
     // Tokenize the parsed document
     const tokenizedResult = tokenizer(documentMap);
-
     if (tokenizedResult.success) {
-        console.log('Tokenization successful');
         tokenizedResult.value.tokens.forEach((token, index) => {
             console.log(`Token ${index + 1}: ${token.type} - "${token.text || 'N/A'}"`);
         });
-    } else {
-        console.error('Tokenization failed:', tokenizedResult.message);
     }
 }
 ```
 
-#### Processing Different Content Types ####
+### AstParser API ###
 
-**Markdown File with Mixed Content:**
-```typescript
-async function tokenizeMarkdownFile() {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    const markdownContent = `
-# Welcome
-
-This is regular markdown content.
-
-<!-- (dl
-    (section-meta
-        (title Documentation)
-        (author John Doe)
-    )
-) -->
-
-More content here.
-
-<!-- (dl (# Overview)) -->
-
-Final section.
-`;
-
-    const projectLocation = {
-        documentPath: pathConstructor.buildPath('./docs/readme.md'),
-        documentDepth: 1,
-        documentIndex: 1
-    };
-
-    // Parse then tokenize
-    const documentMap = documentParser(markdownContent, projectLocation);
-    const tokenizedResult = tokenizer(documentMap);
-
-    if (tokenizedResult.success) {
-        const tokens = tokenizedResult.value.tokens;
-
-        // Analyze token distribution
-        const tokenCounts = tokens.reduce((acc, token) => {
-            acc[token.type] = (acc[token.type] || 0) + 1;
-            return acc;
-        }, {});
-
-        console.log('Token distribution:', tokenCounts);
-        // Expected: text tokens, atom tokens, parameter tokens, close parenthesis tokens
-
-        // Extract just the Doculisp tokens
-        const doculispTokens = tokens.filter(t => t.type !== 'token - text');
-        console.log('Doculisp tokens:', doculispTokens.length);
-    }
-}
-```
-
-**Pure Doculisp File:**
-```typescript
-async function tokenizeDoculispFile() {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    const doculispContent = `
-(section-meta
-    (title API Reference)
-    (subtitle Complete Reference Guide)
-    (author Development Team)
-    (include
-        (Overview ./overview.md)
-        (Examples ./examples.md)
-    )
-)
-
-(content
-    (toc numbered-labeled)
-)
-
-(# Introduction)
-
-(## Getting Started)
-`;
-
-    const projectLocation = {
-        documentPath: pathConstructor.buildPath('./docs/_main.dlisp'),
-        documentDepth: 1,
-        documentIndex: 1
-    };
-
-    const documentMap = documentParser(doculispContent, projectLocation);
-    const tokenizedResult = tokenizer(documentMap);
-
-    if (tokenizedResult.success) {
-        const tokens = tokenizedResult.value.tokens;
-
-        // All tokens should be Doculisp tokens (no text tokens)
-        const hasTextTokens = tokens.some(t => t.type === 'token - text');
-        console.log('Contains text tokens:', hasTextTokens); // Should be false
-
-        // Extract atom sequence to understand structure
-        const atoms = tokens
-            .filter(t => t.type === 'token - atom')
-            .map(t => t.text);
-        console.log('Atom sequence:', atoms);
-        // Expected: ["section-meta", "title", "subtitle", "author", "include", "Overview", "Examples", "content", "toc", "#", "##"]
-
-        // Extract parameters
-        const parameters = tokens
-            .filter(t => t.type === 'token - parameter')
-            .map(t => t.text);
-        console.log('Parameters:', parameters);
-        // Expected: ["API Reference", "Complete Reference Guide", "Development Team", "./overview.md", "./examples.md", "numbered-labeled", "Introduction", "Getting Started"]
-    }
-}
-```
-
-#### Advanced Token Analysis ####
-
-```typescript
-async function analyzeTokenStructure(filePath: string, content: string) {
-    try {
-        const container = await containerPromise;
-        const documentParser = container.buildAs<DocumentParser>('documentParse');
-        const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-        const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-        const documentPath = pathConstructor.buildPath(filePath);
-        const projectLocation = {
-            documentPath,
-            documentDepth: 1,
-            documentIndex: 1
-        };
-
-        // Complete processing pipeline
-        const documentMap = documentParser(content, projectLocation);
-        if (!documentMap.success) {
-            return { success: false, error: documentMap.message };
-        }
-
-        const tokenizedResult = tokenizer(documentMap);
-        if (!tokenizedResult.success) {
-            return { success: false, error: tokenizedResult.message };
-        }
-
-        const tokens = tokenizedResult.value.tokens;
-
-        // Comprehensive token analysis
-        const analysis = {
-            totalTokens: tokens.length,
-            tokenTypes: {
-                text: tokens.filter(t => t.type === 'token - text').length,
-                atoms: tokens.filter(t => t.type === 'token - atom').length,
-                parameters: tokens.filter(t => t.type === 'token - parameter').length,
-                closeParens: tokens.filter(t => t.type === 'token - close parenthesis').length
-            },
-            atomFrequency: {},
-            parameterLengths: [],
-            locationSpread: {
-                minLine: Math.min(...tokens.map(t => t.location.line)),
-                maxLine: Math.max(...tokens.map(t => t.location.line)),
-                minChar: Math.min(...tokens.map(t => t.location.char)),
-                maxChar: Math.max(...tokens.map(t => t.location.char))
-            }
-        };
-
-        // Analyze atom frequency
-        tokens
-            .filter(t => t.type === 'token - atom')
-            .forEach(t => {
-                analysis.atomFrequency[t.text] = (analysis.atomFrequency[t.text] || 0) + 1;
-            });
-
-        // Analyze parameter lengths
-        analysis.parameterLengths = tokens
-            .filter(t => t.type === 'token - parameter')
-            .map(t => t.text.length);
-
-        // Validate token structure
-        const validationIssues = [];
-
-        // Check for balanced parentheses
-        const openParenCount = tokens.filter(t => t.type === 'token - atom').length;
-        const closeParenCount = tokens.filter(t => t.type === 'token - close parenthesis').length;
-        if (openParenCount !== closeParenCount) {
-            validationIssues.push(`Unbalanced parentheses: ${openParenCount} open, ${closeParenCount} close`);
-        }
-
-        // Check for orphaned parameters
-        const atomsAndParams = tokens.filter(t =>
-            t.type === 'token - atom' || t.type === 'token - parameter'
-        );
-        for (let i = 0; i < atomsAndParams.length - 1; i++) {
-            if (atomsAndParams[i].type === 'token - parameter' &&
-                atomsAndParams[i + 1].type === 'token - parameter') {
-                validationIssues.push(`Consecutive parameters without atom at line ${atomsAndParams[i].location.line}`);
-            }
-        }
-
-        return {
-            success: true,
-            analysis,
-            validationIssues,
-            tokens: tokens.slice(0, 10) // First 10 tokens for inspection
-        };
-
-    } catch (error) {
-        return { success: false, error: error.message };
-    }
-}
-```
-
-### When to Use Tokenizer ###
-
-Understanding when and why to use the Tokenizer directly versus through higher-level APIs.
-
-#### Direct Usage Scenarios ####
-
-**1. Syntax Analysis Tools**
-- Building Doculisp language servers
-- Implementing syntax highlighting
-- Creating code completion systems
-- Developing linting and validation tools
-
-**2. Custom AST Processing**
-- Building alternative AST generators
-- Implementing custom semantic analysis
-- Creating specialized transformation tools
-- Developing debugging utilities
-
-**3. Performance-Critical Applications**
-- High-throughput document processing
-- Real-time syntax validation
-- Incremental parsing systems
-- Memory-optimized processing pipelines
-
-**Example - Syntax Validator:**
-```typescript
-async function validateDoculispSyntax(files: string[]) {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-    const validationResults = [];
-
-    for (const [index, filePath] of files.entries()) {
-        try {
-            const content = await fs.readFile(filePath, 'utf-8');
-            const documentPath = pathConstructor.buildPath(filePath);
-
-            const projectLocation = {
-                documentPath,
-                documentDepth: 1,
-                documentIndex: index + 1
-            };
-
-            // Parse and tokenize
-            const documentMap = documentParser(content, projectLocation);
-            if (!documentMap.success) {
-                validationResults.push({
-                    file: filePath,
-                    stage: 'document-parse',
-                    success: false,
-                    error: documentMap.message
-                });
-                continue;
-            }
-
-            const tokenizedResult = tokenizer(documentMap);
-            if (!tokenizedResult.success) {
-                validationResults.push({
-                    file: filePath,
-                    stage: 'tokenizer',
-                    success: false,
-                    error: tokenizedResult.message
-                });
-                continue;
-            }
-
-            // Validate token structure
-            const tokens = tokenizedResult.value.tokens;
-            const issues = validateTokenStructure(tokens);
-
-            validationResults.push({
-                file: filePath,
-                stage: 'complete',
-                success: issues.length === 0,
-                tokenCount: tokens.length,
-                issues: issues
-            });
-
-        } catch (error) {
-            validationResults.push({
-                file: filePath,
-                stage: 'file-access',
-                success: false,
-                error: error.message
-            });
-        }
-    }
-
-    return validationResults;
-}
-
-function validateTokenStructure(tokens: Token[]): string[] {
-    const issues = [];
-
-    // Check parentheses balance
-    const atomCount = tokens.filter(t => t.type === 'token - atom').length;
-    const closeParenCount = tokens.filter(t => t.type === 'token - close parenthesis').length;
-
-    if (atomCount !== closeParenCount) {
-        issues.push(`Unbalanced parentheses: ${atomCount} atoms vs ${closeParenCount} close parens`);
-    }
-
-    // Check for valid atom/parameter sequences
-    const doculispTokens = tokens.filter(t => t.type !== 'token - text');
-    for (let i = 0; i < doculispTokens.length - 1; i++) {
-        const current = doculispTokens[i];
-        const next = doculispTokens[i + 1];
-
-        // Parameters should not follow parameters without atoms
-        if (current.type === 'token - parameter' && next.type === 'token - parameter') {
-            issues.push(`Invalid parameter sequence at line ${current.location.line}`);
-        }
-    }
-
-    return issues;
-}
-```
-
-#### Alternative APIs ####
-
-**High-Level Controller API:**
-```typescript
-// For standard compilation workflows
-const controller = container.buildAs<IController>('controller');
-const results = controller.compile(sourcePath, destinationPath);
-```
-
-**Multi-Stage Pipeline API:**
-```typescript
-// For document processing through AST generation
-const includeBuilder = container.buildAs<IIncludeBuilder>('includeBuilder');
-const astParser = container.buildAs<IAstParser>('astParser');
-
-// DocumentParse → Tokenizer → AstParser → Additional Stages
-const documentMap = documentParser(content, location);
-const tokenized = tokenizer(documentMap);
-const ast = astParser.parse(tokenized);
-```
-
-**Use Tokenizer directly when:**
-- Building syntax analysis tools
-- Need access to individual tokens
-- Implementing custom AST processing
-- Performance optimization required
-- Token-level validation needed
-
-**Use higher-level APIs when:**
-- Standard document compilation
-- Multi-stage pipeline processing required
-- AST structures needed
-- Document output generation desired
-- Include resolution required
-
-### Common Error Patterns ###
-
-Understanding common issues and how to resolve them.
-
-#### Input Validation Errors ####
-
-**Failed DocumentParse Input:**
-```typescript
-// ❌ Passing failed DocumentParse result
-const failedDocumentMap = { success: false, message: 'Parse error' };
-const result = tokenizer(failedDocumentMap);
-// Result: Returns the same failure without processing
-
-// ✅ Validate DocumentParse success first
-if (documentMap.success) {
-    const tokenized = tokenizer(documentMap);
-} else {
-    console.error('Document parsing failed:', documentMap.message);
-}
-```
-
-#### Syntax Errors ####
-
-**Unbalanced Parentheses:**
-```typescript
-// ❌ Malformed Doculisp - missing closing parenthesis
-const badDoculisp = `
-(section-meta
-    (title My Document)
-    (include
-        (Section ./intro.md)
-    )
-    // Missing closing parenthesis for section-meta
-`;
-
-// ✅ Properly balanced parentheses
-const goodDoculisp = `
-(section-meta
-    (title My Document)
-    (include
-        (Section ./intro.md)
-    )
-)
-`;
-```
-
-**Invalid Escape Sequences:**
-```typescript
-// ❌ Incorrect escaping
-const badEscaping = `(title The \wrong escape)`;
-const badBackslash = `(Section C:\Windows\System32)`;  // Unescaped backslashes
-
-// ✅ Proper escaping
-const goodEscaping = `(title The \(correct\) escape)`;
-const goodBackslash = `(Section C:\\Windows\\System32)`;  // Escaped backslashes
-```
-
-#### Location Tracking Issues ####
-
-**Invalid Location Information:**
-```typescript
-// Location information must be consistent and valid
-function validateLocationSequence(tokens: Token[]): boolean {
-    for (let i = 0; i < tokens.length - 1; i++) {
-        const current = tokens[i].location;
-        const next = tokens[i + 1].location;
-
-        // Locations should progress logically
-        if (current.line > next.line ||
-            (current.line === next.line && current.char >= next.char)) {
-            console.warn(`Location inconsistency between tokens ${i} and ${i + 1}`);
-            return false;
-        }
-    }
-    return true;
-}
-```
-
-### Advanced Usage ###
-
-#### Error Handling Patterns ####
-
-Robust error handling for tokenization operations:
-
-```typescript
-function tokenizeWithErrorHandling(documentMap: Result<DocumentMap>): void {
-    const container = await containerPromise;
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-
-    try {
-        const result = tokenizer(documentMap);
-
-        if (!result.success) {
-            console.error(`Tokenization error: ${result.message}`);
-            if (result.documentPath) {
-                console.error(`At: ${result.documentPath.fullName}`);
-            }
-            return;
-        }
-
-        // Process successful result
-        if (result.value.tokens.length === 0) {
-            console.log('Document contains no tokens');
-        } else {
-            console.log(`Generated ${result.value.tokens.length} tokens`);
-        }
-    } catch (error) {
-        console.error('Unexpected tokenization error:', error);
-    }
-}
-```
-
-#### Token Stream Processing ####
-
-Process tokens in sequence with state management:
-
-```typescript
-function processTokenStream(tokens: Token[], visitor: (token: Token, index: number) => void): void {
-    tokens.forEach((token, index) => {
-        visitor(token, index);
-    });
-}
-
-// Usage example
-processTokenStream(tokens, (token, index) => {
-    const location = token.location;
-    console.log(`Token ${index}: ${token.type} at ${location.line}:${location.char}`);
-});
-```
-
-### Integration Patterns ###
-
-**Tokenizer** serves as the **second stage** in the parsing pipeline, processing DocumentParse output and preparing input for AstParser:
-
-```typescript
-async function parseToAstPipeline(text: string, projectLocation: IProjectLocation): Promise<RootAst | IAstEmpty | null> {
-    const container = await containerPromise;
-
-    // Stage 1: Parse document structure
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const documentMap = documentParser(text, projectLocation);
-
-    if (!documentMap.success) {
-        console.error('Document parsing failed:', documentMap.message);
-        return null;
-    }
-
-    // Stage 2: Tokenize the content
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const tokenizedResult = tokenizer(documentMap);
-
-    if (!tokenizedResult.success) {
-        console.error('Tokenization failed:', tokenizedResult.message);
-        return null;
-    }
-
-    // Stage 3: Generate AST from tokens
-    const astParser = container.buildAs<IAstParser>('astParser');
-    const astResult = astParser.parse(tokenizedResult);
-
-    if (!astResult.success) {
-        console.error('AST parsing failed:', astResult.message);
-        return null;
-    }
-
-    // Note: Additional pipeline stages exist beyond AST generation
-    return astResult.value;
-}
-```
-
-### Common Patterns ###
-
-#### Token Filtering ####
-
-Extract specific token types for analysis:
-
-```typescript
-function extractTokensByType(tokens: Token[], tokenType: string): Token[] {
-    return tokens.filter(token => token.type === tokenType);
-}
-
-// Usage
-const doculispTokens = tokens.filter(t => t.type !== 'token - text');
-const atoms = extractTokensByType(tokens, 'token - atom');
-const parameters = extractTokensByType(tokens, 'token - parameter');
-```
-
-#### Token Validation ####
-
-Validate token structure for correctness:
-
-```typescript
-function validateTokenStructure(tokens: Token[]): string[] {
-    const issues = [];
-
-    const atomCount = tokens.filter(t => t.type === 'token - atom').length;
-    const closeParenCount = tokens.filter(t => t.type === 'token - close parenthesis').length;
-
-    if (atomCount !== closeParenCount) {
-        issues.push(`Unbalanced parentheses: ${atomCount} atoms vs ${closeParenCount} close parens`);
-    }
-
-    return issues;
-}
-```
-
-### Performance Considerations ###
-
-Best practices for optimal performance when using the Tokenizer.
-
-#### Memory Management ####
-
-**Token Array Optimization:**
-```typescript
-// For large documents, consider streaming processing
-async function processLargeDocument(content: string, chunkSize = 5000) {
-    if (content.length <= chunkSize) {
-        // Small document - process normally
-        return standardTokenization(content);
-    }
-
-    // Large document - implement chunked processing
-    // Note: This requires careful handling of Doculisp block boundaries
-    const chunks = smartChunkDocument(content, chunkSize);
-    const allTokens = [];
-
-    for (const chunk of chunks) {
-        const chunkTokens = await processChunk(chunk);
-        allTokens.push(...chunkTokens);
-    }
-
-    return mergeTokenSequences(allTokens);
-}
-```
-
-**Container Reuse:**
-```typescript
-// ✅ Reuse container and services for multiple documents
-class TokenProcessor {
-    private container: any;
-    private documentParser: DocumentParser;
-    private tokenizer: TokenFunction;
-
-    async initialize() {
-        this.container = await containerPromise;
-        this.documentParser = this.container.buildAs<DocumentParser>('documentParse');
-        this.tokenizer = this.container.buildAs<TokenFunction>('tokenizer');
-    }
-
-    async processDocument(content: string, location: IProjectLocation) {
-        const documentMap = this.documentParser(content, location);
-        return this.tokenizer(documentMap);
-    }
-}
-```
-
-#### Parsing Optimization ####
-
-**Efficient Token Processing:**
-```typescript
-// Optimize for different content types
-function optimizeTokenProcessing(tokens: Token[]): ProcessingStrategy {
-    const textTokenCount = tokens.filter(t => t.type === 'token - text').length;
-    const doculispTokenCount = tokens.length - textTokenCount;
-
-    if (textTokenCount === 0) {
-        return 'pure-doculisp';     // Fastest - no text processing
-    } else if (doculispTokenCount === 0) {
-        return 'pure-text';        // Simple text passthrough
-    } else {
-        return 'mixed-content';    // Full processing required
-    }
-}
-```
-
-**Batch Processing Pattern:**
-```typescript
-async function processBatchTokenization(documents: DocumentInput[]) {
-    const container = await containerPromise;
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-
-    // Group by processing complexity
-    const grouped = documents.reduce((acc, doc) => {
-        const complexity = estimateComplexity(doc.content);
-        (acc[complexity] = acc[complexity] || []).push(doc);
-        return acc;
-    }, {});
-
-    const results = [];
-
-    // Process each complexity group with optimized settings
-    for (const [complexity, docs] of Object.entries(grouped)) {
-        const batchResults = await processComplexityGroup(
-            docs,
-            documentParser,
-            tokenizer,
-            complexity
-        );
-        results.push(...batchResults);
-    }
-
-    return results;
-}
-```
-
-This comprehensive guide provides everything needed to understand and effectively use the Tokenizer API in Doculisp applications. The Tokenizer serves as a crucial bridge between document parsing and AST generation, providing precise token-level access to Doculisp syntax elements.
-
-### Dependencies ###
-
-Tokenizer requires these container dependencies:
-
-- **searches**: Text search utilities for pattern matching and content recognition
-- **internals**: Internal parsing utilities and string parsers
-- **util**: Core utilities for Result types and location handling
-
-### Related Components ###
-
-- **DocumentParse**: Provides input for Tokenizer (DocumentMap)
-- **AstParser**: Consumes Tokenizer output (TokenizedDocument) for AST generation
-- **Controller**: High-level API that orchestrates Tokenizer with other pipeline components
-- **IncludeBuilder**: Uses tokenization as part of document processing workflows
-
-## AstParser API Reference ##
-
-### AstParser API Reference ###
-
-The **AstParser** is the **third stage** of the DoculispTypeScript compilation pipeline that converts tokenized input into Abstract Syntax Trees (AST). It parses different token types (text, atoms, commands, containers) into structured AST nodes that represent the logical structure of Doculisp documents.
-
-### Integration Patterns ###
-
-**AstParser** serves as the **third stage** in the parsing pipeline, consuming Tokenizer output to generate ASTs for further processing:
-
-```typescript
-async function parseToAstPipeline(text: string, projectLocation: IProjectLocation): Promise<RootAst | IAstEmpty | null> {
-    const container = await containerPromise;
-
-    // Stage 1: Parse document structure (DocumentParse)
-    const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const documentMap = documentParser(text, projectLocation);
-
-    if (!documentMap.success) {
-        console.error('Document parsing failed:', documentMap.message);
-        return null;
-    }
-
-    // Stage 2: Tokenize the content (Tokenizer)
-    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const tokenResult = tokenizer(documentMap);
-
-    if (!tokenResult.success) {
-        console.error('Tokenization failed:', tokenResult.message);
-        return null;
-    }
-
-    // Stage 3: Parse tokens into AST (AstParser)
-    const astParser = container.buildAs<IAstParser>('astParser');
-    const astResult = astParser.parse(tokenResult);
-
-    if (!astResult.success) {
-        console.error('AST parsing failed:', astResult.message);
-        return null;
-    }
-
-    // Note: Additional pipeline stages exist beyond AST generation
-    return astResult.value;
-}
-```
+The **AstParser** is the **third stage** that converts tokenized content into an Abstract Syntax Tree (AST), providing a structured representation of the document's logical organization.
 
 #### Overview ####
 
-**AstParser** is the **third stage** in the Doculisp compilation pipeline that processes tokenized input and produces a hierarchical tree structure representing the parsed content. It handles various Doculisp constructs including text content, atoms, commands with parameters, and nested container structures. The parser ensures proper syntax validation and location tracking throughout the parsing process.
-
-**Pipeline Position:** AstParser is stage 3 in the multi-stage compilation pipeline (DocumentParse → Tokenizer → AstParser → ...)
-
 **Primary Responsibilities:**
+- Convert token streams into hierarchical AST structures
+- Validate Doculisp syntax and structure
+- Handle nested expressions and parameter parsing
+- Preserve text content and location information
+- Detect and report syntax errors
 
 #### Container Registration ####
-
-Register AstParser with the dependency injection container:
 
 ```typescript
 {
     name: 'astParser',
-    singleton: false,
-    dependencies: ['util', 'internals', 'trimArray']
+    singleton: true,
+    dependencies: ['searches', 'internals', 'util']
 }
-```
 
-Access it from the container:
-```typescript
-const container = await containerPromise;
+// Access from container
 const astParser = container.buildAs<IAstParser>('astParser');
 ```
 
-#### Type Definitions ####
-
-Understanding the types used by AstParser is essential for working with the generated AST structures.
-
-##### Core Interface #####
+#### Core Interface ####
 
 ```typescript
 interface IAstParser {
-    parse(tokens: Result<TokenizedDocument>): Result<RootAst | IAstEmpty>;
+    parse(tokenizedDocument: Result<TokenizedDocument>): Result<RootAst | IAstEmpty>;
 }
-```
 
-The `IAstParser` provides a single `parse` method that transforms tokenized documents into AST structures.
-
-##### Input Types #####
-
-**Primary Input:**
-
-```typescript
-// Tokenized document containing parsed tokens
-tokens: Result<TokenizedDocument>
-```
-
-**TokenizedDocument Structure:**
-```typescript
-interface TokenizedDocument {
-    projectLocation: IProjectLocation;
-    tokens: Token[];
-}
-```
-
-##### Output Types #####
-
-**Return Value:**
-```typescript
-Result<RootAst | IAstEmpty>
-```
-
-**RootAst Structure:**
-```typescript
 type RootAst = {
-    readonly ast: CoreAst[];
-    readonly location: IProjectLocation;
-    readonly type: 'RootAst';
+    readonly location: ILocation;
+    readonly parts: AstPart[];
+    readonly type: 'ast-root';
+}
+
+type AstPart = IAstText | IAstExpression;
+```
+
+#### AST Node Types ####
+
+**Text Nodes** - Preserved markdown content:
+```typescript
+interface IAstText {
+    readonly text: string;        // Original text content
+    readonly location: ILocation; // Position in source
+    readonly type: 'ast-text';
 }
 ```
 
-**IAstEmpty Structure:**
+**Expression Nodes** - Doculisp expressions:
+```typescript
+interface IAstExpression {
+    readonly atom: string;         // Function name (e.g., "section-meta")
+    readonly parameters: string[]; // Arguments to the function
+    readonly location: ILocation;  // Position in source
+    readonly parts: AstPart[];     // Nested expressions
+    readonly type: 'ast-expression';
+}
+```
+
+**Empty AST** - For documents with no content:
 ```typescript
 interface IAstEmpty {
-    readonly location: IProjectLocation;
-    readonly type: 'ast-Empty';
-}
-```
-
-##### AST Node Types #####
-
-The parser generates various AST node types:
-
-**IAstValue (Text Content):**
-```typescript
-interface IAstValue {
-    readonly value: string;
     readonly location: ILocation;
-    readonly type: 'ast-value';
+    readonly type: 'ast-empty';
 }
 ```
 
-**IAstAtom (Simple Atoms):**
-```typescript
-interface IAstAtom {
-    readonly value: string;
-    readonly location: ILocation;
-    readonly type: 'ast-atom';
-}
-```
+#### Processing Flow ####
 
-**IAstCommand (Commands with Parameters):**
-```typescript
-interface IAstCommand {
-    readonly value: string;
-    readonly location: ILocation;
-    readonly parameter: IAstParameter;
-    readonly type: 'ast-command';
-}
-```
+The AstParser processes tokens through several stages:
 
-**IAstContainer (Nested Structures):**
-```typescript
-interface IAstContainer {
-    readonly value: string;
-    readonly location: ILocation;
-    readonly subStructure: AtomAst[];
-    readonly type: 'ast-container';
-}
-```
-
-**IAstParameter (Command Parameters):**
-```typescript
-interface IAstParameter {
-    readonly value: string;
-    readonly location: ILocation;
-    readonly type: 'ast-Parameter';
-}
-```
+1. **Token Validation**: Ensures proper token sequence and structure
+2. **Expression Building**: Groups atoms with their parameters and children
+3. **Hierarchy Construction**: Builds nested expression trees
+4. **Text Preservation**: Maintains original text content alongside structure
+5. **Location Tracking**: Preserves precise source location information
 
 #### Basic Usage ####
 
-##### Simple Parsing #####
-
-Parse a tokenized document into an AST:
-
 ```typescript
-const container = await containerPromise;
-const astParser = container.buildAs<IAstParser>('astParser');
-
-// Assume tokenizedDoc is a Result<TokenizedDocument>
-const astResult = astParser.parse(tokenizedDoc);
-
-if (astResult.success) {
-    if (astResult.value.type === 'RootAst') {
-        // Process the AST nodes
-        const astNodes = astResult.value.ast;
-        astNodes.forEach(node => {
-            console.log(`Node type: ${node.type}, Value: ${node.value}`);
-        });
-    } else {
-        // Handle empty document
-        console.log('Document is empty');
-    }
-} else {
-    console.error('Parsing failed:', astResult.message);
-}
-```
-
-##### Processing Different Node Types #####
-
-Handle various AST node types:
-
-```typescript
-function processAstNode(node: CoreAst): void {
-    switch (node.type) {
-        case 'ast-value':
-            // Handle text content
-            console.log(`Text: ${node.value}`);
-            break;
-
-        case 'ast-atom':
-            // Handle simple atoms
-            console.log(`Atom: ${node.value}`);
-            break;
-
-        case 'ast-command':
-            // Handle commands with parameters
-            console.log(`Command: ${node.value}, Parameter: ${node.parameter.value}`);
-            break;
-
-        case 'ast-container':
-            // Handle nested containers
-            console.log(`Container: ${node.value}`);
-            node.subStructure.forEach(processAstNode);
-            break;
-    }
-}
-```
-
-#### Advanced Usage ####
-
-##### Error Handling Patterns #####
-
-Robust error handling for AST parsing:
-
-```typescript
-function parseWithErrorHandling(tokenizedDoc: Result<TokenizedDocument>): void {
-    const astParser = container.buildAs<IAstParser>('astParser');
-
-    try {
-        const result = astParser.parse(tokenizedDoc);
-
-        if (!result.success) {
-            console.error(`Parse error: ${result.message}`);
-            if (result.documentPath) {
-                console.error(`At: ${result.documentPath.fullName}`);
-            }
-            return;
-        }
-
-        // Process successful result
-        if (result.value.type === 'ast-Empty') {
-            console.log('Document contains no parseable content');
-        } else {
-            console.log(`Parsed ${result.value.ast.length} AST nodes`);
-        }
-    } catch (error) {
-        console.error('Unexpected parsing error:', error);
-    }
-}
-```
-
-##### AST Traversal #####
-
-Deep traversal of AST structures:
-
-```typescript
-function traverseAst(ast: CoreAst[], visitor: (node: CoreAst, depth: number) => void, depth = 0): void {
-    ast.forEach(node => {
-        visitor(node, depth);
-
-        if (node.type === 'ast-container') {
-            // Recursively traverse container sub-structures
-            traverseAst(node.subStructure, visitor, depth + 1);
-        }
-    });
-}
-
-// Usage example
-const astResult = astParser.parse(tokenizedDoc);
-if (astResult.success && astResult.value.type === 'RootAst') {
-    traverseAst(astResult.value.ast, (node, depth) => {
-        const indent = '  '.repeat(depth);
-        console.log(`${indent}${node.type}: ${node.value}`);
-    });
-}
-```
-
-##### Location Tracking #####
-
-Utilize location information for debugging and error reporting:
-
-```typescript
-function reportNodeLocations(ast: CoreAst[]): void {
-    ast.forEach(node => {
-        const loc = node.location;
-        console.log(`${node.type} at ${loc.documentPath.fullName}:${loc.line}:${loc.char}`);
-
-        if (node.type === 'ast-container') {
-            reportNodeLocations(node.subStructure);
-        }
-    });
-}
-```
-
-#### Integration Patterns ####
-
-##### Pipeline Integration #####
-
-**AstParser** serves as the **third stage** in the parsing pipeline, consuming Tokenizer output to generate ASTs for further processing:
-
-```typescript
-async function parseToAstPipeline(text: string, projectLocation: IProjectLocation): Promise<RootAst | IAstEmpty | null> {
+async function parseToAst() {
     const container = await containerPromise;
-
-    // Stage 1: Parse document structure (DocumentParse)
     const documentParser = container.buildAs<DocumentParser>('documentParse');
-    const documentMap = documentParser(text, projectLocation);
-
-    if (!documentMap.success) {
-        console.error('Document parsing failed:', documentMap.message);
-        return null;
-    }
-
-    // Stage 2: Tokenize the content (Tokenizer)
     const tokenizer = container.buildAs<TokenFunction>('tokenizer');
-    const tokenResult = tokenizer(documentMap);
-
-    if (!tokenResult.success) {
-        console.error('Tokenization failed:', tokenResult.message);
-        return null;
-    }
-
-    // Stage 3: Parse tokens into AST (AstParser)
     const astParser = container.buildAs<IAstParser>('astParser');
-    const astResult = astParser.parse(tokenResult);
 
-    if (!astResult.success) {
-        console.error('AST parsing failed:', astResult.message);
-        return null;
-    }
+    // Complete pipeline: DocumentParse → Tokenizer → AstParser
+    const documentMap = documentParser(content, projectLocation);
+    if (!documentMap.success) return;
 
-    // Note: Additional pipeline stages exist beyond AST generation
-    return astResult.value;
-}
-}
-```
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) return;
 
-##### Type Guards #####
-
-Implement type guards for safe AST processing:
-
-```typescript
-function isRootAst(ast: RootAst | IAstEmpty): ast is RootAst {
-    return ast.type === 'RootAst';
-}
-
-function isAstCommand(node: CoreAst): node is IAstCommand {
-    return node.type === 'ast-command';
-}
-
-function isAstContainer(node: CoreAst): node is IAstContainer {
-    return node.type === 'ast-container';
-}
-
-// Usage
-const astResult = astParser.parse(tokenizedDoc);
-if (astResult.success && isRootAst(astResult.value)) {
-    astResult.value.ast.forEach(node => {
-        if (isAstCommand(node)) {
-            console.log(`Command: ${node.value} with parameter: ${node.parameter.value}`);
-        } else if (isAstContainer(node)) {
-            console.log(`Container: ${node.value} with ${node.subStructure.length} children`);
+    const astResult = astParser.parse(tokenizedResult);
+    if (astResult.success) {
+        if (astResult.value.type === 'ast-root') {
+            console.log(`Generated AST with ${astResult.value.parts.length} parts`);
         }
-    });
+    }
 }
 ```
 
-#### Common Patterns ####
+#### Error Handling ####
 
-##### Empty Document Handling #####
-
-Handle empty documents gracefully:
+All three APIs use consistent error handling with the `Result<T>` pattern:
 
 ```typescript
-function processAstResult(astResult: Result<RootAst | IAstEmpty>): void {
-    if (!astResult.success) {
-        throw new Error(`AST parsing failed: ${astResult.message}`);
-    }
+// Validate each stage before proceeding
+const documentMap = documentParser(content, location);
+if (!documentMap.success) {
+    console.error('Document parsing failed:', documentMap.message);
+    return;
+}
 
-    if (astResult.value.type === 'ast-Empty') {
-        console.log('Document is empty - no content to process');
-        return;
-    }
+const tokenized = tokenizer(documentMap);
+if (!tokenized.success) {
+    console.error('Tokenization failed:', tokenized.message);
+    return;
+}
 
-    // Process the AST nodes
-    const ast = astResult.value.ast;
-    console.log(`Processing ${ast.length} AST nodes`);
-    ast.forEach(processAstNode);
+const ast = astParser.parse(tokenized);
+if (!ast.success) {
+    console.error('AST parsing failed:', ast.message);
+    return;
 }
 ```
 
-##### Command Extraction #####
+#### When to Use These APIs ####
 
-Extract specific commands from the AST:
+**Use these APIs directly when:**
+- Building syntax analysis tools
+- Implementing custom AST processing
+- Creating specialized validation tools
+- Performance optimization required
+- Need fine-grained control over parsing stages
 
-```typescript
-function extractCommands(ast: CoreAst[], commandName: string): IAstCommand[] {
-    const commands: IAstCommand[] = [];
-
-    function extractFromNodes(nodes: CoreAst[]): void {
-        nodes.forEach(node => {
-            if (node.type === 'ast-command' && node.value === commandName) {
-                commands.push(node);
-            } else if (node.type === 'ast-container') {
-                extractFromNodes(node.subStructure);
-            }
-        });
-    }
-
-    extractFromNodes(ast);
-    return commands;
-}
-
-// Usage
-const astResult = astParser.parse(tokenizedDoc);
-if (astResult.success && astResult.value.type === 'RootAst') {
-    const headerCommands = extractCommands(astResult.value.ast, '#');
-    console.log(`Found ${headerCommands.length} header commands`);
-}
-```
-
-#### Performance Considerations ####
-
-- **Non-singleton**: Each parse operation gets a fresh parser instance
-- **Memory efficiency**: AST nodes maintain minimal required data
-- **Location tracking**: All nodes include precise location information
-- **Error propagation**: Parse errors include detailed location context
-- **Lazy evaluation**: Parsing stops at first structural error
-
-#### Dependencies ####
-
-AstParser requires these container dependencies:
-
-- **util**: Core utilities for Result types and location handling
-- **internals**: Internal parsing utilities and array parsers
-- **trimArray**: Array manipulation utilities for token consumption
-
-#### Related Components ####
-
-- **Tokenizer**: Provides input for AstParser (TokenizedDocument)
-- **DocumentParse**: Often consumes AstParser output for further processing
-- **AstProject**: Specialized parser for project-level AST structures
-- **AstDoculisp**: Specialized parser for Doculisp-specific AST structures
+**Use higher-level APIs when:**
+- Standard document compilation workflows
+- File-based processing with includes
+- Variable substitution required
+- Output generation needed
 
 ## AstDoculispParser API Reference ##
 
@@ -4895,193 +2486,422 @@ StringWriter requires these container dependencies:
 - **FileHandler**: Often consumes StringWriter output for final file writing
 - **IncludeBuilder**: Processes includes that StringWriter then merges into final output
 
-## Usage Examples ##
+## Usage Patterns and Examples ##
 
-### Basic Compilation Pipeline ###
+This section provides practical examples and common usage patterns for the DoculispTypeScript API, organized by use case and complexity level.
 
-Here's how to use the container to perform a complete document compilation:
+### Quick Start Examples ###
 
-```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
-
-// Get required services (container is async)
-const container = await containerPromise;
-const controller = container.buildAs<IController>('controller');
-const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-// Create paths
-const sourcePath = pathConstructor.buildPath('./input.dlisp');
-const outputPath = pathConstructor.buildPath('./output.md');
-
-// Compile the document
-const result = controller.compile(sourcePath, outputPath);
-
-if (result.success) {
-    console.log('Compilation successful:', result.value);
-} else {
-    console.error('Compilation failed:', result.message);
-}
-```
-
-### Parsing Text Manually ###
-
-To parse Doculisp text without file I/O:
+#### Basic Document Compilation ####
 
 ```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
+import { containerPromise } from 'doculisp/dist/moduleLoader';
 
-// Get parsing services (container is async)
-const container = await containerPromise;
-const tokenizer = container.buildAs<ITokenizer>('tokenizer');
-const astParser = container.buildAs<IAstParser>('astParser');
-const doculispParser = container.buildAs<IAstDoculispParser>('astDoculispParse');
-const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+async function compileDocument() {
+    const container = await containerPromise;
+    const controller = container.buildAs<IController>('controller');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-const sourcePath = pathConstructor.buildPath('./example.md');
-const input = '<!-- (dl section-meta This is a test document) -->\n\nHere is test markdown!';
+    // Compile a single document
+    const sourcePath = pathConstructor.buildPath('./docs/_main.dlisp');
+    const destinationPath = pathConstructor.buildPath('./README.md');
 
-// Step 1: Tokenize
-const tokens = tokenizer.tokenize(input, sourcePath);
-if (!tokens.success) {
-    console.error('Tokenization failed:', tokens.message);
-    return;
-}
+    const results = controller.compile(sourcePath, destinationPath);
 
-// Step 2: Parse to AST
-const ast = astParser.parse(tokens.value, sourcePath);
-if (!ast.success) {
-    console.error('AST parsing failed:', ast.message);
-    return;
-}
-
-// Step 3: Parse to Doculisp structures
-const doculisp = doculispParser.parse(ast.value, sourcePath);
-if (!doculisp.success) {
-    console.error('Doculisp parsing failed:', doculisp.message);
-    return;
-}
-
-console.log('Parsed successfully:', doculisp.value);
-```
-
-### Working with Variables ###
-
-The variable table in Doculisp has very limited functionality. It primarily manages:
-
-1. **System-generated string variables**: `source` and `destination` (set automatically)
-2. **ID variables**: For tracking header IDs and ensuring uniqueness
-
-```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
-
-// Get variable table (container is async)
-const container = await containerPromise;
-const variableTable = container.buildAs<IVariableTable>('variableTable');
-
-// Check for system variables (automatically set during compilation)
-const hasSource = variableTable.hasKey('source');
-const hasDestination = variableTable.hasKey('destination');
-
-if (hasSource) {
-    const sourceVar = variableTable.getValue<IVariableString>('source');
-    if (sourceVar.success) {
-        console.log('Source path:', sourceVar.value.value);
+    if (results[0].success) {
+        console.log('✅ Document compiled successfully');
+        console.log('📄 Output:', results[0].value);
+    } else {
+        console.error('❌ Compilation failed:', results[0].message);
     }
 }
-
-// The variable table is primarily used internally for ID tracking
-// Custom string variables are NOT supported - only system-generated ones
 ```
 
-### File Operations ###
-
-Working with files through the container:
+#### Project Batch Compilation ####
 
 ```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
+async function compileProject() {
+    const container = await containerPromise;
+    const controller = container.buildAs<IController>('controller');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-// Get file services (container is async)
-const container = await containerPromise;
-const fileHandler = container.buildAs<IFileWriter>('fileHandler');
-const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+    // Compile entire project (multiple documents)
+    const projectPath = pathConstructor.buildPath('./docs/docs.dlproj');
 
-const filePath = pathConstructor.buildPath('./example.md');
+    // Project files don't need destination - it's embedded in structure
+    const results = controller.compile(projectPath);
 
-// Check if file exists
-const exists = fileHandler.exists(filePath);
-if (exists.success && exists.value) {
-    // Read file contents
-    const content = fileHandler.read(filePath);
-    if (content.success) {
-        console.log('File content:', content.value);
-
-        // Process and write back
-        const processed = content.value.toUpperCase();
-        const writeResult = fileHandler.write(filePath, processed);
-
-        if (writeResult.success) {
-            console.log('File updated successfully');
+    console.log(`📁 Compiled ${results.length} documents:`);
+    results.forEach((result, index) => {
+        if (result.success) {
+            console.log(`  ✅ Document ${index + 1}: Success`);
+        } else {
+            console.error(`  ❌ Document ${index + 1}: ${result.message}`);
         }
-    }
-}
-```
-
-### Document Structure Analysis ###
-
-Analyzing document structure and relationships:
-
-```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
-
-// Get analysis services (container is async)
-const container = await containerPromise;
-const structure = container.buildAs<IStructure>('structure');
-const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
-
-const projectPath = pathConstructor.buildPath('./project.dlproj');
-
-// Analyze structure
-const analysis = structure.analyze(projectPath);
-if (analysis.success) {
-    console.log('Document structure:', analysis.value);
-
-    // Access individual documents
-    analysis.value.documents.forEach(doc => {
-        console.log(`Document: ${doc.name}`);
-        console.log(`Source: ${doc.sourcePath.fullName}`);
-        console.log(`Output: ${doc.outputPath.fullName}`);
     });
 }
 ```
 
-### String Generation ###
+### Pipeline Processing Examples ###
 
-Generating markdown output from parsed structures:
+#### Step-by-Step Pipeline Processing ####
 
 ```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
+async function processDocumentPipeline(filePath: string, content: string) {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const astParser = container.buildAs<IAstParser>('astParser');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-// Get string generation services (container is async)
-const container = await containerPromise;
-const stringWriter = container.buildAs<IStringWriter>('stringWriter');
-const variableTable = container.buildAs<IVariableTable>('variableTable');
+    const projectLocation = {
+        documentPath: pathConstructor.buildPath(filePath),
+        documentDepth: 1,
+        documentIndex: 1
+    };
 
-// Assume you have a parsed Doculisp structure
-const doculispStructure: DoculispPart[] = [
-    {
-        type: 'header',
-        level: 1,
-        text: 'Example Header',
-        id: 'example-header',
-        location: someLocation
+    // Stage 1: Document Parsing
+    console.log('🔍 Stage 1: Document Parsing');
+    const documentMap = documentParser(content, projectLocation);
+    if (!documentMap.success) {
+        console.error('Document parsing failed:', documentMap.message);
+        return;
     }
+    console.log(`  📄 Parsed ${documentMap.value.parts.length} document parts`);
+
+    // Stage 2: Tokenization
+    console.log('🔧 Stage 2: Tokenization');
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) {
+        console.error('Tokenization failed:', tokenizedResult.message);
+        return;
+    }
+    console.log(`  🎯 Generated ${tokenizedResult.value.tokens.length} tokens`);
+
+    // Stage 3: AST Generation
+    console.log('🌳 Stage 3: AST Generation');
+    const astResult = astParser.parse(tokenizedResult);
+    if (!astResult.success) {
+        console.error('AST parsing failed:', astResult.message);
+        return;
+    }
+
+    if (astResult.value.type === 'ast-root') {
+        console.log(`  📊 Generated AST with ${astResult.value.parts.length} parts`);
+    } else {
+        console.log('  📭 Empty AST generated');
+    }
+
+    return astResult.value;
+}
+```
+
+#### Content Analysis ####
+
+```typescript
+async function analyzeDoculispContent(files: string[]) {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+    const analysis = {
+        totalFiles: files.length,
+        filesByType: { md: 0, dlisp: 0, dlproj: 0 },
+        totalDoculispBlocks: 0,
+        mostCommonAtoms: {},
+        averageTokensPerFile: 0
+    };
+
+    for (const [index, filePath] of files.entries()) {
+        try {
+            const content = await fs.readFile(filePath, 'utf-8');
+            const documentPath = pathConstructor.buildPath(filePath);
+
+            // Track file types
+            const extension = documentPath.extension.slice(1);
+            if (extension in analysis.filesByType) {
+                analysis.filesByType[extension]++;
+            }
+
+            const projectLocation = {
+                documentPath,
+                documentDepth: 1,
+                documentIndex: index + 1
+            };
+
+            // Process through pipeline
+            const documentMap = documentParser(content, projectLocation);
+            if (!documentMap.success) continue;
+
+            const tokenizedResult = tokenizer(documentMap);
+            if (!tokenizedResult.success) continue;
+
+            // Analyze tokens
+            const tokens = tokenizedResult.value.tokens;
+            const doculispTokens = tokens.filter(t => t.type !== 'token - text');
+            analysis.totalDoculispBlocks += doculispTokens.length;
+
+            // Track atom frequency
+            tokens
+                .filter(t => t.type === 'token - atom')
+                .forEach(t => {
+                    analysis.mostCommonAtoms[t.text] =
+                        (analysis.mostCommonAtoms[t.text] || 0) + 1;
+                });
+
+        } catch (error) {
+            console.error(`Failed to process ${filePath}:`, error.message);
+        }
+    }
+
+    // Calculate averages
+    analysis.averageTokensPerFile = analysis.totalDoculispBlocks / analysis.totalFiles;
+
+    return analysis;
+}
+```
+
+### Advanced Usage Patterns ###
+
+#### Custom Container Integration ####
+
+```typescript
+async function customServiceIntegration() {
+    const container = await containerPromise;
+
+    // Register custom services
+    const customLogger = {
+        name: 'customLogger',
+        log: (level: string, message: string) => {
+            console.log(`[${level.toUpperCase()}] ${new Date().toISOString()}: ${message}`);
+        }
+    };
+
+    container.registerValue(customLogger);
+
+    // Register custom builder with dependencies
+    container.registerBuilder(
+        (logger: any, fileHandler: IFileWriter) => ({
+            name: 'auditService',
+            logFileOperation: (operation: string, path: string) => {
+                logger.log('info', `File ${operation}: ${path}`);
+            }
+        }),
+        ['customLogger', 'fileHandler'],
+        'auditService',
+        true // singleton
+    );
+
+    // Use custom service
+    const auditService = container.build('auditService');
+    auditService.logFileOperation('compile', './README.md');
+}
+```
+
+#### Error Handling Patterns ####
+
+```typescript
+async function robustCompilation(sourcePath: string, destinationPath?: string) {
+    try {
+        const container = await containerPromise;
+        const controller = container.buildAs<IController>('controller');
+        const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+        const source = pathConstructor.buildPath(sourcePath);
+        const destination = destinationPath ?
+            pathConstructor.buildPath(destinationPath) : undefined;
+
+        // Validate inputs
+        if (source.extension === '.dlproj' && destination) {
+            console.warn('Project files ignore destination path');
+        }
+
+        if (source.extension !== '.dlproj' && !destination) {
+            throw new Error('Destination path required for non-project files');
+        }
+
+        // Compile with comprehensive error handling
+        const results = controller.compile(source, destination);
+
+        for (const [index, result] of results.entries()) {
+            if (result.success) {
+                console.log(`✅ Document ${index + 1}: Compiled successfully`);
+            } else {
+                // Analyze error type
+                if (result.message.includes('Circular dependencies')) {
+                    console.error(`🔄 Circular dependency in document ${index + 1}`);
+                } else if (result.message.includes('parenthesis')) {
+                    console.error(`🔧 Syntax error in document ${index + 1}: Check parentheses`);
+                } else if (result.message.includes('file')) {
+                    console.error(`📁 File error in document ${index + 1}: Check paths`);
+                } else {
+                    console.error(`❌ Document ${index + 1}: ${result.message}`);
+                }
+            }
+        }
+
+        return results;
+
+    } catch (error) {
+        console.error('💥 Unexpected compilation error:', error.message);
+        return [];
+    }
+}
+```
+
+#### Testing Patterns ####
+
+```typescript
+import { jest } from '@jest/globals';
+
+async function setupTestEnvironment() {
+    const container = await containerPromise;
+
+    // For testing, use the testable container features
+    const testContainer = container as ITestableContainer;
+
+    // Create mock file handler
+    const mockFileHandler = {
+        name: 'fileHandler',
+        load: jest.fn(),
+        write: jest.fn(),
+        exists: jest.fn(),
+        getProcessWorkingDirectory: jest.fn(),
+        setProcessWorkingDirectory: jest.fn()
+    };
+
+    // Replace for testing
+    if (testContainer.supportsReplace()) {
+        testContainer.replaceValue(mockFileHandler, 'fileHandler');
+    }
+
+    return { container: testContainer, mockFileHandler };
+}
+
+async function testDocumentCompilation() {
+    const { container, mockFileHandler } = await setupTestEnvironment();
+
+    // Setup mocks
+    mockFileHandler.load.mockReturnValue({
+        success: true,
+        value: '(section-meta Test Document)'
+    });
+    mockFileHandler.write.mockReturnValue({ success: true, value: undefined });
+    mockFileHandler.exists.mockReturnValue({ success: true, value: true });
+
+    // Test compilation
+    const controller = container.buildAs<IController>('controller');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+    const sourcePath = pathConstructor.buildPath('./test.dlisp');
+    const destinationPath = pathConstructor.buildPath('./test.md');
+
+    const results = controller.compile(sourcePath, destinationPath);
+
+    expect(results[0].success).toBe(true);
+    expect(mockFileHandler.load).toHaveBeenCalledWith(sourcePath);
+    expect(mockFileHandler.write).toHaveBeenCalled();
+}
+```
+
+### Performance Optimization ###
+
+#### Batch Processing Optimization ####
+
+```typescript
+async function optimizedBatchProcessing(files: string[]) {
+    const container = await containerPromise;
+    const controller = container.buildAs<IController>('controller');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+    // Group files by type for optimized processing
+    const filesByType = files.reduce((acc, file) => {
+        const extension = path.extname(file);
+        (acc[extension] = acc[extension] || []).push(file);
+        return acc;
+    }, {} as Record<string, string[]>);
+
+    const results = [];
+
+    // Process project files first (most efficient for multiple docs)
+    if (filesByType['.dlproj']) {
+        for (const projectFile of filesByType['.dlproj']) {
+            const projectPath = pathConstructor.buildPath(projectFile);
+            const projectResults = controller.compile(projectPath);
+            results.push(...projectResults);
+        }
+    }
+
+    // Process .dlisp files (fastest individual processing)
+    if (filesByType['.dlisp']) {
+        for (const dlispFile of filesByType['.dlisp']) {
+            const sourcePath = pathConstructor.buildPath(dlispFile);
+            const destPath = pathConstructor.buildPath(dlispFile.replace('.dlisp', '.md'));
+            const result = controller.compile(sourcePath, destPath);
+            results.push(...result);
+        }
+    }
+
+    // Process .md files last (highest overhead)
+    if (filesByType['.md']) {
+        for (const mdFile of filesByType['.md']) {
+            const sourcePath = pathConstructor.buildPath(mdFile);
+            const destPath = pathConstructor.buildPath(mdFile.replace(/\.md$/, '_compiled.md'));
+            const result = controller.compile(sourcePath, destPath);
+            results.push(...result);
+        }
+    }
+
+    return results;
+}
+```
+
+#### Container Optimization ####
+
+```typescript
+class DoculispProcessor {
+    private container: any;
+    private controller: IController;
+    private pathConstructor: IPathConstructor;
+
+    async initialize() {
+        // Initialize once and reuse
+        this.container = await containerPromise;
+        this.controller = this.container.buildAs<IController>('controller');
+        this.pathConstructor = this.container.buildAs<IPathConstructor>('pathConstructor');
+    }
+
+    async compileFile(sourcePath: string, destinationPath?: string) {
+        // Reuse container instances for better performance
+        const source = this.pathConstructor.buildPath(sourcePath);
+        const destination = destinationPath ?
+            this.pathConstructor.buildPath(destinationPath) : undefined;
+
+        return this.controller.compile(source, destination);
+    }
+
+    async compileMultiple(files: Array<{source: string, destination?: string}>) {
+        const results = [];
+        for (const file of files) {
+            const result = await this.compileFile(file.source, file.destination);
+            results.push(...result);
+        }
+        return results;
+    }
+}
+
+// Usage
+const processor = new DoculispProcessor();
+await processor.initialize();
+
+// Efficient repeated processing
+const files = [
+    { source: './doc1.dlisp', destination: './doc1.md' },
+    { source: './doc2.dlisp', destination: './doc2.md' }
 ];
 
-// Generate markdown
-const markdown = stringWriter.write(doculispStructure, variableTable);
-if (markdown.success) {
-    console.log('Generated markdown:', markdown.value);
-}
+const results = await processor.compileMultiple(files);
 ```
 
 ## Testing Patterns ##
