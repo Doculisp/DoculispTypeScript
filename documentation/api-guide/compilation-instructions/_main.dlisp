@@ -1,8 +1,9 @@
 (section-meta 
     (title Detailed Compilation Instructions)
     (include
-        (DocumentParse ./document-parse.md)
+        (Subsection ./document-parse.md)
+        (Subsection ./tokenizer.md)
     )
 )
 
-(content)
+(content (toc numbered))
