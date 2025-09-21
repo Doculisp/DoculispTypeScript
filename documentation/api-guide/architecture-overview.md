@@ -169,6 +169,144 @@ FileHandler
 Final Markdown File
 ```
 
+<!-- (dl (## Language Server Architecture Considerations)) -->
+
+For language server implementations, the pipeline architecture can be adapted for real-time processing:
+
+<!-- (dl (### Partial Pipeline Processing)) -->
+
+Language servers can use partial pipeline processing for different features:
+
+```typescript
+// For syntax highlighting - use DocumentParse + Tokenizer only
+async function getSyntaxTokens(content: string, filePath: string) {
+    const documentMap = documentParser(content, projectLocation);
+    if (!documentMap.success) return [];
+    
+    const tokenizedResult = tokenizer(documentMap);
+    return tokenizedResult.success ? tokenizedResult.value.tokens : [];
+}
+
+// For validation - use DocumentParse + Tokenizer + AstParser
+async function validateSyntax(content: string, filePath: string) {
+    const documentMap = documentParser(content, projectLocation);
+    if (!documentMap.success) return [documentMap];
+    
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) return [tokenizedResult];
+    
+    const astResult = astParser.parse(tokenizedResult);
+    return astResult.success ? [] : [astResult];
+}
+
+// For semantic features - use full pipeline including AstDoculispParser
+async function getSemanticInfo(content: string, filePath: string) {
+    // Full pipeline for complete semantic analysis
+    const fullResult = await runFullPipeline(content, filePath);
+    return fullResult;
+}
+```
+
+<!-- (dl (### Container Lifecycle for Language Servers)) -->
+
+Language servers require different container lifecycle management. See [Container Lifecycle](common-patterns.md#container-lifecycle) for the full pattern.
+
+```typescript
+class DoculispLanguageServer {
+    private container: any;
+    private sharedComponents: SharedComponents;
+
+    async initialize() {
+        // Use [Standard Container Setup] - see common-patterns.md
+        this.container = await containerPromise;
+        
+        // Cache singleton components for performance
+        this.sharedComponents = {
+            documentParser: this.container.buildAs<DocumentParser>('documentParse'),
+            tokenizer: this.container.buildAs<TokenFunction>('tokenizer'),
+            astParser: this.container.buildAs<IAstParser>('astParser'),
+            pathConstructor: this.container.buildAs<IPathConstructor>('pathConstructor')
+        };
+    }
+
+    // Create document-specific context for each request
+    createDocumentContext(): DocumentContext {
+        return {
+            doculispParser: this.container.buildAs<IDoculispParser>('astDoculispParse'),
+            variableTable: this.container.buildAs<IVariableTable>('variableTable'),
+            // Non-singleton components get fresh instances
+        };
+    }
+}
+}
+```
+
+<!-- (dl (### Streaming vs Batch Processing)) -->
+
+Language servers benefit from streaming processing patterns:
+
+**Traditional Batch Processing:**
+```typescript
+// Compile entire project at once
+const results = controller.compile(projectPath);
+```
+
+**Language Server Streaming:**
+```typescript
+// Process individual documents on-demand
+async function processDocument(uri: string, content: string) {
+    const context = createDocumentContext();
+    return await processWithContext(content, uri, context);
+}
+
+// Incremental validation as user types
+async function validateIncremental(uri: string, content: string, changes: TextChange[]) {
+    // Only reprocess changed sections if possible
+    const affectedSections = analyzeChanges(changes);
+    return await validateSections(content, affectedSections);
+}
+```
+
+<!-- (dl (### Error Handling for Real-time Processing)) -->
+
+Language servers need enhanced error handling for user experience:
+
+```typescript
+interface LanguageServerError extends IFail {
+    severity: 'error' | 'warning' | 'info';
+    range: { start: Position; end: Position };
+    code?: string;
+    source: 'doculisp';
+}
+
+function convertToLanguageServerError(result: IFail, context?: string): LanguageServerError {
+    // Extract position information from error message
+    const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
+    
+    let range = { 
+        start: { line: 0, character: 0 }, 
+        end: { line: 0, character: 0 } 
+    };
+    
+    if (positionMatch) {
+        const line = parseInt(positionMatch[1]) - 1; // Convert to 0-based
+        const char = parseInt(positionMatch[2]) - 1;
+        range = {
+            start: { line, character: char },
+            end: { line, character: char + 1 }
+        };
+    }
+
+    return {
+        ...result,
+        severity: determineSeverity(result.message),
+        range,
+        code: extractErrorCode(result.message),
+        source: 'doculisp'
+    };
+}
+```
+
 <!-- (dl (## Performance Characteristics)) -->
 
 <!-- (dl (### Pipeline Efficiency)) -->
@@ -176,6 +314,7 @@ Final Markdown File
 - **Project files**: Highest overhead (multiple document processing) but efficient for batch operations
 - **Doculisp files**: Fastest parsing (no HTML extraction) with moderate include overhead
 - **Markdown files**: Moderate parsing overhead (dual extraction) with full feature support
+- **Language server processing**: Optimized for partial pipeline usage and incremental updates
 
 <!-- (dl (### Memory Management)) -->
 
@@ -183,3 +322,4 @@ Final Markdown File
 - Include processing loads files on-demand rather than pre-loading
 - Variable tables use copy-on-write for efficient child scope management
 - Most container objects are singletons - created once and reused
+- **Language servers**: Benefit from component caching and document-specific contexts

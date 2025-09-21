@@ -12,6 +12,7 @@
         (Core-APIs ./core-pipeline-apis.md)
         (Semantic-Processing ./compilation-instructions/ast-doculisp-parser.md)
         (Output-Generation ./compilation-instructions/string-writer.md)
+        (Language-Server-Integration ./language-server-integration.md)
         (Usage-Patterns ./usage-patterns.md)
         (Testing ./testing-patterns.md)
         (Advanced ./advanced-usage.md)

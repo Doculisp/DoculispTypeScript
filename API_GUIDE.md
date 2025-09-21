@@ -20,6 +20,7 @@
 * [Core Pipeline APIs](#core-pipeline-apis)
 * [AstDoculispParser API Reference](#astdoculispparser-api-reference)
 * [StringWriter API Reference](#stringwriter-api-reference)
+* [Language Server Integration](#language-server-integration)
 * [Usage Patterns and Examples](#usage-patterns-and-examples)
 * [Testing Patterns](#testing-patterns)
 * [Advanced Usage](#advanced-usage)
@@ -427,6 +428,144 @@ FileHandler
 Final Markdown File
 ```
 
+#### Language Server Architecture Considerations ####
+
+For language server implementations, the pipeline architecture can be adapted for real-time processing:
+
+##### Partial Pipeline Processing #####
+
+Language servers can use partial pipeline processing for different features:
+
+```typescript
+// For syntax highlighting - use DocumentParse + Tokenizer only
+async function getSyntaxTokens(content: string, filePath: string) {
+    const documentMap = documentParser(content, projectLocation);
+    if (!documentMap.success) return [];
+
+    const tokenizedResult = tokenizer(documentMap);
+    return tokenizedResult.success ? tokenizedResult.value.tokens : [];
+}
+
+// For validation - use DocumentParse + Tokenizer + AstParser
+async function validateSyntax(content: string, filePath: string) {
+    const documentMap = documentParser(content, projectLocation);
+    if (!documentMap.success) return [documentMap];
+
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) return [tokenizedResult];
+
+    const astResult = astParser.parse(tokenizedResult);
+    return astResult.success ? [] : [astResult];
+}
+
+// For semantic features - use full pipeline including AstDoculispParser
+async function getSemanticInfo(content: string, filePath: string) {
+    // Full pipeline for complete semantic analysis
+    const fullResult = await runFullPipeline(content, filePath);
+    return fullResult;
+}
+```
+
+##### Container Lifecycle for Language Servers #####
+
+Language servers require different container lifecycle management. See [Container Lifecycle](common-patterns.md#container-lifecycle) for the full pattern.
+
+```typescript
+class DoculispLanguageServer {
+    private container: any;
+    private sharedComponents: SharedComponents;
+
+    async initialize() {
+        // Use [Standard Container Setup] - see common-patterns.md
+        this.container = await containerPromise;
+
+        // Cache singleton components for performance
+        this.sharedComponents = {
+            documentParser: this.container.buildAs<DocumentParser>('documentParse'),
+            tokenizer: this.container.buildAs<TokenFunction>('tokenizer'),
+            astParser: this.container.buildAs<IAstParser>('astParser'),
+            pathConstructor: this.container.buildAs<IPathConstructor>('pathConstructor')
+        };
+    }
+
+    // Create document-specific context for each request
+    createDocumentContext(): DocumentContext {
+        return {
+            doculispParser: this.container.buildAs<IDoculispParser>('astDoculispParse'),
+            variableTable: this.container.buildAs<IVariableTable>('variableTable'),
+            // Non-singleton components get fresh instances
+        };
+    }
+}
+}
+```
+
+##### Streaming vs Batch Processing #####
+
+Language servers benefit from streaming processing patterns:
+
+**Traditional Batch Processing:**
+```typescript
+// Compile entire project at once
+const results = controller.compile(projectPath);
+```
+
+**Language Server Streaming:**
+```typescript
+// Process individual documents on-demand
+async function processDocument(uri: string, content: string) {
+    const context = createDocumentContext();
+    return await processWithContext(content, uri, context);
+}
+
+// Incremental validation as user types
+async function validateIncremental(uri: string, content: string, changes: TextChange[]) {
+    // Only reprocess changed sections if possible
+    const affectedSections = analyzeChanges(changes);
+    return await validateSections(content, affectedSections);
+}
+```
+
+##### Error Handling for Real-time Processing #####
+
+Language servers need enhanced error handling for user experience:
+
+```typescript
+interface LanguageServerError extends IFail {
+    severity: 'error' | 'warning' | 'info';
+    range: { start: Position; end: Position };
+    code?: string;
+    source: 'doculisp';
+}
+
+function convertToLanguageServerError(result: IFail, context?: string): LanguageServerError {
+    // Extract position information from error message
+    const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
+
+    let range = {
+        start: { line: 0, character: 0 },
+        end: { line: 0, character: 0 }
+    };
+
+    if (positionMatch) {
+        const line = parseInt(positionMatch[1]) - 1; // Convert to 0-based
+        const char = parseInt(positionMatch[2]) - 1;
+        range = {
+            start: { line, character: char },
+            end: { line, character: char + 1 }
+        };
+    }
+
+    return {
+        ...result,
+        severity: determineSeverity(result.message),
+        range,
+        code: extractErrorCode(result.message),
+        source: 'doculisp'
+    };
+}
+```
+
 #### Performance Characteristics ####
 
 ##### Pipeline Efficiency #####
@@ -434,6 +573,7 @@ Final Markdown File
 - **Project files**: Highest overhead (multiple document processing) but efficient for batch operations
 - **Doculisp files**: Fastest parsing (no HTML extraction) with moderate include overhead
 - **Markdown files**: Moderate parsing overhead (dual extraction) with full feature support
+- **Language server processing**: Optimized for partial pipeline usage and incremental updates
 
 ##### Memory Management #####
 
@@ -441,6 +581,7 @@ Final Markdown File
 - Include processing loads files on-demand rather than pre-loading
 - Variable tables use copy-on-write for efficient child scope management
 - Most container objects are singletons - created once and reused
+- **Language servers**: Benefit from component caching and document-specific contexts
 
 ## Core Objects Reference ##
 
@@ -902,10 +1043,12 @@ DocumentParse uses different strategies based on file type:
 
 ```typescript
 async function parseDocument() {
+    // Use [Standard Container Setup] - see common-patterns.md
     const container = await containerPromise;
     const documentParser = container.buildAs<DocumentParser>('documentParse');
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
+    // Use [Standard Project Location] - see common-patterns.md
     const projectLocation = {
         documentPath: pathConstructor.buildPath('./example.md'),
         documentDepth: 1,
@@ -1005,6 +1148,7 @@ type CloseParenthesisToken = {
 
 ```typescript
 async function tokenizeDocument() {
+    // Use [Standard Container Setup] and [Standard Project Location] - see common-patterns.md
     const container = await containerPromise;
     const documentParser = container.buildAs<DocumentParser>('documentParse');
     const tokenizer = container.buildAs<TokenFunction>('tokenizer');
@@ -1109,12 +1253,13 @@ The AstParser processes tokens through several stages:
 
 ```typescript
 async function parseToAst() {
+    // Use [Standard Container Setup] - see common-patterns.md
     const container = await containerPromise;
     const documentParser = container.buildAs<DocumentParser>('documentParse');
     const tokenizer = container.buildAs<TokenFunction>('tokenizer');
     const astParser = container.buildAs<IAstParser>('astParser');
 
-    // Complete pipeline: DocumentParse → Tokenizer → AstParser
+    // Use [Standard Pipeline Processing] - see common-patterns.md
     const documentMap = documentParser(content, projectLocation);
     if (!documentMap.success) return;
 
@@ -1155,6 +1300,251 @@ if (!ast.success) {
 }
 ```
 
+### Language Server Specific Patterns ###
+
+The core pipeline APIs are particularly useful for language server development scenarios:
+
+#### Position-Based Token Analysis ####
+
+Extract tokens at specific cursor positions for IntelliSense and hover features:
+
+```typescript
+async function getTokensAtPosition(
+    document: string,
+    line: number,
+    character: number,
+    filePath: string
+): Promise<Token[]> {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+    const projectLocation = {
+        documentPath: pathConstructor.buildPath(filePath),
+        documentDepth: 1,
+        documentIndex: 1
+    };
+
+    // Parse and tokenize
+    const documentMap = documentParser(document, projectLocation);
+    if (!documentMap.success) return [];
+
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) return [];
+
+    // Filter tokens at the specific position
+    return tokenizedResult.value.tokens.filter(token => {
+        const tokenEnd = token.location.char + (token.text?.length || 0);
+        return token.location.line === line &&
+               token.location.char <= character &&
+               character <= tokenEnd;
+    });
+}
+```
+
+#### Syntax Highlighting Support ####
+
+Extract token information for syntax highlighting:
+
+```typescript
+async function getSyntaxTokens(document: string, filePath: string): Promise<SyntaxToken[]> {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+    const projectLocation = {
+        documentPath: pathConstructor.buildPath(filePath),
+        documentDepth: 1,
+        documentIndex: 1
+    };
+
+    const documentMap = documentParser(document, projectLocation);
+    if (!documentMap.success) return [];
+
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) return [];
+
+    return tokenizedResult.value.tokens.map(token => ({
+        type: mapTokenTypeToSyntaxHighlight(token.type),
+        range: {
+            start: { line: token.location.line - 1, character: token.location.char - 1 },
+            end: {
+                line: token.location.line - 1,
+                character: token.location.char - 1 + (token.text?.length || 0)
+            }
+        },
+        text: token.text || ''
+    }));
+}
+
+function mapTokenTypeToSyntaxHighlight(tokenType: string): string {
+    switch (tokenType) {
+        case 'token - atom': return 'keyword';
+        case 'token - parameter': return 'string';
+        case 'token - text': return 'comment';
+        case 'token - close parenthesis': return 'delimiter';
+        default: return 'text';
+    }
+}
+
+interface SyntaxToken {
+    type: string;
+    range: { start: { line: number; character: number }, end: { line: number; character: number } };
+    text: string;
+}
+```
+
+#### Real-time Error Detection ####
+
+Use the pipeline for incremental validation without full compilation:
+
+```typescript
+async function validateSyntaxOnly(document: string, filePath: string): Promise<ValidationError[]> {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const astParser = container.buildAs<IAstParser>('astParser');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+    const projectLocation = {
+        documentPath: pathConstructor.buildPath(filePath),
+        documentDepth: 1,
+        documentIndex: 1
+    };
+
+    const errors: ValidationError[] = [];
+
+    // Stage 1: Document structure validation
+    const documentMap = documentParser(document, projectLocation);
+    if (!documentMap.success) {
+        errors.push(createValidationError(documentMap, 'Document structure error'));
+        return errors; // Stop on document parse errors
+    }
+
+    // Stage 2: Token validation
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) {
+        errors.push(createValidationError(tokenizedResult, 'Tokenization error'));
+        return errors; // Stop on tokenization errors
+    }
+
+    // Stage 3: Syntax validation
+    const astResult = astParser.parse(tokenizedResult);
+    if (!astResult.success) {
+        errors.push(createValidationError(astResult, 'Syntax error'));
+    }
+
+    return errors;
+}
+
+function createValidationError(result: IFail, context: string): ValidationError {
+    // Extract line/character from error message if available
+    const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
+
+    let line = 0, character = 0;
+    if (positionMatch) {
+        line = parseInt(positionMatch[1]) - 1; // Convert to 0-based
+        character = parseInt(positionMatch[2]) - 1; // Convert to 0-based
+    }
+
+    return {
+        message: `${context}: ${result.message}`,
+        severity: 'error',
+        range: {
+            start: { line, character },
+            end: { line, character: character + 1 }
+        },
+        source: 'doculisp'
+    };
+}
+
+interface ValidationError {
+    message: string;
+    severity: 'error' | 'warning' | 'info';
+    range: { start: { line: number; character: number }, end: { line: number; character: number } };
+    source: string;
+}
+```
+
+#### AST Analysis for Code Intelligence ####
+
+Use AST analysis for advanced language features:
+
+```typescript
+async function analyzeDocumentStructure(document: string, filePath: string): Promise<DocumentAnalysis> {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const astParser = container.buildAs<IAstParser>('astParser');
+    const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+    const projectLocation = {
+        documentPath: pathConstructor.buildPath(filePath),
+        documentDepth: 1,
+        documentIndex: 1
+    };
+
+    // Full pipeline to AST
+    const documentMap = documentParser(document, projectLocation);
+    if (!documentMap.success) return { structure: [], errors: [documentMap] };
+
+    const tokenizedResult = tokenizer(documentMap);
+    if (!tokenizedResult.success) return { structure: [], errors: [tokenizedResult] };
+
+    const astResult = astParser.parse(tokenizedResult);
+    if (!astResult.success) return { structure: [], errors: [astResult] };
+
+    if (astResult.value.type === 'ast-empty') {
+        return { structure: [], errors: [] };
+    }
+
+    // Analyze AST structure
+    const analysis = analyzeASTNodes(astResult.value.parts);
+    return { structure: analysis, errors: [] };
+}
+
+function analyzeASTNodes(astParts: AstPart[]): StructureElement[] {
+    const elements: StructureElement[] = [];
+
+    for (const part of astParts) {
+        if (part.type === 'ast-expression') {
+            elements.push({
+                type: 'expression',
+                atom: part.atom,
+                parameters: part.parameters,
+                location: part.location,
+                children: analyzeASTNodes(part.parts)
+            });
+        } else if (part.type === 'ast-text') {
+            elements.push({
+                type: 'text',
+                content: part.text,
+                location: part.location,
+                children: []
+            });
+        }
+    }
+
+    return elements;
+}
+
+interface DocumentAnalysis {
+    structure: StructureElement[];
+    errors: IFail[];
+}
+
+interface StructureElement {
+    type: 'expression' | 'text';
+    atom?: string;
+    parameters?: string[];
+    content?: string;
+    location: ILocation;
+    children: StructureElement[];
+}
+```
+
 #### When to Use These APIs ####
 
 **Use these APIs directly when:**
@@ -1163,6 +1553,9 @@ if (!ast.success) {
 - Creating specialized validation tools
 - Performance optimization required
 - Need fine-grained control over parsing stages
+- **Building language servers and IDE extensions**
+- **Implementing real-time validation and error reporting**
+- **Creating syntax highlighting and IntelliSense features**
 
 **Use higher-level APIs when:**
 - Standard document compilation workflows
@@ -2486,9 +2879,193 @@ StringWriter requires these container dependencies:
 - **FileHandler**: Often consumes StringWriter output for final file writing
 - **IncludeBuilder**: Processes includes that StringWriter then merges into final output
 
+## Language Server Integration ##
+
+This section provides focused guidance for building language servers that integrate with DoculispTypeScript. It emphasizes the key differences from batch compilation and provides essential patterns.
+
+### Key Integration Principles ###
+
+Language servers require different patterns than batch compilation:
+
+- **Partial pipeline processing** for different features
+- **Position-aware parsing** for cursor-based functionality
+- **Incremental validation** without full compilation
+- **Caching and performance** optimization for real-time use
+
+### Essential Language Server APIs ###
+
+#### Real-time Validation ####
+
+Use [Standard Pipeline Processing](../common-patterns.md#standard-pipeline-processing) with early termination:
+
+```typescript
+async function validateSyntax(content: string, uri: string): Promise<ValidationError[]> {
+    // See [Standard Container Setup] and [Standard Project Location]
+    // Use [Standard Pipeline Processing] but return errors at each stage
+
+    const errors: ValidationError[] = [];
+
+    // Stop at AST stage for syntax validation - don't need full semantic processing
+    if (!astResult.success) {
+        errors.push(convertToLanguageServerError(astResult));
+    }
+
+    return errors; // See [Common Interfaces] for ValidationError
+}
+```
+
+#### Position-Based Features ####
+
+Extract tokens at cursor positions for IntelliSense:
+
+```typescript
+async function getTokensAtPosition(content: string, line: number, char: number, uri: string): Promise<Token[]> {
+    // Use [Standard Container Setup] and [Standard Pipeline Processing] to tokenizer stage
+
+    return tokenizedResult.value.tokens.filter(token => {
+        const tokenEnd = token.location.char + (token.text?.length || 0);
+        return token.location.line === line &&
+               token.location.char <= char &&
+               char <= tokenEnd;
+    });
+}
+```
+
+#### Completion Provider ####
+
+Context-aware completion using pipeline analysis:
+
+```typescript
+class DoculispCompletionProvider {
+    private readonly CORE_ATOMS = [
+        'section-meta', 'title', 'include', 'content', 'toc', 'get-path',
+        '#', '##', '###', '####', '#####', '######'
+    ];
+
+    async getCompletions(content: string, position: Position, uri: string): Promise<CompletionItem[]> {
+        // Use [Standard Pipeline Processing] to analyze context
+        const context = this.analyzeContext(tokenizedResult.value.tokens, position);
+
+        switch (context.type) {
+            case 'atom': return this.CORE_ATOMS.map(atom => ({ label: atom, kind: 'Function' }));
+            case 'toc-style': return this.getTocStyleCompletions();
+            case 'file-path': return this.getFileCompletions(uri);
+            default: return [];
+        }
+    }
+
+    // See [Common Interfaces] for CompletionItem
+}
+```
+
+#### Document Symbols ####
+
+Generate document outline using full semantic analysis:
+
+```typescript
+async function getDocumentSymbols(content: string, uri: string): Promise<DocumentSymbol[]> {
+    // Use full pipeline including AstDoculispParser for semantic information
+    const doculispParser = container.buildAs<IDoculispParser>('astDoculispParse');
+    const variableTable = container.buildAs<IVariableTable>('variableTable');
+
+    const doculispResult = doculispParser.parse(astResult, variableTable);
+    if (!doculispResult.success || doculispResult.value.type === 'doculisp-empty') return [];
+
+    return extractSymbols(doculispResult.value); // See [Common Interfaces] for DocumentSymbol
+}
+```
+
+### Performance Patterns ###
+
+#### Container Lifecycle ####
+
+For long-running language servers, cache singleton components:
+
+```typescript
+class DoculispLanguageServer {
+    private sharedComponents: SharedComponents;
+
+    async initialize() {
+        const container = await containerPromise;
+
+        // Cache singletons for performance
+        this.sharedComponents = {
+            documentParser: container.buildAs<DocumentParser>('documentParse'),
+            tokenizer: container.buildAs<TokenFunction>('tokenizer'),
+            astParser: container.buildAs<IAstParser>('astParser'),
+            pathConstructor: container.buildAs<IPathConstructor>('pathConstructor')
+        };
+    }
+
+    // Create fresh instances for non-singletons per request
+    createDocumentContext() {
+        return {
+            doculispParser: this.container.buildAs<IDoculispParser>('astDoculispParse'),
+            variableTable: this.container.buildAs<IVariableTable>('variableTable')
+        };
+    }
+}
+```
+
+#### Debounced Validation ####
+
+Implement debouncing for real-time feedback:
+
+```typescript
+class DebouncedValidator {
+    private timeouts = new Map<string, NodeJS.Timeout>();
+    private readonly DEBOUNCE_DELAY = 300;
+
+    validateWithDebounce(uri: string, content: string, callback: (errors: ValidationError[]) => void) {
+        const existingTimeout = this.timeouts.get(uri);
+        if (existingTimeout) clearTimeout(existingTimeout);
+
+        const timeout = setTimeout(async () => {
+            const errors = await validateSyntax(content, uri); // See above
+            callback(errors);
+            this.timeouts.delete(uri);
+        }, this.DEBOUNCE_DELAY);
+
+        this.timeouts.set(uri, timeout);
+    }
+}
+```
+
+### Advanced Integration ###
+
+#### Working Directory Management ####
+
+Handle include resolution correctly:
+
+```typescript
+async function processWithWorkingDirectory<T>(filePath: string, operation: () => Promise<T>): Promise<T> {
+    const fileHandler = container.buildAs<IFileWriter>('fileHandler');
+    const path = pathConstructor.buildPath(filePath);
+
+    const originalDir = fileHandler.getProcessWorkingDirectory();
+    const targetDir = path.getContainingDir();
+
+    try {
+        fileHandler.setProcessWorkingDirectory(targetDir);
+        return await operation();
+    } finally {
+        if (originalDir.success) {
+            fileHandler.setProcessWorkingDirectory(originalDir.value);
+        }
+    }
+}
+```
+
+For complete implementation examples, see:
+- **Core Pipeline APIs**: Position-aware parsing details
+- **Usage Patterns**: Full class implementations
+- **Common Patterns**: Reusable code blocks and interfaces
+
 ## Usage Patterns and Examples ##
 
 This section provides practical examples and common usage patterns for the DoculispTypeScript API, organized by use case and complexity level.
+
+**Note:** All examples use standard setup patterns. See [Common Patterns](common-patterns.md) for reusable code blocks including container setup, project location creation, and pipeline processing.
 
 ### Quick Start Examples ###
 
@@ -2498,6 +3075,7 @@ This section provides practical examples and common usage patterns for the Docul
 import { containerPromise } from 'doculisp/dist/moduleLoader';
 
 async function compileDocument() {
+    // Use [Standard Container Setup] - see common-patterns.md
     const container = await containerPromise;
     const controller = container.buildAs<IController>('controller');
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
@@ -2521,6 +3099,7 @@ async function compileDocument() {
 
 ```typescript
 async function compileProject() {
+    // Use [Standard Container Setup] - see common-patterns.md
     const container = await containerPromise;
     const controller = container.buildAs<IController>('controller');
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
@@ -2539,6 +3118,414 @@ async function compileProject() {
             console.error(`  ❌ Document ${index + 1}: ${result.message}`);
         }
     });
+}
+}
+```
+
+### Language Server Examples ###
+
+#### Real-time Validation ####
+
+```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+
+class DoculispValidator {
+    private container: any;
+    private documentParser: DocumentParser;
+    private tokenizer: TokenFunction;
+    private astParser: IAstParser;
+    private pathConstructor: IPathConstructor;
+
+    async initialize() {
+        // Use [Standard Container Setup] - see common-patterns.md
+        this.container = await containerPromise;
+        this.documentParser = this.container.buildAs<DocumentParser>('documentParse');
+        this.tokenizer = this.container.buildAs<TokenFunction>('tokenizer');
+        this.astParser = this.container.buildAs<IAstParser>('astParser');
+        this.pathConstructor = this.container.buildAs<IPathConstructor>('pathConstructor');
+    }
+
+    async validateDocument(content: string, uri: string): Promise<Diagnostic[]> {
+        // Use [Standard Project Location] - see common-patterns.md
+        const projectLocation = {
+            documentPath: this.pathConstructor.buildPath(uri),
+            documentDepth: 1,
+            documentIndex: 1
+        };
+
+        const diagnostics: Diagnostic[] = [];
+
+        // Stage 1: Document structure validation
+        const documentMap = this.documentParser(content, projectLocation);
+        if (!documentMap.success) {
+            diagnostics.push(this.createDiagnostic(documentMap, 'error'));
+            return diagnostics;
+        }
+
+        // Stage 2: Token validation
+        const tokenizedResult = this.tokenizer(documentMap);
+        if (!tokenizedResult.success) {
+            diagnostics.push(this.createDiagnostic(tokenizedResult, 'error'));
+            return diagnostics;
+        }
+
+        // Stage 3: AST syntax validation
+        const astResult = this.astParser.parse(tokenizedResult);
+        if (!astResult.success) {
+            diagnostics.push(this.createDiagnostic(astResult, 'error'));
+        }
+
+        return diagnostics;
+    }
+
+    private createDiagnostic(result: IFail, severity: 'error' | 'warning' | 'info'): Diagnostic {
+        const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
+
+        let range = {
+            start: { line: 0, character: 0 },
+            end: { line: 0, character: 0 }
+        };
+
+        if (positionMatch) {
+            const line = parseInt(positionMatch[1]) - 1;
+            const char = parseInt(positionMatch[2]) - 1;
+            range = {
+                start: { line, character: char },
+                end: { line, character: char + 1 }
+            };
+        }
+
+        return {
+            severity,
+            range,
+            message: result.message,
+            source: 'doculisp'
+        };
+    }
+}
+
+interface Diagnostic {
+    severity: 'error' | 'warning' | 'info';
+    range: { start: { line: number; character: number }, end: { line: number; character: number } };
+    message: string;
+    source: string;
+}
+```
+
+#### Syntax Highlighting Support ####
+
+```typescript
+class DoculispSyntaxHighlighter {
+    private container: any;
+    private documentParser: DocumentParser;
+    private tokenizer: TokenFunction;
+    private pathConstructor: IPathConstructor;
+
+    async initialize() {
+        this.container = await containerPromise;
+        this.documentParser = this.container.buildAs<DocumentParser>('documentParse');
+        this.tokenizer = this.container.buildAs<TokenFunction>('tokenizer');
+        this.pathConstructor = this.container.buildAs<IPathConstructor>('pathConstructor');
+    }
+
+    async getSemanticTokens(content: string, uri: string): Promise<SemanticToken[]> {
+        const projectLocation = {
+            documentPath: this.pathConstructor.buildPath(uri),
+            documentDepth: 1,
+            documentIndex: 1
+        };
+
+        const documentMap = this.documentParser(content, projectLocation);
+        if (!documentMap.success) return [];
+
+        const tokenizedResult = this.tokenizer(documentMap);
+        if (!tokenizedResult.success) return [];
+
+        return tokenizedResult.value.tokens.map(token => ({
+            line: token.location.line - 1, // Convert to 0-based
+            startCharacter: token.location.char - 1,
+            length: token.text?.length || 0,
+            tokenType: this.mapTokenType(token.type),
+            tokenModifiers: []
+        }));
+    }
+
+    private mapTokenType(tokenType: string): number {
+        // Map to Language Server Protocol semantic token types
+        switch (tokenType) {
+            case 'token - atom': return 0; // keyword
+            case 'token - parameter': return 1; // string
+            case 'token - text': return 2; // comment
+            case 'token - close parenthesis': return 3; // operator
+            default: return 4; // other
+        }
+    }
+}
+
+interface SemanticToken {
+    line: number;
+    startCharacter: number;
+    length: number;
+    tokenType: number;
+    tokenModifiers: number[];
+}
+```
+
+#### IntelliSense Provider ####
+
+```typescript
+class DoculispCompletionProvider {
+    private container: any;
+    private documentParser: DocumentParser;
+    private tokenizer: TokenFunction;
+    private pathConstructor: IPathConstructor;
+
+    private readonly CORE_ATOMS = [
+        'section-meta', 'title', 'subtitle', 'author', 'id', 'ref-link', 'include',
+        'content', 'toc', 'label', 'style', 'get-path',
+        '#', '##', '###', '####', '#####', '######'
+    ];
+
+    private readonly TOC_STYLES = [
+        'no-table', 'unlabeled', 'labeled', 'numbered',
+        'numbered-labeled', 'bulleted', 'bulleted-labeled'
+    ];
+
+    async initialize() {
+        this.container = await containerPromise;
+        this.documentParser = this.container.buildAs<DocumentParser>('documentParse');
+        this.tokenizer = this.container.buildAs<TokenFunction>('tokenizer');
+        this.pathConstructor = this.container.buildAs<IPathConstructor>('pathConstructor');
+    }
+
+    async getCompletionItems(
+        content: string,
+        position: { line: number; character: number },
+        uri: string
+    ): Promise<CompletionItem[]> {
+        const projectLocation = {
+            documentPath: this.pathConstructor.buildPath(uri),
+            documentDepth: 1,
+            documentIndex: 1
+        };
+
+        const documentMap = this.documentParser(content, projectLocation);
+        if (!documentMap.success) return [];
+
+        const tokenizedResult = this.tokenizer(documentMap);
+        if (!tokenizedResult.success) return [];
+
+        const context = this.analyzeCompletionContext(tokenizedResult.value.tokens, position);
+
+        switch (context.type) {
+            case 'atom':
+                return this.CORE_ATOMS.map(atom => ({
+                    label: atom,
+                    kind: 'Function',
+                    documentation: this.getAtomDocumentation(atom),
+                    insertText: atom
+                }));
+
+            case 'toc-style':
+                return this.TOC_STYLES.map(style => ({
+                    label: style,
+                    kind: 'Value',
+                    documentation: this.getTocStyleDocumentation(style),
+                    insertText: style
+                }));
+
+            case 'file-path':
+                return this.getFilePathCompletions(uri);
+
+            default:
+                return [];
+        }
+    }
+
+    private analyzeCompletionContext(
+        tokens: Token[],
+        position: { line: number; character: number }
+    ): CompletionContext {
+        const line = position.line + 1; // Convert to 1-based
+        const char = position.character + 1;
+
+        const tokensAtPosition = tokens.filter(token =>
+            token.location.line === line &&
+            token.location.char <= char &&
+            char <= token.location.char + (token.text?.length || 0)
+        );
+
+        if (tokensAtPosition.length === 0) {
+            return { type: 'atom' };
+        }
+
+        // Analyze surrounding context
+        const tokenIndex = tokens.findIndex(t => tokensAtPosition.includes(t));
+        const previousTokens = tokens.slice(Math.max(0, tokenIndex - 3), tokenIndex);
+
+        if (previousTokens.some(t => t.type === 'token - atom' && t.text === 'style')) {
+            return { type: 'toc-style' };
+        }
+
+        if (previousTokens.some(t => t.type === 'token - atom' && t.text?.match(/^[A-Z]/))) {
+            return { type: 'file-path' };
+        }
+
+        return { type: 'atom' };
+    }
+
+    private getAtomDocumentation(atom: string): string {
+        const docs = {
+            'section-meta': 'Define document metadata including title, author, and includes',
+            'title': 'Set the document title',
+            'include': 'Include external Doculisp files',
+            'toc': 'Generate table of contents',
+            '#': 'Create a dynamic header at the current nesting level',
+            'get-path': 'Create cross-reference to another document section'
+        };
+        return docs[atom] || `Doculisp atom: ${atom}`;
+    }
+
+    private getTocStyleDocumentation(style: string): string {
+        const docs = {
+            'numbered-labeled': 'Numbered list with section labels',
+            'bulleted-labeled': 'Bulleted list with section labels',
+            'labeled': 'Section labels only',
+            'numbered': 'Numbers only',
+            'no-table': 'No table of contents'
+        };
+        return docs[style] || `TOC style: ${style}`;
+    }
+
+    private getFilePathCompletions(currentUri: string): CompletionItem[] {
+        // Implementation would scan filesystem for .md and .dlisp files
+        return [
+            { label: './readme.md', kind: 'File', insertText: './readme.md' },
+            { label: './getting-started.md', kind: 'File', insertText: './getting-started.md' }
+        ];
+    }
+}
+
+interface CompletionItem {
+    label: string;
+    kind: string;
+    documentation?: string;
+    insertText: string;
+}
+
+interface CompletionContext {
+    type: 'atom' | 'toc-style' | 'file-path';
+}
+```
+
+#### Document Symbol Provider ####
+
+```typescript
+class DoculispSymbolProvider {
+    private container: any;
+    private documentParser: DocumentParser;
+    private tokenizer: TokenFunction;
+    private astParser: IAstParser;
+    private doculispParser: IDoculispParser;
+    private pathConstructor: IPathConstructor;
+
+    async initialize() {
+        this.container = await containerPromise;
+        this.documentParser = this.container.buildAs<DocumentParser>('documentParse');
+        this.tokenizer = this.container.buildAs<TokenFunction>('tokenizer');
+        this.astParser = this.container.buildAs<IAstParser>('astParser');
+        this.pathConstructor = this.container.buildAs<IPathConstructor>('pathConstructor');
+    }
+
+    async getDocumentSymbols(content: string, uri: string): Promise<DocumentSymbol[]> {
+        const doculispParser = this.container.buildAs<IDoculispParser>('astDoculispParse');
+        const variableTable = this.container.buildAs<IVariableTable>('variableTable');
+
+        const projectLocation = {
+            documentPath: this.pathConstructor.buildPath(uri),
+            documentDepth: 1,
+            documentIndex: 1
+        };
+
+        // Full parsing pipeline for semantic analysis
+        const documentMap = this.documentParser(content, projectLocation);
+        if (!documentMap.success) return [];
+
+        const tokenizedResult = this.tokenizer(documentMap);
+        if (!tokenizedResult.success) return [];
+
+        const astResult = this.astParser.parse(tokenizedResult);
+        if (!astResult.success) return [];
+
+        const doculispResult = doculispParser.parse(astResult, variableTable);
+        if (!doculispResult.success || doculispResult.value.type === 'doculisp-empty') return [];
+
+        return this.generateDocumentSymbols(doculispResult.value);
+    }
+
+    private generateDocumentSymbols(doculisp: IDoculisp): DocumentSymbol[] {
+        const symbols: DocumentSymbol[] = [];
+
+        // Add title as root symbol
+        const titles = doculisp.section.doculisp.filter(p => p.type === 'doculisp-title') as ITitle[];
+        if (titles.length > 0) {
+            const title = titles[0];
+            symbols.push({
+                name: title.title,
+                kind: 'Class',
+                range: this.locationToRange(title.documentOrder),
+                selectionRange: this.locationToRange(title.documentOrder),
+                children: []
+            });
+        }
+
+        // Add headers as symbols
+        const headers = doculisp.section.doculisp.filter(p => p.type === 'doculisp-header') as IHeader[];
+        headers.forEach(header => {
+            symbols.push({
+                name: header.text,
+                kind: 'Method',
+                range: this.locationToRange(header.documentOrder),
+                selectionRange: this.locationToRange(header.documentOrder),
+                children: []
+            });
+        });
+
+        // Add includes as symbols
+        doculisp.section.include.forEach(include => {
+            symbols.push({
+                name: include.sectionLabel,
+                kind: 'Module',
+                range: this.locationToRange(include.documentOrder),
+                selectionRange: this.locationToRange(include.documentOrder),
+                children: []
+            });
+        });
+
+        return symbols;
+    }
+
+    private locationToRange(location: ILocation): Range {
+        const line = location.line - 1; // Convert to 0-based
+        const char = location.char - 1;
+        return {
+            start: { line, character: char },
+            end: { line, character: char + 1 }
+        };
+    }
+}
+
+interface DocumentSymbol {
+    name: string;
+    kind: string;
+    range: Range;
+    selectionRange: Range;
+    children: DocumentSymbol[];
+}
+
+interface Range {
+    start: { line: number; character: number };
+    end: { line: number; character: number };
 }
 ```
 
