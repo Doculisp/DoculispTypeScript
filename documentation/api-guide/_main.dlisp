@@ -2,6 +2,7 @@
     (title DoculispTypeScript API Guide)
     (subtitle Understanding the Dependency Injection Container and Core Objects)
     (author Jason Kerney)
+    (author GitHub Copilot)
     (include
         (Introduction ./introduction.md)
         (Container ./container-basics.md)

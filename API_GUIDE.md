@@ -4,6 +4,7 @@
 
 <!-- Compiled with doculisp https://www.npmjs.com/package/doculisp -->
 <!-- Written By: Jason Kerney -->
+<!-- Written By: GitHub Copilot -->
 
 # DoculispTypeScript API Guide #
 
@@ -988,6 +989,7 @@ expect(service.getState()).toContain('test');
 ```
 
 <!-- Written By: Jason Kerney -->
+<!-- Written By: GitHub Copilot -->
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 <!-- GENERATED DOCUMENT DO NOT EDIT! -->
