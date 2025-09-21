@@ -5,13 +5,14 @@
 The container system provides excellent support for testing through dependency replacement:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
 describe('My Service Tests', () => {
     let testContainer: ITestableContainer;
     
-    beforeEach(() => {
-        // Create a testable container
+    beforeEach(async () => {
+        // Create a testable container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
     });
     
@@ -76,7 +77,9 @@ Testing the complete parsing pipeline:
 describe('Parser Pipeline', () => {
     let testContainer: ITestableContainer;
     
-    beforeEach(() => {
+    beforeEach(async () => {
+        // Get container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
         
         // Mock file operations for consistent testing
@@ -121,7 +124,9 @@ describe('Variable Table', () => {
     let testContainer: ITestableContainer;
     let variableTable: IVariableTable;
     
-    beforeEach(() => {
+    beforeEach(async () => {
+        // Get container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
         variableTable = testContainer.buildAs<IVariableTable>('variableTable');
     });
@@ -155,7 +160,9 @@ Testing error conditions and edge cases:
 describe('Error Handling', () => {
     let testContainer: ITestableContainer;
     
-    beforeEach(() => {
+    beforeEach(async () => {
+        // Get container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
     });
 
@@ -202,8 +209,9 @@ Testing complete workflows:
 
 ```typescript
 describe('Integration Tests', () => {
-    it('should compile a complete document', () => {
-        // Use the real container for integration tests
+    it('should compile a complete document', async () => {
+        // Use the real container for integration tests (container is async)
+        const container = await containerPromise;
         const controller = container.buildAs<IController>('controller');
         const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
         

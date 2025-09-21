@@ -5,9 +5,10 @@
 The primary way to get objects from the container is using the `build` methods:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
-// Build with automatic type inference
+// Build with automatic type inference (container is async)
+const container = await containerPromise;
 const tokenizer = container.build('tokenizer');
 
 // Build with explicit typing (recommended)
@@ -21,6 +22,9 @@ Objects are registered automatically by the module loader, but you can also regi
 ### Registering Values
 
 ```typescript
+// Get the container first (container is async)
+const container = await containerPromise;
+
 // Register a simple value
 container.registerValue(myConfig, 'config');
 
@@ -32,6 +36,9 @@ container.registerValue(logger);
 ### Registering Builders
 
 ```typescript
+// Get the container first (container is async)
+const container = await containerPromise;
+
 // Register a builder function
 container.registerBuilder(
     (dep1: IDep1, dep2: IDep2) => new MyService(dep1, dep2),

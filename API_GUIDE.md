@@ -64,9 +64,10 @@ The Doculisp compiler has very limited variable support. The variable table only
 The primary way to get objects from the container is using the `build` methods:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
-// Build with automatic type inference
+// Build with automatic type inference (container is async)
+const container = await containerPromise;
 const tokenizer = container.build('tokenizer');
 
 // Build with explicit typing (recommended)
@@ -80,6 +81,9 @@ Objects are registered automatically by the module loader, but you can also regi
 ### Registering Values
 
 ```typescript
+// Get the container first (container is async)
+const container = await containerPromise;
+
 // Register a simple value
 container.registerValue(myConfig, 'config');
 
@@ -91,6 +95,9 @@ container.registerValue(logger);
 ### Registering Builders
 
 ```typescript
+// Get the container first (container is async)
+const container = await containerPromise;
+
 // Register a builder function
 container.registerBuilder(
     (dep1: IDep1, dep2: IDep2) => new MyService(dep1, dep2),
@@ -228,10 +235,10 @@ interface IController {
 Here's how to use the container to perform a complete document compilation:
 
 ```typescript
-import { container } from './container';
-import { IController, IPathConstructor } from './types';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
-// Get required services
+// Get required services (container is async)
+const container = await containerPromise;
 const controller = container.buildAs<IController>('controller');
 const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
@@ -254,9 +261,10 @@ if (result.success) {
 To parse Doculisp text without file I/O:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
-// Get parsing services
+// Get parsing services (container is async)
+const container = await containerPromise;
 const tokenizer = container.buildAs<ITokenizer>('tokenizer');
 const astParser = container.buildAs<IAstParser>('astParser');
 const doculispParser = container.buildAs<IAstDoculispParser>('astDoculispParse');
@@ -297,8 +305,10 @@ The variable table in Doculisp has very limited functionality. It primarily mana
 2. **ID variables**: For tracking header IDs and ensuring uniqueness
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
+// Get variable table (container is async)
+const container = await containerPromise;
 const variableTable = container.buildAs<IVariableTable>('variableTable');
 
 // Check for system variables (automatically set during compilation)
@@ -321,8 +331,10 @@ if (hasSource) {
 Working with files through the container:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
+// Get file services (container is async)
+const container = await containerPromise;
 const fileHandler = container.buildAs<IFileWriter>('fileHandler');
 const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
@@ -352,8 +364,10 @@ if (exists.success && exists.value) {
 Analyzing document structure and relationships:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
+// Get analysis services (container is async)
+const container = await containerPromise;
 const structure = container.buildAs<IStructure>('structure');
 const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
@@ -378,8 +392,10 @@ if (analysis.success) {
 Generating markdown output from parsed structures:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
+// Get string generation services (container is async)
+const container = await containerPromise;
 const stringWriter = container.buildAs<IStringWriter>('stringWriter');
 const variableTable = container.buildAs<IVariableTable>('variableTable');
 
@@ -408,13 +424,14 @@ if (markdown.success) {
 The container system provides excellent support for testing through dependency replacement:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
 describe('My Service Tests', () => {
     let testContainer: ITestableContainer;
 
-    beforeEach(() => {
-        // Create a testable container
+    beforeEach(async () => {
+        // Create a testable container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
     });
 
@@ -479,7 +496,9 @@ Testing the complete parsing pipeline:
 describe('Parser Pipeline', () => {
     let testContainer: ITestableContainer;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        // Get container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
 
         // Mock file operations for consistent testing
@@ -524,7 +543,9 @@ describe('Variable Table', () => {
     let testContainer: ITestableContainer;
     let variableTable: IVariableTable;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        // Get container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
         variableTable = testContainer.buildAs<IVariableTable>('variableTable');
     });
@@ -558,7 +579,9 @@ Testing error conditions and edge cases:
 describe('Error Handling', () => {
     let testContainer: ITestableContainer;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        // Get container (container is async)
+        const container = await containerPromise;
         testContainer = container.buildTestable();
     });
 
@@ -605,8 +628,9 @@ Testing complete workflows:
 
 ```typescript
 describe('Integration Tests', () => {
-    it('should compile a complete document', () => {
-        // Use the real container for integration tests
+    it('should compile a complete document', async () => {
+        // Use the real container for integration tests (container is async)
+        const container = await containerPromise;
         const controller = container.buildAs<IController>('controller');
         const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
@@ -634,7 +658,7 @@ describe('Integration Tests', () => {
 You can extend the container by registering your own modules:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
 // Define your custom service
 interface ICustomProcessor {
@@ -657,7 +681,8 @@ class CustomProcessor implements ICustomProcessor {
     }
 }
 
-// Register the custom service
+// Register the custom service (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     (textHelpers: ITextHelpers, util: IUtil) => new CustomProcessor(textHelpers, util),
     ['textHelpers', 'util'],
@@ -676,7 +701,9 @@ const processor = container.buildAs<ICustomProcessor>('customProcessor');
 For advanced scenarios, you can manually control module loading:
 
 ```typescript
-import { Container } from './container';
+// Note: Creating custom containers requires direct access to internal classes
+// This is an advanced use case - most users should use the default container
+const { Container } = require('doculisp/dist/container');
 
 // Create a new container instance
 const customContainer = new Container();
@@ -702,7 +729,8 @@ logger.log('Hello from custom container!');
 Most objects should be singletons for performance:
 
 ```typescript
-// Good: Singleton registration
+// Good: Singleton registration (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     (dep1: IDep1) => new ExpensiveService(dep1),
     ['dependency1'],
@@ -724,7 +752,8 @@ container.registerBuilder(
 The container supports lazy loading - objects are only created when first requested:
 
 ```typescript
-// This registration doesn't create the object yet
+// This registration doesn't create the object yet (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     () => new HeavyObject(),
     [],
@@ -770,7 +799,8 @@ class OptionalServiceImpl implements IOptionalService {
     }
 }
 
-// Register with optional dependency
+// Register with optional dependency (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     (optionalDep?: IDependency) => new OptionalServiceImpl(optionalDep),
     [], // No required dependencies
@@ -783,7 +813,8 @@ container.registerBuilder(
 ### Debugging and Monitoring
 
 ```typescript
-// Get list of all registered modules
+// Get list of all registered modules (container is async)
+const container = await containerPromise;
 const modules = container.getModuleList();
 console.log('Registered modules:', modules);
 
@@ -792,10 +823,11 @@ console.log('Container ID:', container.id);
 console.log('Is testable:', container.isTestable);
 
 // Custom monitoring wrapper
-function withLogging<T>(moduleName: string): T {
+async function withLogging<T>(moduleName: string): Promise<T> {
     console.log(`Building module: ${moduleName}`);
     const start = Date.now();
 
+    const container = await containerPromise;
     const result = container.buildAs<T>(moduleName);
 
     const duration = Date.now() - start;
@@ -804,8 +836,8 @@ function withLogging<T>(moduleName: string): T {
     return result;
 }
 
-// Usage
-const tokenizer = withLogging<ITokenizer>('tokenizer');
+// Usage (async because container is Promise-based)
+const tokenizer = await withLogging<ITokenizer>('tokenizer');
 ```
 
 ## Package Integration
@@ -815,7 +847,8 @@ const tokenizer = withLogging<ITokenizer>('tokenizer');
 For integrating external packages:
 
 ```typescript
-// Register Node.js built-in modules
+// Register Node.js built-in modules (container is async)
+const container = await containerPromise;
 container.registerValue(require('fs'), 'fs');
 container.registerValue(require('path'), 'path');
 
@@ -857,15 +890,18 @@ class ManagedService {
 // Implement cleanup patterns
 const managedServices: ManagedService[] = [];
 
-container.registerBuilder(
-    () => {
-        const service = new ManagedService();
-        managedServices.push(service);
-        return service;
-    },
-    [],
-    'managedService'
-);
+// Container needs to be async
+containerPromise.then(container => {
+    container.registerBuilder(
+        () => {
+            const service = new ManagedService();
+            managedServices.push(service);
+            return service;
+        },
+        [],
+        'managedService'
+    );
+});
 
 // Application shutdown
 process.on('exit', () => {
@@ -878,7 +914,8 @@ process.on('exit', () => {
 ### Partial Mock Replacement
 
 ```typescript
-// Replace only specific methods of a service
+// Replace only specific methods of a service (container is async)
+const container = await containerPromise;
 const realFileHandler = container.buildAs<IFileWriter>('fileHandler');
 
 const partialMock = {

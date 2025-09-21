@@ -5,7 +5,7 @@
 You can extend the container by registering your own modules:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
 // Define your custom service
 interface ICustomProcessor {
@@ -28,7 +28,8 @@ class CustomProcessor implements ICustomProcessor {
     }
 }
 
-// Register the custom service
+// Register the custom service (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     (textHelpers: ITextHelpers, util: IUtil) => new CustomProcessor(textHelpers, util),
     ['textHelpers', 'util'],
@@ -47,7 +48,9 @@ const processor = container.buildAs<ICustomProcessor>('customProcessor');
 For advanced scenarios, you can manually control module loading:
 
 ```typescript
-import { Container } from './container';
+// Note: Creating custom containers requires direct access to internal classes
+// This is an advanced use case - most users should use the default container
+const { Container } = require('doculisp/dist/container');
 
 // Create a new container instance
 const customContainer = new Container();
@@ -73,7 +76,8 @@ logger.log('Hello from custom container!');
 Most objects should be singletons for performance:
 
 ```typescript
-// Good: Singleton registration
+// Good: Singleton registration (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     (dep1: IDep1) => new ExpensiveService(dep1),
     ['dependency1'],
@@ -95,7 +99,8 @@ container.registerBuilder(
 The container supports lazy loading - objects are only created when first requested:
 
 ```typescript
-// This registration doesn't create the object yet
+// This registration doesn't create the object yet (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     () => new HeavyObject(),
     [],
@@ -141,7 +146,8 @@ class OptionalServiceImpl implements IOptionalService {
     }
 }
 
-// Register with optional dependency
+// Register with optional dependency (container is async)
+const container = await containerPromise;
 container.registerBuilder(
     (optionalDep?: IDependency) => new OptionalServiceImpl(optionalDep),
     [], // No required dependencies
@@ -154,7 +160,8 @@ container.registerBuilder(
 ### Debugging and Monitoring
 
 ```typescript
-// Get list of all registered modules
+// Get list of all registered modules (container is async)
+const container = await containerPromise;
 const modules = container.getModuleList();
 console.log('Registered modules:', modules);
 
@@ -163,10 +170,11 @@ console.log('Container ID:', container.id);
 console.log('Is testable:', container.isTestable);
 
 // Custom monitoring wrapper
-function withLogging<T>(moduleName: string): T {
+async function withLogging<T>(moduleName: string): Promise<T> {
     console.log(`Building module: ${moduleName}`);
     const start = Date.now();
     
+    const container = await containerPromise;
     const result = container.buildAs<T>(moduleName);
     
     const duration = Date.now() - start;
@@ -175,8 +183,8 @@ function withLogging<T>(moduleName: string): T {
     return result;
 }
 
-// Usage
-const tokenizer = withLogging<ITokenizer>('tokenizer');
+// Usage (async because container is Promise-based)
+const tokenizer = await withLogging<ITokenizer>('tokenizer');
 ```
 
 ## Package Integration
@@ -186,7 +194,8 @@ const tokenizer = withLogging<ITokenizer>('tokenizer');
 For integrating external packages:
 
 ```typescript
-// Register Node.js built-in modules
+// Register Node.js built-in modules (container is async)
+const container = await containerPromise;
 container.registerValue(require('fs'), 'fs');
 container.registerValue(require('path'), 'path');
 
@@ -228,15 +237,18 @@ class ManagedService {
 // Implement cleanup patterns
 const managedServices: ManagedService[] = [];
 
-container.registerBuilder(
-    () => {
-        const service = new ManagedService();
-        managedServices.push(service);
-        return service;
-    },
-    [],
-    'managedService'
-);
+// Container needs to be async
+containerPromise.then(container => {
+    container.registerBuilder(
+        () => {
+            const service = new ManagedService();
+            managedServices.push(service);
+            return service;
+        },
+        [],
+        'managedService'
+    );
+});
 
 // Application shutdown
 process.on('exit', () => {
@@ -249,7 +261,8 @@ process.on('exit', () => {
 ### Partial Mock Replacement
 
 ```typescript
-// Replace only specific methods of a service
+// Replace only specific methods of a service (container is async)
+const container = await containerPromise;
 const realFileHandler = container.buildAs<IFileWriter>('fileHandler');
 
 const partialMock = {
