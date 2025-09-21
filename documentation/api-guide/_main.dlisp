@@ -7,6 +7,7 @@
         (Introduction ./introduction.md)
         (Container ./container-basics.md)
         (Objects ./core-objects.md)
+        (Parsing ./parsing-chains.md)
         (Examples ./examples.md)
         (Testing ./testing-patterns.md)
         (Advanced ./advanced-usage.md)
