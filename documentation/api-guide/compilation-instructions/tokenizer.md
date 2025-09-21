@@ -1,6 +1,8 @@
 <!-- (dl (section-meta Tokenizer API Reference)) -->
 
-The `Tokenizer` component is the second stage in the Doculisp compilation pipeline that converts parsed document content into structured tokens. It takes the output from `DocumentParse` and transforms Doculisp blocks into individual tokens (atoms, parameters, parentheses) while preserving text content and location information.
+<!-- (dl (# Tokenizer API Reference)) -->
+
+The **Tokenizer** is the **second stage** of the DoculispTypeScript compilation pipeline that converts parsed document content into structured tokens. It takes the output from `DocumentParse` and transforms Doculisp blocks into individual tokens (atoms, parameters, parentheses) while preserving text content and location information.
 
 <!-- (dl (# Overview)) -->
 
@@ -36,7 +38,7 @@ const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 
 Understanding the types used by the Tokenizer is essential for working with it effectively.
 
-<!-- (dl (## Core Function Type)) -->
+<!-- (dl (## Core Interface)) -->
 
 ```typescript
 type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocument>;
@@ -382,11 +384,11 @@ More content here.
 ]
 ```
 
-<!-- (dl (# Usage Examples)) -->
+<!-- (dl (# Basic Usage)) -->
 
 Practical examples showing how to use the Tokenizer in different scenarios.
 
-<!-- (dl (## Basic Usage Pattern)) -->
+<!-- (dl (## Simple Tokenization)) -->
 
 ```typescript
 import { containerPromise } from 'doculisp/dist/moduleLoader';
@@ -772,13 +774,13 @@ const controller = container.buildAs<IController>('controller');
 const results = controller.compile(sourcePath, destinationPath);
 ```
 
-**Complete Pipeline API:**
+**Multi-Stage Pipeline API:**
 ```typescript
-// For full document processing with AST generation
+// For document processing through AST generation
 const includeBuilder = container.buildAs<IIncludeBuilder>('includeBuilder');
 const astParser = container.buildAs<IAstParser>('astParser');
 
-// DocumentParse → Tokenizer → AstParser → Output
+// DocumentParse → Tokenizer → AstParser → Additional Stages
 const documentMap = documentParser(content, location);
 const tokenized = tokenizer(documentMap);
 const ast = astParser.parse(tokenized);
@@ -793,9 +795,9 @@ const ast = astParser.parse(tokenized);
 
 **Use higher-level APIs when:**
 - Standard document compilation
-- Full pipeline processing required
+- Multi-stage pipeline processing required
 - AST structures needed
-- Output generation desired
+- Document output generation desired
 - Include resolution required
 
 <!-- (dl (# Common Error Patterns)) -->
@@ -873,6 +875,134 @@ function validateLocationSequence(tokens: Token[]): boolean {
         }
     }
     return true;
+}
+```
+
+<!-- (dl (# Advanced Usage)) -->
+
+<!-- (dl (## Error Handling Patterns)) -->
+
+Robust error handling for tokenization operations:
+
+```typescript
+function tokenizeWithErrorHandling(documentMap: Result<DocumentMap>): void {
+    const container = await containerPromise;
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    
+    try {
+        const result = tokenizer(documentMap);
+        
+        if (!result.success) {
+            console.error(`Tokenization error: ${result.message}`);
+            if (result.documentPath) {
+                console.error(`At: ${result.documentPath.fullName}`);
+            }
+            return;
+        }
+        
+        // Process successful result
+        if (result.value.tokens.length === 0) {
+            console.log('Document contains no tokens');
+        } else {
+            console.log(`Generated ${result.value.tokens.length} tokens`);
+        }
+    } catch (error) {
+        console.error('Unexpected tokenization error:', error);
+    }
+}
+```
+
+<!-- (dl (## Token Stream Processing)) -->
+
+Process tokens in sequence with state management:
+
+```typescript
+function processTokenStream(tokens: Token[], visitor: (token: Token, index: number) => void): void {
+    tokens.forEach((token, index) => {
+        visitor(token, index);
+    });
+}
+
+// Usage example
+processTokenStream(tokens, (token, index) => {
+    const location = token.location;
+    console.log(`Token ${index}: ${token.type} at ${location.line}:${location.char}`);
+});
+```
+
+<!-- (dl (# Integration Patterns)) -->
+
+**Tokenizer** serves as the **second stage** in the parsing pipeline, processing DocumentParse output and preparing input for AstParser:
+
+```typescript
+async function parseToAstPipeline(text: string, projectLocation: IProjectLocation): Promise<RootAst | IAstEmpty | null> {
+    const container = await containerPromise;
+    
+    // Stage 1: Parse document structure
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const documentMap = documentParser(text, projectLocation);
+    
+    if (!documentMap.success) {
+        console.error('Document parsing failed:', documentMap.message);
+        return null;
+    }
+    
+    // Stage 2: Tokenize the content
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const tokenizedResult = tokenizer(documentMap);
+    
+    if (!tokenizedResult.success) {
+        console.error('Tokenization failed:', tokenizedResult.message);
+        return null;
+    }
+    
+    // Stage 3: Generate AST from tokens
+    const astParser = container.buildAs<IAstParser>('astParser');
+    const astResult = astParser.parse(tokenizedResult);
+    
+    if (!astResult.success) {
+        console.error('AST parsing failed:', astResult.message);
+        return null;
+    }
+    
+    // Note: Additional pipeline stages exist beyond AST generation
+    return astResult.value;
+}
+```
+
+<!-- (dl (# Common Patterns)) -->
+
+<!-- (dl (## Token Filtering)) -->
+
+Extract specific token types for analysis:
+
+```typescript
+function extractTokensByType(tokens: Token[], tokenType: string): Token[] {
+    return tokens.filter(token => token.type === tokenType);
+}
+
+// Usage
+const doculispTokens = tokens.filter(t => t.type !== 'token - text');
+const atoms = extractTokensByType(tokens, 'token - atom');
+const parameters = extractTokensByType(tokens, 'token - parameter');
+```
+
+<!-- (dl (## Token Validation)) -->
+
+Validate token structure for correctness:
+
+```typescript
+function validateTokenStructure(tokens: Token[]): string[] {
+    const issues = [];
+    
+    const atomCount = tokens.filter(t => t.type === 'token - atom').length;
+    const closeParenCount = tokens.filter(t => t.type === 'token - close parenthesis').length;
+    
+    if (atomCount !== closeParenCount) {
+        issues.push(`Unbalanced parentheses: ${atomCount} atoms vs ${closeParenCount} close parens`);
+    }
+    
+    return issues;
 }
 ```
 
@@ -976,4 +1106,19 @@ async function processBatchTokenization(documents: DocumentInput[]) {
 }
 ```
 
-This comprehensive guide provides everything needed to understand and effectively use the Tokenizer API in Doculisp applications. The Tokenizer serves as a crucial bridge between document parsing and AST generation, providing precise token-level access to Doculisp syntax elements. 😊
+This comprehensive guide provides everything needed to understand and effectively use the Tokenizer API in Doculisp applications. The Tokenizer serves as a crucial bridge between document parsing and AST generation, providing precise token-level access to Doculisp syntax elements.
+
+<!-- (dl (# Dependencies)) -->
+
+Tokenizer requires these container dependencies:
+
+- **searches**: Text search utilities for pattern matching and content recognition
+- **internals**: Internal parsing utilities and string parsers
+- **util**: Core utilities for Result types and location handling
+
+<!-- (dl (# Related Components)) -->
+
+- **DocumentParse**: Provides input for Tokenizer (DocumentMap)
+- **AstParser**: Consumes Tokenizer output (TokenizedDocument) for AST generation
+- **Controller**: High-level API that orchestrates Tokenizer with other pipeline components
+- **IncludeBuilder**: Uses tokenization as part of document processing workflows

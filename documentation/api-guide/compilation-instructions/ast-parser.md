@@ -2,11 +2,55 @@
 
 <!-- (dl (# AstParser API Reference)) -->
 
-The **AstParser** is a core component of the DoculispTypeScript parsing pipeline that converts tokenized input into Abstract Syntax Trees (AST). It parses different token types (text, atoms, commands, containers) into structured AST nodes that represent the logical structure of Doculisp documents.
+The **AstParser** is the **third stage** of the DoculispTypeScript compilation pipeline that converts tokenized input into Abstract Syntax Trees (AST). It parses different token types (text, atoms, commands, containers) into structured AST nodes that represent the logical structure of Doculisp documents.
+
+<!-- (dl (# Integration Patterns)) -->
+
+**AstParser** serves as the **third stage** in the parsing pipeline, consuming Tokenizer output to generate ASTs for further processing:
+
+```typescript
+async function parseToAstPipeline(text: string, projectLocation: IProjectLocation): Promise<RootAst | IAstEmpty | null> {
+    const container = await containerPromise;
+    
+    // Stage 1: Parse document structure (DocumentParse)
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const documentMap = documentParser(text, projectLocation);
+    
+    if (!documentMap.success) {
+        console.error('Document parsing failed:', documentMap.message);
+        return null;
+    }
+    
+    // Stage 2: Tokenize the content (Tokenizer)
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const tokenResult = tokenizer(documentMap);
+    
+    if (!tokenResult.success) {
+        console.error('Tokenization failed:', tokenResult.message);
+        return null;
+    }
+    
+    // Stage 3: Parse tokens into AST (AstParser)
+    const astParser = container.buildAs<IAstParser>('astParser');
+    const astResult = astParser.parse(tokenResult);
+    
+    if (!astResult.success) {
+        console.error('AST parsing failed:', astResult.message);
+        return null;
+    }
+    
+    // Note: Additional pipeline stages exist beyond AST generation
+    return astResult.value;
+}
+```
 
 <!-- (dl (## Overview)) -->
 
-AstParser processes tokenized input and produces a hierarchical tree structure representing the parsed content. It handles various Doculisp constructs including text content, atoms, commands with parameters, and nested container structures. The parser ensures proper syntax validation and location tracking throughout the parsing process.
+**AstParser** is the **third stage** in the Doculisp compilation pipeline that processes tokenized input and produces a hierarchical tree structure representing the parsed content. It handles various Doculisp constructs including text content, atoms, commands with parameters, and nested container structures. The parser ensures proper syntax validation and location tracking throughout the parsing process.
+
+**Pipeline Position:** AstParser is stage 3 in the multi-stage compilation pipeline (DocumentParse → Tokenizer → AstParser → ...)
+
+**Primary Responsibilities:**
 
 <!-- (dl (## Container Registration)) -->
 
@@ -272,22 +316,31 @@ function reportNodeLocations(ast: CoreAst[]): void {
 
 <!-- (dl (### Pipeline Integration)) -->
 
-AstParser typically follows Tokenizer in the parsing pipeline:
+**AstParser** serves as the **third stage** in the parsing pipeline, consuming Tokenizer output to generate ASTs for further processing:
 
 ```typescript
-async function fullParsingPipeline(text: string, projectLocation: IProjectLocation): Promise<RootAst | IAstEmpty | null> {
+async function parseToAstPipeline(text: string, projectLocation: IProjectLocation): Promise<RootAst | IAstEmpty | null> {
     const container = await containerPromise;
     
-    // 1. Tokenize the input
-    const tokenizer = container.buildAs<Tokenizer>('tokenizer');
-    const tokenResult = tokenizer(text, projectLocation);
+    // Stage 1: Parse document structure (DocumentParse)
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const documentMap = documentParser(text, projectLocation);
+    
+    if (!documentMap.success) {
+        console.error('Document parsing failed:', documentMap.message);
+        return null;
+    }
+    
+    // Stage 2: Tokenize the content (Tokenizer)
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const tokenResult = tokenizer(documentMap);
     
     if (!tokenResult.success) {
         console.error('Tokenization failed:', tokenResult.message);
         return null;
     }
     
-    // 2. Parse tokens into AST
+    // Stage 3: Parse tokens into AST (AstParser)
     const astParser = container.buildAs<IAstParser>('astParser');
     const astResult = astParser.parse(tokenResult);
     
@@ -296,7 +349,9 @@ async function fullParsingPipeline(text: string, projectLocation: IProjectLocati
         return null;
     }
     
+    // Note: Additional pipeline stages exist beyond AST generation
     return astResult.value;
+}
 }
 ```
 

@@ -1,6 +1,8 @@
 <!-- (dl (section-meta DocumentParse API Reference)) -->
 
-The `DocumentParse` component is a core parsing service in Doculisp that extracts and processes content from text documents. It's responsible for separating text content from embedded Doculisp blocks and preparing them for further processing in the compilation pipeline.
+<!-- (dl (# DocumentParse API Reference)) -->
+
+The **DocumentParse** is the **first stage** of the DoculispTypeScript compilation pipeline that extracts and processes content from text documents. It's responsible for separating text content from embedded Doculisp blocks and preparing them for further processing in the compilation pipeline.
 
 <!-- (dl (# Overview)) -->
 
@@ -36,7 +38,7 @@ const documentParser = container.buildAs<DocumentParser>('documentParse');
 
 Understanding the types used by DocumentParse is essential for working with it effectively.
 
-<!-- (dl (## Core Function Type)) -->
+<!-- (dl (## Core Interface)) -->
 
 ```typescript
 type DocumentParser = (text: string, projectLocation: IProjectLocation) => Result<DocumentMap>;
@@ -283,11 +285,11 @@ const parser = parserBuilder.createStringParser(
 )
 ```
 
-<!-- (dl (# Usage Examples)) -->
+<!-- (dl (# Basic Usage)) -->
 
 Practical examples showing how to use DocumentParse in different scenarios.
 
-<!-- (dl (## Basic Usage Pattern)) -->
+<!-- (dl (## Simple Parsing)) -->
 
 ```typescript
 import { containerPromise } from 'doculisp/dist/moduleLoader';
@@ -747,6 +749,126 @@ Content.
 `;
 ```
 
+<!-- (dl (# Advanced Usage)) -->
+
+<!-- (dl (## Error Handling Patterns)) -->
+
+Robust error handling for DocumentParse operations:
+
+```typescript
+function parseWithErrorHandling(content: string, projectLocation: IProjectLocation): void {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    
+    try {
+        const result = documentParser(content, projectLocation);
+        
+        if (!result.success) {
+            console.error(`Parse error: ${result.message}`);
+            if (result.documentPath) {
+                console.error(`At: ${result.documentPath.fullName}`);
+            }
+            return;
+        }
+        
+        // Process successful result
+        if (result.value.parts.length === 0) {
+            console.log('Document contains no parseable content');
+        } else {
+            console.log(`Parsed ${result.value.parts.length} document parts`);
+        }
+    } catch (error) {
+        console.error('Unexpected parsing error:', error);
+    }
+}
+```
+
+<!-- (dl (## Custom Content Processing)) -->
+
+Process document parts with custom logic:
+
+```typescript
+function processDocumentParts(documentMap: DocumentMap, processor: (part: DocumentPart) => void): void {
+    documentMap.parts.forEach(part => {
+        if (part.type === 'text') {
+            // Custom text processing
+            processor(part);
+        } else if (part.type === 'lisp') {
+            // Custom Doculisp processing  
+            processor(part);
+        }
+    });
+}
+```
+
+<!-- (dl (# Integration Patterns)) -->
+
+**DocumentParse** serves as the **first stage** in the parsing pipeline, providing structured input for subsequent stages:
+
+```typescript
+async function parseToTokensPipeline(text: string, projectLocation: IProjectLocation): Promise<TokenizedDocument | null> {
+    const container = await containerPromise;
+    
+    // Stage 1: Parse the document structure
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const documentMap = documentParser(text, projectLocation);
+    
+    if (!documentMap.success) {
+        console.error('Document parsing failed:', documentMap.message);
+        return null;
+    }
+    
+    // Stage 2: Tokenize the parsed content
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const tokenizedResult = tokenizer(documentMap);
+    
+    if (!tokenizedResult.success) {
+        console.error('Tokenization failed:', tokenizedResult.message);
+        return null;
+    }
+    
+    // Note: Additional pipeline stages exist beyond tokenization
+    return tokenizedResult.value;
+}
+```
+
+<!-- (dl (# Common Patterns)) -->
+
+<!-- (dl (## File Type Detection)) -->
+
+Detect and handle different file types appropriately:
+
+```typescript
+function getFileTypeStrategy(filePath: string): 'markdown' | 'doculisp' | 'project' {
+    const extension = path.extname(filePath);
+    switch (extension) {
+        case '.md': return 'markdown';
+        case '.dlisp': return 'doculisp';
+        case '.dlproj': return 'project';
+        default: throw new Error(`Unsupported file type: ${extension}`);
+    }
+}
+```
+
+<!-- (dl (## Batch Processing)) -->
+
+Process multiple documents efficiently:
+
+```typescript
+async function processBatch(documents: Array<{content: string, location: IProjectLocation}>) {
+    const container = await containerPromise;
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    
+    const results = [];
+    for (const doc of documents) {
+        const result = documentParser(doc.content, doc.location);
+        results.push({ ...doc, result });
+    }
+    
+    return results;
+}
+```
+
 <!-- (dl (# Performance Considerations)) -->
 
 Best practices for optimal performance when using DocumentParse.
@@ -866,4 +988,20 @@ async function processBatch(documents: DocumentInput[]) {
 }
 ```
 
-This comprehensive guide provides everything needed to understand and effectively use the DocumentParse API in Doculisp applications. 😊
+This comprehensive guide provides everything needed to understand and effectively use the DocumentParse API in Doculisp applications.
+
+<!-- (dl (# Dependencies)) -->
+
+DocumentParse requires these container dependencies:
+
+- **searches**: Text search utilities for content pattern matching
+- **internals**: Internal parsing utilities and array parsers
+- **util**: Core utilities for Result types and location handling  
+- **trimArray**: Array manipulation utilities for token consumption
+
+<!-- (dl (# Related Components)) -->
+
+- **Tokenizer**: Consumes DocumentParse output (DocumentMap) to create tokens
+- **Controller**: High-level API that orchestrates DocumentParse with other components
+- **IncludeBuilder**: Uses DocumentParse for processing included files
+- **FileHandler**: Provides file I/O services that often precede DocumentParse
