@@ -16,7 +16,10 @@
 * [Container Basics](#container-basics)
 * [Core Objects Reference](#core-objects-reference)
 * [Parsing Pipeline Chains](#parsing-pipeline-chains)
-* [Detailed Compilation Instructions](#detailed-compilation-instructions)
+* [DocumentParse API Reference](#documentparse-api-reference)
+* [Tokenizer API Reference](#tokenizer-api-reference)
+* [AstParser API Reference](#astparser-api-reference)
+* [AstDoculispParser API Reference](#astdoculispparser-api-reference)
 * [Usage Examples](#usage-examples)
 * [Testing Patterns](#testing-patterns)
 * [Advanced Usage](#advanced-usage)
@@ -978,19 +981,13 @@ container.registerBuilder(
 
 This comprehensive understanding of the parsing pipelines enables effective use of the container system and provides the foundation for extending Doculisp's capabilities.
 
-## Detailed Compilation Instructions ##
-
-1. Subsection: [DocumentParse API Reference](#documentparse-api-reference)
-2. Subsection: [Tokenizer API Reference](#tokenizer-api-reference)
-3. Subsection: [AstParser API Reference](#astparser-api-reference)
+## DocumentParse API Reference ##
 
 ### DocumentParse API Reference ###
 
-#### DocumentParse API Reference ####
-
 The **DocumentParse** is the **first stage** of the DoculispTypeScript compilation pipeline that extracts and processes content from text documents. It's responsible for separating text content from embedded Doculisp blocks and preparing them for further processing in the compilation pipeline.
 
-#### Overview ####
+### Overview ###
 
 `DocumentParse` is the first stage in the Doculisp compilation pipeline that handles raw document text. It determines the file type, applies appropriate parsing strategies, and creates a structured representation of the document content that can be processed by subsequent pipeline stages.
 
@@ -1002,7 +999,7 @@ The **DocumentParse** is the **first stage** of the DoculispTypeScript compilati
 - Handle nested code blocks and preserve formatting
 - Validate document structure and syntax
 
-##### Container Registration #####
+#### Container Registration ####
 
 DocumentParse is registered in the container system as:
 
@@ -1020,11 +1017,11 @@ const container = await containerPromise;
 const documentParser = container.buildAs<DocumentParser>('documentParse');
 ```
 
-#### Type Definitions ####
+### Type Definitions ###
 
 Understanding the types used by DocumentParse is essential for working with it effectively.
 
-##### Core Interface #####
+#### Core Interface ####
 
 ```typescript
 type DocumentParser = (text: string, projectLocation: IProjectLocation) => Result<DocumentMap>;
@@ -1032,7 +1029,7 @@ type DocumentParser = (text: string, projectLocation: IProjectLocation) => Resul
 
 The `DocumentParser` is a function that takes document text and location information, returning either a successful `DocumentMap` or an error.
 
-##### Input Types #####
+#### Input Types ####
 
 **Primary Parameters:**
 
@@ -1058,7 +1055,7 @@ interface IProjectLocation {
 - `documentIndex` must be ≥ 1 (validates document ordering)
 - `documentPath` must have valid file extension (`.md`, `.dlisp`, `.dlproj`)
 
-##### Output Types #####
+#### Output Types ####
 
 **Success Result:**
 ```typescript
@@ -1115,11 +1112,11 @@ Result<DocumentMap> = {
 }
 ```
 
-#### Parsing Strategies by File Type ####
+### Parsing Strategies by File Type ###
 
 DocumentParse uses different parsing strategies based on file extension, each optimized for the specific content type and use case.
 
-##### Markdown Files #####
+#### Markdown Files ####
 
 **Strategy:** Dual content extraction - separates text from embedded Doculisp blocks
 
@@ -1175,7 +1172,7 @@ Final paragraph.
 ]
 ```
 
-##### Pure Doculisp Files #####
+#### Pure Doculisp Files ####
 
 **Strategy:** Pure structure parsing - processes only Doculisp syntax
 
@@ -1233,7 +1230,7 @@ const parser = parserBuilder.createStringParser(
 - Parentheses must balance correctly
 - No `(dl ...)` wrappers allowed (unlike in markdown comments where they are required)
 
-##### Project Files #####
+#### Project Files ####
 
 **Strategy:** Project structure parsing - similar to `.dlisp` but with project-specific validation
 
@@ -1271,11 +1268,11 @@ const parser = parserBuilder.createStringParser(
 )
 ```
 
-#### Basic Usage ####
+### Basic Usage ###
 
 Practical examples showing how to use DocumentParse in different scenarios.
 
-##### Simple Parsing #####
+#### Simple Parsing ####
 
 ```typescript
 import { containerPromise } from 'doculisp/dist/moduleLoader';
@@ -1309,7 +1306,7 @@ async function parseDocument() {
 }
 ```
 
-##### Processing Different File Types #####
+#### Processing Different File Types ####
 
 **Markdown File Processing:**
 ```typescript
@@ -1447,7 +1444,7 @@ async function parseProjectFile() {
 }
 ```
 
-##### Advanced Usage with Error Handling #####
+#### Advanced Usage with Error Handling ####
 
 ```typescript
 async function robustDocumentParsing(filePath: string, content: string) {
@@ -1518,11 +1515,11 @@ async function robustDocumentParsing(filePath: string, content: string) {
 }
 ```
 
-#### When to Use DocumentParse ####
+### When to Use DocumentParse ###
 
 Understanding when and why to use DocumentParse directly versus through higher-level APIs.
 
-##### Direct Usage Scenarios #####
+#### Direct Usage Scenarios ####
 
 **1. Custom Processing Pipelines**
 - Building custom compilation tools
@@ -1591,7 +1588,7 @@ async function analyzeDoculispUsage(files: string[]) {
 }
 ```
 
-##### Alternative APIs #####
+#### Alternative APIs ####
 
 **High-Level Controller API:**
 ```typescript
@@ -1621,11 +1618,11 @@ const result = includeBuilder.parse(variableTable);
 - Variable substitution required
 - Full pipeline processing desired
 
-#### Common Error Patterns ####
+### Common Error Patterns ###
 
 Understanding common mistakes and how to avoid them.
 
-##### Validation Errors #####
+#### Validation Errors ####
 
 **Invalid Project Location:**
 ```typescript
@@ -1655,7 +1652,7 @@ const doculispPath = pathConstructor.buildPath('./document.dlisp');
 const projectPath = pathConstructor.buildPath('./project.dlproj');
 ```
 
-##### Syntax Errors #####
+#### Syntax Errors ####
 
 **Doculisp Syntax Issues:**
 ```typescript
@@ -1697,7 +1694,7 @@ Content here.
 `;
 ```
 
-##### Content Type Mismatches #####
+#### Content Type Mismatches ####
 
 **Text in Pure Doculisp Files:**
 ```typescript
@@ -1735,9 +1732,9 @@ Content.
 `;
 ```
 
-#### Advanced Usage ####
+### Advanced Usage ###
 
-##### Error Handling Patterns #####
+#### Error Handling Patterns ####
 
 Robust error handling for DocumentParse operations:
 
@@ -1769,7 +1766,7 @@ function parseWithErrorHandling(content: string, projectLocation: IProjectLocati
 }
 ```
 
-##### Custom Content Processing #####
+#### Custom Content Processing ####
 
 Process document parts with custom logic:
 
@@ -1787,7 +1784,7 @@ function processDocumentParts(documentMap: DocumentMap, processor: (part: Docume
 }
 ```
 
-#### Integration Patterns ####
+### Integration Patterns ###
 
 **DocumentParse** serves as the **first stage** in the parsing pipeline, providing structured input for subsequent stages:
 
@@ -1818,9 +1815,9 @@ async function parseToTokensPipeline(text: string, projectLocation: IProjectLoca
 }
 ```
 
-#### Common Patterns ####
+### Common Patterns ###
 
-##### File Type Detection #####
+#### File Type Detection ####
 
 Detect and handle different file types appropriately:
 
@@ -1836,7 +1833,7 @@ function getFileTypeStrategy(filePath: string): 'markdown' | 'doculisp' | 'proje
 }
 ```
 
-##### Batch Processing #####
+#### Batch Processing ####
 
 Process multiple documents efficiently:
 
@@ -1855,11 +1852,11 @@ async function processBatch(documents: Array<{content: string, location: IProjec
 }
 ```
 
-#### Performance Considerations ####
+### Performance Considerations ###
 
 Best practices for optimal performance when using DocumentParse.
 
-##### Memory Management #####
+#### Memory Management ####
 
 **Large Document Handling:**
 ```typescript
@@ -1914,7 +1911,7 @@ async function inefficientParsing(documents: Array<{content: string, location: I
 }
 ```
 
-##### Parser Strategy Optimization #####
+#### Parser Strategy Optimization ####
 
 **Content Type Detection:**
 ```typescript
@@ -1976,7 +1973,7 @@ async function processBatch(documents: DocumentInput[]) {
 
 This comprehensive guide provides everything needed to understand and effectively use the DocumentParse API in Doculisp applications.
 
-#### Dependencies ####
+### Dependencies ###
 
 DocumentParse requires these container dependencies:
 
@@ -1985,20 +1982,20 @@ DocumentParse requires these container dependencies:
 - **util**: Core utilities for Result types and location handling
 - **trimArray**: Array manipulation utilities for token consumption
 
-#### Related Components ####
+### Related Components ###
 
 - **Tokenizer**: Consumes DocumentParse output (DocumentMap) to create tokens
 - **Controller**: High-level API that orchestrates DocumentParse with other components
 - **IncludeBuilder**: Uses DocumentParse for processing included files
 - **FileHandler**: Provides file I/O services that often precede DocumentParse
 
-### Tokenizer API Reference ###
+## Tokenizer API Reference ##
 
-#### Tokenizer API Reference ####
+### Tokenizer API Reference ###
 
 The **Tokenizer** is the **second stage** of the DoculispTypeScript compilation pipeline that converts parsed document content into structured tokens. It takes the output from `DocumentParse` and transforms Doculisp blocks into individual tokens (atoms, parameters, parentheses) while preserving text content and location information.
 
-#### Overview ####
+### Overview ###
 
 The Tokenizer bridges the gap between raw document parsing and Abstract Syntax Tree (AST) generation. It processes `DocumentMap` structures and creates `TokenizedDocument` outputs that contain discrete tokens representing each element of the Doculisp syntax.
 
@@ -2010,7 +2007,7 @@ The Tokenizer bridges the gap between raw document parsing and Abstract Syntax T
 - Maintain precise location tracking for error reporting
 - Validate Doculisp syntax at the token level
 
-##### Container Registration #####
+#### Container Registration ####
 
 Tokenizer is registered in the container system as:
 
@@ -2028,11 +2025,11 @@ const container = await containerPromise;
 const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 ```
 
-#### Type Definitions ####
+### Type Definitions ###
 
 Understanding the types used by the Tokenizer is essential for working with it effectively.
 
-##### Core Interface #####
+#### Core Interface ####
 
 ```typescript
 type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocument>;
@@ -2040,7 +2037,7 @@ type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocum
 
 The `TokenFunction` is a function that takes a parsed document map and returns either a successful `TokenizedDocument` or an error.
 
-##### Input Types #####
+#### Input Types ####
 
 **Primary Parameter:**
 
@@ -2071,7 +2068,7 @@ interface ILispBlock {
 }
 ```
 
-##### Output Types #####
+#### Output Types ####
 
 **Success Result:**
 ```typescript
@@ -2133,11 +2130,11 @@ Result<TokenizedDocument> = {
 }
 ```
 
-#### Tokenization Process ####
+### Tokenization Process ###
 
 The Tokenizer processes document content through several specialized parsing functions, each handling different types of content.
 
-##### Token Processing Strategy #####
+#### Token Processing Strategy ####
 
 The Tokenizer uses a multi-pass strategy to convert content:
 
@@ -2164,7 +2161,7 @@ function tokenize(documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
 }
 ```
 
-##### Text Token Processing #####
+#### Text Token Processing ####
 
 Text content from markdown files is preserved as-is in text tokens:
 
@@ -2186,7 +2183,7 @@ if (part.type === 'text') {
 - **Single token per part**: Each text part becomes one text token
 - **Whitespace preservation**: All formatting and spacing preserved
 
-##### Doculisp Block Tokenization #####
+#### Doculisp Block Tokenization ####
 
 Doculisp blocks undergo detailed parsing to extract individual syntax elements:
 
@@ -2210,11 +2207,11 @@ const parser = internals.createStringParser(
 4. **Parameter Extraction**: Content following atoms, with escape sequence processing
 5. **Comment Processing**: Handles `(*...)` comment blocks with nested parsing
 
-#### Token Types and Examples ####
+### Token Types and Examples ###
 
 Understanding how different Doculisp constructs become tokens.
 
-##### Atom Tokens #####
+#### Atom Tokens ####
 
 Atoms are the function names or keywords in Doculisp syntax:
 
@@ -2246,7 +2243,7 @@ const atomPattern = /^[^\(\)\s]+/;
 - Case-sensitive
 - Can include hyphens, underscores, numbers, and special characters (except parentheses)
 
-##### Parameter Tokens #####
+#### Parameter Tokens ####
 
 Parameters are the arguments passed to atoms:
 
@@ -2292,7 +2289,7 @@ const processedText = parameterValue
 - Must escape parentheses and backslashes with backslash
 - Parameters are trimmed and unescaped during processing
 
-##### Parenthesis Tokens #####
+#### Parenthesis Tokens ####
 
 Parentheses structure the Doculisp syntax and create parsing context:
 
@@ -2333,7 +2330,7 @@ Parentheses structure the Doculisp syntax and create parsing context:
 9. CloseParenthesisToken
 10. CloseParenthesisToken
 
-##### Text Tokens #####
+#### Text Tokens ####
 
 Text tokens preserve markdown content from mixed-content files:
 
@@ -2378,11 +2375,11 @@ More content here.
 ]
 ```
 
-#### Basic Usage ####
+### Basic Usage ###
 
 Practical examples showing how to use the Tokenizer in different scenarios.
 
-##### Simple Tokenization #####
+#### Simple Tokenization ####
 
 ```typescript
 import { containerPromise } from 'doculisp/dist/moduleLoader';
@@ -2425,7 +2422,7 @@ async function tokenizeDocument() {
 }
 ```
 
-##### Processing Different Content Types #####
+#### Processing Different Content Types ####
 
 **Markdown File with Mixed Content:**
 ```typescript
@@ -2544,7 +2541,7 @@ async function tokenizeDoculispFile() {
 }
 ```
 
-##### Advanced Token Analysis #####
+#### Advanced Token Analysis ####
 
 ```typescript
 async function analyzeTokenStructure(filePath: string, content: string) {
@@ -2639,11 +2636,11 @@ async function analyzeTokenStructure(filePath: string, content: string) {
 }
 ```
 
-#### When to Use Tokenizer ####
+### When to Use Tokenizer ###
 
 Understanding when and why to use the Tokenizer directly versus through higher-level APIs.
 
-##### Direct Usage Scenarios #####
+#### Direct Usage Scenarios ####
 
 **1. Syntax Analysis Tools**
 - Building Doculisp language servers
@@ -2759,7 +2756,7 @@ function validateTokenStructure(tokens: Token[]): string[] {
 }
 ```
 
-##### Alternative APIs #####
+#### Alternative APIs ####
 
 **High-Level Controller API:**
 ```typescript
@@ -2794,11 +2791,11 @@ const ast = astParser.parse(tokenized);
 - Document output generation desired
 - Include resolution required
 
-#### Common Error Patterns ####
+### Common Error Patterns ###
 
 Understanding common issues and how to resolve them.
 
-##### Input Validation Errors #####
+#### Input Validation Errors ####
 
 **Failed DocumentParse Input:**
 ```typescript
@@ -2815,7 +2812,7 @@ if (documentMap.success) {
 }
 ```
 
-##### Syntax Errors #####
+#### Syntax Errors ####
 
 **Unbalanced Parentheses:**
 ```typescript
@@ -2851,7 +2848,7 @@ const goodEscaping = `(title The \(correct\) escape)`;
 const goodBackslash = `(Section C:\\Windows\\System32)`;  // Escaped backslashes
 ```
 
-##### Location Tracking Issues #####
+#### Location Tracking Issues ####
 
 **Invalid Location Information:**
 ```typescript
@@ -2872,9 +2869,9 @@ function validateLocationSequence(tokens: Token[]): boolean {
 }
 ```
 
-#### Advanced Usage ####
+### Advanced Usage ###
 
-##### Error Handling Patterns #####
+#### Error Handling Patterns ####
 
 Robust error handling for tokenization operations:
 
@@ -2906,7 +2903,7 @@ function tokenizeWithErrorHandling(documentMap: Result<DocumentMap>): void {
 }
 ```
 
-##### Token Stream Processing #####
+#### Token Stream Processing ####
 
 Process tokens in sequence with state management:
 
@@ -2924,7 +2921,7 @@ processTokenStream(tokens, (token, index) => {
 });
 ```
 
-#### Integration Patterns ####
+### Integration Patterns ###
 
 **Tokenizer** serves as the **second stage** in the parsing pipeline, processing DocumentParse output and preparing input for AstParser:
 
@@ -2964,9 +2961,9 @@ async function parseToAstPipeline(text: string, projectLocation: IProjectLocatio
 }
 ```
 
-#### Common Patterns ####
+### Common Patterns ###
 
-##### Token Filtering #####
+#### Token Filtering ####
 
 Extract specific token types for analysis:
 
@@ -2981,7 +2978,7 @@ const atoms = extractTokensByType(tokens, 'token - atom');
 const parameters = extractTokensByType(tokens, 'token - parameter');
 ```
 
-##### Token Validation #####
+#### Token Validation ####
 
 Validate token structure for correctness:
 
@@ -3000,11 +2997,11 @@ function validateTokenStructure(tokens: Token[]): string[] {
 }
 ```
 
-#### Performance Considerations ####
+### Performance Considerations ###
 
 Best practices for optimal performance when using the Tokenizer.
 
-##### Memory Management #####
+#### Memory Management ####
 
 **Token Array Optimization:**
 ```typescript
@@ -3050,7 +3047,7 @@ class TokenProcessor {
 }
 ```
 
-##### Parsing Optimization #####
+#### Parsing Optimization ####
 
 **Efficient Token Processing:**
 ```typescript
@@ -3102,7 +3099,7 @@ async function processBatchTokenization(documents: DocumentInput[]) {
 
 This comprehensive guide provides everything needed to understand and effectively use the Tokenizer API in Doculisp applications. The Tokenizer serves as a crucial bridge between document parsing and AST generation, providing precise token-level access to Doculisp syntax elements.
 
-#### Dependencies ####
+### Dependencies ###
 
 Tokenizer requires these container dependencies:
 
@@ -3110,20 +3107,20 @@ Tokenizer requires these container dependencies:
 - **internals**: Internal parsing utilities and string parsers
 - **util**: Core utilities for Result types and location handling
 
-#### Related Components ####
+### Related Components ###
 
 - **DocumentParse**: Provides input for Tokenizer (DocumentMap)
 - **AstParser**: Consumes Tokenizer output (TokenizedDocument) for AST generation
 - **Controller**: High-level API that orchestrates Tokenizer with other pipeline components
 - **IncludeBuilder**: Uses tokenization as part of document processing workflows
 
-### AstParser API Reference ###
+## AstParser API Reference ##
 
-#### AstParser API Reference ####
+### AstParser API Reference ###
 
 The **AstParser** is the **third stage** of the DoculispTypeScript compilation pipeline that converts tokenized input into Abstract Syntax Trees (AST). It parses different token types (text, atoms, commands, containers) into structured AST nodes that represent the logical structure of Doculisp documents.
 
-#### Integration Patterns ####
+### Integration Patterns ###
 
 **AstParser** serves as the **third stage** in the parsing pipeline, consuming Tokenizer output to generate ASTs for further processing:
 
@@ -3163,7 +3160,7 @@ async function parseToAstPipeline(text: string, projectLocation: IProjectLocatio
 }
 ```
 
-##### Overview #####
+#### Overview ####
 
 **AstParser** is the **third stage** in the Doculisp compilation pipeline that processes tokenized input and produces a hierarchical tree structure representing the parsed content. It handles various Doculisp constructs including text content, atoms, commands with parameters, and nested container structures. The parser ensures proper syntax validation and location tracking throughout the parsing process.
 
@@ -3171,7 +3168,7 @@ async function parseToAstPipeline(text: string, projectLocation: IProjectLocatio
 
 **Primary Responsibilities:**
 
-##### Container Registration #####
+#### Container Registration ####
 
 Register AstParser with the dependency injection container:
 
@@ -3189,11 +3186,11 @@ const container = await containerPromise;
 const astParser = container.buildAs<IAstParser>('astParser');
 ```
 
-##### Type Definitions #####
+#### Type Definitions ####
 
 Understanding the types used by AstParser is essential for working with the generated AST structures.
 
-###### Core Interface ######
+##### Core Interface #####
 
 ```typescript
 interface IAstParser {
@@ -3203,7 +3200,7 @@ interface IAstParser {
 
 The `IAstParser` provides a single `parse` method that transforms tokenized documents into AST structures.
 
-###### Input Types ######
+##### Input Types #####
 
 **Primary Input:**
 
@@ -3220,7 +3217,7 @@ interface TokenizedDocument {
 }
 ```
 
-###### Output Types ######
+##### Output Types #####
 
 **Return Value:**
 ```typescript
@@ -3244,7 +3241,7 @@ interface IAstEmpty {
 }
 ```
 
-###### AST Node Types ######
+##### AST Node Types #####
 
 The parser generates various AST node types:
 
@@ -3295,9 +3292,9 @@ interface IAstParameter {
 }
 ```
 
-##### Basic Usage #####
+#### Basic Usage ####
 
-###### Simple Parsing ######
+##### Simple Parsing #####
 
 Parse a tokenized document into an AST:
 
@@ -3324,7 +3321,7 @@ if (astResult.success) {
 }
 ```
 
-###### Processing Different Node Types ######
+##### Processing Different Node Types #####
 
 Handle various AST node types:
 
@@ -3355,9 +3352,9 @@ function processAstNode(node: CoreAst): void {
 }
 ```
 
-##### Advanced Usage #####
+#### Advanced Usage ####
 
-###### Error Handling Patterns ######
+##### Error Handling Patterns #####
 
 Robust error handling for AST parsing:
 
@@ -3388,7 +3385,7 @@ function parseWithErrorHandling(tokenizedDoc: Result<TokenizedDocument>): void {
 }
 ```
 
-###### AST Traversal ######
+##### AST Traversal #####
 
 Deep traversal of AST structures:
 
@@ -3414,7 +3411,7 @@ if (astResult.success && astResult.value.type === 'RootAst') {
 }
 ```
 
-###### Location Tracking ######
+##### Location Tracking #####
 
 Utilize location information for debugging and error reporting:
 
@@ -3431,9 +3428,9 @@ function reportNodeLocations(ast: CoreAst[]): void {
 }
 ```
 
-##### Integration Patterns #####
+#### Integration Patterns ####
 
-###### Pipeline Integration ######
+##### Pipeline Integration #####
 
 **AstParser** serves as the **third stage** in the parsing pipeline, consuming Tokenizer output to generate ASTs for further processing:
 
@@ -3474,7 +3471,7 @@ async function parseToAstPipeline(text: string, projectLocation: IProjectLocatio
 }
 ```
 
-###### Type Guards ######
+##### Type Guards #####
 
 Implement type guards for safe AST processing:
 
@@ -3504,9 +3501,9 @@ if (astResult.success && isRootAst(astResult.value)) {
 }
 ```
 
-##### Common Patterns #####
+#### Common Patterns ####
 
-###### Empty Document Handling ######
+##### Empty Document Handling #####
 
 Handle empty documents gracefully:
 
@@ -3528,7 +3525,7 @@ function processAstResult(astResult: Result<RootAst | IAstEmpty>): void {
 }
 ```
 
-###### Command Extraction ######
+##### Command Extraction #####
 
 Extract specific commands from the AST:
 
@@ -3558,7 +3555,7 @@ if (astResult.success && astResult.value.type === 'RootAst') {
 }
 ```
 
-##### Performance Considerations #####
+#### Performance Considerations ####
 
 - **Non-singleton**: Each parse operation gets a fresh parser instance
 - **Memory efficiency**: AST nodes maintain minimal required data
@@ -3566,7 +3563,7 @@ if (astResult.success && astResult.value.type === 'RootAst') {
 - **Error propagation**: Parse errors include detailed location context
 - **Lazy evaluation**: Parsing stops at first structural error
 
-##### Dependencies #####
+#### Dependencies ####
 
 AstParser requires these container dependencies:
 
@@ -3574,12 +3571,757 @@ AstParser requires these container dependencies:
 - **internals**: Internal parsing utilities and array parsers
 - **trimArray**: Array manipulation utilities for token consumption
 
-##### Related Components #####
+#### Related Components ####
 
 - **Tokenizer**: Provides input for AstParser (TokenizedDocument)
 - **DocumentParse**: Often consumes AstParser output for further processing
 - **AstProject**: Specialized parser for project-level AST structures
 - **AstDoculisp**: Specialized parser for Doculisp-specific AST structures
+
+## AstDoculispParser API Reference ##
+
+### AstDoculispParser API Reference ###
+
+The **AstDoculispParser** is the **fourth stage** of the DoculispTypeScript compilation pipeline that converts generic Abstract Syntax Trees (AST) into Doculisp-specific structured data. It transforms the parsed AST nodes from AstParser into semantic Doculisp structures that understand the meaning and relationships of Doculisp constructs like headers, sections, includes, and table of contents.
+
+### Integration Patterns ###
+
+**AstDoculispParser** serves as the **fourth stage** in the parsing pipeline, consuming AstParser output to generate Doculisp-specific structures for further processing:
+
+```typescript
+async function parseToDoculispPipeline(text: string, projectLocation: IProjectLocation): Promise<IDoculisp | IEmptyDoculisp | null> {
+    const container = await containerPromise;
+
+    // Stage 1: Parse document structure (DocumentParse)
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const documentMap = documentParser(text, projectLocation);
+
+    if (!documentMap.success) {
+        console.error('Document parsing failed:', documentMap.message);
+        return null;
+    }
+
+    // Stage 2: Tokenize the content (Tokenizer)
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const tokenResult = tokenizer(documentMap);
+
+    if (!tokenResult.success) {
+        console.error('Tokenization failed:', tokenResult.message);
+        return null;
+    }
+
+    // Stage 3: Parse tokens into AST (AstParser)
+    const astParser = container.buildAs<IAstParser>('astParser');
+    const astResult = astParser.parse(tokenResult);
+
+    if (!astResult.success) {
+        console.error('AST parsing failed:', astResult.message);
+        return null;
+    }
+
+    // Stage 4: Parse AST into Doculisp structures (AstDoculispParser)
+    const doculispParser = container.buildAs<IDoculispParser>('astDoculispParse');
+    const variableTable = container.buildAs<IVariableTable>('variableTable');
+    const doculispResult = doculispParser.parse(astResult, variableTable);
+
+    if (!doculispResult.success) {
+        console.error('Doculisp parsing failed:', doculispResult.message);
+        return null;
+    }
+
+    // Note: Additional pipeline stages exist beyond Doculisp structure generation
+    return doculispResult.value;
+}
+```
+
+#### Overview ####
+
+**AstDoculispParser** is the **fourth stage** in the Doculisp compilation pipeline that processes generic AST structures and produces semantic Doculisp data structures. It understands the meaning of Doculisp constructs and transforms them into structured objects that can be used for document generation, validation, and manipulation. This parser bridges the gap between syntax (AST) and semantics (Doculisp structures).
+
+**Pipeline Position:** AstDoculispParser is stage 4 in the multi-stage compilation pipeline (DocumentParse → Tokenizer → AstParser → AstDoculispParser → ...)
+
+**Primary Responsibilities:**
+
+- Parse `section-meta` blocks into title and include structures
+- Transform dynamic headers (`#`, `##`, etc.) into semantic header objects
+- Process `content` blocks and table of contents configurations
+- Handle cross-reference links with `get-path` commands
+- Validate Doculisp syntax and structure rules
+- Manage variable tables for ID tracking and cross-referencing
+
+#### Container Registration ####
+
+Register AstDoculispParser with the dependency injection container:
+
+```typescript
+{
+    name: 'astDoculispParse',
+    singleton: false,
+    dependencies: ['internals', 'util', 'trimArray', 'pathConstructor', 'textHelpers']
+}
+```
+
+Access it from the container:
+```typescript
+const container = await containerPromise;
+const doculispParser = container.buildAs<IDoculispParser>('astDoculispParse');
+```
+
+#### Type Definitions ####
+
+Understanding the types used by AstDoculispParser is essential for working with the generated Doculisp structures.
+
+##### Core Interface #####
+
+```typescript
+interface IDoculispParser {
+    parse(tokenResults: Result<RootAst | IAstEmpty>, variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp>;
+}
+```
+
+The `IDoculispParser` provides a single `parse` method that transforms AST structures into Doculisp-specific semantic objects.
+
+##### Input Types #####
+
+**Primary Inputs:**
+
+```typescript
+// AST result from previous parsing stage
+tokenResults: Result<RootAst | IAstEmpty>
+
+// Variable table for ID tracking and cross-references
+variableTable: IVariableTable
+```
+
+**RootAst Structure (from AstParser):**
+```typescript
+type RootAst = {
+    readonly ast: CoreAst[];
+    readonly location: IProjectLocation;
+    readonly type: 'RootAst';
+}
+```
+
+**IVariableTable Interface:**
+```typescript
+interface IVariableTable {
+    hasKey(key: string): boolean;
+    getValue(key: string): IVariableValue | undefined;
+    addGlobalValue(key: string, value: IVariableValue): void;
+    // ... other methods
+}
+```
+
+##### Output Types #####
+
+**Return Value:**
+```typescript
+Result<IDoculisp | IEmptyDoculisp>
+```
+
+**IDoculisp Structure:**
+```typescript
+interface IDoculisp {
+    projectLocation: IProjectLocation;
+    section: ISectionWriter;
+    type: 'doculisp-root';
+}
+```
+
+**ISectionWriter Structure:**
+```typescript
+interface ISectionWriter extends ILocationSortable {
+    readonly doculisp: DoculispPart[];
+    readonly include: ILoad[];
+    readonly type: 'doculisp-section';
+}
+```
+
+**IEmptyDoculisp Structure:**
+```typescript
+interface IEmptyDoculisp {
+    readonly type: 'doculisp-empty';
+}
+```
+
+##### Doculisp Part Types #####
+
+The parser generates various Doculisp-specific structures:
+
+**IWrite (Text Content):**
+```typescript
+interface IWrite extends ILocationSortable {
+    readonly type: 'doculisp-write';
+    readonly value: string;
+}
+```
+
+**ITitle (Section Titles):**
+```typescript
+interface ITitle extends ILocationSortable {
+    readonly type: 'doculisp-title';
+    readonly title: string;
+    readonly label: string;
+    readonly id?: string | undefined;
+    readonly ref_link: string;
+    readonly subtitle?: string | undefined;
+}
+```
+
+**IHeader (Dynamic Headers):**
+```typescript
+interface IHeader extends ILocationSortable {
+    readonly type: 'doculisp-header';
+    readonly depthCount: number;
+    readonly text: string;
+    readonly id?: string | undefined;
+}
+```
+
+**ILoad (Include References):**
+```typescript
+interface ILoad extends ILocationSortable {
+    readonly type: 'doculisp-load';
+    readonly path: IPath;
+    readonly sectionLabel: string;
+    document: ISectionWriter | false; //false means it has not been loaded yet.
+}
+```
+
+**ITableOfContents (TOC Configuration):**
+```typescript
+interface ITableOfContents extends ILocationSortable {
+    readonly type: 'doculisp-toc';
+    readonly label: string | false;
+    readonly bulletStyle: DoculispBulletStyle;
+}
+```
+
+**IContentLocation (Content Placement):**
+```typescript
+interface IContentLocation extends ILocationSortable {
+    readonly type: 'doculisp-content';
+}
+```
+
+**IPathId (Cross-references):**
+```typescript
+interface IPathId extends ILocationSortable {
+    readonly type: 'doculisp-path-id';
+    readonly id: string;
+}
+```
+
+#### Basic Usage ####
+
+##### Simple Parsing #####
+
+Parse an AST result into Doculisp structures:
+
+```typescript
+const container = await containerPromise;
+const doculispParser = container.buildAs<IDoculispParser>('astDoculispParse');
+const variableTable = container.buildAs<IVariableTable>('variableTable');
+
+// Assume astResult is a Result<RootAst | IAstEmpty> from AstParser
+const doculispResult = doculispParser.parse(astResult, variableTable);
+
+if (doculispResult.success) {
+    if (doculispResult.value.type === 'doculisp-root') {
+        // Process the Doculisp structures
+        const section = doculispResult.value.section;
+
+        console.log(`Found ${section.doculisp.length} Doculisp parts`);
+        console.log(`Found ${section.include.length} include references`);
+
+        // Process each part
+        section.doculisp.forEach(part => {
+            console.log(`Part type: ${part.type}`);
+        });
+    } else {
+        // Handle empty document
+        console.log('Document is empty');
+    }
+} else {
+    console.error('Doculisp parsing failed:', doculispResult.message);
+}
+```
+
+##### Processing Different Part Types #####
+
+Handle various Doculisp part types:
+
+```typescript
+function processDoculispPart(part: DoculispPart): void {
+    switch (part.type) {
+        case 'doculisp-write':
+            // Handle text content
+            console.log(`Text: ${part.value}`);
+            break;
+
+        case 'doculisp-header':
+            // Handle dynamic headers
+            console.log(`Header (depth ${part.depthCount}): ${part.text}`);
+            if (part.id) {
+                console.log(`  ID: ${part.id}`);
+            }
+            break;
+
+        case 'doculisp-title':
+            // Handle section titles
+            console.log(`Title: ${part.title}`);
+            console.log(`  Label: ${part.label}`);
+            console.log(`  Ref Link: ${part.ref_link}`);
+            if (part.subtitle) {
+                console.log(`  Subtitle: ${part.subtitle}`);
+            }
+            break;
+
+        case 'doculisp-toc':
+            // Handle table of contents
+            console.log(`TOC: ${part.label || 'No label'}`);
+            console.log(`  Style: ${part.bulletStyle}`);
+            break;
+
+        case 'doculisp-content':
+            // Handle content placement markers
+            console.log('Content placement marker');
+            break;
+
+        case 'doculisp-path-id':
+            // Handle cross-references
+            console.log(`Cross-reference: ${part.id}`);
+            break;
+    }
+}
+```
+
+#### Advanced Usage ####
+
+##### Error Handling Patterns #####
+
+Robust error handling for Doculisp parsing:
+
+```typescript
+function parseWithErrorHandling(astResult: Result<RootAst | IAstEmpty>, variableTable: IVariableTable): void {
+    const container = await containerPromise;
+    const doculispParser = container.buildAs<IDoculispParser>('astDoculispParse');
+
+    try {
+        const result = doculispParser.parse(astResult, variableTable);
+
+        if (!result.success) {
+            console.error(`Doculisp parse error: ${result.message}`);
+            if (result.documentPath) {
+                console.error(`At: ${result.documentPath.fullName}`);
+            }
+            return;
+        }
+
+        // Process successful result
+        if (result.value.type === 'doculisp-empty') {
+            console.log('Document contains no Doculisp content');
+        } else {
+            console.log(`Parsed Doculisp document with ${result.value.section.doculisp.length} parts`);
+        }
+    } catch (error) {
+        console.error('Unexpected Doculisp parsing error:', error);
+    }
+}
+```
+
+##### Variable Table Management #####
+
+Working with variable tables for cross-references:
+
+```typescript
+function parseWithVariableTracking(): void {
+    const container = await containerPromise;
+    const doculispParser = container.buildAs<IDoculispParser>('astDoculispParse');
+    const variableTable = container.buildAs<IVariableTable>('variableTable');
+
+    // Parse document with variable tracking
+    const result = doculispParser.parse(astResult, variableTable);
+
+    if (result.success && result.value.type === 'doculisp-root') {
+        // Check for header IDs that were registered
+        result.value.section.doculisp.forEach(part => {
+            if (part.type === 'doculisp-header' && part.id) {
+                if (variableTable.hasKey(part.id)) {
+                    console.log(`Header ID '${part.id}' is available for cross-referencing`);
+                }
+            }
+        });
+
+        // Process cross-references
+        result.value.section.doculisp.forEach(part => {
+            if (part.type === 'doculisp-path-id') {
+                if (variableTable.hasKey(part.id)) {
+                    console.log(`Found cross-reference to '${part.id}'`);
+                } else {
+                    console.warn(`Cross-reference to undefined ID '${part.id}'`);
+                }
+            }
+        });
+    }
+}
+```
+
+##### Structure Analysis #####
+
+Analyze document structure and hierarchy:
+
+```typescript
+function analyzeDocumentStructure(doculisp: IDoculisp): void {
+    const analysis = {
+        titles: 0,
+        headers: 0,
+        includes: 0,
+        tocs: 0,
+        crossRefs: 0,
+        maxHeaderDepth: 0,
+        headersByDepth: {} as Record<number, number>
+    };
+
+    // Analyze Doculisp parts
+    doculisp.section.doculisp.forEach(part => {
+        switch (part.type) {
+            case 'doculisp-title':
+                analysis.titles++;
+                break;
+            case 'doculisp-header':
+                analysis.headers++;
+                analysis.maxHeaderDepth = Math.max(analysis.maxHeaderDepth, part.depthCount);
+                analysis.headersByDepth[part.depthCount] = (analysis.headersByDepth[part.depthCount] || 0) + 1;
+                break;
+            case 'doculisp-toc':
+                analysis.tocs++;
+                break;
+            case 'doculisp-path-id':
+                analysis.crossRefs++;
+                break;
+        }
+    });
+
+    // Analyze includes
+    analysis.includes = doculisp.section.include.length;
+
+    console.log('Document structure analysis:', analysis);
+
+    // Validate structure
+    if (analysis.titles > 1) {
+        console.warn('Multiple titles found - only one title per document is recommended');
+    }
+
+    if (analysis.includes > 0 && analysis.tocs === 0) {
+        console.warn('Document has includes but no table of contents');
+    }
+}
+```
+
+#### Doculisp Structure Patterns ####
+
+##### Section Meta Processing #####
+
+Understanding how section-meta blocks are processed:
+
+```typescript
+// Input AST (conceptual)
+const sectionMetaAst = {
+    type: 'ast-container',
+    value: 'section-meta',
+    subStructure: [
+        { type: 'ast-command', value: 'title', parameter: { value: 'My Section' } },
+        { type: 'ast-command', value: 'subtitle', parameter: { value: 'A comprehensive guide' } },
+        { type: 'ast-command', value: 'author', parameter: { value: 'John Doe' } },
+        { type: 'ast-command', value: 'id', parameter: { value: 'my-document' } },
+        {
+            type: 'ast-container',
+            value: 'include',
+            subStructure: [
+                { type: 'ast-command', value: 'Section-One', parameter: { value: './section1.md' } },
+                { type: 'ast-command', value: 'Section-Two', parameter: { value: './section2.md' } }
+            ]
+        }
+    ]
+};
+
+// Resulting Doculisp structures
+const resultingStructures = [
+    {
+        type: 'doculisp-title',
+        title: 'My Section',
+        subtitle: 'A comprehensive guide',
+        label: '# My Section',
+        ref_link: '#my-section',
+        id: 'my-section'
+    },
+    {
+        type: 'doculisp-load',
+        sectionLabel: 'Section One',
+        path: './section1.md'
+    },
+    {
+        type: 'doculisp-load',
+        sectionLabel: 'Section Two',
+        path: './section2.md'
+    }
+];
+```
+
+##### Dynamic Header Processing #####
+
+How dynamic headers are transformed:
+
+```typescript
+// Input AST
+const headerAst = {
+    type: 'ast-command',
+    value: '##',
+    parameter: { value: 'Installation Guide' }
+};
+
+// Resulting Doculisp structure
+const headerStructure = {
+    type: 'doculisp-header',
+    depthCount: 3, // documentDepth (1) + header level (2) = 3
+    text: 'Installation Guide',
+    id: undefined // No ID specified
+};
+
+// With ID specified
+const headerWithIdAst = {
+    type: 'ast-command',
+    value: '##installation',
+    parameter: { value: 'Installation Guide' }
+};
+
+const headerWithIdStructure = {
+    type: 'doculisp-header',
+    depthCount: 3,
+    text: 'Installation Guide',
+    id: 'installation'
+};
+```
+
+##### Table of Contents Processing #####
+
+How content and TOC blocks are processed:
+
+```typescript
+// Input AST
+const contentAst = {
+    type: 'ast-container',
+    value: 'content',
+    subStructure: [
+        {
+            type: 'ast-container',
+            value: 'toc',
+            subStructure: [
+                { type: 'ast-command', value: 'label', parameter: { value: 'Table of Contents' } },
+                { type: 'ast-command', value: 'style', parameter: { value: 'numbered-labeled' } }
+            ]
+        }
+    ]
+};
+
+// Resulting Doculisp structures
+const contentStructures = [
+    {
+        type: 'doculisp-content'
+    },
+    {
+        type: 'doculisp-toc',
+        label: 'Table of Contents',
+        bulletStyle: 'numbered-labeled'
+    }
+];
+```
+
+#### Integration Patterns ####
+
+##### Pipeline Integration #####
+
+**AstDoculispParser** serves as the **fourth stage** in the parsing pipeline, consuming AstParser output to generate Doculisp structures for further processing:
+
+```typescript
+async function parseToDoculispPipeline(text: string, projectLocation: IProjectLocation): Promise<IDoculisp | IEmptyDoculisp | null> {
+    const container = await containerPromise;
+
+    // Stage 1: Parse document structure (DocumentParse)
+    const documentParser = container.buildAs<DocumentParser>('documentParse');
+    const documentMap = documentParser(text, projectLocation);
+
+    if (!documentMap.success) {
+        console.error('Document parsing failed:', documentMap.message);
+        return null;
+    }
+
+    // Stage 2: Tokenize the content (Tokenizer)
+    const tokenizer = container.buildAs<TokenFunction>('tokenizer');
+    const tokenResult = tokenizer(documentMap);
+
+    if (!tokenResult.success) {
+        console.error('Tokenization failed:', tokenResult.message);
+        return null;
+    }
+
+    // Stage 3: Parse tokens into AST (AstParser)
+    const astParser = container.buildAs<IAstParser>('astParser');
+    const astResult = astParser.parse(tokenResult);
+
+    if (!astResult.success) {
+        console.error('AST parsing failed:', astResult.message);
+        return null;
+    }
+
+    // Stage 4: Parse AST into Doculisp structures (AstDoculispParser)
+    const doculispParser = container.buildAs<IDoculispParser>('astDoculispParse');
+    const variableTable = container.buildAs<IVariableTable>('variableTable');
+    const doculispResult = doculispParser.parse(astResult, variableTable);
+
+    if (!doculispResult.success) {
+        console.error('Doculisp parsing failed:', doculispResult.message);
+        return null;
+    }
+
+    // Note: Additional pipeline stages exist beyond Doculisp structure generation
+    return doculispResult.value;
+}
+```
+
+##### Type Guards #####
+
+Implement type guards for safe Doculisp structure processing:
+
+```typescript
+function isDoculispRoot(result: IDoculisp | IEmptyDoculisp): result is IDoculisp {
+    return result.type === 'doculisp-root';
+}
+
+function isDoculispTitle(part: DoculispPart): part is ITitle {
+    return part.type === 'doculisp-title';
+}
+
+function isDoculispHeader(part: DoculispPart): part is IHeader {
+    return part.type === 'doculisp-header';
+}
+
+function isDoculispToc(part: DoculispPart): part is ITableOfContents {
+    return part.type === 'doculisp-toc';
+}
+
+// Usage
+const doculispResult = doculispParser.parse(astResult, variableTable);
+if (doculispResult.success && isDoculispRoot(doculispResult.value)) {
+    doculispResult.value.section.doculisp.forEach(part => {
+        if (isDoculispTitle(part)) {
+            console.log(`Title: ${part.title} (ID: ${part.id || 'none'})`);
+        } else if (isDoculispHeader(part)) {
+            console.log(`Header (${part.depthCount}): ${part.text}`);
+        } else if (isDoculispToc(part)) {
+            console.log(`TOC: ${part.label} (${part.bulletStyle})`);
+        }
+    });
+}
+```
+
+#### Common Patterns ####
+
+##### Empty Document Handling #####
+
+Handle empty documents gracefully:
+
+```typescript
+function processDoculispResult(doculispResult: Result<IDoculisp | IEmptyDoculisp>): void {
+    if (!doculispResult.success) {
+        throw new Error(`Doculisp parsing failed: ${doculispResult.message}`);
+    }
+
+    if (doculispResult.value.type === 'doculisp-empty') {
+        console.log('Document is empty - no Doculisp content to process');
+        return;
+    }
+
+    // Process the Doculisp structures
+    const doculisp = doculispResult.value;
+    console.log(`Processing document with ${doculisp.section.doculisp.length} parts`);
+    doculisp.section.doculisp.forEach(processDoculispPart);
+}
+```
+
+##### Structure Extraction #####
+
+Extract specific structures from the Doculisp result:
+
+```typescript
+function extractStructures(doculisp: IDoculisp) {
+    const structures = {
+        titles: doculisp.section.doculisp.filter(isDoculispTitle),
+        headers: doculisp.section.doculisp.filter(isDoculispHeader),
+        tocs: doculisp.section.doculisp.filter(isDoculispToc),
+        includes: doculisp.section.include
+    };
+
+    return structures;
+}
+
+// Usage
+const doculispResult = doculispParser.parse(astResult, variableTable);
+if (doculispResult.success && doculispResult.value.type === 'doculisp-root') {
+    const structures = extractStructures(doculispResult.value);
+
+    console.log(`Found ${structures.titles.length} titles`);
+    console.log(`Found ${structures.headers.length} headers`);
+    console.log(`Found ${structures.tocs.length} TOCs`);
+    console.log(`Found ${structures.includes.length} includes`);
+}
+```
+
+##### Cross-Reference Resolution #####
+
+Work with cross-references and variable tables:
+
+```typescript
+function resolveCrossReferences(doculisp: IDoculisp, variableTable: IVariableTable): void {
+    const crossRefs = doculisp.section.doculisp.filter(part => part.type === 'doculisp-path-id') as IPathId[];
+
+    crossRefs.forEach(ref => {
+        if (variableTable.hasKey(ref.id)) {
+            const variable = variableTable.getValue(ref.id);
+            console.log(`Cross-reference '${ref.id}' resolves to:`, variable);
+        } else {
+            console.warn(`Unresolved cross-reference: '${ref.id}'`);
+        }
+    });
+}
+```
+
+#### Performance Considerations ####
+
+- **Non-singleton**: Each parse operation gets a fresh parser instance
+- **Variable table management**: Ensure proper variable table initialization and cleanup
+- **Memory efficiency**: Doculisp structures maintain minimal required data
+- **Location tracking**: All structures include precise location information for debugging
+- **Error propagation**: Parse errors include detailed semantic context
+
+#### Dependencies ####
+
+AstDoculispParser requires these container dependencies:
+
+- **internals**: Internal parsing utilities and array parsers
+- **util**: Core utilities for Result types and location handling
+- **trimArray**: Array manipulation utilities for AST consumption
+- **pathConstructor**: Path construction utilities for include processing
+- **textHelpers**: Text manipulation utilities for link generation
+
+#### Related Components ####
+
+- **AstParser**: Provides input for AstDoculispParser (RootAst structures)
+- **VariableTable**: Manages ID tracking and cross-reference resolution
+- **IncludeBuilder**: Often consumes AstDoculispParser output for include processing
+- **Controller**: High-level API that orchestrates AstDoculispParser with other components
+- **DocumentGenerator**: Uses Doculisp structures for final document generation
 
 ## Usage Examples ##
 
