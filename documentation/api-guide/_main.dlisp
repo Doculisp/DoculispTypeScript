@@ -12,6 +12,7 @@
         (Compiler-Usage ./compilation-instructions/tokenizer.md)
         (Compiler-Usage ./compilation-instructions/ast-parser.md)
         (Compiler-Usage ./compilation-instructions/ast-doculisp-parser.md)
+        (Compiler-Usage ./compilation-instructions/string-writer.md)
         (Examples ./examples.md)
         (Testing ./testing-patterns.md)
         (Advanced ./advanced-usage.md)
