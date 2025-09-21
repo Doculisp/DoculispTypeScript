@@ -1,6 +1,6 @@
-# Testing Patterns
+<!-- (dl (section-meta Testing Patterns)) -->
 
-## Creating Testable Containers
+<!-- (dl (# Creating Testable Containers)) -->
 
 The container system provides excellent support for testing through dependency replacement:
 
@@ -44,9 +44,9 @@ describe('My Service Tests', () => {
 });
 ```
 
-## Mocking Dependencies
+<!-- (dl (# Mocking Dependencies)) -->
 
-### Simple Value Replacement
+<!-- (dl (## Simple Value Replacement)) -->
 
 ```typescript
 // Replace with a simple mock object
@@ -58,7 +58,7 @@ const mockUtil = {
 testContainer.replaceValue(mockUtil, 'util');
 ```
 
-### Builder Function Replacement
+<!-- (dl (## Builder Function Replacement)) -->
 
 ```typescript
 // Replace with a builder function
@@ -69,7 +69,7 @@ testContainer.replaceBuilder(
 );
 ```
 
-## Testing Parser Pipeline
+<!-- (dl (# Testing Parser Pipeline)) -->
 
 Testing the complete parsing pipeline:
 
@@ -115,7 +115,7 @@ describe('Parser Pipeline', () => {
 });
 ```
 
-## Variable Table Testing
+<!-- (dl (# Variable Table Testing)) -->
 
 Testing variable management (limited to system variables and IDs):
 
@@ -152,7 +152,7 @@ describe('Variable Table', () => {
 });
 ```
 
-## Error Scenario Testing
+<!-- (dl (# Error Scenario Testing)) -->
 
 Testing error conditions and edge cases:
 
@@ -203,7 +203,7 @@ describe('Error Handling', () => {
 });
 ```
 
-## Integration Testing
+<!-- (dl (# Integration Testing)) -->
 
 Testing complete workflows:
 

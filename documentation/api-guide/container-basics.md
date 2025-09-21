@@ -1,6 +1,6 @@
-# Container Basics
+<!-- (dl (section-meta Container Basics)) -->
 
-## Building Objects
+<!-- (dl (# Building Objects)) -->
 
 The primary way to get objects from the container is using the `build` methods:
 
@@ -15,11 +15,11 @@ const tokenizer = container.build('tokenizer');
 const parser = container.buildAs<IAstParser>('astParser');
 ```
 
-## Registration Patterns
+<!-- (dl (# Registration Patterns)) -->
 
 Objects are registered automatically by the module loader, but you can also register manually:
 
-### Registering Values
+<!-- (dl (## Registering Values)) -->
 
 ```typescript
 // Get the container first (container is async)
@@ -33,7 +33,7 @@ const logger = { name: 'logger', log: (msg: string) => console.log(msg) };
 container.registerValue(logger);
 ```
 
-### Registering Builders
+<!-- (dl (## Registering Builders)) -->
 
 ```typescript
 // Get the container first (container is async)
@@ -48,7 +48,7 @@ container.registerBuilder(
 );
 ```
 
-### Registration Interface
+<!-- (dl (## Registration Interface)) -->
 
 All registered modules implement the `IRegisterable` interface:
 
@@ -61,7 +61,7 @@ interface IRegisterable {
 }
 ```
 
-## Error Handling
+<!-- (dl (# Error Handling)) -->
 
 The container uses the project's `Result<T>` pattern for error handling:
 
@@ -74,7 +74,7 @@ if (!result.success) {
 }
 ```
 
-## Circular Dependencies
+<!-- (dl (# Circular Dependencies)) -->
 
 The container automatically detects circular dependencies and throws descriptive errors:
 

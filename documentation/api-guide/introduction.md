@@ -1,8 +1,8 @@
-# Introduction
+<!-- (dl (section-meta Introduction)) -->
 
 The DoculispTypeScript project uses a custom **Dependency Injection (DI) Container** to manage object creation, dependencies, and lifecycle. This guide provides comprehensive information about how to work with the container system and understand the core objects available in the compilation pipeline.
 
-## Why Dependency Injection?
+<!-- (dl (# Why Dependency Injection?)) -->
 
 The DI container provides several key benefits:
 
@@ -11,7 +11,7 @@ The DI container provides several key benefits:
 - **Lifecycle Management**: Automatic singleton management and dependency resolution  
 - **Circular Dependency Detection**: Built-in protection against dependency cycles
 
-## Container Architecture
+<!-- (dl (# Container Architecture)) -->
 
 The container system consists of several interfaces:
 
@@ -20,7 +20,7 @@ The container system consists of several interfaces:
 - `IDependencyContainer`: Registering new modules
 - `ITestableContainer`: Testing-specific features like dependency replacement
 
-## Getting Started
+<!-- (dl (# Getting Started)) -->
 
 The container is automatically populated with all available modules when the application starts. You can access it through:
 
@@ -33,7 +33,7 @@ const parser = container.buildAs<ITokenizer>('tokenizer');
 
 The container automatically resolves all dependencies and ensures proper initialization order.
 
-## Important Note About Variables
+<!-- (dl (# Important Note About Variables)) -->
 
 The Doculisp compiler has very limited variable support. The variable table only supports:
 

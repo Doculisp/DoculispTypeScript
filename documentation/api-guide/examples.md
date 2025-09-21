@@ -1,6 +1,6 @@
-# Usage Examples
+<!-- (dl (section-meta Usage Examples)) -->
 
-## Basic Compilation Pipeline
+<!-- (dl (# Basic Compilation Pipeline)) -->
 
 Here's how to use the container to perform a complete document compilation:
 
@@ -26,7 +26,7 @@ if (result.success) {
 }
 ```
 
-## Parsing Text Manually
+<!-- (dl (# Parsing Text Manually)) -->
 
 To parse Doculisp text without file I/O:
 
@@ -67,7 +67,7 @@ if (!doculisp.success) {
 console.log('Parsed successfully:', doculisp.value);
 ```
 
-## Working with Variables
+<!-- (dl (# Working with Variables)) -->
 
 The variable table in Doculisp has very limited functionality. It primarily manages:
 
@@ -96,7 +96,7 @@ if (hasSource) {
 // Custom string variables are NOT supported - only system-generated ones
 ```
 
-## File Operations
+<!-- (dl (# File Operations)) -->
 
 Working with files through the container:
 
@@ -129,7 +129,7 @@ if (exists.success && exists.value) {
 }
 ```
 
-## Document Structure Analysis
+<!-- (dl (# Document Structure Analysis)) -->
 
 Analyzing document structure and relationships:
 
@@ -157,7 +157,7 @@ if (analysis.success) {
 }
 ```
 
-## String Generation
+<!-- (dl (# String Generation)) -->
 
 Generating markdown output from parsed structures:
 

@@ -11,13 +11,18 @@
 
 ## Contents ##
 
+* [Introduction](#introduction)
+* [Container Basics](#container-basics)
+* [Core Objects Reference](#core-objects-reference)
+* [Usage Examples](#usage-examples)
+* [Testing Patterns](#testing-patterns)
+* [Advanced Usage](#advanced-usage)
 
-
-# Introduction
+## Introduction ##
 
 The DoculispTypeScript project uses a custom **Dependency Injection (DI) Container** to manage object creation, dependencies, and lifecycle. This guide provides comprehensive information about how to work with the container system and understand the core objects available in the compilation pipeline.
 
-## Why Dependency Injection?
+### Why Dependency Injection? ###
 
 The DI container provides several key benefits:
 
@@ -26,7 +31,7 @@ The DI container provides several key benefits:
 - **Lifecycle Management**: Automatic singleton management and dependency resolution
 - **Circular Dependency Detection**: Built-in protection against dependency cycles
 
-## Container Architecture
+### Container Architecture ###
 
 The container system consists of several interfaces:
 
@@ -35,7 +40,7 @@ The container system consists of several interfaces:
 - `IDependencyContainer`: Registering new modules
 - `ITestableContainer`: Testing-specific features like dependency replacement
 
-## Getting Started
+### Getting Started ###
 
 The container is automatically populated with all available modules when the application starts. You can access it through:
 
@@ -48,7 +53,7 @@ const parser = container.buildAs<ITokenizer>('tokenizer');
 
 The container automatically resolves all dependencies and ensures proper initialization order.
 
-## Important Note About Variables
+### Important Note About Variables ###
 
 The Doculisp compiler has very limited variable support. The variable table only supports:
 
@@ -57,9 +62,9 @@ The Doculisp compiler has very limited variable support. The variable table only
 
 **Custom string variables are NOT supported** - you cannot add arbitrary string variables for use in documents.
 
-# Container Basics
+## Container Basics ##
 
-## Building Objects
+### Building Objects ###
 
 The primary way to get objects from the container is using the `build` methods:
 
@@ -74,11 +79,11 @@ const tokenizer = container.build('tokenizer');
 const parser = container.buildAs<IAstParser>('astParser');
 ```
 
-## Registration Patterns
+### Registration Patterns ###
 
 Objects are registered automatically by the module loader, but you can also register manually:
 
-### Registering Values
+#### Registering Values ####
 
 ```typescript
 // Get the container first (container is async)
@@ -92,7 +97,7 @@ const logger = { name: 'logger', log: (msg: string) => console.log(msg) };
 container.registerValue(logger);
 ```
 
-### Registering Builders
+#### Registering Builders ####
 
 ```typescript
 // Get the container first (container is async)
@@ -107,7 +112,7 @@ container.registerBuilder(
 );
 ```
 
-### Registration Interface
+#### Registration Interface ####
 
 All registered modules implement the `IRegisterable` interface:
 
@@ -120,7 +125,7 @@ interface IRegisterable {
 }
 ```
 
-## Error Handling
+### Error Handling ###
 
 The container uses the project's `Result<T>` pattern for error handling:
 
@@ -133,7 +138,7 @@ if (!result.success) {
 }
 ```
 
-## Circular Dependencies
+### Circular Dependencies ###
 
 The container automatically detects circular dependencies and throws descriptive errors:
 
@@ -141,9 +146,9 @@ The container automatically detects circular dependencies and throws descriptive
 Error: Circular dependencies between ("moduleA" => "moduleB" => "moduleA")
 ```
 
-# Core Objects Reference
+## Core Objects Reference ##
 
-## Parser Pipeline Objects
+### Parser Pipeline Objects ###
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
@@ -153,21 +158,21 @@ Error: Circular dependencies between ("moduleA" => "moduleB" => "moduleA")
 | `astProjectParse` | `IAstProjectParser` | Parses `.dlproj` project files |
 | `documentParse` | `IDocumentParser` | Extracts Doculisp blocks from markdown documents |
 
-## Output Generation Objects
+### Output Generation Objects ###
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
 | `stringWriter` | `IStringWriter` | Generates final markdown output from parsed structures |
 | `stringBuilder` | `IStringBuilder` | Utility for building strings with proper formatting |
 
-## File and Path Objects
+### File and Path Objects ###
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
 | `fileHandler` | `IFileWriter` | File system operations (read, write, exists) |
 | `pathConstructor` | `IPathConstructor` | Creates and manipulates `IPath` objects |
 
-## Data Management Objects
+### Data Management Objects ###
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
@@ -175,14 +180,14 @@ Error: Circular dependencies between ("moduleA" => "moduleB" => "moduleA")
 | `includeBuilder` | `IIncludeBuilder` | Processes include statements and builds document trees |
 | `structure` | `IStructure` | Analyzes document structure and relationships |
 
-## Control and Orchestration Objects
+### Control and Orchestration Objects ###
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
 | `controller` | `IController` | Main compilation controller with compile/test methods |
 | `internals` | `IInternals` | Internal processing utilities and helpers |
 
-## Utility Objects
+### Utility Objects ###
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
@@ -193,23 +198,25 @@ Error: Circular dependencies between ("moduleA" => "moduleB" => "moduleA")
 | `searches` | `ISearches` | Search and lookup utilities |
 | `version` | `IVersion` | Version information and management |
 
-## Object Lifecycle
+### Object Lifecycle ###
 
 Most objects are registered as **singletons**, meaning:
 - One instance per container
 - Dependencies are resolved once
 - State is maintained across calls
 
-## Key Interface Examples
+### Key Interface Examples ###
 
-### ITokenizer
+#### ITokenizer ####
+
 ```typescript
 interface ITokenizer {
     tokenize(input: string, path: IPath): Result<Token[]>;
 }
 ```
 
-### IVariableTable
+#### IVariableTable ####
+
 ```typescript
 interface IVariableTable {
     getValue<T extends IVariable>(key: string): Result<T>;
@@ -220,7 +227,8 @@ interface IVariableTable {
 }
 ```
 
-### IController
+#### IController ####
+
 ```typescript
 interface IController {
     compile(sourcePath: IPath, outputPath?: IPath): Result<string>;
@@ -228,9 +236,9 @@ interface IController {
 }
 ```
 
-# Usage Examples
+## Usage Examples ##
 
-## Basic Compilation Pipeline
+### Basic Compilation Pipeline ###
 
 Here's how to use the container to perform a complete document compilation:
 
@@ -256,7 +264,7 @@ if (result.success) {
 }
 ```
 
-## Parsing Text Manually
+### Parsing Text Manually ###
 
 To parse Doculisp text without file I/O:
 
@@ -297,7 +305,7 @@ if (!doculisp.success) {
 console.log('Parsed successfully:', doculisp.value);
 ```
 
-## Working with Variables
+### Working with Variables ###
 
 The variable table in Doculisp has very limited functionality. It primarily manages:
 
@@ -326,7 +334,7 @@ if (hasSource) {
 // Custom string variables are NOT supported - only system-generated ones
 ```
 
-## File Operations
+### File Operations ###
 
 Working with files through the container:
 
@@ -359,7 +367,7 @@ if (exists.success && exists.value) {
 }
 ```
 
-## Document Structure Analysis
+### Document Structure Analysis ###
 
 Analyzing document structure and relationships:
 
@@ -387,7 +395,7 @@ if (analysis.success) {
 }
 ```
 
-## String Generation
+### String Generation ###
 
 Generating markdown output from parsed structures:
 
@@ -417,9 +425,9 @@ if (markdown.success) {
 }
 ```
 
-# Testing Patterns
+## Testing Patterns ##
 
-## Creating Testable Containers
+### Creating Testable Containers ###
 
 The container system provides excellent support for testing through dependency replacement:
 
@@ -463,9 +471,9 @@ describe('My Service Tests', () => {
 });
 ```
 
-## Mocking Dependencies
+### Mocking Dependencies ###
 
-### Simple Value Replacement
+#### Simple Value Replacement ####
 
 ```typescript
 // Replace with a simple mock object
@@ -477,7 +485,7 @@ const mockUtil = {
 testContainer.replaceValue(mockUtil, 'util');
 ```
 
-### Builder Function Replacement
+#### Builder Function Replacement ####
 
 ```typescript
 // Replace with a builder function
@@ -488,7 +496,7 @@ testContainer.replaceBuilder(
 );
 ```
 
-## Testing Parser Pipeline
+### Testing Parser Pipeline ###
 
 Testing the complete parsing pipeline:
 
@@ -534,7 +542,7 @@ describe('Parser Pipeline', () => {
 });
 ```
 
-## Variable Table Testing
+### Variable Table Testing ###
 
 Testing variable management (limited to system variables and IDs):
 
@@ -571,7 +579,7 @@ describe('Variable Table', () => {
 });
 ```
 
-## Error Scenario Testing
+### Error Scenario Testing ###
 
 Testing error conditions and edge cases:
 
@@ -622,7 +630,7 @@ describe('Error Handling', () => {
 });
 ```
 
-## Integration Testing
+### Integration Testing ###
 
 Testing complete workflows:
 
@@ -651,9 +659,9 @@ describe('Integration Tests', () => {
 });
 ```
 
-# Advanced Usage
+## Advanced Usage ##
 
-## Custom Module Registration
+### Custom Module Registration ###
 
 You can extend the container by registering your own modules:
 
@@ -694,9 +702,9 @@ container.registerBuilder(
 const processor = container.buildAs<ICustomProcessor>('customProcessor');
 ```
 
-## Container Lifecycle Management
+### Container Lifecycle Management ###
 
-### Manual Module Loading
+#### Manual Module Loading ####
 
 For advanced scenarios, you can manually control module loading:
 
@@ -722,9 +730,9 @@ const logger = customContainer.buildAs<{ log: (msg: string) => void }>('customLo
 logger.log('Hello from custom container!');
 ```
 
-## Performance Considerations
+### Performance Considerations ###
 
-### Singleton Strategy
+#### Singleton Strategy ####
 
 Most objects should be singletons for performance:
 
@@ -747,7 +755,7 @@ container.registerBuilder(
 );
 ```
 
-### Lazy Loading
+#### Lazy Loading ####
 
 The container supports lazy loading - objects are only created when first requested:
 
@@ -769,9 +777,9 @@ const same = container.buildAs<HeavyObject>('heavyObject');
 console.log(heavy === same); // true
 ```
 
-## Error Recovery and Fallbacks
+### Error Recovery and Fallbacks ###
 
-### Graceful Degradation
+#### Graceful Degradation ####
 
 ```typescript
 interface IOptionalService {
@@ -808,9 +816,9 @@ container.registerBuilder(
 );
 ```
 
-## Container Inspection
+### Container Inspection ###
 
-### Debugging and Monitoring
+#### Debugging and Monitoring ####
 
 ```typescript
 // Get list of all registered modules (container is async)
@@ -840,9 +848,9 @@ async function withLogging<T>(moduleName: string): Promise<T> {
 const tokenizer = await withLogging<ITokenizer>('tokenizer');
 ```
 
-## Package Integration
+### Package Integration ###
 
-### External Package Registration
+#### External Package Registration ####
 
 For integrating external packages:
 
@@ -866,9 +874,9 @@ container.registerBuilder(
 );
 ```
 
-## Memory Management
+### Memory Management ###
 
-### Container Cleanup
+#### Container Cleanup ####
 
 For long-running applications:
 
@@ -909,9 +917,9 @@ process.on('exit', () => {
 });
 ```
 
-## Advanced Testing Scenarios
+### Advanced Testing Scenarios ###
 
-### Partial Mock Replacement
+#### Partial Mock Replacement ####
 
 ```typescript
 // Replace only specific methods of a service (container is async)
@@ -926,7 +934,7 @@ const partialMock = {
 testContainer.replaceValue(partialMock, 'fileHandler');
 ```
 
-### State Verification
+#### State Verification ####
 
 ```typescript
 // Create stateful service for testing

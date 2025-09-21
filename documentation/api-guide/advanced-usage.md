@@ -1,6 +1,6 @@
-# Advanced Usage
+<!-- (dl (section-meta Advanced Usage)) -->
 
-## Custom Module Registration
+<!-- (dl (# Custom Module Registration)) -->
 
 You can extend the container by registering your own modules:
 
@@ -41,9 +41,9 @@ container.registerBuilder(
 const processor = container.buildAs<ICustomProcessor>('customProcessor');
 ```
 
-## Container Lifecycle Management
+<!-- (dl (# Container Lifecycle Management)) -->
 
-### Manual Module Loading
+<!-- (dl (## Manual Module Loading)) -->
 
 For advanced scenarios, you can manually control module loading:
 
@@ -69,9 +69,9 @@ const logger = customContainer.buildAs<{ log: (msg: string) => void }>('customLo
 logger.log('Hello from custom container!');
 ```
 
-## Performance Considerations
+<!-- (dl (# Performance Considerations)) -->
 
-### Singleton Strategy
+<!-- (dl (## Singleton Strategy)) -->
 
 Most objects should be singletons for performance:
 
@@ -94,7 +94,7 @@ container.registerBuilder(
 );
 ```
 
-### Lazy Loading
+<!-- (dl (## Lazy Loading)) -->
 
 The container supports lazy loading - objects are only created when first requested:
 
@@ -116,9 +116,9 @@ const same = container.buildAs<HeavyObject>('heavyObject');
 console.log(heavy === same); // true
 ```
 
-## Error Recovery and Fallbacks
+<!-- (dl (# Error Recovery and Fallbacks)) -->
 
-### Graceful Degradation
+<!-- (dl (## Graceful Degradation)) -->
 
 ```typescript
 interface IOptionalService {
@@ -155,9 +155,9 @@ container.registerBuilder(
 );
 ```
 
-## Container Inspection
+<!-- (dl (# Container Inspection)) -->
 
-### Debugging and Monitoring
+<!-- (dl (## Debugging and Monitoring)) -->
 
 ```typescript
 // Get list of all registered modules (container is async)
@@ -187,9 +187,9 @@ async function withLogging<T>(moduleName: string): Promise<T> {
 const tokenizer = await withLogging<ITokenizer>('tokenizer');
 ```
 
-## Package Integration
+<!-- (dl (# Package Integration)) -->
 
-### External Package Registration
+<!-- (dl (## External Package Registration)) -->
 
 For integrating external packages:
 
@@ -213,9 +213,9 @@ container.registerBuilder(
 );
 ```
 
-## Memory Management
+<!-- (dl (# Memory Management)) -->
 
-### Container Cleanup
+<!-- (dl (## Container Cleanup)) -->
 
 For long-running applications:
 
@@ -256,9 +256,9 @@ process.on('exit', () => {
 });
 ```
 
-## Advanced Testing Scenarios
+<!-- (dl (# Advanced Testing Scenarios)) -->
 
-### Partial Mock Replacement
+<!-- (dl (## Partial Mock Replacement)) -->
 
 ```typescript
 // Replace only specific methods of a service (container is async)
@@ -273,7 +273,7 @@ const partialMock = {
 testContainer.replaceValue(partialMock, 'fileHandler');
 ```
 
-### State Verification
+<!-- (dl (## State Verification)) -->
 
 ```typescript
 // Create stateful service for testing

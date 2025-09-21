@@ -1,6 +1,6 @@
-# Core Objects Reference
+<!-- (dl (section-meta Core Objects Reference)) -->
 
-## Parser Pipeline Objects
+<!-- (dl (# Parser Pipeline Objects)) -->
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
@@ -10,21 +10,21 @@
 | `astProjectParse` | `IAstProjectParser` | Parses `.dlproj` project files |
 | `documentParse` | `IDocumentParser` | Extracts Doculisp blocks from markdown documents |
 
-## Output Generation Objects
+<!-- (dl (# Output Generation Objects)) -->
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
 | `stringWriter` | `IStringWriter` | Generates final markdown output from parsed structures |
 | `stringBuilder` | `IStringBuilder` | Utility for building strings with proper formatting |
 
-## File and Path Objects
+<!-- (dl (# File and Path Objects)) -->
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
 | `fileHandler` | `IFileWriter` | File system operations (read, write, exists) |
 | `pathConstructor` | `IPathConstructor` | Creates and manipulates `IPath` objects |
 
-## Data Management Objects
+<!-- (dl (# Data Management Objects)) -->
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
@@ -32,14 +32,14 @@
 | `includeBuilder` | `IIncludeBuilder` | Processes include statements and builds document trees |
 | `structure` | `IStructure` | Analyzes document structure and relationships |
 
-## Control and Orchestration Objects
+<!-- (dl (# Control and Orchestration Objects)) -->
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
 | `controller` | `IController` | Main compilation controller with compile/test methods |
 | `internals` | `IInternals` | Internal processing utilities and helpers |
 
-## Utility Objects
+<!-- (dl (# Utility Objects)) -->
 
 | Container Key | Interface | Description |
 |---------------|-----------|-------------|
@@ -50,23 +50,23 @@
 | `searches` | `ISearches` | Search and lookup utilities |
 | `version` | `IVersion` | Version information and management |
 
-## Object Lifecycle
+<!-- (dl (# Object Lifecycle)) -->
 
 Most objects are registered as **singletons**, meaning:
 - One instance per container
 - Dependencies are resolved once
 - State is maintained across calls
 
-## Key Interface Examples
+<!-- (dl (# Key Interface Examples)) -->
 
-### ITokenizer
+<!-- (dl (## ITokenizer)) -->
 ```typescript
 interface ITokenizer {
     tokenize(input: string, path: IPath): Result<Token[]>;
 }
 ```
 
-### IVariableTable  
+<!-- (dl (## IVariableTable)) -->
 ```typescript
 interface IVariableTable {
     getValue<T extends IVariable>(key: string): Result<T>;
@@ -77,7 +77,7 @@ interface IVariableTable {
 }
 ```
 
-### IController
+<!-- (dl (## IController)) -->
 ```typescript
 interface IController {
     compile(sourcePath: IPath, outputPath?: IPath): Result<string>;
