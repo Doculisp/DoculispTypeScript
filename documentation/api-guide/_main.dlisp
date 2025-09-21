@@ -8,6 +8,7 @@
         (Container ./container-basics.md)
         (Objects ./core-objects.md)
         (Parsing ./parsing-chains.md)
+        (Compilation ./compilation-instructions/_main.dlisp)
         (Examples ./examples.md)
         (Testing ./testing-patterns.md)
         (Advanced ./advanced-usage.md)

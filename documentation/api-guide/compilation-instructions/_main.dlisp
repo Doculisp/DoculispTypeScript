@@ -1,0 +1,8 @@
+(section-meta 
+    (title Detailed Compilation Instructions)
+    (include
+        (DocumentParse ./document-parse.md)
+    )
+)
+
+(content)
