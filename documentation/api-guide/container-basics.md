@@ -63,16 +63,18 @@ interface IRegisterable {
 
 <!-- (dl (# Error Handling)) -->
 
-The container uses the project's `Result<T>` pattern for error handling:
+The container throws errors for missing modules rather than returning error objects:
 
 ```typescript
-const result = container.build('nonExistentModule');
-if (!result.success) {
-    console.error(result.message);
-} else {
-    // Use result.value
+try {
+    const result = container.build('nonExistentModule');
+    // Use result directly - it's the actual object, not a Result<T>
+} catch (error) {
+    console.error('Module not found:', error.message);
 }
 ```
+
+**Note**: Unlike other parts of the Doculisp system that use `Result<T>` patterns, the container throws errors for missing modules or circular dependencies.
 
 <!-- (dl (# Circular Dependencies)) -->
 

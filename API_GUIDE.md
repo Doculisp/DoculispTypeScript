@@ -45,13 +45,39 @@ The container system consists of several interfaces:
 The container is automatically populated with all available modules when the application starts. You can access it through:
 
 ```typescript
-import { container } from './container';
+const { containerPromise } = require('doculisp/dist/moduleLoader');
 
-// Build any registered object
+// Build any registered object (container is async)
+const container = await containerPromise;
 const parser = container.buildAs<ITokenizer>('tokenizer');
 ```
 
+**Important**: The container is asynchronous because modules are loaded dynamically. Always use `await containerPromise` before accessing the container.
+
 The container automatically resolves all dependencies and ensures proper initialization order.
+
+### TypeScript Types ###
+
+When using TypeScript, you can import types from the package:
+
+```typescript
+// Import common interface types
+import type {
+    IController,
+    ITokenizer,
+    IAstParser,
+    IPathConstructor,
+    IVariableTable,
+    IFileWriter,
+    Result
+} from 'doculisp/dist/types/types.general';
+
+// Import specific type files as needed
+import type { IStringWriter } from 'doculisp/dist/types/types.stringWriter';
+import type { IStructure } from 'doculisp/dist/types/types.structure';
+```
+
+The main types are organized across several type definition files in the `doculisp/dist/types/` directory.
 
 ### Important Note About Variables ###
 
@@ -127,16 +153,18 @@ interface IRegisterable {
 
 ### Error Handling ###
 
-The container uses the project's `Result<T>` pattern for error handling:
+The container throws errors for missing modules rather than returning error objects:
 
 ```typescript
-const result = container.build('nonExistentModule');
-if (!result.success) {
-    console.error(result.message);
-} else {
-    // Use result.value
+try {
+    const result = container.build('nonExistentModule');
+    // Use result directly - it's the actual object, not a Result<T>
+} catch (error) {
+    console.error('Module not found:', error.message);
 }
 ```
+
+**Note**: Unlike other parts of the Doculisp system that use `Result<T>` patterns, the container throws errors for missing modules or circular dependencies.
 
 ### Circular Dependencies ###
 
