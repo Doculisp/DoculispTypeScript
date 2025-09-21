@@ -1,4 +1,4 @@
-<!-- (dl (# DocumentParse API Reference)) -->
+<!-- (dl (section-meta DocumentParse API Reference)) -->
 
 The `DocumentParse` component is a core parsing service in Doculisp that extracts and processes content from text documents. It's responsible for separating text content from embedded Doculisp blocks and preparing them for further processing in the compilation pipeline.
 

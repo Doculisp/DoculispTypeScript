@@ -1,4 +1,4 @@
-<!-- (dl (# Tokenizer API Reference)) -->
+<!-- (dl (section-meta Tokenizer API Reference)) -->
 
 The `Tokenizer` component is the second stage in the Doculisp compilation pipeline that converts parsed document content into structured tokens. It takes the output from `DocumentParse` and transforms Doculisp blocks into individual tokens (atoms, parameters, parentheses) while preserving text content and location information.
 

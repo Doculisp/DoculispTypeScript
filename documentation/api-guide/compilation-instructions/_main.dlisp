@@ -3,7 +3,8 @@
     (include
         (Subsection ./document-parse.md)
         (Subsection ./tokenizer.md)
+        (Subsection ./ast-parser.md)
     )
 )
 
-(content (toc numbered))
+(content (toc numbered-labeled))
