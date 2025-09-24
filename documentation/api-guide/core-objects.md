@@ -11,9 +11,13 @@ This section provides a comprehensive reference to all objects available in the 
 
 **Usage Pattern:**
 ```typescript
-// Most common usage - high-level compilation
+// Most common usage - high-level compilation with full type safety
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IController, IPath, Result } from 'doculisp';
+
+const container = await containerPromise;
 const controller = container.buildAs<IController>('controller');
-const results = controller.compile(sourcePath, destinationPath);
+const results: Result<string | false>[] = controller.compile(sourcePath, destinationPath);
 ```
 
 <!-- (dl (# Core Pipeline Components)) -->
@@ -30,7 +34,11 @@ These objects form the heart of the compilation pipeline, processing documents t
 
 **Usage Pattern:**
 ```typescript
-// Direct pipeline access for custom processing
+// Direct pipeline access for custom processing with full type safety
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { DocumentParser, TokenFunction, IAstParser } from 'doculisp';
+
+const container = await containerPromise;
 const documentParser = container.buildAs<DocumentParser>('documentParse');
 const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 const astParser = container.buildAs<IAstParser>('astParser');
@@ -51,12 +59,16 @@ const astParser = container.buildAs<IAstParser>('astParser');
 
 **Usage Pattern:**
 ```typescript
-// File system operations
+// File system operations with proper typing
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IFileWriter, IPathConstructor, IPath, Result } from 'doculisp';
+
+const container = await containerPromise;
 const fileHandler = container.buildAs<IFileWriter>('fileHandler');
 const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-const path = pathConstructor.buildPath('./docs/readme.md');
-const content = fileHandler.load(path);
+const path: IPath = pathConstructor.buildPath('./docs/readme.md');
+const content: Result<string> = fileHandler.load(path);
 ```
 
 <!-- (dl (# Data and State Management)) -->

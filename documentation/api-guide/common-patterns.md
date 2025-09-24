@@ -1,4 +1,9 @@
-<!-- (dl (section-meta Common Patterns)) -->
+<!-- (dl 
+(section-meta
+    (title Common Patterns)
+    (id api-common-patterns)
+)
+) -->
 
 This section defines reusable patterns used throughout the DoculispTypeScript API to reduce duplication and improve maintainability.
 

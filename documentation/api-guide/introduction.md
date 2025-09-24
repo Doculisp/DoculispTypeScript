@@ -27,20 +27,63 @@ This guide provides everything you need to work with the DoculispTypeScript API:
 
 <!-- (dl (# Getting Started)) -->
 
-The fastest way to access the container system:
+The fastest way to access the container system with full type safety:
 
 ```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IController, IPathConstructor, IPath } from 'doculisp';
 
 // Always await the container (it's asynchronous)
 const container = await containerPromise;
 
-// Build any registered object with type safety
+// Build any registered object with full type safety
 const controller = container.buildAs<IController>('controller');
+const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+const sourcePath: IPath = pathConstructor.buildPath('./docs/readme.dlisp');
+const destinationPath: IPath = pathConstructor.buildPath('./README.md');
 const results = controller.compile(sourcePath, destinationPath);
 ```
 
 **Critical**: The container is asynchronous because modules are loaded dynamically. Always use `await containerPromise` before accessing container functionality.
+
+<!-- (dl (# Exported Types)) -->
+
+**Type Safety**: DoculispTypeScript exports all its TypeScript interfaces and types for enhanced development experience:
+
+```typescript
+// Import core types for type-safe development
+import {
+  // Core interfaces
+  IController,
+  IPathConstructor, 
+  IPath,
+  
+  // Pipeline types
+  DocumentParser,
+  TokenFunction, 
+  IAstParser,
+  IDoculispParser,
+  
+  // Data types
+  Result,
+  DocumentMap,
+  TokenizedDocument,
+  Token,
+  IAst,
+  IDoculisp,
+  
+  // Container types
+  IContainer,
+  IProjectLocation
+} from 'doculisp';
+```
+
+**Benefits of Using Exported Types:**
+- **IntelliSense Support**: Get autocomplete and parameter hints in your IDE
+- **Compile-time Safety**: Catch type mismatches before runtime
+- **Better Documentation**: Self-documenting code with clear interfaces
+- **Refactoring Safety**: IDE can safely rename and refactor with type information
 
 <!-- (dl (# Key Concepts)) -->
 

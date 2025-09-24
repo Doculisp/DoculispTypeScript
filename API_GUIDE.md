@@ -54,20 +54,63 @@ This guide provides everything you need to work with the DoculispTypeScript API:
 
 ### Getting Started ###
 
-The fastest way to access the container system:
+The fastest way to access the container system with full type safety:
 
 ```typescript
-const { containerPromise } = require('doculisp/dist/moduleLoader');
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IController, IPathConstructor, IPath } from 'doculisp';
 
 // Always await the container (it's asynchronous)
 const container = await containerPromise;
 
-// Build any registered object with type safety
+// Build any registered object with full type safety
 const controller = container.buildAs<IController>('controller');
+const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
+
+const sourcePath: IPath = pathConstructor.buildPath('./docs/readme.dlisp');
+const destinationPath: IPath = pathConstructor.buildPath('./README.md');
 const results = controller.compile(sourcePath, destinationPath);
 ```
 
 **Critical**: The container is asynchronous because modules are loaded dynamically. Always use `await containerPromise` before accessing container functionality.
+
+### Exported Types ###
+
+**Type Safety**: DoculispTypeScript exports all its TypeScript interfaces and types for enhanced development experience:
+
+```typescript
+// Import core types for type-safe development
+import {
+  // Core interfaces
+  IController,
+  IPathConstructor,
+  IPath,
+
+  // Pipeline types
+  DocumentParser,
+  TokenFunction,
+  IAstParser,
+  IDoculispParser,
+
+  // Data types
+  Result,
+  DocumentMap,
+  TokenizedDocument,
+  Token,
+  IAst,
+  IDoculisp,
+
+  // Container types
+  IContainer,
+  IProjectLocation
+} from 'doculisp';
+```
+
+**Benefits of Using Exported Types:**
+- **IntelliSense Support**: Get autocomplete and parameter hints in your IDE
+- **Compile-time Safety**: Catch type mismatches before runtime
+- **Better Documentation**: Self-documenting code with clear interfaces
+- **Refactoring Safety**: IDE can safely rename and refactor with type information
 
 ### Key Concepts ###
 
@@ -596,9 +639,13 @@ This section provides a comprehensive reference to all objects available in the 
 
 **Usage Pattern:**
 ```typescript
-// Most common usage - high-level compilation
+// Most common usage - high-level compilation with full type safety
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IController, IPath, Result } from 'doculisp';
+
+const container = await containerPromise;
 const controller = container.buildAs<IController>('controller');
-const results = controller.compile(sourcePath, destinationPath);
+const results: Result<string | false>[] = controller.compile(sourcePath, destinationPath);
 ```
 
 ### Core Pipeline Components ###
@@ -615,7 +662,11 @@ These objects form the heart of the compilation pipeline, processing documents t
 
 **Usage Pattern:**
 ```typescript
-// Direct pipeline access for custom processing
+// Direct pipeline access for custom processing with full type safety
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { DocumentParser, TokenFunction, IAstParser } from 'doculisp';
+
+const container = await containerPromise;
 const documentParser = container.buildAs<DocumentParser>('documentParse');
 const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 const astParser = container.buildAs<IAstParser>('astParser');
@@ -636,12 +687,16 @@ const astParser = container.buildAs<IAstParser>('astParser');
 
 **Usage Pattern:**
 ```typescript
-// File system operations
+// File system operations with proper typing
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IFileWriter, IPathConstructor, IPath, Result } from 'doculisp';
+
+const container = await containerPromise;
 const fileHandler = container.buildAs<IFileWriter>('fileHandler');
 const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-const path = pathConstructor.buildPath('./docs/readme.md');
-const content = fileHandler.load(path);
+const path: IPath = pathConstructor.buildPath('./docs/readme.md');
+const content: Result<string> = fileHandler.load(path);
 ```
 
 ### Data and State Management ###
@@ -992,13 +1047,18 @@ The **DocumentParse** is the **first stage** that extracts and processes content
 #### Container Registration ####
 
 ```typescript
+// Container registration info
 {
     name: 'documentParse',
     singleton: true,
     dependencies: ['searches', 'internals', 'util', 'trimArray']
 }
 
-// Access from container
+// Access from container with proper typing
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { DocumentParser } from 'doculisp';
+
+const container = await containerPromise;
 const documentParser = container.buildAs<DocumentParser>('documentParse');
 ```
 
@@ -1042,6 +1102,15 @@ DocumentParse uses different strategies based on file type:
 #### Basic Usage ####
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    IPathConstructor,
+    IProjectLocation,
+    DocumentMap,
+    Result
+} from 'doculisp';
+
 async function parseDocument() {
     // Use [Standard Container Setup] - see common-patterns.md
     const container = await containerPromise;
@@ -1049,14 +1118,14 @@ async function parseDocument() {
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
     // Use [Standard Project Location] - see common-patterns.md
-    const projectLocation = {
+    const projectLocation: IProjectLocation = {
         documentPath: pathConstructor.buildPath('./example.md'),
         documentDepth: 1,
         documentIndex: 1
     };
 
     const content = `# My Document\n\n<!-- (dl (section-meta Example)) -->\n\nContent here.`;
-    const result = documentParser(content, projectLocation);
+    const result: Result<DocumentMap> = documentParser(content, projectLocation);
 
     if (result.success) {
         result.value.parts.forEach(part => {
@@ -1081,13 +1150,18 @@ The **Tokenizer** is the **second stage** that converts parsed document content 
 #### Container Registration ####
 
 ```typescript
+// Container registration info
 {
     name: 'tokenizer',
     singleton: true,
     dependencies: ['searches', 'internals', 'util']
 }
 
-// Access from container
+// Access from container with proper typing
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { TokenFunction } from 'doculisp';
+
+const container = await containerPromise;
 const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 ```
 
@@ -1147,6 +1221,16 @@ type CloseParenthesisToken = {
 #### Basic Usage ####
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    TokenFunction,
+    IProjectLocation,
+    DocumentMap,
+    TokenizedDocument,
+    Result
+} from 'doculisp';
+
 async function tokenizeDocument() {
     // Use [Standard Container Setup] and [Standard Project Location] - see common-patterns.md
     const container = await containerPromise;
@@ -1154,11 +1238,11 @@ async function tokenizeDocument() {
     const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 
     // Parse document first
-    const documentMap = documentParser(content, projectLocation);
+    const documentMap: Result<DocumentMap> = documentParser(content, projectLocation);
     if (!documentMap.success) return;
 
     // Tokenize the parsed document
-    const tokenizedResult = tokenizer(documentMap);
+    const tokenizedResult: Result<TokenizedDocument> = tokenizer(documentMap);
     if (tokenizedResult.success) {
         tokenizedResult.value.tokens.forEach((token, index) => {
             console.log(`Token ${index + 1}: ${token.type} - "${token.text || 'N/A'}"`);
@@ -3065,7 +3149,7 @@ For complete implementation examples, see:
 
 This section provides practical examples and common usage patterns for the DoculispTypeScript API, organized by use case and complexity level.
 
-**Note:** All examples use standard setup patterns. See [Common Patterns](common-patterns.md) for reusable code blocks including container setup, project location creation, and pipeline processing.
+**Note:** All examples use standard setup patterns. See [Common Patterns](./COMMON_PATTERNS.md#common-patterns) for reusable code blocks including container setup, project location creation, and pipeline processing.
 
 ### Quick Start Examples ###
 
@@ -3073,18 +3157,19 @@ This section provides practical examples and common usage patterns for the Docul
 
 ```typescript
 import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IController, IPathConstructor, IPath, Result } from 'doculisp';
 
 async function compileDocument() {
-    // Use [Standard Container Setup] - see common-patterns.md
+    // Use [Standard Container Setup] - see common patterns section
     const container = await containerPromise;
     const controller = container.buildAs<IController>('controller');
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-    // Compile a single document
-    const sourcePath = pathConstructor.buildPath('./docs/_main.dlisp');
-    const destinationPath = pathConstructor.buildPath('./README.md');
+    // Compile a single document with full type safety
+    const sourcePath: IPath = pathConstructor.buildPath('./docs/_main.dlisp');
+    const destinationPath: IPath = pathConstructor.buildPath('./README.md');
 
-    const results = controller.compile(sourcePath, destinationPath);
+    const results: Result<string | false>[] = controller.compile(sourcePath, destinationPath);
 
     if (results[0].success) {
         console.log('✅ Document compiled successfully');
@@ -3098,6 +3183,9 @@ async function compileDocument() {
 #### Project Batch Compilation ####
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IController, IPathConstructor, IPath, Result } from 'doculisp';
+
 async function compileProject() {
     // Use [Standard Container Setup] - see common-patterns.md
     const container = await containerPromise;
@@ -3105,10 +3193,10 @@ async function compileProject() {
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
     // Compile entire project (multiple documents)
-    const projectPath = pathConstructor.buildPath('./docs/docs.dlproj');
+    const projectPath: IPath = pathConstructor.buildPath('./docs/docs.dlproj');
 
     // Project files don't need destination - it's embedded in structure
-    const results = controller.compile(projectPath);
+    const results: Result<string | false>[] = controller.compile(projectPath);
 
     console.log(`📁 Compiled ${results.length} documents:`);
     results.forEach((result, index) => {
@@ -3128,6 +3216,16 @@ async function compileProject() {
 
 ```typescript
 import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    TokenFunction,
+    IAstParser,
+    IPathConstructor,
+    IPath,
+    IProjectLocation,
+    Result,
+    IFail
+} from 'doculisp';
 
 class DoculispValidator {
     private container: any;
@@ -3147,7 +3245,7 @@ class DoculispValidator {
 
     async validateDocument(content: string, uri: string): Promise<Diagnostic[]> {
         // Use [Standard Project Location] - see common-patterns.md
-        const projectLocation = {
+        const projectLocation: IProjectLocation = {
             documentPath: this.pathConstructor.buildPath(uri),
             documentDepth: 1,
             documentIndex: 1
@@ -3215,6 +3313,16 @@ interface Diagnostic {
 #### Syntax Highlighting Support ####
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    TokenFunction,
+    IPathConstructor,
+    IPath,
+    IProjectLocation,
+    Token
+} from 'doculisp';
+
 class DoculispSyntaxHighlighter {
     private container: any;
     private documentParser: DocumentParser;
@@ -3229,7 +3337,7 @@ class DoculispSyntaxHighlighter {
     }
 
     async getSemanticTokens(content: string, uri: string): Promise<SemanticToken[]> {
-        const projectLocation = {
+        const projectLocation: IProjectLocation = {
             documentPath: this.pathConstructor.buildPath(uri),
             documentDepth: 1,
             documentIndex: 1
@@ -3241,7 +3349,7 @@ class DoculispSyntaxHighlighter {
         const tokenizedResult = this.tokenizer(documentMap);
         if (!tokenizedResult.success) return [];
 
-        return tokenizedResult.value.tokens.map(token => ({
+        return tokenizedResult.value.tokens.map((token: Token) => ({
             line: token.location.line - 1, // Convert to 0-based
             startCharacter: token.location.char - 1,
             length: token.text?.length || 0,
@@ -3274,6 +3382,16 @@ interface SemanticToken {
 #### IntelliSense Provider ####
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    TokenFunction,
+    IPathConstructor,
+    IPath,
+    IProjectLocation,
+    Token
+} from 'doculisp';
+
 class DoculispCompletionProvider {
     private container: any;
     private documentParser: DocumentParser;
@@ -3303,7 +3421,7 @@ class DoculispCompletionProvider {
         position: { line: number; character: number },
         uri: string
     ): Promise<CompletionItem[]> {
-        const projectLocation = {
+        const projectLocation: IProjectLocation = {
             documentPath: this.pathConstructor.buildPath(uri),
             documentDepth: 1,
             documentIndex: 1
@@ -3421,12 +3539,27 @@ interface CompletionContext {
 #### Document Symbol Provider ####
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    TokenFunction,
+    IAstParser,
+    IDoculispParser,
+    IPathConstructor,
+    IVariableTable,
+    IPath,
+    IProjectLocation,
+    IDoculisp,
+    ITitle,
+    IHeader,
+    ILocation
+} from 'doculisp';
+
 class DoculispSymbolProvider {
     private container: any;
     private documentParser: DocumentParser;
     private tokenizer: TokenFunction;
     private astParser: IAstParser;
-    private doculispParser: IDoculispParser;
     private pathConstructor: IPathConstructor;
 
     async initialize() {
@@ -3441,7 +3574,7 @@ class DoculispSymbolProvider {
         const doculispParser = this.container.buildAs<IDoculispParser>('astDoculispParse');
         const variableTable = this.container.buildAs<IVariableTable>('variableTable');
 
-        const projectLocation = {
+        const projectLocation: IProjectLocation = {
             documentPath: this.pathConstructor.buildPath(uri),
             documentDepth: 1,
             documentIndex: 1
@@ -3534,14 +3667,24 @@ interface Range {
 #### Step-by-Step Pipeline Processing ####
 
 ```typescript
-async function processDocumentPipeline(filePath: string, content: string) {
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    TokenFunction,
+    IAstParser,
+    IPathConstructor,
+    IProjectLocation,
+    IAst
+} from 'doculisp';
+
+async function processDocumentPipeline(filePath: string, content: string): Promise<IAst | undefined> {
     const container = await containerPromise;
     const documentParser = container.buildAs<DocumentParser>('documentParse');
     const tokenizer = container.buildAs<TokenFunction>('tokenizer');
     const astParser = container.buildAs<IAstParser>('astParser');
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
-    const projectLocation = {
+    const projectLocation: IProjectLocation = {
         documentPath: pathConstructor.buildPath(filePath),
         documentDepth: 1,
         documentIndex: 1
@@ -3847,6 +3990,9 @@ async function optimizedBatchProcessing(files: string[]) {
 #### Container Optimization ####
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { IController, IPathConstructor, IPath, Result } from 'doculisp';
+
 class DoculispProcessor {
     private container: any;
     private controller: IController;
@@ -3859,17 +4005,17 @@ class DoculispProcessor {
         this.pathConstructor = this.container.buildAs<IPathConstructor>('pathConstructor');
     }
 
-    async compileFile(sourcePath: string, destinationPath?: string) {
+    async compileFile(sourcePath: string, destinationPath?: string): Promise<Result<string | false>[]> {
         // Reuse container instances for better performance
-        const source = this.pathConstructor.buildPath(sourcePath);
-        const destination = destinationPath ?
+        const source: IPath = this.pathConstructor.buildPath(sourcePath);
+        const destination: IPath | undefined = destinationPath ?
             this.pathConstructor.buildPath(destinationPath) : undefined;
 
         return this.controller.compile(source, destination);
     }
 
-    async compileMultiple(files: Array<{source: string, destination?: string}>) {
-        const results = [];
+    async compileMultiple(files: Array<{source: string, destination?: string}>): Promise<Result<string | false>[]> {
+        const results: Result<string | false>[] = [];
         for (const file of files) {
             const result = await this.compileFile(file.source, file.destination);
             results.push(...result);

@@ -18,13 +18,18 @@ The **DocumentParse** is the **first stage** that extracts and processes content
 <!-- (dl (## Container Registration)) -->
 
 ```typescript
+// Container registration info
 {
     name: 'documentParse',
     singleton: true,
     dependencies: ['searches', 'internals', 'util', 'trimArray']
 }
 
-// Access from container
+// Access from container with proper typing
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { DocumentParser } from 'doculisp';
+
+const container = await containerPromise;
 const documentParser = container.buildAs<DocumentParser>('documentParse');
 ```
 
@@ -68,6 +73,15 @@ DocumentParse uses different strategies based on file type:
 <!-- (dl (## Basic Usage)) -->
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    IPathConstructor,
+    IProjectLocation,
+    DocumentMap,
+    Result
+} from 'doculisp';
+
 async function parseDocument() {
     // Use [Standard Container Setup] - see common-patterns.md
     const container = await containerPromise;
@@ -75,14 +89,14 @@ async function parseDocument() {
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');
 
     // Use [Standard Project Location] - see common-patterns.md  
-    const projectLocation = {
+    const projectLocation: IProjectLocation = {
         documentPath: pathConstructor.buildPath('./example.md'),
         documentDepth: 1,
         documentIndex: 1
     };
 
     const content = `# My Document\n\n<!-- (dl (section-meta Example)) -->\n\nContent here.`;
-    const result = documentParser(content, projectLocation);
+    const result: Result<DocumentMap> = documentParser(content, projectLocation);
 
     if (result.success) {
         result.value.parts.forEach(part => {
@@ -107,13 +121,18 @@ The **Tokenizer** is the **second stage** that converts parsed document content 
 <!-- (dl (## Container Registration)) -->
 
 ```typescript
+// Container registration info
 {
     name: 'tokenizer',
     singleton: true,
     dependencies: ['searches', 'internals', 'util']
 }
 
-// Access from container
+// Access from container with proper typing
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import { TokenFunction } from 'doculisp';
+
+const container = await containerPromise;
 const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 ```
 
@@ -173,6 +192,16 @@ type CloseParenthesisToken = {
 <!-- (dl (## Basic Usage)) -->
 
 ```typescript
+import { containerPromise } from 'doculisp/dist/moduleLoader';
+import {
+    DocumentParser,
+    TokenFunction,
+    IProjectLocation,
+    DocumentMap,
+    TokenizedDocument,
+    Result
+} from 'doculisp';
+
 async function tokenizeDocument() {
     // Use [Standard Container Setup] and [Standard Project Location] - see common-patterns.md
     const container = await containerPromise;
@@ -180,11 +209,11 @@ async function tokenizeDocument() {
     const tokenizer = container.buildAs<TokenFunction>('tokenizer');
 
     // Parse document first
-    const documentMap = documentParser(content, projectLocation);
+    const documentMap: Result<DocumentMap> = documentParser(content, projectLocation);
     if (!documentMap.success) return;
 
     // Tokenize the parsed document
-    const tokenizedResult = tokenizer(documentMap);
+    const tokenizedResult: Result<TokenizedDocument> = tokenizer(documentMap);
     if (tokenizedResult.success) {
         tokenizedResult.value.tokens.forEach((token, index) => {
             console.log(`Token ${index + 1}: ${token.type} - "${token.text || 'N/A'}"`);
