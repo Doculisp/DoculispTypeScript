@@ -1,6 +1,6 @@
 {
   "name": "doculisp",
-  "version": "3.4.10",
+  "version": "3.4.11",
   "description": "A scripting language to build markdown documents",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
