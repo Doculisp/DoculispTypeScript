@@ -3,12 +3,14 @@
   "version": "3.4.10",
   "description": "A scripting language to build markdown documents",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "doculisp": "./dist/index.js"
   },
   "scripts": {
     "precompile": "rimraf src/**/*.js test/**/*.js dist/**/* -g",
     "compile": "tsc",
+    "build": "tsc",
     "test": "jest tests --coverage",
     "start": "ts-node ./src/index.ts"
   },

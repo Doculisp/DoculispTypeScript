@@ -1,4 +1,8 @@
 #! /usr/bin/env node
+
+// Export all types for API consumers
+export * from './types';
+
 import { containerPromise } from './moduleLoader';
 import { Command, OptionValues } from 'commander';
 import { Result } from './types/types.general';
