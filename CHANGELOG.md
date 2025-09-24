@@ -7,13 +7,23 @@
 
 # Changelog #
 
-1. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
-2. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-3. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-4. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-5. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-6. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-7. Older: [Previous Releases](#previous-releases)
+1. Release: [[3.4.11] - 2025-09-23](#3411---2025-09-23)
+2. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
+3. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+4. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+5. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+6. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+7. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+8. Older: [Previous Releases](#previous-releases)
+
+## [3.4.11] - 2025-09-23 ##
+
+### Improved ###
+
+- **TypeScript API Export**: Exported all types to make the API easier to use for TypeScript developers
+  - Public types are now available for import to improve development experience
+  - Enhanced type safety and IntelliSense support for API consumers
+  - Simplified integration for TypeScript projects using DoculispTypeScript as a library
 
 ## [3.4.10] - 2025-09-16 ##
 
