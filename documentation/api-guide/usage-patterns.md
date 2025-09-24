@@ -13,7 +13,7 @@ import { containerPromise } from 'doculisp/dist/moduleLoader';
 import { IController, IPathConstructor, IPath, Result } from 'doculisp';
 
 async function compileDocument() {
-    // Use [Standard Container Setup] - see COMMON_PATTERNS.md
+    // Use [Standard Container Setup] - see COMMON PATTERNS section
     const container = await containerPromise;
     const controller = container.buildAs<IController>('controller');
     const pathConstructor = container.buildAs<IPathConstructor>('pathConstructor');

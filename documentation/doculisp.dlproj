@@ -41,8 +41,4 @@
             (output ../API_GUIDE.md)
         )
     )
-    (document
-        (source ./api-guide/common-patterns.md)
-        (output ../COMMON_PATTERNS.md)
-    )
 )
