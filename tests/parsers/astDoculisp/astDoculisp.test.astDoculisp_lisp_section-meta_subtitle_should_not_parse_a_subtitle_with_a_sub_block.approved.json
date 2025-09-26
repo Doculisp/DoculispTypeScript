@@ -1,5 +1,8 @@
 {
+  "char": 6,
   "documentPath": "main.dlisp",
+  "line": 4,
   "message": "The subtitle block at 'main.dlisp' Line: 4, Char: 6 contains unknown block 'link-ref' at Line: 4, Char: 16.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

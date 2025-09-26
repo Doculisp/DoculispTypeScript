@@ -1,4 +1,8 @@
 {
+  "char": 10,
+  "documentPath": "/docs.dlproj",
+  "line": 4,
   "message": "Symbol(s) in document id readmeϐ' at '/docs.dlproj' Line: 4, Char: 10\n'ϐ' @ id char 7",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

@@ -1,6 +1,6 @@
 import { IAstEmpty, RootAst } from "./types.ast";
 import { IPath } from "./types.filePath";
-import { ILocation, IProjectLocation, Result } from "./types.general";
+import { ILocation, IProjectLocation, ResultCode } from "./types.general";
 import { IVariableTable } from "./types.variableTable";
 
 export interface ILocationSortable {
@@ -88,5 +88,5 @@ export interface IDoculisp {
 }
 
 export interface IDoculispParser {
-    parse(tokenResults: Result<RootAst | IAstEmpty>, variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp>;
+    parse(tokenResults: ResultCode<RootAst | IAstEmpty>, variableTable: IVariableTable): ResultCode<IDoculisp | IEmptyDoculisp>;
 };

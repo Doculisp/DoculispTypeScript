@@ -1,5 +1,5 @@
 import { DocumentMap } from "./types.document";
-import { ILocation, IProjectLocation, Result } from "./types.general";
+import { ILocation, IProjectLocation, ResultCode } from "./types.general";
 
 export type TextToken = {
     readonly text: string;
@@ -31,4 +31,4 @@ export type TokenizedDocument = {
     readonly projectLocation: IProjectLocation;
 };
 
-export type TokenFunction = (documentMap: Result<DocumentMap>) => Result<TokenizedDocument>;
+export type TokenFunction = (documentMap: ResultCode<DocumentMap>) => ResultCode<TokenizedDocument>;

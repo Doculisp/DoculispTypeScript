@@ -34,13 +34,28 @@ export interface ISuccess<T> {
     readonly success: true;
 };
 
-export interface IFail {
+export interface IFailCode {
     readonly message: string;
-    readonly documentPath?: IPath | undefined;
+    readonly documentPath: IPath;
+    readonly line: number;
+    readonly char: number;
     readonly success: false;
+    readonly type: "code-fail";
 };
 
-export type Result<T> = ISuccess<T> | IFail;
+export interface IFailGeneral {
+    readonly message: string;
+    readonly success: false;
+    readonly documentPath?: IPath | undefined;
+    readonly type: "general-fail";
+}
+
+export type IFail = IFailCode | IFailGeneral;
+
+export type ResultCode<T> = ISuccess<T> | IFailCode;
+export type ResultGeneral<T> = ISuccess<T> | IFailGeneral;
+
+export type Result<T> = ResultCode<T> | ResultGeneral<T>;
 
 export type LocationBuilder = (line: number, char: number) => ILocation;
 
@@ -48,8 +63,9 @@ export type UtilBuilder = () => IUtil;
 
 export interface IUtil {
     ok<T>(successfulValue: T): ISuccess<T>;
-    fail(message: string, documentPath?: IPath): IFail;
+    codeFailure(message: string, location: { documentPath: IPath, line: number, char: number }): IFailCode;
+    generalFailure(message: string, path?: IPath): IFailGeneral;
     location: (documentPath: IPath, documentDepth: number, documentIndex: number, line: number, char: number) => ILocation;
     toLocation: (projectLocation: IProjectLocation, line: number, char: number) => ILocation;
-    getProjectLocation: (location: ILocation) => IProjectLocation;
+    getProjectLocation: (location: ILocationCoordinates) => IProjectLocation;
 }

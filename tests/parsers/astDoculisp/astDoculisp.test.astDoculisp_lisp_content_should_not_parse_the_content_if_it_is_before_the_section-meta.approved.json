@@ -1,5 +1,8 @@
 {
+  "char": 2,
   "documentPath": "../main.dlisp",
+  "line": 2,
   "message": "The content block at '../main.dlisp' Line: 2, Char: 2 exists before the section-meta block.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

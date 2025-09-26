@@ -1,17 +1,17 @@
 import { IPath } from "./types.filePath";
-import { Result } from "./types.general";
+import { ResultGeneral } from "./types.general";
 
 export interface IFileLoader {
-    load(path: IPath): Result<string>;
+    load(path: IPath): ResultGeneral<string>;
 };
 
 export interface IFileWriter {
-    write(path: IPath, text: Result<string>): Result<string>;
+    write(path: IPath, text: ResultGeneral<string>): ResultGeneral<string>;
 };
 
 export interface IDirectoryHandler {
-    getProcessWorkingDirectory(): Result<IPath>;
-    setProcessWorkingDirectory(directory: IPath): Result<undefined>;
+    getProcessWorkingDirectory(): ResultGeneral<IPath>;
+    setProcessWorkingDirectory(directory: IPath): ResultGeneral<undefined>;
 }
 
 export interface IFileHandler extends IFileLoader, IFileWriter, IDirectoryHandler {

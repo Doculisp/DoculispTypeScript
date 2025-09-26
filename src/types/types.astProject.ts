@@ -1,6 +1,6 @@
 import { IAstEmpty, RootAst } from "./types.ast";
 import { IPath } from "./types.filePath"
-import { ILocation, Result } from "./types.general";
+import { ILocation, ResultCode } from "./types.general";
 import { IVariableTable } from "./types.variableTable";
 
 export interface IProjectDocument {
@@ -18,5 +18,5 @@ export interface IProjectDocuments {
 };
 
 export interface IProjectParser {
-    parse(tokenResults: Result<RootAst | IAstEmpty>, variableTable: IVariableTable): Result<IProjectDocuments>;
+    parse(tokenResults: ResultCode<RootAst | IAstEmpty>, variableTable: IVariableTable): ResultCode<IProjectDocuments>;
 };

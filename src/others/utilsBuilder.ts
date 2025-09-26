@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types/types.containers";
 import { IPath } from "../types/types.filePath";
-import { IFail, ILocation, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "../types/types.general";
+import { IFailCode, IFailGeneral, ILocation, ILocationCoordinates, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "../types/types.general";
 
 function before() : IsBefore { return isBefore; }
 function after()  : IsAfter  { return isAfter; }
@@ -115,7 +115,7 @@ function toLocation(projectLocation: IProjectLocation, line: number, char: numbe
     return new Location(projectLocation.documentPath, projectLocation.documentDepth, projectLocation.documentIndex, line, char);
 }
 
-function getProjectLocation(location: ILocation): IProjectLocation {
+function getProjectLocation(location: ILocationCoordinates): IProjectLocation {
     return {
         documentPath: location.documentPath,
         documentDepth: location.documentDepth,
@@ -133,17 +133,30 @@ function buildGeneral(): IUtil {
         };
     };
 
-    function fail(message: string, documentPath?: IPath) : IFail {
+    function codeFailure(message: string, location: { documentPath: IPath, line: number, char: number }) : IFailCode {
         return {
             message,
-            documentPath: documentPath,
+            documentPath: location.documentPath,
+            line: location.line,
+            char: location.char,
             success: false,
+            type: "code-fail",
         };
     };
 
+    function generalFailure(message: string, path?: IPath): IFailGeneral {
+        return {
+            message,
+            success: false,
+            documentPath: path,
+            type: "general-fail",
+        };
+    }
+
     return {
         ok,
-        fail,
+        codeFailure,
+        generalFailure,
         location,
         toLocation,
         getProjectLocation,

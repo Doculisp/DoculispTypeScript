@@ -1,8 +1,8 @@
 import { IDoculisp } from "./types.astDoculisp";
 import { IPath } from "./types.filePath";
-import { Result } from "./types.general";
+import { ResultCode } from "./types.general";
 
 export interface IDocWriter {
-    compile(astResult: Result<IDoculisp>): Result<string>;
-    write(path: IPath, astResult: Result<IDoculisp>): Result<string>;
+    compile(astResult: ResultCode<IDoculisp>): ResultCode<string>;
+    write(path: IPath, astResult: ResultCode<IDoculisp>): ResultCode<string>;
 }

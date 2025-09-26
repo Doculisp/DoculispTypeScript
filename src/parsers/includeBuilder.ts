@@ -3,7 +3,7 @@ import { IIncludeBuilder } from "../types/types.includeBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { DocumentParser } from "../types/types.document";
 import { IFileHandler } from "../types/types.fileHandler";
-import { IProjectLocation, IUtil, Result } from "../types/types.general";
+import { IProjectLocation, IUtil, Result, ResultCode } from "../types/types.general";
 import { TokenFunction } from "../types/types.tokens";
 import { IAstParser } from "../types/types.ast";
 import { IVariablePath, IVariableTable } from "../types/types.variableTable";
@@ -62,7 +62,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             }
 
             if(load.path.extension !== '.md' && load.path.extension !== '.dlisp') {
-                return util.fail(`In include block at '${doculisp.documentOrder.documentPath}' Line: ${load.documentOrder.line}, Char ${load.documentOrder.char} contains invalid file type. Included files must be markdown or dlisp files. '${load.path.fullName}'`);
+                return util.codeFailure(`In include block at '${doculisp.documentOrder.documentPath}' Line: ${load.documentOrder.line}, Char ${load.documentOrder.char} contains invalid file type. Included files must be markdown or dlisp files. '${load.path.fullName}'`, { documentPath: doculisp.documentOrder.documentPath, line: load.documentOrder.line, char: load.documentOrder.char });
             }
 
             const astResult = _parse(load.path, { documentDepth: doculisp.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path}, variableTable);
@@ -81,7 +81,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
         return util.ok(doculisp);
     }
 
-    function parseExternals(astResult: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
+    function parseExternals(astResult: ResultCode<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<IDoculisp | IEmptyDoculisp> {
         if(!astResult.success) {
             return astResult;
         }

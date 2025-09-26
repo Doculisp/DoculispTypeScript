@@ -1,6 +1,6 @@
 import { DoculispPart, IDoculisp, IEmptyDoculisp, IHeader, ILoad, IPathId, ISectionWriter, ITableOfContents, ITitle, IWrite } from "../types/types.astDoculisp";
 import { IRegisterable } from "../types/types.containers";
-import { ILocation, IUtil, Result } from "../types/types.general";
+import { ILocation, IUtil, ResultCode } from "../types/types.general";
 import { IStringBuilder, StringBuilderConstructor } from "../types/types.sringBuilder";
 import { IStringWriter } from "../types/types.stringWriter";
 import { destKey, IStringArray, IVariableEmptyId, IVariableId, IVariablePath, IVariableTable } from "../types/types.variableTable";
@@ -142,7 +142,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         
     }
     
-    function writeContent(loads: ILoad[], variableTable: IVariableTable): Result<string> {
+    function writeContent(loads: ILoad[], variableTable: IVariableTable): ResultCode<string> {
         const sb = stringBuilderConstructor();
     
         for (let index = 0; index < loads.length; index++) {
@@ -174,9 +174,9 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         return util.ok(sb.toString().trim());
     }
 
-    function writeGetPath(astIdPath: IPathId, table: IVariableTable): Result<string> {
+    function writeGetPath(astIdPath: IPathId, table: IVariableTable): ResultCode<string> {
         if(!table.hasKey(astIdPath.id)) {
-            util.fail(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, astIdPath.documentOrder.documentPath);
+            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char });
         }
 
         const output = (
@@ -188,7 +188,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         const idPathVariable = table.getValue(astIdPath.id) as IVariableId | IVariableEmptyId | false;
 
         if(!idPathVariable) {
-            return util.fail(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, astIdPath.documentOrder.documentPath);
+            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char });
         }
 
         if(idPathVariable.type === 'variable-empty-id' || !output) {
@@ -210,7 +210,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         return util.ok('./' + idPath.getRelativeFrom(outPutPath.getContainingDir()).replaceAll('\\', '/') + headerLinkText);
     }
     
-    function writeSection(previous: ILocation, section: ISectionWriter, variableTable: IVariableTable): Result<string> {
+    function writeSection(previous: ILocation, section: ISectionWriter, variableTable: IVariableTable): ResultCode<string> {
         const sb = stringBuilderConstructor();
         let previousType = '';
         let previousLine = (
@@ -311,7 +311,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         return sb.toString();
     }
 
-    function writeAst(astMaybe: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string> {
+    function writeAst(astMaybe: ResultCode<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): ResultCode<string> {
         if(!astMaybe.success) {
             return astMaybe;
         }

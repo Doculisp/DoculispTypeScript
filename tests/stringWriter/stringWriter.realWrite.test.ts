@@ -1,7 +1,7 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers, order } from "../tools";
-import { IProjectLocation, ISuccess, IUtil } from "../../src/types/types.general";
+import { IProjectLocation, ISuccess, IUtil, ResultGeneral } from "../../src/types/types.general";
 import { Result } from "../../src/types/types.general";
 import { buildProjectLocation, testable, buildPath } from "../testHelpers";
 import { IFileHandler } from "../../src/types/types.fileHandler";
@@ -85,17 +85,17 @@ describe('when writing', () => {
 
         fileHandler = environment.buildAs<IFileHandler>('fileHandler');
         const fakeFileHandler: IFileHandler = {
-            load: function (path: IPath): Result<string> {
+            load: function (path: IPath): ResultGeneral<string> {
                 return fileHandler.load(path);
             },
-            write: function (path: IPath, text: Result<string>): Result<string> {
+            write: function (path: IPath, text: Result<string>): ResultGeneral<string> {
                 writeHolder.push(text);
                 return util.ok(path.fullName);
             },
-            getProcessWorkingDirectory: function (): Result<IPath> {
+            getProcessWorkingDirectory: function (): ResultGeneral<IPath> {
                 return fileHandler.getProcessWorkingDirectory();
             },
-            setProcessWorkingDirectory: function (directory: IPath): Result<undefined> {
+            setProcessWorkingDirectory: function (directory: IPath): ResultGeneral<undefined> {
                 return fileHandler.setProcessWorkingDirectory(directory);
             }
         };

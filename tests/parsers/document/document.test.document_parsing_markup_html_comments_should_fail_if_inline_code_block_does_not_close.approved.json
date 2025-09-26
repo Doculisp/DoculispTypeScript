@@ -1,5 +1,8 @@
 {
+  "char": 1,
   "documentPath": "C:/bad/noCloseInline.md",
+  "line": 1,
   "message": "Inline code block at 'C:/bad/noCloseInline.md' Line: 1, Char: 1 does not close",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

@@ -1,5 +1,8 @@
 {
+  "char": 1,
   "documentPath": "Z:/mybad.dlisp",
+  "line": 1,
   "message": "this is a document failure",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

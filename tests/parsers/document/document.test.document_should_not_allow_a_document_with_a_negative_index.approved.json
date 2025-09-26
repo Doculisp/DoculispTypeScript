@@ -1,5 +1,8 @@
 {
+  "char": 1,
   "documentPath": "C:/my_document.md",
+  "line": 1,
   "message": "Document Index must be a value of 1 or larger.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

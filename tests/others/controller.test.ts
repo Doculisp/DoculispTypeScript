@@ -1,7 +1,7 @@
 import { IDictionary, ITestableContainer } from "../../src/types/types.containers";
 import { IFileWriter } from "../../src/types/types.fileHandler";
 import { IPath, PathConstructor } from "../../src/types/types.filePath";
-import { IUtil, Result } from "../../src/types/types.general";
+import { IUtil, Result, ResultCode, ResultGeneral } from "../../src/types/types.general";
 import { IIncludeBuilder } from "../../src/types/types.includeBuilder";
 import { IDoculisp, IEmptyDoculisp } from "../../src/types/types.astDoculisp";
 import { IVariablePath, IVariableTable, sourceKey } from "../../src/types/types.variableTable";
@@ -18,8 +18,8 @@ import { buildPath } from "../testHelpers";
 
 type FileConfig = {
     outputPath?: IPath | undefined;
-    fileText?: Result<string> | undefined;
-    result?: Result<string> | undefined;
+    fileText?: ResultGeneral<string> | undefined;
+    result?: ResultGeneral<string> | undefined;
 };
 
 type IncludeConfig = {
@@ -29,8 +29,8 @@ type IncludeConfig = {
 };
 
 type WriterConfig = {
-    astMaybe?: Result<IDoculisp | IEmptyDoculisp> | undefined;
-    result?: Result<string> | undefined;
+    astMaybe?: ResultCode<IDoculisp | IEmptyDoculisp> | undefined;
+    result?: ResultCode<string> | undefined;
 };
 
 describe('controller',() => {
@@ -78,7 +78,7 @@ describe('controller',() => {
 
         fileConfig = {};
         const fileWriter : IFileWriter = {
-            write: function (path: IPath, text: Result<string>): Result<string> {
+            write: function (path: IPath, text: ResultGeneral<string>): ResultGeneral<string> {
                 fileConfig.outputPath = path;
                 fileConfig.fileText = text;
 
@@ -121,7 +121,7 @@ describe('controller',() => {
 
         writerConfig = {};
         const stringWriter: IStringWriter = {
-            writeAst: function (astMaybe: Result<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableTable): Result<string> {
+            writeAst: function (astMaybe: ResultCode<IDoculisp | IEmptyDoculisp>, _variableTable: IVariableTable): ResultCode<string> {
                 writerConfig.astMaybe = astMaybe;
                 if(!astMaybe.success) {
                     return astMaybe;
@@ -167,7 +167,7 @@ describe('controller',() => {
     
         it('should fail a file that cannot parse an ast', () => {
             const sourcePath = pathConstructor('./someFile.md');
-            includeConfig.result = util.fail('A bad parse', sourcePath);
+            includeConfig.result = util.codeFailure('A bad parse', { documentPath: sourcePath, line: 1, char: 1 });
             table.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
             const result = sut.test(table);
     
@@ -176,7 +176,7 @@ describe('controller',() => {
     
         it('should fail a file that cannot be converted to markdown', () => {
             const sourcePath = pathConstructor('./someFile.md');
-            writerConfig.result = util.fail('Unable to write', sourcePath);
+            writerConfig.result = util.codeFailure('Unable to write', { documentPath: sourcePath, line: 1, char: 1 });
             table.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
             const result = sut.test(table);
     
@@ -196,7 +196,7 @@ describe('controller',() => {
         it('should fail if a file cannot parse an ast', () => {
             const sourcePath = pathConstructor('./someFile.md');
             const destinationPath = pathConstructor('./README.md');
-            includeConfig.result = util.fail('Unable to parse ast', sourcePath);
+            includeConfig.result = util.codeFailure('Unable to parse ast', { documentPath: sourcePath, line: 1, char: 1 });
 
             const result = sut.compile(sourcePath, destinationPath);
 
@@ -206,7 +206,7 @@ describe('controller',() => {
         it('should fail a file that cannot be converted to markdown', () => {
             const sourcePath = pathConstructor('./someFile.md');
             const destinationPath = pathConstructor('./README.md');
-            writerConfig.result = util.fail('Unable to write', sourcePath);
+            writerConfig.result = util.codeFailure('Unable to write', { documentPath: sourcePath, line: 1, char: 1 });
             
             const result = sut.compile(sourcePath, destinationPath);
     
@@ -216,7 +216,7 @@ describe('controller',() => {
         it('should fail if writing the file fails', () => {
             const sourcePath = pathConstructor('./someFile.md');
             const destinationPath = pathConstructor('./README.md');
-            fileConfig.result = util.fail('Unable to write file', destinationPath);
+            fileConfig.result = util.generalFailure('Unable to write file', destinationPath);
 
             const result = sut.compile(sourcePath, destinationPath);
 

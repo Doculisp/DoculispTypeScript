@@ -1,5 +1,5 @@
 import { IRegisterable } from "../types/types.containers";
-import { ILocation, ISuccess, IUtil, Result } from "../types/types.general";
+import { ILocation, ISuccess, IUtil, ResultCode } from "../types/types.general";
 import { HandleValue, IDiscardResult, IInternals, IParseStepForward, IParser, ISubParseGroupResult, ISubParseResult, IUnparsed, StepParseResult, StepParse } from "../types/types.internal";
 
 function mapFirst<TParse, TResult>(internals: IInternals, input: TParse, current: ILocation, collection: HandleValue<TParse, TResult>[]): StepParseResult<TParse, TResult> {
@@ -36,7 +36,7 @@ class Parser<TParse, TResult> implements IParser<TParse, TResult> {
         handlers.forEach(addHandler);
     }
 
-    parse(input: TParse, initialLocation: ILocation): Result<[TResult[], IUnparsed<TParse>]> {
+    parse(input: TParse, initialLocation: ILocation): ResultCode<[TResult[], IUnparsed<TParse>]> {
         const results: TResult[] = [];
         let current = initialLocation;
 

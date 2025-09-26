@@ -1,4 +1,4 @@
-import { ILocation, IProjectLocation, Result } from "./types.general";
+import { ILocation, IProjectLocation, ResultCode } from "./types.general";
 
 export interface IText {
     readonly text: string;
@@ -19,4 +19,4 @@ export type DocumentMap = {
     readonly projectLocation: IProjectLocation;
 };
 
-export type DocumentParser = (text: string, projectLocation: IProjectLocation) => Result<DocumentMap>;
+export type DocumentParser = (text: string, projectLocation: IProjectLocation) => ResultCode<DocumentMap>;

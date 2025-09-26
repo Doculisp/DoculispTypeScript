@@ -19,14 +19,16 @@
     "result": {
       "documentPath": "./README.md",
       "message": "Unable to write file",
-      "success": false
+      "success": false,
+      "type": "general-fail"
     }
   },
   "04 Final Result": [
     {
       "documentPath": "./README.md",
       "message": "Unable to write file",
-      "success": false
+      "success": false,
+      "type": "general-fail"
     }
   ]
 }

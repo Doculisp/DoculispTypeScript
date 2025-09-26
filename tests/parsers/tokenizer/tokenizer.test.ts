@@ -4,7 +4,7 @@ import { getVerifier } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import { IContainer, ITestableContainer } from "../../../src/types/types.containers";
 import { TokenFunction } from '../../../src/types/types.tokens';
-import { IFail, ILocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
+import { IFailCode, ILocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { DocumentMap } from "../../../src/types/types.document";
 import { buildProjectLocation, testable, buildPath, buildLocation } from "../../testHelpers";
 import { IPath, PathConstructor } from "../../../src/types/types.filePath";
@@ -16,7 +16,7 @@ describe('tokenizer', () => {
     let tokenizer: TokenFunction = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
-    let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
+    let failCode: (message: string, location: { documentPath: IPath, line: number, char: number }) => IFailCode = undefined as any;
     let util: IUtil = undefined as any;
     let getLocation: (path: string, depth: number, index: number, line: number, char: number, extension?: string | false) => ILocation = undefined as any;
 
@@ -36,11 +36,11 @@ describe('tokenizer', () => {
         });
 
         ok = util.ok;
-        fail = util.fail;
+        failCode = util.codeFailure;
     });
 
     it('should fail if document parsing failed', () => {
-        const parseResult = fail('This document did not parse', buildPath('X:/non-exist.dlisp')) as Result<DocumentMap>;
+        const parseResult = failCode('This document did not parse', { documentPath: buildPath('X:/non-exist.dlisp'), line: 1, char: 1 });
 
         const result = tokenizer(parseResult);
 

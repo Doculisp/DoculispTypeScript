@@ -2,7 +2,7 @@ import { AtomAst, CoreAst, IAstEmpty, RootAst } from "../types/types.ast";
 import { IProjectDocument, IProjectDocuments, IProjectParser } from "../types/types.astProject";
 import { IRegisterable } from "../types/types.containers";
 import { IPath, PathConstructor } from "../types/types.filePath";
-import { ILocation, IUtil, Result } from "../types/types.general";
+import { ILocation, IUtil, ResultCode } from "../types/types.general";
 import { IInternals, StepParseResult } from "../types/types.internal";
 import { TextHelper } from "../types/types.textHelpers";
 import { ITrimArray } from "../types/types.trimArray";
@@ -21,7 +21,7 @@ interface IOutput {
 }
 
 function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArray, pathConstructor: PathConstructor, textHelper: TextHelper): IProjectParser {
-    function parse(tokenResults: Result<RootAst | IAstEmpty>, variableTable: IVariableTable): Result<IProjectDocuments> {
+    function parse(tokenResults: ResultCode<RootAst | IAstEmpty>, variableTable: IVariableTable): ResultCode<IProjectDocuments> {
         if(!tokenResults.success) {
             return tokenResults;
         }
@@ -73,7 +73,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             if(0 < remaining.remaining.length) {
                 const bad = remaining.remaining[0] as CoreAst;
-                return util.fail(`Documents block at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char} contains unknown atom of '${bad.value}' at Line: ${bad.location.line}, Char ${bad.location.char}.`, current.documentPath);
+                return util.codeFailure(`Documents block at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char} contains unknown atom of '${bad.value}' at Line: ${bad.location.line}, Char ${bad.location.char}.`, { documentPath: current.documentPath, line: current.line, char: current.char });
             }
 
             const documents: IProjectDocuments = {
@@ -158,7 +158,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
                 if(0 < remaining.remaining.length) {
                     const first = remaining.remaining[0] as AtomAst;
-                    return util.fail(`Unknown atom at '${current.documentPath.fullName}' Line: ${first.location.line}, Char: ${first.location.char} of '${first.value}'`, current.documentPath);
+                    return util.codeFailure(`Unknown atom at '${current.documentPath.fullName}' Line: ${first.location.line}, Char: ${first.location.char} of '${first.value}'`, { documentPath: current.documentPath, line: first.location.line, char: first.location.char });
                 }
 
                 const sources = result.filter(r => r.type === 'i-source');
@@ -169,21 +169,21 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 }
 
                 if(0 === sources.length) {
-                    return util.fail(`Document identifier block at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${originalLocation.char} does not contain a source block.`, originalLocation.documentPath)
+                    return util.codeFailure(`Document identifier block at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${originalLocation.char} does not contain a source block.`, { documentPath: originalLocation.documentPath, line: originalLocation.line, char: originalLocation.char });
                 }
 
                 if(0 === outputs.length) {
-                    return util.fail(`Document identifier block at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${originalLocation.char} does not contain a output block.`, originalLocation.documentPath)
+                    return util.codeFailure(`Document identifier block at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${originalLocation.char} does not contain a output block.`, { documentPath: originalLocation.documentPath, line: originalLocation.line, char: originalLocation.char });
                 }
 
                 if(1 < sources.length) {
                     const bad = sources[1] as ISource;
-                    return util.fail(`Duplicate source block at '${current.documentPath}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, current.documentPath);
+                    return util.codeFailure(`Duplicate source block at '${current.documentPath}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, { documentPath: current.documentPath, line: bad.location.line, char: bad.location.char });
                 }
 
                 if(1 < outputs.length) {
                     const bad = outputs[1] as IOutput;
-                    return util.fail(`Duplicate output block at '${current.documentPath}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, current.documentPath);
+                    return util.codeFailure(`Duplicate output block at '${current.documentPath}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, { documentPath: current.documentPath, line: bad.location.line, char: bad.location.char });
                 }
 
                 const source = sources[0] as ISource;
@@ -224,11 +224,11 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 let bads = Object.keys(table);
                 let badMsg = bads.map(badS => `'${badS}' @ id char ${table[badS]}`).join('\n\t');
 
-                return util.fail(`Symbol(s) in document id ${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}\n${badMsg}`);
+                return util.codeFailure(`Symbol(s) in document id ${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}\n${badMsg}`, { documentPath: current.documentPath, line: current.line, char: current.char });
             }
 
             if(!textHelper.isLowercase(id)) {
-                return util.fail(`Id must be lowercase '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}. Did you mean '${id.toLocaleLowerCase()}'?`)
+                return util.codeFailure(`Id must be lowercase '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, line: current.line, char: current.char });
             }
 
             if(variableTable.hasKey(id)) {
@@ -239,7 +239,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                     msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
                 }
 
-                return util.fail(`Duplicate id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}.${msg}`, current.documentPath);
+                return util.codeFailure(`Duplicate id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}.${msg}`, { documentPath: current.documentPath, line: current.line, char: current.char });
             }
             return parseDocumentByParts(current, input, id)(ast.subStructure, (ast.subStructure[0] as AtomAst).location);
         }
@@ -268,16 +268,16 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             if(0 < remaining.remaining.length) {
                 const bad = remaining.remaining[0] as CoreAst;
-                return util.fail(`Document block at '${current.documentPath}' Line: ${current.line}, Char: ${current.char} contains unknown block '${bad.value}' at Line: ${bad.location.line}, Char: ${bad.location.char}.`, current.documentPath);
+                return util.codeFailure(`Document block at '${current.documentPath}' Line: ${current.line}, Char: ${current.char} contains unknown block '${bad.value}' at Line: ${bad.location.line}, Char: ${bad.location.char}.`, { documentPath: current.documentPath, line: current.line, char: current.char });
             }
 
             if(result.length === 0) {
-                return util.fail(`Document block at '${current.documentPath}' Line: ${current.line}, Char: ${current.char} does not contain a source or output.`, current.documentPath);
+                return util.codeFailure(`Document block at '${current.documentPath}' Line: ${current.line}, Char: ${current.char} does not contain a source or output.`, { documentPath: current.documentPath, line: current.line, char: current.char });
             }
 
             if(1 < result.length) {
                 const bad = result[0] as IProjectDocument;
-                return util.fail(`Duplicate block at '${current.documentPath.fullName}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, current.documentPath);
+                return util.codeFailure(`Duplicate block at '${current.documentPath.fullName}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, { documentPath: current.documentPath, line: bad.location.line, char: bad.location.char });
             }
 
             const doc = result[0] as IProjectDocument;
@@ -301,7 +301,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
         if(0 < remaining.remaining.length) {
             const bad = remaining.remaining[0] as CoreAst;
-            return util.fail(`Unknown atom at '${bad.location.documentPath.fullName}' Line: ${bad.location.line}, Char: ${bad.location.char} of '${bad.value}'.`, bad.location.documentPath);
+            return util.codeFailure(`Unknown atom at '${bad.location.documentPath.fullName}' Line: ${bad.location.line}, Char: ${bad.location.char} of '${bad.value}'.`, { documentPath: bad.location.documentPath, line: bad.location.line, char: bad.location.char });
         }
 
         if(0 === result.length) {
@@ -316,7 +316,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
         if(1 < result.length) {
             const bad = result[1] as IProjectDocuments;
-            return util.fail(`Project file may only contain a single documents block. Duplicate documents block detected at '${bad.location.documentPath.fullName}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, bad.location.documentPath);
+            return util.codeFailure(`Project file may only contain a single documents block. Duplicate documents block detected at '${bad.location.documentPath.fullName}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, { documentPath: bad.location.documentPath, line: bad.location.line, char: bad.location.char });
         }
 
         return util.ok(result[0] as IProjectDocuments);

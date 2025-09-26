@@ -1,5 +1,8 @@
 {
+  "char": 1,
   "documentPath": "X:/non-exist.dlisp",
+  "line": 1,
   "message": "This document did not parse",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

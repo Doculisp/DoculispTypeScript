@@ -1,6 +1,6 @@
 import { Options } from "approvals/lib/Core/Options";
 import { IContainer, IDictionary, ITestableContainer } from "../../../src/types/types.containers";
-import { IFail, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
+import { IFailCode, IFailGeneral, IProjectLocation, ISuccess, IUtil, Result, ResultGeneral } from "../../../src/types/types.general";
 import { IDoculisp, IEmptyDoculisp } from "../../../src/types/types.astDoculisp";
 import { IIncludeBuilder } from "../../../src/types/types.includeBuilder";
 import { getVerifier } from "../../tools";
@@ -17,8 +17,9 @@ describe('includeBuilder', () => {
     let container: IContainer = null as any;
     let util: IUtil = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
-    let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
-    let addPathResult: (filePath: string, result: Result<string>) => void = undefined as any;
+    let failGeneral: (message: string, documentPath?: IPath) => IFailGeneral = undefined as any;
+    let failCode: (message: string, location: { documentPath: IPath, line: number, char: number }) => IFailCode = undefined as any;
+    let addPathResult: (filePath: string, result: ResultGeneral<string>) => void = undefined as any;
     let variableSaver: IVariableTestable = undefined as any;
 
     beforeAll(() => {
@@ -33,25 +34,26 @@ describe('includeBuilder', () => {
         variableSaver.clear();
 
         ok = util.ok;
-        fail = util.fail;
+        failGeneral = util.generalFailure;
+        failCode = util.codeFailure;
 
-        let pathToResult: IDictionary<Result<string>> = undefined as any;
+        let pathToResult: IDictionary<ResultGeneral<string>> = undefined as any;
         pathToResult = null as any;
         pathToResult = {};
-        addPathResult = (filePath: string, result: Result<string>): void => {
+        addPathResult = (filePath: string, result: ResultGeneral<string>): void => {
             pathToResult[filePath] = result;
         }
         const fileHandler: IFileLoader & IDirectoryHandler = {
-            load(filePath: IPath): Result<string> {
+            load(filePath: IPath): ResultGeneral<string> {
                 const result = pathToResult[filePath.fullName];
                 if(result) {
                     return result;
                 }
 
-                return util.fail(`filePath has not been setup.`, filePath);
+                return util.generalFailure(`filePath has not been setup.`, filePath);
             },
-            getProcessWorkingDirectory(): Result<IPath> { return util.ok(buildPath('./', false)); },
-            setProcessWorkingDirectory(): Result<undefined> { return util.ok(undefined); },
+            getProcessWorkingDirectory(): ResultGeneral<IPath> { return util.ok(buildPath('./', false)); },
+            setProcessWorkingDirectory(): ResultGeneral<undefined> { return util.ok(undefined); },
         };
 
         environment.replaceBuilder(() => fileHandler, [], 'fileHandler', false);
@@ -74,13 +76,13 @@ describe('includeBuilder', () => {
         it('should return an error if given an error', () => {
             const builder: IIncludeBuilder = testable.include.parserBuilder(container, setup);
 
-            const expectedResult = fail('This is a failure',  buildPath('M:/y/pah.md'));
+            const expectedResult = failCode('This is a failure',  { documentPath: buildPath('M:/y/pah.md'), line: 1, char: 1 });
             expect(builder.parseExternals(expectedResult, variableSaver)).toBe(expectedResult);
         });
 
         it('should return an error if there is a file error', () => {
             const badPath = buildPath('B:/add.md');
-            const expectedResult = fail('baad file error', badPath);
+            const expectedResult = failGeneral('baad file error', badPath);
             addPathResult(badPath.fullName, expectedResult);
 
             const doc = `<!--
@@ -259,7 +261,7 @@ Hello World!
         it('should return file error if there is one', () => {
             const docPath = 'C:/bad.md';
 
-            const expectedResult = fail('baad file', buildPath(docPath));
+            const expectedResult = failGeneral('baad file', buildPath(docPath));
 
             addPathResult(docPath, expectedResult);
 

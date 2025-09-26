@@ -1,4 +1,4 @@
-import { ILocation, IProjectLocation, Result, IUtil } from "../src/types/types.general";
+import { ILocation, IProjectLocation, Result, IUtil, ResultCode } from "../src/types/types.general";
 import { IContainer, ITestableContainer } from "../src/types/types.containers";
 import { DocumentMap, DocumentParser } from "../src/types/types.document";
 import { TokenFunction, TokenizedDocument } from "../src/types/types.tokens";
@@ -49,7 +49,7 @@ function map<T1, T2>(f1: () => T1, f2: (value: T1) => T2): () => T2 {
     }
 }
 
-function wrapDocumentParser(parser: DocumentParser, text: string, location: IProjectLocation): () => Result<DocumentMap> {
+function wrapDocumentParser(parser: DocumentParser, text: string, location: IProjectLocation): () => ResultCode<DocumentMap> {
     return function() {
         return parser(text, location);
     }
@@ -87,7 +87,7 @@ function buildController(environment: ITestableContainer): IController {
     return environment.buildAs<IController>('controller');
 }
 
-function rawTokenResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<TokenizedDocument> {
+function rawTokenResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => ResultCode<TokenizedDocument> {
     const docParser = wrapDocumentParser(buildDocumentParser(environment), text, location);
     const tokenParser = buildTokenResultParser(environment);
 
@@ -106,7 +106,11 @@ function rawDoculispResultBuilder(environment: ITestableContainer, text: string,
     const astParser = buildDoculispParser(environment);
     const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
-    return map(astResultParser, result =>  astParser.parse(result, variableTable));
+    return map(astResultParser, result => 
+        !result.success
+            ? result 
+            : astParser.parse(result, variableTable)
+    );
 }
 
 function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IDoculisp | IEmptyDoculisp> {
@@ -114,7 +118,11 @@ function rawAstRecursiveExternalResultBuilder(environment: ITestableContainer, t
     const astRecursiveBuilder = buildIncludeParser(environment);
     const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
-    return map(astResultParser, result => astRecursiveBuilder.parseExternals(result, variableTable));
+    return map(astResultParser, result => 
+        !result.success
+            ? result 
+            : astRecursiveBuilder.parseExternals(result, variableTable)
+    );
 }
 
 function rawAstProjectParser(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<IProjectDocuments> {
@@ -122,7 +130,11 @@ function rawAstProjectParser(environment: ITestableContainer, text: string, loca
     const projectParser = buildProjectParser(environment);
     const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
-    return map(astResultParser, result => projectParser.parse(result, variableTable));
+    return map(astResultParser, result => 
+        !result.success
+            ? result 
+            : projectParser.parse(result, variableTable)
+    );
 }
 
 function rawStringWriterResultBuilder(environment: ITestableContainer, text: string, location: IProjectLocation): () => Result<string> {
@@ -130,7 +142,11 @@ function rawStringWriterResultBuilder(environment: ITestableContainer, text: str
     const stringWriter = buildStringWriter(environment);
     const variableTable = environment.buildAs<IVariableTable>('variableTable');
 
-    return map(includeBuilder, result => stringWriter.writeAst(result, variableTable));
+    return map(includeBuilder, result => 
+        !result.success
+            ? result 
+            : stringWriter.writeAst(result, variableTable)
+    );
 }
 
 function rawStringWriterPathResultBuilder(environment: ITestableContainer, filePath: IPath): () => Result<string> {
@@ -140,7 +156,11 @@ function rawStringWriterPathResultBuilder(environment: ITestableContainer, fileP
 
     variableTable.addValue(sourceKey, { type: 'variable-path', value: filePath });
 
-    return map(() => astRecursiveBuilder.parse(variableTable), result => stringWriter.writeAst(result, variableTable));
+    return map(() => astRecursiveBuilder.parse(variableTable), result => 
+        !result.success
+            ? result 
+            : stringWriter.writeAst(result, variableTable)
+    );
 }
 
 function rawPathCompileResultBuilder(environment: ITestableContainer): (sourcePath: IPath, destinationPath?: IPath | undefined) => Result<string>[] {

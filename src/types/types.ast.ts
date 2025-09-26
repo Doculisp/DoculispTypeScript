@@ -1,4 +1,4 @@
-import { ILocation, IProjectLocation, Result } from "./types.general";
+import { ILocation, IProjectLocation, ResultCode } from "./types.general";
 import { TokenizedDocument } from "./types.tokens";
 
 export interface IAstAtom {
@@ -49,5 +49,5 @@ export type RootAst = {
 }
 
 export interface IAstParser {
-    parse(tokens: Result<TokenizedDocument>): Result<RootAst | IAstEmpty>;
+    parse(tokens: ResultCode<TokenizedDocument>): ResultCode<RootAst | IAstEmpty>;
 }

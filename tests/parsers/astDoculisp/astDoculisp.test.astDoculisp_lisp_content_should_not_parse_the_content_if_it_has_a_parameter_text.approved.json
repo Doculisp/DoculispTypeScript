@@ -1,5 +1,8 @@
 {
+  "char": 2,
   "documentPath": "../main.dlisp",
+  "line": 9,
   "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown parameter 'toc'",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

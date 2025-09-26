@@ -1,4 +1,4 @@
-import { ILocation, ISuccess, Result } from "./types.general";
+import { ILocation, ISuccess, ResultCode } from "./types.general";
 
 export interface IParseRemaining<TParse> {
     readonly rest: TParse;
@@ -43,8 +43,8 @@ export type StepParse<TParse, TResult> = IParseStepForward<TParse> & (ISubParseG
 
 export type StringStepParse<T> = StepParse<string, T>;
 
-export type StepParseResult<TParse, TResult> = Result<StepParse<TParse, TResult> | false | 'stop'>;
-export type DiscardedResult<TParse> = Result<(IParseStepForward<TParse> & IDiscardResult) | false | 'stop'>
+export type StepParseResult<TParse, TResult> = ResultCode<StepParse<TParse, TResult> | false | 'stop'>;
+export type DiscardedResult<TParse> = ResultCode<(IParseStepForward<TParse> & IDiscardResult) | false | 'stop'>;
 
 export type StringStepParseResult<T> = StepParseResult<string, T>;
 
@@ -53,7 +53,7 @@ export type HandleValue<TParse, TResult> = (input: TParse, current: ILocation) =
 export type HandleStringValue<T> = (input: string, current: ILocation) => StringStepParseResult<T>;
 
 export interface IParser<TParse, TResult> {
-    parse(input: TParse, initialLocation: ILocation): Result<[TResult[], IUnparsed<TParse>]>;
+    parse(input: TParse, initialLocation: ILocation): ResultCode<[TResult[], IUnparsed<TParse>]>;
 };
 
 export type CreateParser<TParse, TResult> = (...handlers: HandleValue<TParse, TResult>[]) => IParser<TParse, TResult>;

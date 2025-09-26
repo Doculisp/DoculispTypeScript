@@ -1,7 +1,7 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
-import { IFail, IProjectLocation, IUtil } from "../../src/types/types.general";
+import { IFailCode, IFailGeneral, IProjectLocation, ISuccess, IUtil, ResultGeneral } from "../../src/types/types.general";
 import { Result } from "../../src/types/types.general";
 import { buildProjectLocation, testable, buildPath } from "../testHelpers";
 import { IDirectoryHandler, IFileLoader } from "../../src/types/types.fileHandler";
@@ -15,7 +15,8 @@ describe('stringWriter', () => {
     let verifyAsJson: (data: any, options?: Options) => void;
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
-    let fail: (message: string, documentPath?: IPath) => IFail = undefined as any;
+    let failGeneral: (message: string, documentPath?: IPath) => IFailGeneral = undefined as any;
+    let failCode: (message: string, location: { documentPath: IPath, line: number, char: number }) => IFailCode = undefined as any;
     let variableTable: IVariableTestable = undefined as any;
 
     function verifyMarkdownResult(textMaybe: Result<string>, options?: Options): void {
@@ -42,11 +43,12 @@ describe('stringWriter', () => {
 
         const util: IUtil = environment.buildAs<IUtil>('util');
         
-        fail = util.fail;
+        failGeneral = util.generalFailure;
+        failCode = util.codeFailure;
     }
 
     beforeEach(async () => {
-        fail = null as any;
+        failGeneral = null as any;
         container = await containerPromise;
 
         toResult = testable.stringWriter.resultBuilder(container, setupBuilder);
@@ -54,7 +56,7 @@ describe('stringWriter', () => {
 
     describe('basic functionality', () => {
         it('should not write an error', () => {
-            const expectedResult = fail('Some failure', buildPath('S:/ome/path.md'));
+            const expectedResult = failCode('Some failure', { documentPath: buildPath('S:/ome/path.md'), line: 1, char: 1 });
             const writer = testable.stringWriter.writer(container);
             const result = writer.writeAst(expectedResult, variableTable);
 
@@ -173,12 +175,12 @@ This is the end
             });
 
             describe('sub documents', () => {
-                let ok: (value: any) => Result<any> = undefined as any;
+                let ok: (value: any) => ISuccess<any> = undefined as any;
                 let addFile : (filePath: string, body: string) => void = undefined as any;
 
                 beforeEach(async () => {
                     let container = await containerPromise;
-                    let files: IDictionary<Result<string>> = undefined as any;
+                    let files: IDictionary<ResultGeneral<string>> = undefined as any;
                     files = {};
 
                     addFile = (filePath: string, body: string): void => {
@@ -190,13 +192,13 @@ This is the end
                         ok = util.ok;
 
                         const fileHandler: IFileLoader & IDirectoryHandler = {
-                            load: function(path: IPath): Result<string> {
+                            load: function(path: IPath): ResultGeneral<string> {
                                 const r = files[path.fullName];
                                 if(r) {
                                     return r;
                                 }
 
-                                return fail('path not yet setup', path);
+                                return failGeneral('path not yet setup', path);
                             },
                             getProcessWorkingDirectory() {
                                 return util.ok(buildPath('./', false));

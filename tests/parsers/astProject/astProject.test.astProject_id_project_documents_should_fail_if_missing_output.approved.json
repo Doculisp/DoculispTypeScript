@@ -1,5 +1,8 @@
 {
+  "char": 10,
   "documentPath": "/docs.dlproj",
+  "line": 4,
   "message": "Document identifier block at '/docs.dlproj' Line: 4, Char: 10 does not contain a output block.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

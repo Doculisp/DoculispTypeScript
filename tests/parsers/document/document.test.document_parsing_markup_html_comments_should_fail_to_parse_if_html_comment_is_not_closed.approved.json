@@ -1,5 +1,8 @@
 {
+  "char": 1,
   "documentPath": "C:/examples/bad.md",
+  "line": 1,
   "message": "Open HTML Comment at 'C:/examples/bad.md' Line: 1, Char: 1 but does not close.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

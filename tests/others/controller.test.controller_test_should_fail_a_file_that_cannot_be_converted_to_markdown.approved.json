@@ -10,16 +10,22 @@
       }
     },
     "result": {
+      "char": 1,
       "documentPath": "./someFile.md",
+      "line": 1,
       "message": "Unable to write",
-      "success": false
+      "success": false,
+      "type": "code-fail"
     }
   },
   "03 Final Result": [
     {
+      "char": 1,
       "documentPath": "./someFile.md",
+      "line": 1,
       "message": "Unable to write",
-      "success": false
+      "success": false,
+      "type": "code-fail"
     }
   ]
 }

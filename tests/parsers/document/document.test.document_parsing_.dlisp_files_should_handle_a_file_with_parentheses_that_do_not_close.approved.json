@@ -1,5 +1,8 @@
 {
+  "char": 1,
   "documentPath": "C:/main.dlisp",
+  "line": 2,
   "message": "Doculisp block at 'C:/main.dlisp' Line: 2, Char: 1 is not closed.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

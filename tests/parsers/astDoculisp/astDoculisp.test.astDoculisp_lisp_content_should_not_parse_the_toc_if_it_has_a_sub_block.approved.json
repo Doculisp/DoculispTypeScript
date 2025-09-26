@@ -1,5 +1,8 @@
 {
+  "char": 16,
   "documentPath": "../main.dlisp",
+  "line": 9,
   "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown command 'type' at Line: 9, Char: 16.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

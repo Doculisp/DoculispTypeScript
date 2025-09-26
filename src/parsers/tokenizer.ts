@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types/types.containers";
 import { DocumentMap, DocumentPart, ILispBlock } from "../types/types.document";
-import { ILocation, IUtil, Result, isSame } from "../types/types.general";
+import { ILocation, IUtil, ResultCode, isSame } from "../types/types.general";
 import { IInternals, StringStepParseResult } from "../types/types.internal";
 import { ILispSearches, Searcher } from "../types/types.textHelpers";
 import { Token, TokenFunction, TokenizedDocument } from "../types/types.tokens";
@@ -28,7 +28,7 @@ function getTokenBuilder() {
 }
 
 function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil) : TokenFunction {
-    return function tokenize (documentMap: Result<DocumentMap>): Result<TokenizedDocument> {
+    return function tokenize (documentMap: ResultCode<DocumentMap>): ResultCode<TokenizedDocument> {
         let isToken = false;
     
         function tokenizeWhiteSpace(input: string, current: ILocation): StringStepParseResult<Token> {
@@ -234,14 +234,14 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
     
         const totalTokens = getTokenBuilder();
     
-            if(!documentMap.success) {
+        if(!documentMap.success) {
             return documentMap;
         }
         
         const documentPath = documentMap.value.projectLocation.documentPath;
         const parser = internals.createStringParser(tokenizeWhiteSpace, tokenizeComment, tokenizeParenthesis, tokenizeParameter, tokenizeAtom);
         
-        function toTokens(block: ILispBlock): Result<Token[]> {
+        function toTokens(block: ILispBlock): ResultCode<Token[]> {
             let parsed = parser.parse(block.text, block.location);
             if(parsed.success) {
                 let [ret, _ignore] = parsed.value;
@@ -264,8 +264,8 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 let tokens = toTokens(part);
                 if (tokens.success) {
                     totalTokens.addTokens(tokens.value);
-                } else {
-                    return util.fail(tokens.message, documentPath);
+                } else if (tokens.type === 'code-fail') {
+                    return util.codeFailure(tokens.message, { documentPath, char: tokens.char, line: tokens.line });
                 }
             }
         }

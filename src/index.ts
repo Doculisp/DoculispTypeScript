@@ -154,9 +154,13 @@ async function main() {
                     console.log(message);
                 }
             }
-            else {
+            else if (result.type === 'code-fail') {
                 console.error(`Error in file: ${result.documentPath}`);
                 console.error(result.message);
+                failed = true;
+            }
+            else {
+                console.error(`Error: ${result.message}`);
                 failed = true;
             }
         });

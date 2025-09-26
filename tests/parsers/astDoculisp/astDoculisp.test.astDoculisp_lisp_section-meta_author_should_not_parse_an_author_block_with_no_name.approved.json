@@ -1,5 +1,8 @@
 {
+  "char": 6,
   "documentPath": "main.dlisp",
+  "line": 4,
   "message": "Author block at 'main.dlisp' Line: 4, Char: 6 does not contain the author's name.",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }

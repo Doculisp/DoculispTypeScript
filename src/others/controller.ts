@@ -2,7 +2,7 @@ import { IIncludeBuilder } from "../types/types.includeBuilder";
 import { IRegisterable } from "../types/types.containers";
 import { IController } from "../types/types.controller";
 import { IFileWriter } from "../types/types.fileHandler";
-import { IUtil, Result } from "../types/types.general";
+import { IUtil, Result, ResultCode } from "../types/types.general";
 import { IStringWriter } from "../types/types.stringWriter";
 import { destKey, IVariablePath, IVariableTable, sourceKey } from "../types/types.variableTable";
 import { IPath } from "../types/types.filePath";
@@ -17,7 +17,7 @@ type CompileResult = {
 };
 
 function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuilder, stringWrter: IStringWriter, variableTable: IVariableTable): IController {
-    function _write(doculisp: Result<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string | false> {
+    function _write(doculisp: ResultCode<IDoculisp | IEmptyDoculisp>, variableTable: IVariableTable): Result<string | false> {
         const document = stringWrter.writeAst(doculisp, variableTable);
 
         const destinationPath = (
@@ -45,6 +45,10 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
     
     function _compile(variableTable: IVariableTable): Result<string | false> {
         const doculisp = astBuilder.parse(variableTable);
+
+        if(!doculisp.success) {
+            return doculisp;
+        }
         
         return _write(doculisp, variableTable);
     }
@@ -108,11 +112,11 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
     function compile(sourcePath: IPath, destinationPath: IPath | false = false): Result<string>[] {
         if(sourcePath.extension !== '.dlproj' && !destinationPath) {
-            return [util.fail(`Must have a destination file.`, sourcePath)];
+            return [util.generalFailure(`Must have a destination file.`, sourcePath)];
         }
 
         if(sourcePath.extension === '.dlproj' && destinationPath) {
-            return [util.fail('A project file cannot have a destination path', sourcePath)];
+            return [util.generalFailure('A project file cannot have a destination path', sourcePath)];
         }
 
         if(sourcePath.extension === '.dlproj') {
@@ -129,7 +133,7 @@ function buildLoader(util: IUtil, handler: IFileWriter, astBuilder: IIncludeBuil
 
     function test(variableTable: IVariableTable): Result<string | false>[] {
         if(!variableTable.hasKey(sourceKey)) {
-            return [util.fail('A source file must be given')];
+            return [util.generalFailure('A source file must be given')];
         }
 
         const sourcePath = (variableTable.getValue(sourceKey) as IVariablePath).value;

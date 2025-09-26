@@ -1,24 +1,23 @@
 {
   "01 Parse Ast": {
     "result": {
+      "char": 1,
       "documentPath": "./someFile.md",
+      "line": 1,
       "message": "A bad parse",
-      "success": false
+      "success": false,
+      "type": "code-fail"
     },
     "sourcePath": "./someFile.md"
   },
-  "02 Convert to Markdown": {
-    "astMaybe": {
-      "documentPath": "./someFile.md",
-      "message": "A bad parse",
-      "success": false
-    }
-  },
-  "03 Final Result": [
+  "02 Final Result": [
     {
+      "char": 1,
       "documentPath": "./someFile.md",
+      "line": 1,
       "message": "A bad parse",
-      "success": false
+      "success": false,
+      "type": "code-fail"
     }
   ]
 }

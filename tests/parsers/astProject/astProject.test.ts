@@ -43,7 +43,7 @@ describe('astProject', () => {
     });
 
     it('should return an error when given an error', () => {
-        const tokenResults = util.fail('No good.');
+        const tokenResults = util.codeFailure('No good.', { documentPath: buildPath('./bad.dlproj'), line: 1, char: 1 });
         const result = parser.parse(tokenResults, variableTable);
 
         expect(result).toBe(tokenResults);

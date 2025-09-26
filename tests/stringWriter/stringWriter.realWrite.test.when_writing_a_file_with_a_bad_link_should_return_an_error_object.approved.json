@@ -1,5 +1,8 @@
 {
+  "char": 14,
   "documentPath": "D:\\Development\\github\\Doculisp\\DoculispTypeScript\\tests\\Sample\\simpleBadLink\\parsers\\document.md",
+  "line": 32,
   "message": "Unknown id 'mains' at 'D:\\Development\\github\\Doculisp\\DoculispTypeScript\\tests\\Sample\\simpleBadLink\\parsers\\document.md' Line: 32, Char: 14",
-  "success": false
+  "success": false,
+  "type": "code-fail"
 }
