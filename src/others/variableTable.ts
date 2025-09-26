@@ -123,6 +123,11 @@ function buildVariableTable(): IVariableTestable {
             return warnings ? warnings.warnings : [];
         }
 
+        hasWarnings(): boolean {
+            let warnings = this.getValue<IWarnings>(' warnings');
+            return !!(warnings && warnings.warnings.length);
+        }
+
         private getParentKeys(): string[] {
             if(!this.parent) {
                 return [];

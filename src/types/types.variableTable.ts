@@ -46,6 +46,7 @@ export interface IVariableTable {
     addGlobalValueToStringList(key: string, value: IVariableString): IVariableTable;
     addWarning(warning: Warning): IVariableTable;
     getWarnings(): Warning[];
+    hasWarnings(): boolean;
     getValue<T extends Savable>(key: string): T | false;
     getKeys(): string[];
     createChild(): IVariableTable;
