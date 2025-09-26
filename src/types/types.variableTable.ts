@@ -1,5 +1,5 @@
 import { IPath } from "./types.filePath";
-import { ILocation } from "./types.general";
+import { ILocation, Warning } from "./types.general";
 
 export interface IVariableId {
     value: IPath;
@@ -28,7 +28,12 @@ export interface IStringArray {
     type: 'variable-array-string';
 }
 
-export type Savable = IVariableId | IStringArray | IVariablePath | IVariableString | IVariableEmptyId;
+export interface IWarnings {
+    readonly warnings: Warning[];
+    readonly type: 'variable-array-warnings';
+}
+
+export type Savable = IVariableId | IStringArray | IVariablePath | IVariableString | IVariableEmptyId | IWarnings;
 
 export const sourceKey = ' source';
 export const destKey = ' destination';
@@ -39,6 +44,8 @@ export interface IVariableTable {
     addValueToStringList(key: string, value: IVariableString): IVariableTable;
     addGlobalValue<T extends Savable>(key: string, value: T): IVariableTable;
     addGlobalValueToStringList(key: string, value: IVariableString): IVariableTable;
+    addWarning(warning: Warning): IVariableTable;
+    getWarnings(): Warning[];
     getValue<T extends Savable>(key: string): T | false;
     getKeys(): string[];
     createChild(): IVariableTable;

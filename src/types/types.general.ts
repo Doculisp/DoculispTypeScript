@@ -61,6 +61,19 @@ export type LocationBuilder = (line: number, char: number) => ILocation;
 
 export type UtilBuilder = () => IUtil;
 
+export type ObsoleteWarning = {
+    readonly message: string;
+    readonly documentPath: IPath;
+    readonly line: number;
+    readonly char: number;
+    type: "obsolete-warning";
+}
+
+export type Warning = {
+    readonly warningInfo: ObsoleteWarning;
+    readonly type: "warning";
+}
+
 export interface IUtil {
     ok<T>(successfulValue: T): ISuccess<T>;
     codeFailure(message: string, location: { documentPath: IPath, line: number, char: number }): IFailCode;

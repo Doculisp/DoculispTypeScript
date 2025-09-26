@@ -1,5 +1,6 @@
+import { Warning } from "../types";
 import { IDictionary, IRegisterable } from "../types/types.containers";
-import { IVariableString, IVariableTable, IVariableTestable, Savable } from "../types/types.variableTable";
+import { IVariableString, IVariableTable, IVariableTestable, IWarnings, Savable } from "../types/types.variableTable";
 
 function buildVariableTable(): IVariableTestable {
     class VariableTable implements IVariableTable, IVariableTestable {
@@ -17,6 +18,12 @@ function buildVariableTable(): IVariableTestable {
 
             baseKeys.forEach(key => this.table[key] = baseTable.getValue(key) as Savable);
             this.parent = baseTable;
+
+            if(!baseKeys.includes(' warnings')) {
+                let warnings : IWarnings = { warnings: [], type: 'variable-array-warnings' };
+                this.table[' warnings'] = warnings;
+            }
+
         }
 
         createChild(): IVariableTable {
@@ -99,6 +106,21 @@ function buildVariableTable(): IVariableTestable {
             this.addValueToStringList(key, value);
 
             return this;
+        }
+
+        addWarning(warning: Warning): IVariableTable {
+            let warnings = this.getValue<IWarnings>(' warnings');
+
+            if(warnings) {
+                warnings.warnings.push(warning);
+            }
+
+            return this;
+        }
+
+        getWarnings(): IWarnings['warnings'] {
+            let warnings = this.getValue<IWarnings>(' warnings');
+            return warnings ? warnings.warnings : [];
         }
 
         private getParentKeys(): string[] {
