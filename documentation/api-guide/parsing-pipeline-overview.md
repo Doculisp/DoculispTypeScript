@@ -1,6 +1,13 @@
 <!-- (dl (section-meta Parsing Pipeline Overview)) -->
 
-Understanding how Doculisp processes different file types is crucial for working with the system effectively. This overview explains the three distinct parsing pipelines and how they coordinate to transform source documents into compiled markdown.
+Understanding how Doculisp processes different file types is crucial for working with the system effect**Error Message Standards:**
+- **Location-aware errors** (`IFailCode`): Include `documentPath`, `line`, `char`, and `type: "code-fail"`
+- **General errors** (`IFailGeneral`): Include `type: "general-fail"` and optional `documentPath` but **NO line/char information**
+- **Type discrimination**: Use the `type` property to distinguish error categories
+- **System-level context**: General errors represent failures outside parsing (file I/O, permissions, etc.)
+- Clear description of what failed and why
+- Propagate original error context through call stack
+- No exceptions thrown - all errors returned as `Result<T>` failuresThis overview explains the three distinct parsing pipelines and how they coordinate to transform source documents into compiled markdown.
 
 <!-- (dl (# Pipeline Architecture)) -->
 
@@ -160,7 +167,9 @@ return util.ok(finalResult);
 ```
 
 **Error Message Standards:**
-- Include file path and line/character position when available
+- **Location-aware errors** (`IFailCode`): Include `documentPath`, `line`, `char`, and `type: \"code-fail\"`
+- **General errors** (`IFailGeneral`): Include `type: \"general-fail\"` and optional `documentPath`
+- **Type discrimination**: Use the `type` property to distinguish error categories  
 - Clear description of what failed and why
 - Propagate original error context through call stack
 - No exceptions thrown - all errors returned as `Result<T>` failures

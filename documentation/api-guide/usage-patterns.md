@@ -77,7 +77,8 @@ import {
     IPath,
     IProjectLocation,
     Result,
-    IFail
+    IFail,
+    IFailCode
 } from 'doculisp';
 
 class DoculispValidator {
@@ -130,21 +131,22 @@ class DoculispValidator {
     }
 
     private createDiagnostic(result: IFail, severity: 'error' | 'warning' | 'info'): Diagnostic {
-        const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
-        
         let range = { 
             start: { line: 0, character: 0 }, 
             end: { line: 0, character: 0 } 
         };
         
-        if (positionMatch) {
-            const line = parseInt(positionMatch[1]) - 1;
-            const char = parseInt(positionMatch[2]) - 1;
+        // Use type property to discriminate between error types
+        if (result.type === 'code-fail') {
+            // Location-aware errors have direct line/char properties
+            const codeError = result as IFailCode;
             range = {
-                start: { line, character: char },
-                end: { line, character: char + 1 }
+                start: { line: codeError.line - 1, character: codeError.char - 1 }, // Convert to 0-based
+                end: { line: codeError.line - 1, character: codeError.char }
             };
         }
+        // Note: general-fail errors have NO location information available
+        // These represent system-level errors outside the compiler's parsing context
 
         return {
             severity,

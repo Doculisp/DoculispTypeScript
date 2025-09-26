@@ -75,8 +75,18 @@ Standard Result<T> error handling pattern:
 ```typescript
 function handleError(result: IFail): void {
     console.error(`Error: ${result.message}`);
-    if (result.documentPath) {
-        console.error(`At: ${result.documentPath.fullName}`);
+    
+    // Check error type for different handling
+    if (result.type === 'code-fail') {
+        // Location-aware errors have precise position info
+        const codeError = result as IFailCode;
+        console.error(`At: ${codeError.documentPath.fullName} Line: ${codeError.line}, Char: ${codeError.char}`);
+    } else if (result.type === 'general-fail') {
+        // General errors are system-level with no location information
+        if (result.documentPath) {
+            console.error(`Related to: ${result.documentPath.fullName}`);
+        }
+        // Note: No line/char information available for general errors
     }
 }
 ```
@@ -89,21 +99,22 @@ Convert DoculispTypeScript errors to language server diagnostics:
 
 ```typescript
 function convertToLanguageServerError(result: IFail): Diagnostic {
-    const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
-    
     let range = { 
         start: { line: 0, character: 0 }, 
         end: { line: 0, character: 0 } 
     };
     
-    if (positionMatch) {
-        const line = parseInt(positionMatch[1]) - 1;
-        const char = parseInt(positionMatch[2]) - 1;
+    // Use type property to discriminate between error types
+    if (result.type === 'code-fail') {
+        // Location-aware errors have direct line/char properties
+        const codeError = result as IFailCode;
         range = {
-            start: { line, character: char },
-            end: { line, character: char + 1 }
+            start: { line: codeError.line - 1, character: codeError.char - 1 }, // Convert to 0-based
+            end: { line: codeError.line - 1, character: codeError.char }
         };
     }
+    // Note: general-fail errors have NO location information available
+    // These represent system-level errors outside the compiler's parsing context
 
     return {
         severity: determineSeverity(result.message),
@@ -129,6 +140,27 @@ function determineSeverity(message: string): 'error' | 'warning' | 'info' {
 Frequently used interfaces across examples:
 
 ```typescript
+// Import error types from doculisp package
+import { IFail, IFailCode, IFailGeneral } from 'doculisp';
+
+// Error type structure (for reference)
+interface IFailCode {
+    readonly message: string;
+    readonly documentPath: IPath;
+    readonly line: number;      // Always present - precise line number
+    readonly char: number;      // Always present - precise character position
+    readonly success: false;
+    readonly type: "code-fail";
+}
+
+interface IFailGeneral {
+    readonly message: string;
+    readonly success: false;
+    readonly documentPath?: IPath | undefined;  // Optional - may not have file context
+    readonly type: "general-fail";
+    // NOTE: NO line/char properties - these errors occur outside parsing context
+}
+
 // Validation interfaces
 interface ValidationError {
     severity: 'error' | 'warning' | 'info';

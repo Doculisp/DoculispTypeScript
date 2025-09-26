@@ -9,7 +9,22 @@ The **DocumentParse** is the **first stage** that extracts and processes content
 <!-- (dl (## Overview)) -->
 
 **Primary Responsibilities:**
-- Detect file type based on extension (`.md`, `.dlisp`, `.dlproj`)
+- Detect file function createValidationError(result: IFail, context: string): ValidationError {
+    let line = 0, character = 0;
+    
+    // Use type property to discriminate between error types
+    if (result.type === 'code-fail') {
+        // Location-aware errors have direct line/char properties
+        const codeError = result as IFailCode;
+        line = codeError.line - 1; // Convert to 0-based
+        character = codeError.char - 1; // Convert to 0-based
+    } else if (result.type === 'general-fail') {
+        // General errors may have position info in message for backward compatibility
+        const positionMatch = result.message.match(/Line: (\\d+), Char: (\\d+)/);
+        if (positionMatch) {
+            line = parseInt(positionMatch[1]) - 1;
+            character = parseInt(positionMatch[2]) - 1;
+        }\n    }\n\n    return {\n        message: `${context}: ${result.message}`,\n        severity: 'error',\n        range: {extension (`.md`, `.dlisp`, `.dlproj`)
 - Extract Doculisp blocks from HTML comments in markdown files
 - Parse pure Doculisp syntax in `.dlisp` files
 - Preserve text content alongside extracted structure
@@ -495,14 +510,17 @@ async function validateSyntaxOnly(document: string, filePath: string): Promise<V
 }
 
 function createValidationError(result: IFail, context: string): ValidationError {
-    // Extract line/character from error message if available
-    const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
-    
     let line = 0, character = 0;
-    if (positionMatch) {
-        line = parseInt(positionMatch[1]) - 1; // Convert to 0-based
-        character = parseInt(positionMatch[2]) - 1; // Convert to 0-based
+    
+    // Use type property to discriminate between error types
+    if (result.type === 'code-fail') {
+        // Location-aware errors have direct line/char properties
+        const codeError = result as IFailCode;
+        line = codeError.line - 1; // Convert to 0-based
+        character = codeError.char - 1; // Convert to 0-based
     }
+    // Note: general-fail errors have NO location information available
+    // These represent system-level errors outside the compiler's parsing context
 
     return {
         message: `${context}: ${result.message}`,

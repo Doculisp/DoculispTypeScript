@@ -237,10 +237,12 @@ This is a test file.
 - Do file paths match exactly?
 
 **Step 4: Read Error Messages Carefully**
-Doculisp error messages usually tell you:
-- Which file has the problem
-- What line number
-- What type of error
+Doculisp error messages provide detailed location information to help you find problems quickly:
+- **File path**: The exact file containing the error
+- **Line number**: The specific line where the error occurred  
+- **Character position**: The exact position within the line
+- **Error type**: Whether it's a parsing error (`code-fail`) or general error (`general-fail`)
+- **Clear description**: What went wrong and often suggestions for fixing it
 
 ### Test Your Syntax
 

@@ -7,14 +7,27 @@
 
 # Changelog #
 
-1. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
-2. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
-3. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-4. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-5. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-6. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-7. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-8. Older: [Previous Releases](#previous-releases)
+1. Release: [[3.5.0] - 2025-01-08](#350---2025-01-08)
+2. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
+3. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
+4. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+5. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+6. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+7. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+8. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+9. Older: [Previous Releases](#previous-releases)
+
+## [3.5.0] - 2025-01-08 ##
+
+### Improved ###
+
+- **Documentation**: Comprehensive updates to error handling documentation
+  - Clarified distinction between code errors (`IFailCode`) and general errors (`IFailGeneral`)
+  - Updated all API documentation to reflect that general errors have no line/character location information
+  - Enhanced troubleshooting guide with clearer error type descriptions
+  - Improved architecture documentation explaining error handling standards
+  - Updated usage patterns and common patterns guides for better error handling practices
+  - Added comprehensive error interface documentation and examples
 
 ## [3.4.12] - 2025-09-23 ##
 

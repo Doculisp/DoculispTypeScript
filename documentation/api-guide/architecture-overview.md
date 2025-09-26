@@ -146,7 +146,10 @@ return util.ok(finalResult);
 ```
 
 **Error Standards:**
-- Include file path and line/character position when available
+- **Location-aware errors** (`IFailCode`): Include `documentPath`, `line`, `char`, and `type: "code-fail"`
+- **General errors** (`IFailGeneral`): Include `type: "general-fail"` and optional `documentPath` but **NO line/char information**
+- **Type discrimination**: Use the `type` property to distinguish error categories
+- **System-level context**: General errors represent failures outside parsing (file I/O, permissions, etc.)
 - Clear description of what failed and why
 - Propagate original error context through call stack
 - No exceptions thrown - all errors returned as `Result<T>` failures
@@ -280,22 +283,22 @@ interface LanguageServerError extends IFail {
 }
 
 function convertToLanguageServerError(result: IFail, context?: string): LanguageServerError {
-    // Extract position information from error message
-    const positionMatch = result.message.match(/Line: (\d+), Char: (\d+)/);
-    
     let range = { 
         start: { line: 0, character: 0 }, 
         end: { line: 0, character: 0 } 
     };
     
-    if (positionMatch) {
-        const line = parseInt(positionMatch[1]) - 1; // Convert to 0-based
-        const char = parseInt(positionMatch[2]) - 1;
+    // Check error type and extract location information accordingly
+    if (result.type === 'code-fail') {
+        // Location-aware errors have direct line/char properties
+        const codeError = result as IFailCode;
         range = {
-            start: { line, character: char },
-            end: { line, character: char + 1 }
+            start: { line: codeError.line - 1, character: codeError.char - 1 }, // Convert to 0-based
+            end: { line: codeError.line - 1, character: codeError.char }
         };
     }
+    // Note: general-fail errors have NO location information available
+    // These represent system-level errors (file I/O, permissions, etc.) outside parsing context
 
     return {
         ...result,

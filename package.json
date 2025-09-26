@@ -14,7 +14,9 @@
     "build:check-all": "tsc --project tsconfig.tests.json --noEmit",
     "build:check-clean": "pwsh -c \"tsc --project tsconfig.tests.json --noEmit 2>&1 | Where-Object { $_ -like '*tests/*' -or $_ -like '*src/*' -or $_ -like 'Found * error*' }\"",
     "test": "jest tests --coverage",
-    "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "build:docs": "npx doculisp documentation/doculisp.dlproj",
+    "compile:docs": "npx doculisp documentation/doculisp.dlproj"
   },
   "repository": {
     "type": "git",
