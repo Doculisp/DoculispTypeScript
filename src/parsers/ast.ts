@@ -109,7 +109,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
         }
 
         if(closeCommand.type !== 'token - close parenthesis') {
-            return util.codeFailure(`Malformed lisp at ${closeCommand.location}.`, { documentPath: closeCommand.location.documentPath, start: { line: closeCommand.location.line, char: closeCommand.location.char }, end: { line: closeCommand.location.line, char: closeCommand.location.char } });
+            return util.codeFailure(`Malformed lisp at ${closeCommand.location}.`, { documentPath: closeCommand.location.documentPath, start: { line: closeCommand.location.line, char: closeCommand.location.char }, end: { line: closeCommand.location.line, char: closeCommand.location.char } }); // Close parenthesis is single character, so start and end are the same
         }
 
         return util.ok({
@@ -145,10 +145,18 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
 
         const [subAst, remaining] = parsed.value;
 
+        if(remaining.remaining.length === 0) {
+            // No more tokens - report error at current location
+            return util.codeFailure(`Malformed lisp at ${remaining.location} - missing close parenthesis`, { documentPath: remaining.location.documentPath, start: { line: remaining.location.line, char: remaining.location.char }, end: { line: remaining.location.line, char: remaining.location.char } });
+        }
+
         const close = remaining.remaining[0] as Token;
 
-        if(remaining.remaining.length === 0 || close.type !== 'token - close parenthesis') {
-            return util.codeFailure(`Malformed lisp at ${remaining.location}`, { documentPath: remaining.location.documentPath, start: { line: remaining.location.line, char: remaining.location.char }, end: { line: remaining.location.line, char: remaining.location.char } });
+        if(close.type !== 'token - close parenthesis') {
+            // Found a token, but it's not a close parenthesis - report error for the actual token
+            const tokenText = 'text' in close ? close.text : ')'; // CloseParenthesisToken doesn't have text property
+            const endChar = close.location.char + tokenText.length - 1;
+            return util.codeFailure(`Malformed lisp at ${close.location} - expected close parenthesis but found '${tokenText}'`, { documentPath: close.location.documentPath, start: { line: close.location.line, char: close.location.char }, end: { line: close.location.line, char: endChar } });
         }
 
         return util.ok({
@@ -183,7 +191,9 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
 
         if(0 < leftovers.remaining.length) {
             const token: Token = leftovers.remaining[0] as Token;
-            return util.codeFailure(`Unknown Token '${JSON.stringify(token, null, 4)}`, { documentPath: token.location.documentPath, start: { line: token.location.line, char: token.location.char }, end: { line: token.location.line, char: token.location.char } });
+            const tokenText = 'text' in token ? token.text : ')'; // CloseParenthesisToken doesn't have text property
+            const endChar = token.location.char + tokenText.length - 1; // -1 because positions are 1-based and inclusive
+            return util.codeFailure(`Unknown Token '${JSON.stringify(token, null, 4)}`, { documentPath: token.location.documentPath, start: { line: token.location.line, char: token.location.char }, end: { line: token.location.line, char: endChar } });
         }
         
         return util.ok({
