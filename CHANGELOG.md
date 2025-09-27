@@ -7,15 +7,25 @@
 
 # Changelog #
 
-1. Release: [[3.5.0] - 2025-01-08](#350---2025-01-08)
-2. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
-3. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
-4. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-5. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-6. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-7. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-8. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-9. Older: [Previous Releases](#previous-releases)
+1. Release: [[3.5.1] - 2025-09-26](#351---2025-09-26)
+2. Release: [[3.5.0] - 2025-01-08](#350---2025-01-08)
+3. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
+4. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
+5. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+6. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+7. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+8. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+9. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+10. Older: [Previous Releases](#previous-releases)
+
+## [3.5.1] - 2025-09-26 ##
+
+### Fixed ###
+
+- **Path Handling**: Fixed bug in `PathHandler` constructor where file extension property was incorrectly set
+  - Fixed conditional logic that was always assigning the extension value even when it should be `false`
+  - Files without extensions now properly return `false` for the extension property instead of an empty string
+  - This ensures consistent behavior when checking file extensions in path operations
 
 ## [3.5.0] - 2025-01-08 ##
 

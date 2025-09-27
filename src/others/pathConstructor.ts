@@ -13,8 +13,10 @@ class PathHandler implements IPath {
         if(ex.length === 0) {
             this._extension = false;
         }
-
-        this._extension = ex;
+        else {
+            this._extension = ex;
+        }
+        
         this._dirName = path.dirname(this._fullName);
         this._path = path;
     }
