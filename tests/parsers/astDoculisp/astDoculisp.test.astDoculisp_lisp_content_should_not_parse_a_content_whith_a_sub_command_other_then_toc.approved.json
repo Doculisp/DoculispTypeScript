@@ -1,8 +1,14 @@
 {
-  "char": 11,
   "documentPath": "./itty.dlisp",
-  "line": 9,
+  "end": {
+    "char": 12,
+    "line": 9
+  },
   "message": "The content block at './itty.dlisp' Line: 9, Char: 2 has unknown command '#' at Line: 9, Char: 11.",
+  "start": {
+    "char": 11,
+    "line": 9
+  },
   "success": false,
   "type": "code-fail"
 }

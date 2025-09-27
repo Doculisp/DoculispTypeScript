@@ -1,8 +1,14 @@
 {
-  "char": 10,
   "documentPath": "C:/_main.dlisp",
-  "line": 5,
+  "end": {
+    "char": 1,
+    "line": 16
+  },
   "message": "In include block at 'C:/_main.dlisp' Line: 5, Char 10 contains invalid file type. Included files must be markdown or dlisp files. 'C:/sub.docx'",
+  "start": {
+    "char": 10,
+    "line": 5
+  },
   "success": false,
   "type": "code-fail"
 }

@@ -1,8 +1,14 @@
 {
-  "char": 10,
   "documentPath": "/docs.dlproj",
-  "line": 10,
+  "end": {
+    "char": 1,
+    "line": 16
+  },
   "message": "Duplicate id 'readme' at '/docs.dlproj' Line: 10, Char: 10.\n\tOriginal us of Id was in '/docs.dlproj' Line: 5, Char: 14.",
+  "start": {
+    "char": 10,
+    "line": 10
+  },
   "success": false,
   "type": "code-fail"
 }

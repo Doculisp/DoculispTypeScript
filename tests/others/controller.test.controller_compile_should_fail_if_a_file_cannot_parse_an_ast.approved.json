@@ -1,10 +1,16 @@
 {
   "01 Parse Ast": {
     "result": {
-      "char": 1,
       "documentPath": "./someFile.md",
-      "line": 1,
+      "end": {
+        "char": 1,
+        "line": 1
+      },
       "message": "Unable to parse ast",
+      "start": {
+        "char": 1,
+        "line": 1
+      },
       "success": false,
       "type": "code-fail"
     },
@@ -12,10 +18,16 @@
   },
   "02 Final Result": [
     {
-      "char": 1,
       "documentPath": "./someFile.md",
-      "line": 1,
+      "end": {
+        "char": 1,
+        "line": 1
+      },
       "message": "Unable to parse ast",
+      "start": {
+        "char": 1,
+        "line": 1
+      },
       "success": false,
       "type": "code-fail"
     }

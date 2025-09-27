@@ -307,7 +307,13 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             if(parsed.success) {
                 if(opened) {
-                    return util.codeFailure(`Multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} does not close`, { documentPath: projectLocation.documentPath, line: starting.line, char: starting.char });
+                    let [pieces, _leftover] = parsed.value;
+                    let lastPiece = pieces[pieces.length ] as DocumentPart;
+                    let lastLines = (lastPiece?.text || '').split(/|\n\r|/);
+                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
+                    let lastChar = (lastLines?.at(-1)?.length || 1);
+
+                    return util.codeFailure(`Multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} does not close`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
                 
                 const [pieces, leftover] = parsed.value;
@@ -359,7 +365,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 }
                 
                 if(doesIt.startWithAnyNewline.test(input)){
-                    return util.codeFailure(`Inline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} contains a new line before closing.`, { documentPath: projectLocation.documentPath, line: starting.line, char: starting.char });
+                    return util.codeFailure(`Inline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} contains a new line before closing.`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: current.line, char: current.char } });
                 }
 
                 return internals.noResultFound();
@@ -411,7 +417,13 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             if(parsed.success) {
                 if(opened) {
-                    return util.codeFailure(`Inline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} does not close`, { documentPath: projectLocation.documentPath, line: starting.line, char: starting.char });
+                    let [pieces, _leftover] = parsed.value;
+                    let lastPiece = pieces[pieces.length ] as string;
+                    let lastLines = (lastPiece?.split(/|\n\r|/) || []);
+                    let lastLine = starting.line + lastLines.length ;
+                    let lastChar = starting.char + (lastLines.at(-1)?.length || 1);
+
+                    return util.codeFailure(`Inline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} does not close`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
     
                 const [parts, leftover] = parsed.value;
@@ -441,7 +453,10 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
-                        return util.codeFailure(`Doculisp Block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} contains an embedded doculisp block at Line: ${current.line}, Char: ${current.char}.`, { documentPath: projectLocation.documentPath, line: starting.line, char: starting.char });
+                        const inputLines = input.split(/|\n\r|/);
+                        let endLine = inputLines.length  + current.line;
+                        let endChar = (inputLines.at(-1)?.length || 1) + current.char;
+                        return util.codeFailure(`Doculisp Block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} contains an embedded doculisp block at Line: ${current.line}, Char: ${current.char}.`, { documentPath: projectLocation.documentPath, start: { line: current.line, char: current.char }, end: { line: endLine, char: endChar } });
                     }
     
                     const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
@@ -540,7 +555,13 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(0 < depth) {
-                    return util.codeFailure(`Doculisp block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} is not closed.`, { documentPath: projectLocation.documentPath, line: starting.line, char: starting.char });
+                    let [pieces, _leftover] = parsed.value;
+                    let lastPiece = pieces[pieces.length ] as DocumentPart;
+                    let lastLines = (lastPiece?.text || '').split(/|\n\r|/);
+                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
+                    let lastChar = (lastPiece?.location?.char || 1) + (lastLines.at(-1)?.length || 1);
+
+                    return util.codeFailure(`Doculisp block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} is not closed.`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
     
                 const [parts, leftover] = parsed.value;
@@ -639,7 +660,13 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(opened) {
-                    return util.codeFailure(`Open HTML Comment at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} but does not close.`, { documentPath: projectLocation.documentPath, line: starting.line, char: starting.char });
+                    let [pieces, _leftover] = parsed.value;
+                    let lastPiece = pieces[pieces.length ] as DocumentPart;
+                    let lastLines = (lastPiece?.text || '').split(/|\n\r|/);
+                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
+                    let lastChar = (lastPiece?.location?.char || 1) + (lastLines.at(-1)?.length || 1);
+                    
+                    return util.codeFailure(`Open HTML Comment at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} but does not close.`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
 
                 const [result, leftover] = parsed.value;
@@ -850,10 +877,10 @@ function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPa
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil, trimArray: ITrimArray): Valid<DocumentParser> {    
     return function (documentText: string, projectLocation: IProjectLocation): ResultCode<DocumentMap> {
         if(projectLocation.documentDepth <= 0) {
-            return util.codeFailure(`Document Depth must be a value of 1 or larger.`, { documentPath: projectLocation.documentPath, line: 1, char: 1 });
+            return util.codeFailure(`Document Depth must be a value of 1 or larger.`, { documentPath: projectLocation.documentPath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
         }
         if(projectLocation.documentIndex <= 0) {
-            return util.codeFailure(`Document Index must be a value of 1 or larger.`, { documentPath: projectLocation.documentPath, line: 1, char: 1 });
+            return util.codeFailure(`Document Index must be a value of 1 or larger.`, { documentPath: projectLocation.documentPath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
         }
 
         const partParsers = getPartParsers(projectLocation, doesIt, parserBuilder, util);
@@ -881,8 +908,12 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
         if(parsed.success) {
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
-                const ending = leftover.location.increaseChar(-1);
-                return util.codeFailure(`Doculisp block at '${ending.documentPath.fullName}' Line: 1, Char: 1 has something not contained in parenthesis at Line: ${ending.line}, Char: ${ending.char}.`, { documentPath, line: 1, char: 1 });
+                const errorItem = leftover.remaining;
+                const errorStart = leftover.location.increaseChar(-1);
+                const errorLines = errorItem.split(/|\n\r|/);
+                const endLine = errorStart.line + errorLines.length ;
+                const endChar = errorLines.at(-1)?.length || 1;
+                return util.codeFailure(`Doculisp block at '${errorStart.documentPath.fullName}' Line: 1, Char: 1 has something not contained in parenthesis at Line: ${errorStart.line}, Char: ${errorStart.char}.`, { documentPath, start: { line: errorStart.line, char: errorStart.line }, end: { line: endLine, char: endChar } });
             }
 
             const lineConcat = parserBuilder.createArrayParser(lineBuilder(util, trimArray));

@@ -1,8 +1,14 @@
 {
-  "char": 10,
   "documentPath": "./_main.md",
-  "line": 4,
+  "end": {
+    "char": 13,
+    "line": 6
+  },
   "message": "The section-meta block at './_main.md' Line: 2, Char: 2 contains unknown command 'bad' at Line: 4, Char: 10.",
+  "start": {
+    "char": 10,
+    "line": 4
+  },
   "success": false,
   "type": "code-fail"
 }

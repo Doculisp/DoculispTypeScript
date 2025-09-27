@@ -14,10 +14,10 @@ The **DocumentParse** is the **first stage** that extracts and processes content
     
     // Use type property to discriminate between error types
     if (result.type === 'code-fail') {
-        // Location-aware errors have direct line/char properties
+        // Location-aware errors have start/end coordinate properties
         const codeError = result as IFailCode;
-        line = codeError.line - 1; // Convert to 0-based
-        character = codeError.char - 1; // Convert to 0-based
+        line = codeError.start.line - 1; // Convert to 0-based
+        character = codeError.start.char - 1; // Convert to 0-based
     } else if (result.type === 'general-fail') {
         // General errors may have position info in message for backward compatibility
         const positionMatch = result.message.match(/Line: (\\d+), Char: (\\d+)/);
@@ -514,10 +514,10 @@ function createValidationError(result: IFail, context: string): ValidationError 
     
     // Use type property to discriminate between error types
     if (result.type === 'code-fail') {
-        // Location-aware errors have direct line/char properties
+        // Location-aware errors have start/end coordinate properties
         const codeError = result as IFailCode;
-        line = codeError.line - 1; // Convert to 0-based
-        character = codeError.char - 1; // Convert to 0-based
+        line = codeError.start.line - 1; // Convert to 0-based
+        character = codeError.start.char - 1; // Convert to 0-based
     }
     // Note: general-fail errors have NO location information available
     // These represent system-level errors outside the compiler's parsing context

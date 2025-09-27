@@ -1,6 +1,6 @@
 import { Options } from "approvals/lib/Core/Options";
 import { IContainer, IDictionary, ITestableContainer } from "../../../src/types/types.containers";
-import { IFailCode, IFailGeneral, IProjectLocation, ISuccess, IUtil, Result, ResultGeneral } from "../../../src/types/types.general";
+import { ICoordinates, IFailCode, IFailGeneral, IProjectLocation, ISuccess, IUtil, Result, ResultGeneral } from "../../../src/types/types.general";
 import { IDoculisp, IEmptyDoculisp } from "../../../src/types/types.astDoculisp";
 import { IIncludeBuilder } from "../../../src/types/types.includeBuilder";
 import { getVerifier } from "../../tools";
@@ -18,7 +18,7 @@ describe('includeBuilder', () => {
     let util: IUtil = undefined as any;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
     let failGeneral: (message: string, documentPath?: IPath) => IFailGeneral = undefined as any;
-    let failCode: (message: string, location: { documentPath: IPath, line: number, char: number }) => IFailCode = undefined as any;
+    let failCode: (message: string, location: { documentPath: IPath, start: ICoordinates, end: ICoordinates }) => IFailCode = undefined as any;
     let addPathResult: (filePath: string, result: ResultGeneral<string>) => void = undefined as any;
     let variableSaver: IVariableTestable = undefined as any;
 
@@ -76,7 +76,7 @@ describe('includeBuilder', () => {
         it('should return an error if given an error', () => {
             const builder: IIncludeBuilder = testable.include.parserBuilder(container, setup);
 
-            const expectedResult = failCode('This is a failure',  { documentPath: buildPath('M:/y/pah.md'), line: 1, char: 1 });
+            const expectedResult = failCode('This is a failure',  { documentPath: buildPath('M:/y/pah.md'), start: { line: 1, char: 1 }, end: { line: 10, char: 11 } });
             expect(builder.parseExternals(expectedResult, variableSaver)).toBe(expectedResult);
         });
 

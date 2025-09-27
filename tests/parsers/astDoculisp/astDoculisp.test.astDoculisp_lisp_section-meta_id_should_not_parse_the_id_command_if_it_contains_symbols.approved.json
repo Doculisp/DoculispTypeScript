@@ -1,8 +1,14 @@
 {
-  "char": 6,
   "documentPath": "main.md",
-  "line": 4,
+  "end": {
+    "char": 13,
+    "line": 4
+  },
   "message": "Symbol(s) in section id my-✨-id' at 'main.md' Line: 4, Char: 6\n'✨' @ id char 4",
+  "start": {
+    "char": 6,
+    "line": 4
+  },
   "success": false,
   "type": "code-fail"
 }

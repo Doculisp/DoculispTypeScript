@@ -167,8 +167,9 @@ describe('controller',() => {
     
         it('should fail a file that cannot parse an ast', () => {
             const sourcePath = pathConstructor('./someFile.md');
-            includeConfig.result = util.codeFailure('A bad parse', { documentPath: sourcePath, line: 1, char: 1 });
+            includeConfig.result = util.codeFailure('A bad parse', { documentPath: sourcePath, start: { line: 1, char: 1 }, end: { line: 6, char: 2 } });
             table.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
+            
             const result = sut.test(table);
     
             verifyAsJson(getTestResult(result));
@@ -176,7 +177,7 @@ describe('controller',() => {
     
         it('should fail a file that cannot be converted to markdown', () => {
             const sourcePath = pathConstructor('./someFile.md');
-            writerConfig.result = util.codeFailure('Unable to write', { documentPath: sourcePath, line: 1, char: 1 });
+            writerConfig.result = util.codeFailure('Unable to write', { documentPath: sourcePath, start: { line: 1, char: 1 }, end: { line: 18, char: 22 } });
             table.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
             const result = sut.test(table);
     
@@ -196,7 +197,7 @@ describe('controller',() => {
         it('should fail if a file cannot parse an ast', () => {
             const sourcePath = pathConstructor('./someFile.md');
             const destinationPath = pathConstructor('./README.md');
-            includeConfig.result = util.codeFailure('Unable to parse ast', { documentPath: sourcePath, line: 1, char: 1 });
+            includeConfig.result = util.codeFailure('Unable to parse ast', { documentPath: sourcePath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
 
             const result = sut.compile(sourcePath, destinationPath);
 
@@ -206,7 +207,7 @@ describe('controller',() => {
         it('should fail a file that cannot be converted to markdown', () => {
             const sourcePath = pathConstructor('./someFile.md');
             const destinationPath = pathConstructor('./README.md');
-            writerConfig.result = util.codeFailure('Unable to write', { documentPath: sourcePath, line: 1, char: 1 });
+            writerConfig.result = util.codeFailure('Unable to write', { documentPath: sourcePath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
             
             const result = sut.compile(sourcePath, destinationPath);
     

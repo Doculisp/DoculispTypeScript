@@ -2,7 +2,7 @@ import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
 import { getVerifier } from "../../tools";
 import { containerPromise } from "../../../src/moduleLoader";
-import { IFailCode, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
+import { ICoordinates, IFailCode, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { TokenizedDocument } from "../../../src/types/types.tokens";
 import { buildPath, buildProjectLocation, testable } from "../../testHelpers";
 import { IAstParser, IAstEmpty, RootAst } from '../../../src/types/types.ast';
@@ -13,7 +13,7 @@ describe('ast', () => {
     let container: IContainer = undefined as any;
     let verifyAsJson: (data: any, options?: Options) => void;
     let ok: (successfulValue: any) => ISuccess<any> = undefined as any;
-    let failCode: (message: string, location: { documentPath: IPath, line: number, char: number }) => IFailCode = undefined as any;
+    let failCode: (message: string, location: { documentPath: IPath, start: ICoordinates, end: ICoordinates }) => IFailCode = undefined as any;
     let util: IUtil = undefined as any;
     let toResult: (text: string, projectLocation: IProjectLocation) => Result<RootAst | IAstEmpty> = undefined as any;
 
@@ -57,7 +57,7 @@ describe('ast', () => {
         });
 
         it('should return failure if given failure', () => {
-            const failure = failCode('this is a document failure', { documentPath: buildPath('Z:/mybad.dlisp'), line: 1, char: 1 });
+            const failure = failCode('this is a document failure', { documentPath: buildPath('Z:/mybad.dlisp'), start: { line: 1, char: 1 }, end: { line: 7, char: 36 } });
     
             const result = parser.parse(failure);
     

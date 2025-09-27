@@ -109,7 +109,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
         }
 
         if(closeCommand.type !== 'token - close parenthesis') {
-            return util.codeFailure(`Malformed lisp at ${closeCommand.location}.`, { documentPath: closeCommand.location.documentPath, line: closeCommand.location.line, char: closeCommand.location.char });
+            return util.codeFailure(`Malformed lisp at ${closeCommand.location}.`, { documentPath: closeCommand.location.documentPath, start: { line: closeCommand.location.line, char: closeCommand.location.char }, end: { line: closeCommand.location.line, char: closeCommand.location.char } });
         }
 
         return util.ok({
@@ -148,7 +148,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
         const close = remaining.remaining[0] as Token;
 
         if(remaining.remaining.length === 0 || close.type !== 'token - close parenthesis') {
-            return util.codeFailure(`Malformed lisp at ${remaining.location}`, { documentPath: remaining.location.documentPath, line: remaining.location.line, char: remaining.location.char });
+            return util.codeFailure(`Malformed lisp at ${remaining.location}`, { documentPath: remaining.location.documentPath, start: { line: remaining.location.line, char: remaining.location.char }, end: { line: remaining.location.line, char: remaining.location.char } });
         }
 
         return util.ok({
@@ -183,7 +183,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
 
         if(0 < leftovers.remaining.length) {
             const token: Token = leftovers.remaining[0] as Token;
-            return util.codeFailure(`Unknown Token '${JSON.stringify(token, null, 4)}`, { documentPath: token.location.documentPath, line: token.location.line, char: token.location.char });
+            return util.codeFailure(`Unknown Token '${JSON.stringify(token, null, 4)}`, { documentPath: token.location.documentPath, start: { line: token.location.line, char: token.location.char }, end: { line: token.location.line, char: token.location.char } });
         }
         
         return util.ok({

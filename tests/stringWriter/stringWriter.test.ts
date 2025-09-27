@@ -1,7 +1,7 @@
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
 import { getVerifiers } from "../tools";
-import { IFailCode, IFailGeneral, IProjectLocation, ISuccess, IUtil, ResultGeneral } from "../../src/types/types.general";
+import { ICoordinates, IFailCode, IFailGeneral, IProjectLocation, ISuccess, IUtil, ResultGeneral } from "../../src/types/types.general";
 import { Result } from "../../src/types/types.general";
 import { buildProjectLocation, testable, buildPath } from "../testHelpers";
 import { IDirectoryHandler, IFileLoader } from "../../src/types/types.fileHandler";
@@ -16,7 +16,7 @@ describe('stringWriter', () => {
     let verifyMarkdown: (sut: any, options?: Options) => void;
     let toResult: (text: string, location: IProjectLocation) => Result<string> = null as any;
     let failGeneral: (message: string, documentPath?: IPath) => IFailGeneral = undefined as any;
-    let failCode: (message: string, location: { documentPath: IPath, line: number, char: number }) => IFailCode = undefined as any;
+    let failCode: (message: string, location: { documentPath: IPath, start: ICoordinates, end: ICoordinates }) => IFailCode = undefined as any;
     let variableTable: IVariableTestable = undefined as any;
 
     function verifyMarkdownResult(textMaybe: Result<string>, options?: Options): void {
@@ -56,7 +56,7 @@ describe('stringWriter', () => {
 
     describe('basic functionality', () => {
         it('should not write an error', () => {
-            const expectedResult = failCode('Some failure', { documentPath: buildPath('S:/ome/path.md'), line: 1, char: 1 });
+            const expectedResult = failCode('Some failure', { documentPath: buildPath('S:/ome/path.md'), start: { line: 1, char: 1 }, end: { line: 4, char: 25 } });
             const writer = testable.stringWriter.writer(container);
             const result = writer.writeAst(expectedResult, variableTable);
 

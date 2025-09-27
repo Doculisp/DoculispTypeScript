@@ -265,7 +265,7 @@ function buildTokenize(doesIt: ILispSearches, internals: IInternals, util: IUtil
                 if (tokens.success) {
                     totalTokens.addTokens(tokens.value);
                 } else if (tokens.type === 'code-fail') {
-                    return util.codeFailure(tokens.message, { documentPath, char: tokens.char, line: tokens.line });
+                    return util.codeFailure(tokens.message, { documentPath, start: tokens.start, end: tokens.end });
                 }
             }
         }

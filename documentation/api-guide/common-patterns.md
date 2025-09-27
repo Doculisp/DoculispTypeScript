@@ -80,7 +80,7 @@ function handleError(result: IFail): void {
     if (result.type === 'code-fail') {
         // Location-aware errors have precise position info
         const codeError = result as IFailCode;
-        console.error(`At: ${codeError.documentPath.fullName} Line: ${codeError.line}, Char: ${codeError.char}`);
+        console.error(`At: ${codeError.documentPath.fullName} Line: ${codeError.start.line}, Char: ${codeError.start.char}`);
     } else if (result.type === 'general-fail') {
         // General errors are system-level with no location information
         if (result.documentPath) {
@@ -109,8 +109,8 @@ function convertToLanguageServerError(result: IFail): Diagnostic {
         // Location-aware errors have direct line/char properties
         const codeError = result as IFailCode;
         range = {
-            start: { line: codeError.line - 1, character: codeError.char - 1 }, // Convert to 0-based
-            end: { line: codeError.line - 1, character: codeError.char }
+            start: { line: codeError.start.line - 1, character: codeError.start.char - 1 }, // Convert to 0-based
+            end: { line: codeError.end.line - 1, character: codeError.end.char }
         };
     }
     // Note: general-fail errors have NO location information available

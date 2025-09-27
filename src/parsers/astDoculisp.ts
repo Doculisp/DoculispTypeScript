@@ -63,29 +63,42 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
     
             if(ast.type !== 'ast-command') {
-                return util.codeFailure(`Dynamic Header at '${ast.location.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} is missing the header text`, { documentPath: current.documentPath, line: ast.location.line, char: ast.location.char });
+                const astLines = ast.value.split(/|\r\n|/);
+                const endLine = ast.location.line + astLines.length;
+                const endChar = astLines.at(-1)?.length || 1;
+
+                return util.codeFailure(`Dynamic Header at '${ast.location.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} is missing the header text`, { documentPath: current.documentPath, start: { line: ast.location.line, char: ast.location.char }, end: { line: endLine, char: endChar } });
             }
 
             const id = ast.value.replace(/^#+/, '');
 
             if(0 < id.length) {
                 let errorMsg = getSymbolErrorMessage('heading', id, current, ast, textHelper);
+                const idLines = id.split(/|\r\n|/);
                 if(errorMsg) {
-                    return util.codeFailure(errorMsg, { documentPath: current.documentPath, line: ast.location.line, char: ast.location.char });
+                    const endLine = ast.location.line + idLines.length;
+                    const endChar = idLines.at(-1)?.length || 1;
+
+                    return util.codeFailure(errorMsg, { documentPath: current.documentPath, start: { line: ast.location.line, char: ast.location.char }, end: { line: endLine, char: endChar } });
                 }
 
                 if(!textHelper.isLowercase(id)) {
-                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, line: ast.location.line, char: ast.location.char });
+                    const endLine = ast.location.line + idLines.length ;
+                    const endChar = idLines.at(-1)?.length || 1;
+
+                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: ast.location.line, char: ast.location.char }, end: { line: endLine, char: endChar } });
                 }
 
                 if(variableTable.hasKey(id)) {
                     let orig = variableTable.getValue(id);
                     let msg = '';
-    
+                    let endLine = ast.location.line + idLines.length ;
+                    let endChar = idLines.at(-1)?.length || 1;
+
                     if(orig && orig.type === 'variable-id') {
                         msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
                     }
-                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} has already been used.${msg}`, { documentPath: current.documentPath, line: ast.location.line, char: ast.location.char });
+                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} has already been used.${msg}`, { documentPath: current.documentPath, start: { line: ast.location.line, char: ast.location.char }, end: { line: endLine, char: endChar } });
                 }
 
                 const destinationPath = (
@@ -127,22 +140,32 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 const titles = ast.filter(s => s.value === 'title');
         
                 if(1 < titles.length) {
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, { documentPath: current.documentPath, line: location.line, char: location.char });
+                    const lastBad = titles.at(-1) as AtomAst;
+                    const endLine = lastBad.location.line;
+                    const endChar = lastBad.location.char + lastBad.value.length;
+
+                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endLine, char: endChar } });
                 }
     
                 if(titles.length === 0) {
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} is missing a title block.`, { documentPath: current.documentPath, line: location.line, char: location.char });
+                    const endChar = location.char + 'section-meta'.length;
+
+                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} is missing a title block.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: location.line, char: endChar } });
                 }
         
                 const title = titles[0] as AtomAst;
         
                 if(title.type === 'ast-atom') {
-                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, { documentPath: current.documentPath, line: title.location.line, char: title.location.char });
+                    const endChar = title.location.char + title.value.length;
+
+                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, { documentPath: current.documentPath, start: { line: title.location.line, char: title.location.char }, end: { line: title.location.line, char: endChar } });
                 }
         
                 if(title.type === 'ast-container') {
                     const next = title.subStructure[0] as AtomAst;
-                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: current.documentPath, line: title.location.line, char: title.location.char });
+                    const endChar = next.location.char + next.value.length;
+
+                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: current.documentPath, start: { line: title.location.line, char: title.location.char }, end: { line: next.location.line, char: endChar } });
                 }
     
                 let linkText = getLinkText(title, refLink);
@@ -173,18 +196,28 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < subtitles.length) {
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one subtitle.`, { documentPath: current.documentPath, line: location.line, char: location.char });
+                    const lastSubtitleLines = (subtitles.at(-1) as AtomAst).value.split(/|\r\n|/);
+                    const endline = location.line + lastSubtitleLines.length ;
+                    const endChar = lastSubtitleLines.at(-1)?.length || 1;
+
+                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one subtitle.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endline, char: endChar } });
                 }
     
                 const subtitle = subtitles[0] as AtomAst;
     
                 if(subtitle.type === 'ast-atom') {
-                    return util.codeFailure(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} is missing the subtitle text.`, { documentPath: current.documentPath, line: subtitle.location.line, char: subtitle.location.char });
+                    const endChar = subtitle.location.char + subtitle.value.length;
+
+                    return util.codeFailure(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} is missing the subtitle text.`, { documentPath: current.documentPath, start: { line: subtitle.location.line, char: subtitle.location.char }, end: { line: subtitle.location.line, char: endChar } });
                 }
     
                 if(subtitle.type === 'ast-container') {
                     const next = subtitle.subStructure[0] as AtomAst;
-                    return util.codeFailure(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, line: subtitle.location.line, char: subtitle.location.char });
+                    const nextLines = next.value.split(/|\r\n|/);
+                    const endLine = next.location.line + nextLines.length ;
+                    const endChar = nextLines.at(-1)?.length || 1;
+
+                    return util.codeFailure(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: subtitle.location.line, char: subtitle.location.char }, end: { line: endLine, char: endChar } });
                 }
     
                 return util.ok(headerize(depth, subtitle.parameter.value));
@@ -198,18 +231,27 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < refLinks.length) {
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one ref-link.`, { documentPath: current.documentPath, line: location.line, char: location.char });
+                    const endLine = refLinks.at(-1)!.location.line;
+                    const endChar = refLinks.at(-1)!.location.char + refLinks.at(-1)!.value.length;
+
+                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one ref-link.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endLine, char: endChar } });
                 }
     
                 const refLink = refLinks[0] as AtomAst;
     
                 if(refLink.type === 'ast-atom') {
-                    return util.codeFailure(`The subtitle block at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} is missing the ref-link text.`, { documentPath: current.documentPath, line: refLink.location.line, char: refLink.location.char });
+                    const endChar = refLink.location.char + refLink.value.length;
+
+                    return util.codeFailure(`The ref-link at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} is missing the ref-link text.`, { documentPath: current.documentPath, start: { line: refLink.location.line, char: refLink.location.char }, end: { line: refLink.location.line, char: endChar } });
                 }
     
                 if(refLink.type === 'ast-container') {
                     const next = refLink.subStructure[0] as AtomAst;
-                    return util.codeFailure(`The ref-link block at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, line: refLink.location.line, char: refLink.location.char });
+                    const nextLines = next.value.split(/|\r\n|/);
+                    const endLine = next.location.line + nextLines.length ;
+                    const endChar = nextLines.at(-1)?.length || 1;
+
+                    return util.codeFailure(`The ref-link block at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: refLink.location.line, char: refLink.location.char }, end: { line: endLine, char: endChar } });
                 }
     
                 return util.ok(refLink.parameter.value);
@@ -221,7 +263,9 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                     if(0 < bad.length) {
                         const next = bad[0] as AtomAst;
-                        return util.codeFailure(`Include contains unknown command '${next.value}' at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: location.documentPath, line: next.location.line, char: next.location.char });
+                        const endChar = next.location.char + next.value.length;
+
+                        return util.codeFailure(`Include contains unknown command '${next.value}' at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: location.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: next.location.line, char: endChar } });
                     }
     
                     const commands = ast as IAstCommand[];
@@ -248,19 +292,24 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < includes.length) {
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one include.`, { documentPath: current.documentPath, line: location.line, char: location.char });
+                    const endLine = includes.at(-1)!.location.line;
+                    const endChar = includes.at(-1)!.location.char + includes.at(-1)!.value.length;
+                    
+                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one include.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endLine, char: endChar } });
                 }
-                
+
                 const include = includes[0] as AtomAst;
-    
+
                 if(include.type === 'ast-atom') {
                     return util.ok(false);
                 }
-    
+
                 if(include.type === 'ast-command') {
-                    return util.codeFailure(`The include block at '${include.location.documentPath.fullName}' Line: ${include.location.line}, Char: ${include.location.char} has unknown parameter '${include.parameter.value}'.`, { documentPath: location.documentPath, line: include.location.line, char: include.location.char });
+                    const endChar = include.location.char + include.value.length;
+
+                    return util.codeFailure(`The include block at '${include.location.documentPath.fullName}' Line: ${include.location.line}, Char: ${include.location.char} has unknown parameter '${include.parameter.value}'.`, { documentPath: location.documentPath, start: { line: include.location.line, char: include.location.char }, end: { line: include.location.line, char: endChar } });
                 }
-    
+
                 return parseSections(include.subStructure);
             }
 
@@ -270,12 +319,16 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 for (let index = 0; index < authors.length; index++) {
                     const author = authors[index] as AtomAst;
                     if(author.type === 'ast-atom') {
-                        return util.codeFailure(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} does not contain the author's name.`, { documentPath: location.documentPath, line: author.location.line, char: author.location.char });
+                        const endChar = author.location.char + author.value.length;
+
+                        return util.codeFailure(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} does not contain the author's name.`, { documentPath: location.documentPath, start: { line: author.location.line, char: author.location.char }, end: { line: author.location.line, char: endChar } });
                     }
 
                     if(author.type === 'ast-container') {
                         const child = author.subStructure[0] as AtomAst;
-                        return util.codeFailure(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, { documentPath: location.documentPath, line: author.location.line, char: author.location.char });
+                        const endChar = child.location.char + child.value.length;
+
+                        return util.codeFailure(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, { documentPath: location.documentPath, start: { line: author.location.line, char: author.location.char }, end: { line: child.location.line, char: endChar } });
                     }
 
                     variableTable.addValueToStringList('author', { value: author.parameter.value, type: 'variable-string' });
@@ -292,38 +345,52 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
                 
                 if(1 < ids.length) {
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one id.`, { documentPath: current.documentPath, line: location.line, char: location.char });
+                    const endLine = ids.at(-1)!.location.line;
+                    const endChar = ids.at(-1)!.location.char + ids.at(-1)!.value.length;
+
+                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one id.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endLine, char: endChar } });
                 }
                 
                 const idAtom = ids[0] as AtomAst;
 
                 if(idAtom.type === 'ast-container') {
-                    return util.codeFailure(`The section id block at '${idAtom.location.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains sub blocks.`, { documentPath: current.documentPath, line: idAtom.location.line, char: idAtom.location.char });
+                    const endLine = idAtom.location.line + idAtom.subStructure.length ;
+                    const endChar = idAtom.subStructure.at(-1)!.value.length;
+
+                    return util.codeFailure(`The section id block at '${idAtom.location.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains sub blocks.`, { documentPath: current.documentPath, start: { line: idAtom.location.line, char: idAtom.location.char }, end: { line: endLine, char: endChar } });
                 }
 
                 if(idAtom.type === 'ast-atom') {
-                    return util.codeFailure(`The section id block at '${idAtom.location.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} is missing identifier text parameter.`, { documentPath: current.documentPath, line: idAtom.location.line, char: idAtom.location.char });
+                    const endChar = idAtom.location.char + idAtom.value.length;
+
+                    return util.codeFailure(`The section id block at '${idAtom.location.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} is missing identifier text parameter.`, { documentPath: current.documentPath, start: { line: idAtom.location.line, char: idAtom.location.char }, end: { line: idAtom.location.line, char: endChar } });
                 }
 
                 const id = idAtom.parameter.value;
 
                 const errorMsg = getSymbolErrorMessage('section', id, current, idAtom, textHelper);
                 if(errorMsg) {
-                    return util.codeFailure(errorMsg, { documentPath: current.documentPath, line: idAtom.location.line, char: idAtom.location.char });
+                    const endChar = idAtom.location.char + id.length;
+
+                    return util.codeFailure(errorMsg, { documentPath: current.documentPath, start: { line: idAtom.location.line, char: idAtom.location.char }, end: { line: idAtom.location.line, char: endChar } });
                 }
 
                 if(!textHelper.isLowercase(id)) {
-                    return util.codeFailure(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, line: idAtom.location.line, char: idAtom.location.char });
+                    const endChar = idAtom.location.char + id.length;
+
+                    return util.codeFailure(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: idAtom.location.line, char: idAtom.location.char }, end: { line: idAtom.location.line, char: endChar } });
                 }
 
                 if(variableTable.hasKey(id)) {
                     let orig = variableTable.getValue(id);
                     let msg = '';
-    
+                    let endChar = idAtom.location.char + id.length;
+
                     if(orig && orig.type === 'variable-id') {
                         msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
                     }
-                    return util.codeFailure(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} has already been used.${msg}`, { documentPath: current.documentPath, line: idAtom.location.line, char: idAtom.location.char });
+
+                    return util.codeFailure(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} has already been used.${msg}`, { documentPath: current.documentPath, start: { line: idAtom.location.line, char: idAtom.location.char }, end: { line: idAtom.location.line, char: endChar } });
                 }
 
                 const destinationPath = (
@@ -367,18 +434,25 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
 
             if(hasSectionMeta) {
-                return util.codeFailure(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, { documentPath: current.documentPath, line: sectionMeta.location.line, char: sectionMeta.location.char });
+                const endLine = sectionMeta.location.line + sectionMeta.subStructure.length ;
+                const endChar = sectionMeta.subStructure.at(-1)!.location.char + sectionMeta.subStructure.at(-1)!.value.length;
+
+                return util.codeFailure(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, { documentPath: current.documentPath, start: { line: sectionMeta.location.line, char: sectionMeta.location.char }, end: { line: endLine, char: endChar } });
             }
     
             const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include', 'author', 'id'].includes(a.value));
     
             if(0 < badSections.length) {
                 const next = badSections[0] as AtomAst;
-                return util.codeFailure(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, line: next.location.line, char: next.location.char });
+                const sectionLines = badSections.map(b => b.value.split(/|\r\n|/).length).reduce((a, b) => a + b, 0) - 1;
+                const endLine = next.location.line + sectionLines;
+                const endChar = badSections.at(-1)!.location.char + badSections.at(-1)!.value.length;
+
+                return util.codeFailure(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: endLine, char: endChar } });
             }
     
             const subtitle = parseSubtitle(sectionMeta.subStructure, current, sectionMeta.location.documentDepth + 2);
-            
+
             if(!subtitle.success) {
                 return subtitle;
             }
@@ -437,7 +511,9 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 ];
     
                 if(!validStyles.includes(bulletStyle as DoculispBulletStyle)) {
-                    return util.codeFailure(`The toc block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has unknown bullet style '${bulletStyle}'.`, { documentPath: location.documentPath, line: location.line, char: location.char });
+                    const endChar = location.char + (bulletStyle ? bulletStyle.length : 0) - 1;
+
+                    return util.codeFailure(`The toc block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has unknown bullet style '${bulletStyle}'.`, { documentPath: location.documentPath, start: { line: location.line, char: location.char }, end: { line: location.line, char: endChar } });
                 }
 
                 return util.ok(bulletStyle as DoculispBulletStyle);
@@ -451,7 +527,10 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < tocs.length) {
-                    return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one toc.`, { documentPath: location.documentPath, line: location.line, char: location.char });
+                    const endLine = location.line + (tocs.length );
+                    const endChar = tocs.at(-1)!.location.char + tocs.at(-1)!.value.length;
+
+                    return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one toc.`, { documentPath: location.documentPath, start: { line: location.line, char: location.char }, end: { line: endLine, char: endChar } });
                 }
     
                 const toc = tocs[0] as AtomAst;
@@ -459,14 +538,20 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 if(toc.type === 'ast-container') {
                     if(2 < toc.subStructure.length) {
                         const err = toc.subStructure[toc.subStructure.length -1] as AtomAst;
-                        return util.codeFailure(`The content block at '${location.documentPath.fullName} Line: ${err.location.line}, Char: ${err.location.char}' has ${toc.subStructure.length} block and can only have 0, 1, or 2 blocks`, { documentPath: location.documentPath, line: err.location.line, char: err.location.char });
+                        const startLine = toc.location.line;
+                        const endLine = startLine + toc.subStructure.length ;
+                        const endChar = toc.subStructure.at(-1)!.location.char + err.value.length;
+
+                        return util.codeFailure(`The content block at '${location.documentPath.fullName} Line: ${err.location.line}, Char: ${err.location.char}' has ${toc.subStructure.length} block and can only have 0, 1, or 2 blocks`, { documentPath: location.documentPath, start: { line: err.location.line, char: err.location.char }, end: { line: endLine, char: endChar } });
                     }
 
                     const first = toc.subStructure[0] as AtomAst;
                     if(first.type !== 'ast-command' || !['label', 'style'].includes(first.value)){
-                        return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, { documentPath: location.documentPath, line: first.location.line, char: first.location.char });
+                        const endChar = first.location.char + first.value.length;
+
+                        return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, { documentPath: location.documentPath, start: { line: first.location.line, char: first.location.char }, end: { line: first.location.line, char: endChar } });
                     }
-                    
+
                     let labelText: string | false = false;
                     let bulletStyle: DoculispBulletStyle = 'labeled';
 
@@ -487,11 +572,15 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                         const second = toc.subStructure[1] as AtomAst;
 
                         if(second.type !== 'ast-command' || !['label', 'style'].includes(second.value)) {
-                            return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line: ${second.location.line}, Char: ${second.location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, { documentPath: location.documentPath, line: second.location.line, char: second.location.char });
+                            const endChar = second.location.char + second.value.length;
+
+                            return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line: ${second.location.line}, Char: ${second.location.char} contains unknown command '${first.value}' at Line: ${first.location.line}, Char: ${first.location.char}.`, { documentPath: location.documentPath, start: { line: second.location.line, char: second.location.char }, end: { line: second.location.line, char: endChar } });
                         }
 
                         if(first.value === second.value) {
-                            return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line ${location.line}, Char: ${location.line} has a duplicate '${first.value}' block at Line: ${second.location.line}, Char: ${second.location.char}.`, { documentPath: location.documentPath, line: second.location.line, char: second.location.char });
+                            const endChar = second.location.char + second.value.length;
+
+                            return util.codeFailure(`The content block at '${location.documentPath.fullName}' Line ${location.line}, Char: ${location.line} has a duplicate '${first.value}' block at Line: ${second.location.line}, Char: ${second.location.char}.`, { documentPath: location.documentPath, start: { line: second.location.line, char: second.location.char }, end: { line: second.location.line, char: endChar } });
                         }
 
                         if(second.value === 'label') {
@@ -553,15 +642,21 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
     
             if(contentBlock.type === 'ast-command') {
-                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} contains unknown parameter '${contentBlock.parameter.value}'`, { documentPath: current.documentPath, line: contentBlock.location.line, char: contentBlock.location.char });
+                const endChar = contentBlock.location.char + contentBlock.value.length;
+
+                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} contains unknown parameter '${contentBlock.parameter.value}'`, { documentPath: current.documentPath, start: { line: contentBlock.location.line, char: contentBlock.location.char }, end: { line: contentBlock.location.line, char: endChar } });
             }
 
             if(!hasSectionMeta) {
-                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists before the section-meta block.`, { documentPath: current.documentPath, line: contentBlock.location.line, char: contentBlock.location.char });
+                const endChar = contentBlock.location.char + contentBlock.value.length;
+
+                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists before the section-meta block.`, { documentPath: current.documentPath, start: { line: contentBlock.location.line, char: contentBlock.location.char }, end: { line: contentBlock.location.line, char: endChar } });
             }
 
             if(!hasInclude) {
-                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists without an include block that has external files.`, { documentPath: current.documentPath, line: contentBlock.location.line, char: contentBlock.location.char });
+                const endChar = contentBlock.location.char + contentBlock.value.length;
+
+                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} exists without an include block that has external files.`, { documentPath: current.documentPath, start: { line: contentBlock.location.line, char: contentBlock.location.char }, end: { line: contentBlock.location.line, char: endChar } });
             }
 
             const content: IContentLocation = {
@@ -582,7 +677,9 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
             if(0 < bad.length) {
                 const next = bad[0] as AtomAst;
-                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} has unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, line: next.location.line, char: next.location.char });
+                const endChar = next.location.char + next.value.length;
+
+                return util.codeFailure(`The content block at '${contentBlock.location.documentPath.fullName}' Line: ${contentBlock.location.line}, Char: ${contentBlock.location.char} has unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: next.location.line, char: endChar } });
             }
     
             const tocMaybe = parseToc(contentBlock.subStructure, contentBlock.location);
@@ -619,11 +716,16 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
 
             if(pathIdBlock.type === 'ast-atom') {
-                return util.codeFailure(`get-path command at "${current.documentPath.fullName}" line: ${pathIdBlock.location.line}, char: ${pathIdBlock.location.char} is missing parameter.`, { documentPath: current.documentPath, line: pathIdBlock.location.line, char: pathIdBlock.location.char });
+                const endChar = pathIdBlock.location.char + pathIdBlock.value.length;
+
+                return util.codeFailure(`get-path command at "${current.documentPath.fullName}" line: ${pathIdBlock.location.line}, char: ${pathIdBlock.location.char} is missing parameter.`, { documentPath: current.documentPath, start: { line: pathIdBlock.location.line, char: pathIdBlock.location.char }, end: { line: pathIdBlock.location.line, char: endChar } });
             }
 
             if(pathIdBlock.type === 'ast-container') {
-                return util.codeFailure(`get-path command at "${current.documentPath.fullName}" line: ${pathIdBlock.location.line}, char: ${pathIdBlock.location.char} contains unknown sub structure.`, { documentPath: current.documentPath, line: pathIdBlock.location.line, char: pathIdBlock.location.char });
+                const endline = pathIdBlock.location.line + pathIdBlock.subStructure.length ;
+                const endChar = pathIdBlock.subStructure.at(-1)!.location.char + pathIdBlock.subStructure.at(-1)!.value.length;
+
+                return util.codeFailure(`get-path command at "${current.documentPath.fullName}" line: ${pathIdBlock.location.line}, char: ${pathIdBlock.location.char} contains unknown sub structure.`, { documentPath: current.documentPath, start: { line: pathIdBlock.location.line, char: pathIdBlock.location.char }, end: { line: endline, char: endChar } });
             }
 
             return util.ok({
@@ -655,7 +757,9 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
         if(0 < remaining.remaining.length) {
             const next = remaining.remaining[0] as CoreAst;
-            return util.codeFailure(`Unknown atom '${next.value}' at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: next.location.documentPath, line: next.location.line, char: next.location.char });
+            const endChar = next.location.char + next.value.length;
+
+            return util.codeFailure(`Unknown atom '${next.value}' at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: next.location.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: next.location.line, char: endChar } });
         }
 
         return util.ok({

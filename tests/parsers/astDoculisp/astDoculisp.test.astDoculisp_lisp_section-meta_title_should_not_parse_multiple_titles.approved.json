@@ -1,8 +1,14 @@
 {
-  "char": 0,
   "documentPath": "main.dlisp",
-  "line": 0,
+  "end": {
+    "char": 37,
+    "line": 1
+  },
   "message": "The section-meta block at 'main.dlisp' Line: 0, Char: 0 contains more then a single title block.",
+  "start": {
+    "char": 0,
+    "line": 0
+  },
   "success": false,
   "type": "code-fail"
 }

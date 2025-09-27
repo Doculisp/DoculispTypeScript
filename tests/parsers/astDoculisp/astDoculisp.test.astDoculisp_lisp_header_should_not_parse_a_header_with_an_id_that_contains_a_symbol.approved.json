@@ -1,8 +1,14 @@
 {
-  "char": 2,
   "documentPath": "S:/ome/file.md",
-  "line": 2,
+  "end": {
+    "char": 1,
+    "line": 7
+  },
   "message": "Symbol(s) in heading id F|rst' at 'S:/ome/file.md' Line: 2, Char: 2\n'|' @ id char 2",
+  "start": {
+    "char": 2,
+    "line": 2
+  },
   "success": false,
   "type": "code-fail"
 }

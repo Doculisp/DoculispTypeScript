@@ -1,8 +1,14 @@
 {
-  "char": 6,
   "documentPath": "./project.dlproj",
-  "line": 3,
+  "end": {
+    "char": 1,
+    "line": 3
+  },
   "message": "Document identifier block at './project.dlproj' Line: 3, Char: 6 does not contain a source block.",
+  "start": {
+    "char": 6,
+    "line": 3
+  },
   "success": false,
   "type": "code-fail"
 }

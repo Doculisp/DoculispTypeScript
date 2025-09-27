@@ -1,8 +1,14 @@
 {
-  "char": 2,
   "documentPath": "./myBad.dlproj",
-  "line": 3,
+  "end": {
+    "char": 1,
+    "line": 4
+  },
   "message": "Project file may only contain a single documents block. Duplicate documents block detected at './myBad.dlproj' Line: 3, Char: 2.",
+  "start": {
+    "char": 2,
+    "line": 3
+  },
   "success": false,
   "type": "code-fail"
 }

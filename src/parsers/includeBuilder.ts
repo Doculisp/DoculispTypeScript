@@ -62,7 +62,11 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             }
 
             if(load.path.extension !== '.md' && load.path.extension !== '.dlisp') {
-                return util.codeFailure(`In include block at '${doculisp.documentOrder.documentPath}' Line: ${load.documentOrder.line}, Char ${load.documentOrder.char} contains invalid file type. Included files must be markdown or dlisp files. '${load.path.fullName}'`, { documentPath: doculisp.documentOrder.documentPath, line: load.documentOrder.line, char: load.documentOrder.char });
+                const pathLines = load.path.fullName.split(/|\n\r|/);
+                const lastLine = load.documentOrder.line + pathLines.length ;
+                const lastChar = pathLines.at(-1)?.length || 1;
+
+                return util.codeFailure(`In include block at '${doculisp.documentOrder.documentPath}' Line: ${load.documentOrder.line}, Char ${load.documentOrder.char} contains invalid file type. Included files must be markdown or dlisp files. '${load.path.fullName}'`, { documentPath: doculisp.documentOrder.documentPath, start: { line: load.documentOrder.line, char: load.documentOrder.char }, end: { line: lastLine, char: lastChar } });
             }
 
             const astResult = _parse(load.path, { documentDepth: doculisp.documentOrder.documentDepth + 1, documentIndex: index + 1, documentPath: load.path}, variableTable);

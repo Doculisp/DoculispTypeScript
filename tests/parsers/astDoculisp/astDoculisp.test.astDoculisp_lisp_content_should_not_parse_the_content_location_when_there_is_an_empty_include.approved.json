@@ -1,8 +1,14 @@
 {
-  "char": 2,
   "documentPath": "../noInclude.dlisp",
-  "line": 7,
+  "end": {
+    "char": 9,
+    "line": 7
+  },
   "message": "The content block at '../noInclude.dlisp' Line: 7, Char: 2 exists without an include block that has external files.",
+  "start": {
+    "char": 2,
+    "line": 7
+  },
   "success": false,
   "type": "code-fail"
 }

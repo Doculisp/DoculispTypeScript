@@ -1,8 +1,14 @@
 {
-  "char": 1,
   "documentPath": "C:/main.dlisp",
-  "line": 2,
+  "end": {
+    "char": 2,
+    "line": 1
+  },
   "message": "Doculisp block at 'C:/main.dlisp' Line: 2, Char: 1 is not closed.",
+  "start": {
+    "char": 1,
+    "line": 2
+  },
   "success": false,
   "type": "code-fail"
 }

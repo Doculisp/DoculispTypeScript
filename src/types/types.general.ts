@@ -19,10 +19,12 @@ export interface IProjectLocation {
     readonly documentIndex: number;
 }
 
-export interface ILocationCoordinates extends IProjectLocation {
+export interface ICoordinates {
     readonly line: number;
     readonly char: number;
 }
+
+export interface ILocationCoordinates extends IProjectLocation, ICoordinates {}
 
 export interface ILocation extends IProjectLocation, ILocationCoordinates, IComparable<ILocation> {
     increaseLine(by?: number|undefined): ILocation;
@@ -37,8 +39,8 @@ export interface ISuccess<T> {
 export interface IFailCode {
     readonly message: string;
     readonly documentPath: IPath;
-    readonly line: number;
-    readonly char: number;
+    readonly start: ICoordinates;
+    readonly end: ICoordinates;
     readonly success: false;
     readonly type: "code-fail";
 };
@@ -76,7 +78,7 @@ export type Warning = {
 
 export interface IUtil {
     ok<T>(successfulValue: T): ISuccess<T>;
-    codeFailure(message: string, location: { documentPath: IPath, line: number, char: number }): IFailCode;
+    codeFailure(message: string, location: { documentPath: IPath, start: ICoordinates, end: ICoordinates }): IFailCode;
     generalFailure(message: string, path?: IPath): IFailGeneral;
     location: (documentPath: IPath, documentDepth: number, documentIndex: number, line: number, char: number) => ILocation;
     toLocation: (projectLocation: IProjectLocation, line: number, char: number) => ILocation;

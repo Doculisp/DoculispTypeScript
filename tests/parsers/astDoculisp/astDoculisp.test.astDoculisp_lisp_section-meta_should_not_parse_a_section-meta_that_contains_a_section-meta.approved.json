@@ -1,8 +1,14 @@
 {
-  "char": 6,
   "documentPath": "A:/malformed/file.dlisp",
-  "line": 3,
+  "end": {
+    "char": 18,
+    "line": 14
+  },
   "message": "The section-meta block at 'A:/malformed/file.dlisp' Line: 2, Char: 2 contains unknown command 'section-meta' at Line: 3, Char: 6.",
+  "start": {
+    "char": 6,
+    "line": 3
+  },
   "success": false,
   "type": "code-fail"
 }

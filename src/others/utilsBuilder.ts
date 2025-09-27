@@ -1,6 +1,6 @@
 import { IRegisterable } from "../types/types.containers";
 import { IPath } from "../types/types.filePath";
-import { IFailCode, IFailGeneral, ILocation, ILocationCoordinates, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "../types/types.general";
+import { ICoordinates, IFailCode, IFailGeneral, ILocation, ILocationCoordinates, IProjectLocation, ISuccess, IUtil, IsAfter, IsBefore, IsOrder, IsSame, isAfter, isBefore, isSame } from "../types/types.general";
 
 function before() : IsBefore { return isBefore; }
 function after()  : IsAfter  { return isAfter; }
@@ -133,12 +133,12 @@ function buildGeneral(): IUtil {
         };
     };
 
-    function codeFailure(message: string, location: { documentPath: IPath, line: number, char: number }) : IFailCode {
+    function codeFailure(message: string, location: { documentPath: IPath, start: ICoordinates, end: ICoordinates }) : IFailCode {
         return {
             message,
             documentPath: location.documentPath,
-            line: location.line,
-            char: location.char,
+            start: location.start,
+            end: location.end,
             success: false,
             type: "code-fail",
         };

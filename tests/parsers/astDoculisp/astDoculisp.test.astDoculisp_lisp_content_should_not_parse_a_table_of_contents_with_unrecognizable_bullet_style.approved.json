@@ -1,8 +1,14 @@
 {
-  "char": 11,
   "documentPath": "./itty.dlisp",
-  "line": 9,
+  "end": {
+    "char": 17,
+    "line": 9
+  },
   "message": "The toc block at './itty.dlisp' Line: 9, Char: 11 has unknown bullet style 'unknown'.",
+  "start": {
+    "char": 11,
+    "line": 9
+  },
   "success": false,
   "type": "code-fail"
 }

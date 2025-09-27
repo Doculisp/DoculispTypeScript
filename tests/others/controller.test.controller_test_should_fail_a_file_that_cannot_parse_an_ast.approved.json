@@ -1,10 +1,16 @@
 {
   "01 Parse Ast": {
     "result": {
-      "char": 1,
       "documentPath": "./someFile.md",
-      "line": 1,
+      "end": {
+        "char": 2,
+        "line": 6
+      },
       "message": "A bad parse",
+      "start": {
+        "char": 1,
+        "line": 1
+      },
       "success": false,
       "type": "code-fail"
     },
@@ -12,10 +18,16 @@
   },
   "02 Final Result": [
     {
-      "char": 1,
       "documentPath": "./someFile.md",
-      "line": 1,
+      "end": {
+        "char": 2,
+        "line": 6
+      },
       "message": "A bad parse",
+      "start": {
+        "char": 1,
+        "line": 1
+      },
       "success": false,
       "type": "code-fail"
     }

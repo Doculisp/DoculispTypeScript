@@ -1,8 +1,14 @@
 {
-  "char": 1,
   "documentPath": "C:/main.dlisp",
-  "line": 1,
+  "end": {
+    "char": 1,
+    "line": 2
+  },
   "message": "Doculisp block at 'C:/main.dlisp' Line: 1, Char: 1 has something not contained in parenthesis at Line: 1, Char: 34.",
+  "start": {
+    "char": 1,
+    "line": 1
+  },
   "success": false,
   "type": "code-fail"
 }

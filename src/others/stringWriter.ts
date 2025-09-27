@@ -176,7 +176,11 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
 
     function writeGetPath(astIdPath: IPathId, table: IVariableTable): ResultCode<string> {
         if(!table.hasKey(astIdPath.id)) {
-            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char });
+            const idLines = astIdPath.id.split(/|\n\r|/);
+            const lastLine = astIdPath.documentOrder.line + idLines.length ;
+            const lastChar = idLines.at(-1)!.length;
+
+            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, start: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char }, end: { line: lastLine, char: lastChar } });
         }
 
         const output = (
@@ -188,7 +192,11 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         const idPathVariable = table.getValue(astIdPath.id) as IVariableId | IVariableEmptyId | false;
 
         if(!idPathVariable) {
-            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char });
+            const idLines = astIdPath.id.split(/|\n\r|/);
+            const lastLine = astIdPath.documentOrder.line + idLines.length ;
+            const lastChar = idLines.at(-1)!.length;
+
+            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, start: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char }, end: { line: lastLine, char: lastChar } });
         }
 
         if(idPathVariable.type === 'variable-empty-id' || !output) {

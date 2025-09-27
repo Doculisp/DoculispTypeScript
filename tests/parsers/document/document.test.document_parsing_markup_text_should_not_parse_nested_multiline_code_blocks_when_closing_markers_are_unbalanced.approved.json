@@ -1,8 +1,14 @@
 {
-  "char": 5,
   "documentPath": "C:/markdown/multiline.md",
-  "line": 2,
+  "end": {
+    "char": 1,
+    "line": 1
+  },
   "message": "Multiline code block at 'C:/markdown/multiline.md' Line: 2, Char: 5 does not close",
+  "start": {
+    "char": 5,
+    "line": 2
+  },
   "success": false,
   "type": "code-fail"
 }

@@ -1,8 +1,14 @@
 {
-  "char": 0,
   "documentPath": "main.dlisp",
-  "line": 0,
+  "end": {
+    "char": 14,
+    "line": 5
+  },
   "message": "The section-meta block at 'main.dlisp' Line: 0, Char: 0 has more then one ref-link.",
+  "start": {
+    "char": 0,
+    "line": 0
+  },
   "success": false,
   "type": "code-fail"
 }

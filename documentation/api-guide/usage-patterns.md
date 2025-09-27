@@ -141,8 +141,8 @@ class DoculispValidator {
             // Location-aware errors have direct line/char properties
             const codeError = result as IFailCode;
             range = {
-                start: { line: codeError.line - 1, character: codeError.char - 1 }, // Convert to 0-based
-                end: { line: codeError.line - 1, character: codeError.char }
+                start: { line: codeError.start.line - 1, character: codeError.start.char - 1 }, // Convert to 0-based
+                end: { line: codeError.end.line - 1, character: codeError.end.char }
             };
         }
         // Note: general-fail errors have NO location information available
