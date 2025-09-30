@@ -176,13 +176,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
 
     function writeGetPath(astIdPath: IPathId, table: IVariableTable): ResultCode<string> {
         if(!table.hasKey(astIdPath.id)) {
-            const idLines = astIdPath.id.split(/\r\n|\r|\n/);
-            const lastLine = astIdPath.documentOrder.line + idLines.length - 1;
-            const lastChar = idLines.length === 1 ? 
-                astIdPath.documentOrder.char + astIdPath.id.length - 1 : 
-                idLines.at(-1)!.length;
-
-            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, start: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char }, end: { line: lastLine, char: lastChar } });
+            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, start: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char }, end: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char + astIdPath.id.length - 1 } });
         }
 
         const output = (
@@ -194,13 +188,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         const idPathVariable = table.getValue(astIdPath.id) as IVariableId | IVariableEmptyId | false;
 
         if(!idPathVariable) {
-            const idLines = astIdPath.id.split(/\r\n|\r|\n/);
-            const lastLine = astIdPath.documentOrder.line + idLines.length - 1;
-            const lastChar = idLines.length === 1 ? 
-                astIdPath.documentOrder.char + astIdPath.id.length - 1 : 
-                idLines.at(-1)!.length;
-
-            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, start: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char }, end: { line: lastLine, char: lastChar } });
+            return util.codeFailure(`Unknown id '${astIdPath.id}' at '${astIdPath.documentOrder.documentPath}' Line: ${astIdPath.documentOrder.line}, Char: ${astIdPath.documentOrder.char}`, { documentPath: astIdPath.documentOrder.documentPath, start: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char }, end: { line: astIdPath.documentOrder.line, char: astIdPath.documentOrder.char + astIdPath.id.length - 1 } });
         }
 
         if(idPathVariable.type === 'variable-empty-id' || !output) {
