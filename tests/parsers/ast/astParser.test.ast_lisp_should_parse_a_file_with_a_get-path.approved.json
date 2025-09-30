@@ -1,92 +1,97 @@
 {
-  "success": true,
-  "value": {
-    "ast": [
-      {
-        "location": {
-          "char": 7,
-          "documentDepth": 1,
-          "documentIndex": 6,
-          "documentPath": "./_main.md",
-          "line": 1
-        },
-        "subStructure": [
-          {
-            "location": {
-              "char": 6,
-              "documentDepth": 1,
-              "documentIndex": 6,
-              "documentPath": "./_main.md",
-              "line": 2
-            },
-            "parameter": {
+  "001_given_": {
+    "./_main.md": "<!-- (dl\n(section-meta\n    (title Using Dynamic Path)\n)\n) -->\n\n[back](<!-- (dl (get-path readme)) -->)\n"
+  },
+  "999_result": {
+    "success": true,
+    "value": {
+      "ast": [
+        {
+          "location": {
+            "char": 2,
+            "documentDepth": 1,
+            "documentIndex": 6,
+            "documentPath": "./_main.md",
+            "line": 2
+          },
+          "subStructure": [
+            {
               "location": {
-                "char": 12,
+                "char": 6,
                 "documentDepth": 1,
                 "documentIndex": 6,
                 "documentPath": "./_main.md",
-                "line": 2
+                "line": 3
               },
-              "type": "ast-Parameter",
-              "value": "Using Dynamic Path"
-            },
-            "type": "ast-command",
-            "value": "title"
-          }
-        ],
-        "type": "ast-container",
-        "value": "section-meta"
-      },
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 1,
-          "documentIndex": 6,
-          "documentPath": "./_main.md",
-          "line": 7
+              "parameter": {
+                "location": {
+                  "char": 12,
+                  "documentDepth": 1,
+                  "documentIndex": 6,
+                  "documentPath": "./_main.md",
+                  "line": 3
+                },
+                "type": "ast-Parameter",
+                "value": "Using Dynamic Path"
+              },
+              "type": "ast-command",
+              "value": "title"
+            }
+          ],
+          "type": "ast-container",
+          "value": "section-meta"
         },
-        "type": "ast-value",
-        "value": "[back]("
-      },
-      {
-        "location": {
-          "char": 14,
-          "documentDepth": 1,
-          "documentIndex": 6,
-          "documentPath": "./_main.md",
-          "line": 7
-        },
-        "parameter": {
+        {
           "location": {
-            "char": 23,
+            "char": 1,
             "documentDepth": 1,
             "documentIndex": 6,
             "documentPath": "./_main.md",
             "line": 7
           },
-          "type": "ast-Parameter",
-          "value": "readme"
+          "type": "ast-value",
+          "value": "[back]("
         },
-        "type": "ast-command",
-        "value": "get-path"
+        {
+          "location": {
+            "char": 18,
+            "documentDepth": 1,
+            "documentIndex": 6,
+            "documentPath": "./_main.md",
+            "line": 7
+          },
+          "parameter": {
+            "location": {
+              "char": 27,
+              "documentDepth": 1,
+              "documentIndex": 6,
+              "documentPath": "./_main.md",
+              "line": 7
+            },
+            "type": "ast-Parameter",
+            "value": "readme"
+          },
+          "type": "ast-command",
+          "value": "get-path"
+        },
+        {
+          "location": {
+            "char": 39,
+            "documentDepth": 1,
+            "documentIndex": 6,
+            "documentPath": "./_main.md",
+            "line": 7
+          },
+          "type": "ast-value",
+          "value": ")"
+        }
+      ],
+      "location": {
+        "documentDepth": 1,
+        "documentIndex": 6,
+        "documentPath": "./_main.md"
       },
-      {
-        "location": {
-          "char": 39,
-          "documentDepth": 1,
-          "documentIndex": 6,
-          "documentPath": "./_main.md",
-          "line": 7
-        },
-        "type": "ast-value",
-        "value": ")"
-      }
-    ],
-    "location": {
-      "documentDepth": 1,
-      "documentIndex": 6,
-      "documentPath": "./_main.md"
-    },
-    "type": "RootAst"
+      "type": "RootAst"
+    }
   }
 }

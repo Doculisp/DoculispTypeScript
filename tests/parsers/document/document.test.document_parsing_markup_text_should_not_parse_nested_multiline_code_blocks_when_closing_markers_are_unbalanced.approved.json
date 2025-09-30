@@ -1,14 +1,17 @@
 {
-  "documentPath": "C:/markdown/multiline.md",
-  "end": {
-    "char": 1,
-    "line": 1
-  },
-  "message": "Multiline code block at 'C:/markdown/multiline.md' Line: 2, Char: 5 does not close",
-  "start": {
-    "char": 5,
-    "line": 2
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "An example of an markdown document with nested code blocks that do not close:\n    ````markdown\n    # A document\n    \n    ```html\n    <a href=\"www.google.com\">Google</a>\n    ```\n    \n    ## Sub section title\n    `````\n    ",
+  "999_result": {
+    "documentPath": "C:/markdown/multiline.md",
+    "end": {
+      "char": 1,
+      "line": 2
+    },
+    "message": "Multiline code block at 'C:/markdown/multiline.md' Line: 2, Char: 5 does not close",
+    "start": {
+      "char": 5,
+      "line": 2
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

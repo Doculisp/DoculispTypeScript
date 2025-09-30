@@ -1,73 +1,76 @@
 {
-  "success": true,
-  "value": {
-    "projectLocation": {
-      "documentDepth": 2,
-      "documentIndex": 1,
-      "documentPath": "./itty.dlisp"
-    },
-    "section": {
-      "doculisp": [
-        {
-          "documentOrder": {
-            "char": 6,
-            "documentDepth": 2,
-            "documentIndex": 1,
-            "documentPath": "./itty.dlisp",
-            "line": 3
-          },
-          "label": "## Sing Me a Song ##",
-          "ref_link": "#sing-me-a-song",
-          "title": "Sing Me a Song",
-          "type": "doculisp-title"
-        },
-        {
-          "bulletStyle": "bulleted-labeled",
-          "documentOrder": {
-            "char": 5,
-            "documentDepth": 2,
-            "documentIndex": 1,
-            "documentPath": "./itty.dlisp",
-            "line": 10
-          },
-          "label": false,
-          "type": "doculisp-toc"
-        },
-        {
-          "documentOrder": {
-            "char": 2,
-            "documentDepth": 2,
-            "documentIndex": 1,
-            "documentPath": "./itty.dlisp",
-            "line": 9
-          },
-          "type": "doculisp-content"
-        }
-      ],
-      "documentOrder": {
-        "char": 1,
+  "001_given_": "\n(section-meta\n    (title Sing Me a Song)\n    (include\n        (Chapter ./songs.dlisp)\n    )\n)\n\n(content\n    (toc\n        (style bulleted-labeled)\n    )\n)\n",
+  "999_result": {
+    "success": true,
+    "value": {
+      "projectLocation": {
         "documentDepth": 2,
         "documentIndex": 1,
-        "documentPath": "./itty.dlisp",
-        "line": 1
+        "documentPath": "./itty.dlisp"
       },
-      "include": [
-        {
-          "document": false,
-          "documentOrder": {
-            "char": 10,
-            "documentDepth": 2,
-            "documentIndex": 1,
-            "documentPath": "./itty.dlisp",
-            "line": 5
+      "section": {
+        "doculisp": [
+          {
+            "documentOrder": {
+              "char": 6,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "./itty.dlisp",
+              "line": 3
+            },
+            "label": "## Sing Me a Song ##",
+            "ref_link": "#sing-me-a-song",
+            "title": "Sing Me a Song",
+            "type": "doculisp-title"
           },
-          "path": "./songs.dlisp",
-          "sectionLabel": "Chapter",
-          "type": "doculisp-load"
-        }
-      ],
-      "type": "doculisp-section"
-    },
-    "type": "doculisp-root"
+          {
+            "bulletStyle": "bulleted-labeled",
+            "documentOrder": {
+              "char": 5,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "./itty.dlisp",
+              "line": 10
+            },
+            "label": false,
+            "type": "doculisp-toc"
+          },
+          {
+            "documentOrder": {
+              "char": 2,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "./itty.dlisp",
+              "line": 9
+            },
+            "type": "doculisp-content"
+          }
+        ],
+        "documentOrder": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 1,
+          "documentPath": "./itty.dlisp",
+          "line": 1
+        },
+        "include": [
+          {
+            "document": false,
+            "documentOrder": {
+              "char": 10,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "./itty.dlisp",
+              "line": 5
+            },
+            "path": "./songs.dlisp",
+            "sectionLabel": "Chapter",
+            "type": "doculisp-load"
+          }
+        ],
+        "type": "doculisp-section"
+      },
+      "type": "doculisp-root"
+    }
   }
 }

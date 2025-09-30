@@ -1,11 +1,16 @@
 {
-  "author": {
-    "type": "variable-array-string",
-    "value": [
-      {
-        "type": "variable-string",
-        "value": "Jason Kerney"
+  "001_given_": "\n(section-meta\n    (title My Cool Document)\n    (author Jason Kerney)\n)\n",
+  "999_result": {
+    "variableTable": {
+      "author": {
+        "type": "variable-array-string",
+        "value": [
+          {
+            "type": "variable-string",
+            "value": "Jason Kerney"
+          }
+        ]
       }
-    ]
+    }
   }
 }

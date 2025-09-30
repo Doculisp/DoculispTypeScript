@@ -1,14 +1,17 @@
 {
-  "documentPath": "../main.dlisp",
-  "end": {
-    "char": 9,
-    "line": 2
-  },
-  "message": "The content block at '../main.dlisp' Line: 2, Char: 2 exists before the section-meta block.",
-  "start": {
-    "char": 2,
-    "line": 2
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(content)\n\n(section-meta\n    (title Using Content)\n    (include\n        (Section ./HelloContent.md)\n    )\n)\n",
+  "999_result": {
+    "documentPath": "../main.dlisp",
+    "end": {
+      "char": 9,
+      "line": 2
+    },
+    "message": "The content block at '../main.dlisp' Line: 2, Char: 2 exists before the section-meta block.",
+    "start": {
+      "char": 2,
+      "line": 2
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

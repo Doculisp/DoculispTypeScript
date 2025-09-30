@@ -1,39 +1,42 @@
 {
-  "success": true,
-  "value": {
-    "documents": [
-      {
-        "destinationPath": "./README.md",
-        "location": {
-          "char": 6,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./myProject.dlproj",
-          "line": 3
+  "001_given_": "\n(documents\n    (document\n        (source ./myReadme.md)\n        (output ./README.md)\n    )\n    (document\n        (source ./howTo.md)\n        (output ./contrib.md)\n    )\n)\n",
+  "999_result": {
+    "success": true,
+    "value": {
+      "documents": [
+        {
+          "destinationPath": "./README.md",
+          "location": {
+            "char": 6,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "./myProject.dlproj",
+            "line": 3
+          },
+          "sourcePath": "./myReadme.md",
+          "type": "project-document"
         },
-        "sourcePath": "./myReadme.md",
-        "type": "project-document"
+        {
+          "destinationPath": "./contrib.md",
+          "location": {
+            "char": 6,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "./myProject.dlproj",
+            "line": 7
+          },
+          "sourcePath": "./howTo.md",
+          "type": "project-document"
+        }
+      ],
+      "location": {
+        "char": 2,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "./myProject.dlproj",
+        "line": 2
       },
-      {
-        "destinationPath": "./contrib.md",
-        "location": {
-          "char": 6,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "./myProject.dlproj",
-          "line": 3
-        },
-        "sourcePath": "./howTo.md",
-        "type": "project-document"
-      }
-    ],
-    "location": {
-      "char": 2,
-      "documentDepth": 1,
-      "documentIndex": 1,
-      "documentPath": "./myProject.dlproj",
-      "line": 2
-    },
-    "type": "project-documents"
+      "type": "project-documents"
+    }
   }
 }

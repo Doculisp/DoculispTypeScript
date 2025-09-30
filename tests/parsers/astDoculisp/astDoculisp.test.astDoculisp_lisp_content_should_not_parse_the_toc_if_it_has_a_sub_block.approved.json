@@ -1,14 +1,17 @@
 {
-  "documentPath": "../main.dlisp",
-  "end": {
-    "char": 20,
-    "line": 9
-  },
-  "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown command 'type' at Line: 9, Char: 16.",
-  "start": {
-    "char": 16,
-    "line": 9
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title Using Content)\n    (include\n        (Section ./HelloContent.md)\n    )\n)\n\n(content (toc (type bulleted)))\n",
+  "999_result": {
+    "documentPath": "../main.dlisp",
+    "end": {
+      "char": 20,
+      "line": 9
+    },
+    "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown command 'type' at Line: 9, Char: 16.",
+    "start": {
+      "char": 16,
+      "line": 9
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

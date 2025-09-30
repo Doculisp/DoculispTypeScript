@@ -1,14 +1,17 @@
 {
-  "documentPath": "../noInclude.dlisp",
-  "end": {
-    "char": 9,
-    "line": 7
-  },
-  "message": "The content block at '../noInclude.dlisp' Line: 7, Char: 2 exists without an include block that has external files.",
-  "start": {
-    "char": 2,
-    "line": 7
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title Using Content)\n    (include)\n)\n\n(content)\n",
+  "999_result": {
+    "documentPath": "../noInclude.dlisp",
+    "end": {
+      "char": 9,
+      "line": 7
+    },
+    "message": "The content block at '../noInclude.dlisp' Line: 7, Char: 2 exists without an include block that has external files.",
+    "start": {
+      "char": 2,
+      "line": 7
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

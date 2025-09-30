@@ -63,7 +63,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
             }
 
             const parser = internals.createArrayParser(parseDocument);
-            const maybe = parser.parse(ast.subStructure, (ast.subStructure[0] as AtomAst).location);
+            const maybe = parser.parse(ast.subStructure, ast.location);
 
             if(!maybe.success) {
                 return maybe;
@@ -73,7 +73,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             if(0 < remaining.remaining.length) {
                 const bad = remaining.remaining[0] as CoreAst;
-                const badLines = bad.value.split(/|\n\r|/);
+                const badLines = bad.value.split(/\r\n|\r|\n/);
 
                 const endLine = bad.location.line + badLines.length ;
                 const endChar = badLines.at(-1)?.length || 1;
@@ -163,7 +163,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
                 if(0 < remaining.remaining.length) {
                     const first = remaining.remaining[0] as AtomAst;
-                    const firstLines = first.value.split(/|\n\r|/);
+                    const firstLines = first.value.split(/\r\n|\r|\n/);
                     const endLine = first.location.line + firstLines.length ;
                     const endChar = firstLines.at(-1)?.length || 1;
 
@@ -179,7 +179,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
                 if(0 === sources.length) {
                     const lastAst = ((originalAst as CoreAst[]) || []).map(a => a.value).join('\n');
-                    const lastLines = lastAst.split(/|\n\r|/);
+                    const lastLines = lastAst.split(/\r\n|\r|\n/);
                     const endLine = originalLocation.line + lastLines.length ;
                     const endChar = lastLines.at(-1)?.length || 1;
 
@@ -188,7 +188,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
                 if(0 === outputs.length) {
                     const lastAst = ((originalAst as CoreAst[]) || []).map(a => a.value).join('\n');
-                    const lastLines = lastAst.split(/|\n\r|/);
+                    const lastLines = lastAst.split(/\r\n|\r|\n/);
                     const endLine = originalLocation.line + lastLines.length ;
                     const endChar = lastLines.at(-1)?.length || 1;
 
@@ -197,7 +197,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
                 if(1 < sources.length) {
                     const bad = sources[1] as ISource;
-                    const badLines = bad.source.fullName.split(/|\n\r|/);
+                    const badLines = bad.source.fullName.split(/\r\n|\r|\n/);
                     const lastLine = bad.location.line + badLines.length ;
                     const lastChar = badLines.at(-1)?.length || 1;
 
@@ -206,7 +206,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
                 if(1 < outputs.length) {
                     const bad = outputs[1] as IOutput;
-                    const lastLines = bad.output.fullName.split(/|\n\r|/);
+                    const lastLines = bad.output.fullName.split(/\r\n|\r|\n/);
                     const lastLine = bad.location.line + lastLines.length ;
                     const lastChar = lastLines.at(-1)?.length || 1;
 
@@ -250,7 +250,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
             if(!!table) {
                 let bads = Object.keys(table);
                 let badMsg = bads.map(badS => `'${badS}' @ id char ${table[badS]}`).join('\n\t');
-                const badLines = id.split(/|\n\r|/);
+                const badLines = id.split(/\r\n|\r|\n/);
                 let lastLine = current.line + badLines.length ;
                 let lastChar = badLines.at(-1)?.length || 1;
 
@@ -258,7 +258,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
             }
 
             if(!textHelper.isLowercase(id)) {
-                const badLines = id.split(/|\n\r|/);
+                const badLines = id.split(/\r\n|\r|\n/);
                 let lastLine = current.line + badLines.length ;
                 let lastChar = badLines.at(-1)?.length || 1;
 
@@ -268,7 +268,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
             if(variableTable.hasKey(id)) {
                 let orig = variableTable.getValue(id);
                 let msg = '';
-                const badLines = id.split(/|\n\r|/);
+                const badLines = id.split(/\r\n|\r|\n/);
                 let lastLine = current.line + badLines.length ;
                 let lastChar = badLines.at(-1)?.length || 1;
 
@@ -292,7 +292,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 return internals.noResultFound();
             }
 
-            const parseByParts = parseDocumentByParts(current, false)
+            const parseByParts = parseDocumentByParts(ast.location, false)
             const parser = internals.createArrayParser(parseByParts, parseDocId);
 
             const maybe = parser.parse(ast.subStructure, (ast.subStructure[0] as AtomAst).location);
@@ -305,7 +305,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             if(0 < remaining.remaining.length) {
                 const bad = remaining.remaining[0] as CoreAst;
-                const badLines = bad.value.split(/|\n\r|/);
+                const badLines = bad.value.split(/\r\n|\r|\n/);
                 let lastLine = current.line + badLines.length ;
                 let lastChar = badLines.at(-1)?.length || 1;
 
@@ -314,7 +314,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             if(result.length === 0) {
                 const bad = remaining.remaining[0] as CoreAst;
-                const badLines = bad.value.split(/|\n\r|/);
+                const badLines = bad.value.split(/\r\n|\r|\n/);
                 let lastLine = current.line + badLines.length ;
                 let lastChar = badLines.at(-1)?.length || 1;
 
@@ -324,7 +324,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
             if(1 < result.length) {
                 const badStart = result[0] as IProjectDocument;
                 const badEnd = result.at(-1) as IProjectDocument;
-                const badLines = (badEnd?.sourcePath?.fullName?.split(/|\n\r|/) || []);
+                const badLines = (badEnd?.sourcePath?.fullName?.split(/\r\n|\r|\n/) || []);
 
                 const lastLine = badEnd.location.line + badLines.length ;
                 const lastChar = badLines.at(-1)?.length || 1;
@@ -369,7 +369,7 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
         if(1 < result.length) {
             const bad = result[1] as IProjectDocuments;
             const badEnd = bad.documents.at(-1) as IProjectDocument;
-            const badLines = (badEnd?.sourcePath?.fullName?.split(/|\n\r|/) || []);
+            const badLines = (badEnd?.sourcePath?.fullName?.split(/\r\n|\r|\n/) || []);
 
             const lastLine = (badEnd?.location?.line || 1) + badLines.length + bad.location.line;
             const lastChar = badLines.at(-1)?.length || 1;

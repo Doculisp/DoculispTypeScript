@@ -1,40 +1,43 @@
 {
-  "success": true,
-  "value": {
-    "documents": [
-      {
-        "destinationPath": "../README.md",
-        "id": "readme",
-        "location": {
-          "char": 10,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "/docs.dlproj",
-          "line": 4
+  "001_given_": "\n(documents\n    (document\n        (readme\n            (source ./_main.dlisp)\n            (output ../README.md)\n        )\n    )\n    (document\n        (source ./contrib/_main.dlisp)\n        (output ../contrib.md)\n    )\n)\n",
+  "999_result": {
+    "success": true,
+    "value": {
+      "documents": [
+        {
+          "destinationPath": "../README.md",
+          "id": "readme",
+          "location": {
+            "char": 10,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "/docs.dlproj",
+            "line": 4
+          },
+          "sourcePath": "./_main.dlisp",
+          "type": "project-document"
         },
-        "sourcePath": "./_main.dlisp",
-        "type": "project-document"
+        {
+          "destinationPath": "../contrib.md",
+          "location": {
+            "char": 6,
+            "documentDepth": 1,
+            "documentIndex": 1,
+            "documentPath": "/docs.dlproj",
+            "line": 9
+          },
+          "sourcePath": "./contrib/_main.dlisp",
+          "type": "project-document"
+        }
+      ],
+      "location": {
+        "char": 2,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "/docs.dlproj",
+        "line": 2
       },
-      {
-        "destinationPath": "../contrib.md",
-        "location": {
-          "char": 6,
-          "documentDepth": 1,
-          "documentIndex": 1,
-          "documentPath": "/docs.dlproj",
-          "line": 3
-        },
-        "sourcePath": "./contrib/_main.dlisp",
-        "type": "project-document"
-      }
-    ],
-    "location": {
-      "char": 2,
-      "documentDepth": 1,
-      "documentIndex": 1,
-      "documentPath": "/docs.dlproj",
-      "line": 2
-    },
-    "type": "project-documents"
+      "type": "project-documents"
+    }
   }
 }

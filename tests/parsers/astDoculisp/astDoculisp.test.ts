@@ -1,6 +1,6 @@
 import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
-import { getVerifier } from "../../tools";
+import { getVerifier, verifyWithGiven } from "../../tools";
 import { containerPromise } from "../../../src/moduleLoader";
 import { IDoculisp, IDoculispParser, IEmptyDoculisp } from '../../../src/types/types.astDoculisp'
 import { ICoordinates, IFailCode, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
@@ -62,16 +62,16 @@ describe('astDoculisp', () => {
             };
     
             const result = parser.parse(ok(empty), variableTable);
-    
-            verifyAsJson(result);
+
+            verifyWithGiven(verifyAsJson, result, false, ok(empty));
         });
 
         it('should return failure if given failure', () => {
             const failure = failCode('this is a document failure', { documentPath: buildPath('Z:/mybad.dlisp'), start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
-    
+
             const result = parser.parse(failure, variableTable);
-    
-            verifyAsJson(result);
+
+            verifyWithGiven(verifyAsJson, result, false, failure);
         });
     
         it('should parse a value', () => {
@@ -86,12 +86,14 @@ describe('astDoculisp', () => {
                     }
                 ],
                 location: projectLocation,
-                type: 'RootAst'
+                type: 'RootAst' // will cause a section container to be inserted at (1, 1)
             };
     
             const result = parser.parse(ok(ast), variableTable);
+            const table: any = {};
+            table['ast'] = ast;
     
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, table);
         });
     
         it('should parse multiple value ast elements', () => {
@@ -114,8 +116,10 @@ describe('astDoculisp', () => {
             };
     
             const result = parser.parse(ok(ast), variableTable);
-    
-            verifyAsJson(result);
+            const table: any = {};
+            table['ast'] = ast;
+
+            verifyWithGiven(verifyAsJson, result, false, table);
         });
     });
 
@@ -127,7 +131,7 @@ describe('astDoculisp', () => {
 -->`;
                 const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
         
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, contents);
             });
         
             it('should not parse a header without a parameter', () => {
@@ -136,7 +140,7 @@ describe('astDoculisp', () => {
 -->`;
                 const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 3));
         
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, contents);
             });
             
             it('should parse a header with an id', () => {
@@ -145,7 +149,7 @@ describe('astDoculisp', () => {
 -->`;
                 const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
         
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, contents);
             });
             
             it('should not parse a header with an id that contains uppercase letters', () => {
@@ -153,17 +157,17 @@ describe('astDoculisp', () => {
 (dl (#First My heading))
 -->`;
                 const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
-        
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, contents);
             });
             
             it('should not parse a header with an id that contains a symbol', () => {
                 const contents = `<!--
-(dl (#F|rst My heading))
+(dl (#f|rst My heading))
 -->`;
                 const result = toResult(contents, buildProjectLocation('S:/ome/file.md', 2, 1));
         
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, contents);
             });
         });
 
@@ -189,7 +193,7 @@ describe('astDoculisp', () => {
 
             const result = toResult(text, buildProjectLocation('./_main.dlisp', 4, 7));
 
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, text);
         });
 
         describe('section-meta', () => {
@@ -206,7 +210,7 @@ describe('astDoculisp', () => {
 
                 const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, contents);1
             });
 
             it('should not parse a section-meta that contains a section-meta', () => {
@@ -221,7 +225,7 @@ describe('astDoculisp', () => {
                 
                 const result = toResult(content, buildProjectLocation('A:/malformed/file.dlisp', 1, 7));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
 
             it('should not parse a second section-meta in a file', () => {
@@ -237,7 +241,7 @@ describe('astDoculisp', () => {
 
                 const result = toResult(content, buildProjectLocation('./two/sections.dlisp', 3, 2));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
 
             it('should not parse a section meta with a invalid atom', () => {
@@ -259,15 +263,15 @@ A story of a misbehaving parser.
 
                 const result = toResult(content, buildProjectLocation('./_main.md', 1, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
 
             describe('title', () => {
                 it('should parse a title as a parameter', () => {
                     const contents = `(section-meta My Cool Document)`;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
-            
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should parse a title', () => {
@@ -277,30 +281,29 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
-            
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
-            
+
                 it('should not parse a title without a parameter', () => {
                     const contents = `(section-meta (title))`;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
-            
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse a title with a sub group', () => {
                     const contents = `(section-meta (title (bad group)))`;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
-            
-                    verifyAsJson(result);
 
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse multiple titles', () => {
                     const contents = '(section-meta (title A Title) (title B Title))';
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
 
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
             });
 
@@ -313,12 +316,14 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
-                    
+                    const table: any = {};
+                    table['variableTable'] = variableTable;
+
                     if(!result.success) {
-                        verifyAsJson(result);
+                        verifyWithGiven(verifyAsJson, result, false, contents, table);
                     }
                     else {
-                        verifyAsJson(variableTable.asJson());
+                        verifyWithGiven(verifyAsJson, table, false, contents);
                     }
                 });
 
@@ -331,12 +336,14 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
-            
+                    const table: any = {};
+                    table['variableTable'] = variableTable;
+
                     if(!result.success) {
-                        verifyAsJson(result);
+                        verifyWithGiven(verifyAsJson, result, false, contents, table);
                     }
                     else {
-                        verifyAsJson(variableTable.asJson());
+                        verifyWithGiven(verifyAsJson, table, false, contents);
                     }
                 });
 
@@ -349,8 +356,8 @@ A story of a misbehaving parser.
 `;
 
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
-                                
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse an author block that contains another block', () => {
@@ -365,8 +372,8 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
-                                                    
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents); // [RJK] - Bug, approvals updated.
                 });
 
                 it('should not add a duplicate author block', () => {
@@ -381,10 +388,12 @@ A story of a misbehaving parser.
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 7));
                                 
                     if(!result.success) {
-                        verifyAsJson(result);
+                        const table: any = {};
+                        table['variableTable'] = variableTable;
+                        verifyWithGiven(verifyAsJson, result, false, contents, table);
                     }
                     else {
-                        verifyAsJson(variableTable.asJson());
+                        verifyWithGiven(verifyAsJson, variableTable.asJson(), false, contents);
                     }
                 });
             });
@@ -398,8 +407,8 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
-        
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should parse the ref-link if it comes before the title', () => {
@@ -411,7 +420,7 @@ A story of a misbehaving parser.
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
         
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse a ref-link with no parameter', () => {
@@ -422,8 +431,8 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
-                            
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents); // [RJK] Next
                 });
 
                 it('should not parse a ref-link with a sub block', () => {
@@ -434,7 +443,7 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 11));
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse multiple ref-links', () => {
@@ -446,7 +455,7 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should strip out some special characters from the ref-link', () => {
@@ -459,7 +468,7 @@ A story of a misbehaving parser.
     -->`;
     
                     const result = toResult(content, buildProjectLocation('./_main.md', 1, 1));
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, content);
                 });
             });
 
@@ -472,8 +481,8 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 4, 4));
-        
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should parse the subtitle before title command', () => {
@@ -484,8 +493,8 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 2, 7));
-        
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse a subtitle without a parameter', () => {
@@ -497,7 +506,7 @@ A story of a misbehaving parser.
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 10));
         
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse a subtitle with a sub block', () => {
@@ -508,8 +517,8 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 10));
-        
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 })
 
                 it('should not parse multiple subtitles', () => {
@@ -521,8 +530,8 @@ A story of a misbehaving parser.
 )
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 2, 7));
-        
-                    verifyAsJson(result);
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
             });
 
@@ -539,7 +548,7 @@ A story of a misbehaving parser.
 
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should parse include without section information', () => {
@@ -551,7 +560,7 @@ A story of a misbehaving parser.
 
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should replace hyphens with spaces in load labels', () => {
@@ -565,7 +574,7 @@ A story of a misbehaving parser.
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should handle them all put together', () => {
@@ -581,7 +590,7 @@ A story of a misbehaving parser.
 
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 4));
 
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
             });
 
@@ -597,7 +606,7 @@ A story of a misbehaving parser.
 `;
 
                     const result = toResult(contents, buildProjectLocation('main.md', 1, 1));
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse the id command it it contains capital letters', () => {
@@ -611,7 +620,7 @@ A story of a misbehaving parser.
 `;
 
                     const result = toResult(contents, buildProjectLocation('main.md', 1, 1));
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse the id command if it contains symbols.', () => {
@@ -625,7 +634,7 @@ A story of a misbehaving parser.
 `;
 
                     const result = toResult(contents, buildProjectLocation('main.md', 1, 1));
-                    verifyAsJson(result);
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
             });
         });
@@ -645,7 +654,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('../main.dlisp', 2, 7));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should not parse the content if it has a parameter text', () => {
@@ -662,7 +671,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('../main.dlisp', 2, 7));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should not parse the toc if it has a sub block', () => {
@@ -679,7 +688,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('../main.dlisp', 2, 7));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should not parse the content if it is before the section-meta', () => {
@@ -696,7 +705,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('../main.dlisp', 4, 2));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should not parse the content location when there are no externals', () => {
@@ -710,7 +719,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('../noInclude.dlisp', 2, 7));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should not parse the content location when there is an empty include', () => {
@@ -725,7 +734,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('../noInclude.dlisp', 2, 7));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should parse a table of contents', () => {
@@ -742,7 +751,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it.each([
@@ -767,7 +776,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should not parse a content whith a sub command other then toc', () => {
@@ -783,7 +792,7 @@ A story of a misbehaving parser.
 `;
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should not parse a table of contents with unrecognizable bullet style', () => {
@@ -800,7 +809,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should parse a table of contents with a label', () => {
@@ -821,7 +830,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should parse a table of contents with a style block', () => {
@@ -842,7 +851,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should parse a table of contents with both a style block and label', () => {
@@ -864,7 +873,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
 
             it('should parse a table of contents with both a style block and label reversed', () => {
@@ -886,7 +895,7 @@ A story of a misbehaving parser.
 
                 const result = toResult(text, buildProjectLocation('./itty.dlisp', 2, 1));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
         })
 
@@ -911,8 +920,10 @@ A story of a misbehaving parser.
                 variableTable.addValue(destKey, { type: 'variable-path', value: buildPath(contribOutput) });
 
                 const result = toResult(contribText, buildProjectLocation('../main.md', 2, 7));
+                const table: any = {};
+                table['variableTable'] = variableTable;
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, contribText, table);
             });
         });
     });

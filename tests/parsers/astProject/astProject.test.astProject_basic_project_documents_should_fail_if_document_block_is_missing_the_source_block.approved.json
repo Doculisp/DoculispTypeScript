@@ -1,14 +1,17 @@
 {
-  "documentPath": "./project.dlproj",
-  "end": {
-    "char": 1,
-    "line": 3
-  },
-  "message": "Document identifier block at './project.dlproj' Line: 3, Char: 6 does not contain a source block.",
-  "start": {
-    "char": 6,
-    "line": 3
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(documents\n    (document\n        (output ./README.md)\n    )\n)\n",
+  "999_result": {
+    "documentPath": "./project.dlproj",
+    "end": {
+      "char": 1,
+      "line": 4
+    },
+    "message": "Document identifier block at './project.dlproj' Line: 3, Char: 6 does not contain a source block.",
+    "start": {
+      "char": 6,
+      "line": 3
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

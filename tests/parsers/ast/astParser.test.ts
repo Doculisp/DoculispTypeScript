@@ -1,6 +1,6 @@
 import { Options } from "approvals/lib/Core/Options";
 import { configure } from "approvals/lib/config";
-import { getVerifier } from "../../tools";
+import { getVerifier, verifyWithGiven } from "../../tools";
 import { containerPromise } from "../../../src/moduleLoader";
 import { ICoordinates, IFailCode, IProjectLocation, ISuccess, IUtil, Result } from "../../../src/types/types.general";
 import { TokenizedDocument } from "../../../src/types/types.tokens";
@@ -111,21 +111,33 @@ describe('ast', () => {
             const contents = `<!--
 (dl (# My heading))
 -->`;
-            const result = toResult(contents, buildProjectLocation('S:/ome/file.md',2, 1));
-    
-            verifyAsJson(result);
+            const mainPath = 'S:/ome/file.md';
+            const result = toResult(contents, buildProjectLocation(mainPath,2, 1));
+            const main = { } as any;
+            main[mainPath] = contents;
+
+            verifyWithGiven(verifyAsJson, result, false, main);
         });
 
         it('should parse a basic atom', () => {
             const text = '(content)';
-            const result = toResult(text, buildProjectLocation('./_main.dlisp', 1, 1));
-            verifyAsJson(result);
+            const mainPath = './_main.dlisp';
+            const result = toResult(text, buildProjectLocation(mainPath, 1, 1));
+            const main = { } as any;
+            main[mainPath] = text;
+
+            verifyWithGiven(verifyAsJson, result, false, main);
         });
 
         it('should parse a container with a basic atom', () => {
             const text = '(section-meta (title))';
-            const result = toResult(text, buildProjectLocation('./_main.dlisp', 1, 1));
-            verifyAsJson(result);
+
+            const mainPath = './_main.dlisp';
+            const result = toResult(text, buildProjectLocation(mainPath, 1, 1));
+            const main = { } as any;
+            main[mainPath] = text;
+
+            verifyWithGiven(verifyAsJson, result, false, main);
         });
 
         it('should parse a container with a command', () => {
@@ -135,8 +147,12 @@ describe('ast', () => {
 )
 `;
 
-            const result = toResult(text, buildProjectLocation('./_main.dlisp', 1, 6));
-            verifyAsJson(result);
+            const mainPath = './_main.dlisp';
+            const result = toResult(text, buildProjectLocation(mainPath, 1, 6));
+            const main = { } as any;
+            main[mainPath] = text;
+
+            verifyWithGiven(verifyAsJson, result, false, main);
         });
 
         it('should parse a file with a get-path', () => {
@@ -149,8 +165,12 @@ describe('ast', () => {
 [back](<!-- (dl (get-path readme)) -->)
 `;
 
-            const result = toResult(text, buildProjectLocation('./_main.md', 1, 6));
-            verifyAsJson(result);
+            const mainPath = './_main.md';
+            const result = toResult(text, buildProjectLocation(mainPath, 1, 6));
+            const main = { } as any;
+            main[mainPath] = text;
+
+            verifyWithGiven(verifyAsJson, result, false, main);
         });
 
         it('should parse a document with all the parts', () => {
@@ -173,9 +193,12 @@ describe('ast', () => {
 (content (toc numbered-labeled))
 `;
 
-            const result = toResult(text, buildProjectLocation('./_main.dlisp', 4, 7));
+            const mainPath = './_main.dlisp';
+            const result = toResult(text, buildProjectLocation(mainPath, 4, 7));
+            const main = { } as any;
+            main[mainPath] = text;
 
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, main);
         });
     });
 });

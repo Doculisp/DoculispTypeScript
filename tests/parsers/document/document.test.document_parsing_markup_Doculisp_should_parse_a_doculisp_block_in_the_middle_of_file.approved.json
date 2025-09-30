@@ -1,56 +1,59 @@
 {
-  "success": true,
-  "value": {
-    "parts": [
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 7,
-          "documentIndex": 5,
-          "documentPath": "_main.md",
-          "line": 1
+  "001_given_": "# Title\r\nsome text about title\r\n<!--\r\nSome lisp: (dl (# two)) -->\r\nMickey Mouse Hotline.",
+  "999_result": {
+    "success": true,
+    "value": {
+      "parts": [
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 7,
+            "documentIndex": 5,
+            "documentPath": "_main.md",
+            "line": 1
+          },
+          "text": "# Title",
+          "type": "text"
         },
-        "text": "# Title",
-        "type": "text"
-      },
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 7,
-          "documentIndex": 5,
-          "documentPath": "_main.md",
-          "line": 2
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 7,
+            "documentIndex": 5,
+            "documentPath": "_main.md",
+            "line": 2
+          },
+          "text": "some text about title",
+          "type": "text"
         },
-        "text": "some text about title",
-        "type": "text"
-      },
-      {
-        "location": {
-          "char": 12,
-          "documentDepth": 7,
-          "documentIndex": 5,
-          "documentPath": "_main.md",
-          "line": 4
+        {
+          "location": {
+            "char": 16,
+            "documentDepth": 7,
+            "documentIndex": 5,
+            "documentPath": "_main.md",
+            "line": 4
+          },
+          "text": "(# two)",
+          "type": "lisp"
         },
-        "text": "(# two)",
-        "type": "lisp"
-      },
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 7,
-          "documentIndex": 5,
-          "documentPath": "_main.md",
-          "line": 5
-        },
-        "text": "Mickey Mouse Hotline.",
-        "type": "text"
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 7,
+            "documentIndex": 5,
+            "documentPath": "_main.md",
+            "line": 5
+          },
+          "text": "Mickey Mouse Hotline.",
+          "type": "text"
+        }
+      ],
+      "projectLocation": {
+        "documentDepth": 7,
+        "documentIndex": 5,
+        "documentPath": "_main.md"
       }
-    ],
-    "projectLocation": {
-      "documentDepth": 7,
-      "documentIndex": 5,
-      "documentPath": "_main.md"
     }
   }
 }

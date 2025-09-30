@@ -1,169 +1,185 @@
 {
-  "success": true,
-  "value": {
-    "projectLocation": {
-      "documentDepth": 1,
-      "documentIndex": 1,
-      "documentPath": "./_main.dlisp"
+  "001_given_": {
+    "./_main.dlisp": {
+      "success": true,
+      "value": "\n(section-meta\n    (title The True Root)\n    (include\n        (Block ./childDoc.md)\n    )\n)\n\n(content (toc))\n"
     },
-    "section": {
-      "doculisp": [
-        {
-          "documentOrder": {
-            "char": 6,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "./_main.dlisp",
-            "line": 3
-          },
-          "label": "# The True Root #",
-          "ref_link": "#the-true-root",
-          "title": "The True Root",
-          "type": "doculisp-title"
-        },
-        {
-          "bulletStyle": "labeled",
-          "documentOrder": {
-            "char": 10,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "./_main.dlisp",
-            "line": 9
-          },
-          "label": false,
-          "type": "doculisp-toc"
-        },
-        {
-          "documentOrder": {
-            "char": 2,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "./_main.dlisp",
-            "line": 9
-          },
-          "type": "doculisp-content"
-        }
-      ],
-      "documentOrder": {
-        "char": 1,
+    "./childDoc.md": {
+      "success": true,
+      "value": "\n<!--\n(dl\n    (section-meta\n        (title The Child to Bare)\n        (include\n            (Chip ./grandchild.md)\n        )\n    )\n)\n-->\nhello from the child\n\n<!-- (dl (content)) -->\n"
+    },
+    "./grandchild.md": {
+      "success": true,
+      "value": "\n<!--\n(dl\n    (section-meta\n        (title The GRoot of all Docs)\n    )\n)\n-->\n\nHello from the grand child\n"
+    }
+  },
+  "999_result": {
+    "success": true,
+    "value": {
+      "projectLocation": {
         "documentDepth": 1,
         "documentIndex": 1,
-        "documentPath": "./_main.dlisp",
-        "line": 1
+        "documentPath": "./_main.dlisp"
       },
-      "include": [
-        {
-          "document": {
-            "doculisp": [
-              {
-                "documentOrder": {
-                  "char": 10,
-                  "documentDepth": 2,
-                  "documentIndex": 1,
-                  "documentPath": "./childDoc.md",
-                  "line": 4
-                },
-                "label": "## The Child to Bare ##",
-                "ref_link": "#the-child-to-bare",
-                "title": "The Child to Bare",
-                "type": "doculisp-title"
-              },
-              {
-                "documentOrder": {
-                  "char": 1,
-                  "documentDepth": 2,
-                  "documentIndex": 1,
-                  "documentPath": "./childDoc.md",
-                  "line": 12
-                },
-                "type": "doculisp-write",
-                "value": "hello from the child"
-              },
-              {
-                "documentOrder": {
-                  "char": 7,
-                  "documentDepth": 2,
-                  "documentIndex": 1,
-                  "documentPath": "./childDoc.md",
-                  "line": 14
-                },
-                "type": "doculisp-content"
-              }
-            ],
+      "section": {
+        "doculisp": [
+          {
             "documentOrder": {
-              "char": 1,
-              "documentDepth": 2,
+              "char": 6,
+              "documentDepth": 1,
               "documentIndex": 1,
-              "documentPath": "./childDoc.md",
-              "line": 1
+              "documentPath": "./_main.dlisp",
+              "line": 3
             },
-            "include": [
-              {
-                "document": {
-                  "doculisp": [
-                    {
-                      "documentOrder": {
-                        "char": 10,
-                        "documentDepth": 3,
-                        "documentIndex": 1,
-                        "documentPath": "./grandchild.md",
-                        "line": 4
-                      },
-                      "label": "### The GRoot of all Docs ###",
-                      "ref_link": "#the-groot-of-all-docs",
-                      "title": "The GRoot of all Docs",
-                      "type": "doculisp-title"
-                    },
-                    {
-                      "documentOrder": {
-                        "char": 1,
-                        "documentDepth": 3,
-                        "documentIndex": 1,
-                        "documentPath": "./grandchild.md",
-                        "line": 10
-                      },
-                      "type": "doculisp-write",
-                      "value": "Hello from the grand child"
-                    }
-                  ],
+            "label": "# The True Root #",
+            "ref_link": "#the-true-root",
+            "title": "The True Root",
+            "type": "doculisp-title"
+          },
+          {
+            "bulletStyle": "labeled",
+            "documentOrder": {
+              "char": 10,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "./_main.dlisp",
+              "line": 9
+            },
+            "label": false,
+            "type": "doculisp-toc"
+          },
+          {
+            "documentOrder": {
+              "char": 2,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "./_main.dlisp",
+              "line": 9
+            },
+            "type": "doculisp-content"
+          }
+        ],
+        "documentOrder": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./_main.dlisp",
+          "line": 1
+        },
+        "include": [
+          {
+            "document": {
+              "doculisp": [
+                {
+                  "documentOrder": {
+                    "char": 10,
+                    "documentDepth": 2,
+                    "documentIndex": 1,
+                    "documentPath": "./childDoc.md",
+                    "line": 5
+                  },
+                  "label": "## The Child to Bare ##",
+                  "ref_link": "#the-child-to-bare",
+                  "title": "The Child to Bare",
+                  "type": "doculisp-title"
+                },
+                {
                   "documentOrder": {
                     "char": 1,
-                    "documentDepth": 3,
+                    "documentDepth": 2,
                     "documentIndex": 1,
-                    "documentPath": "./grandchild.md",
-                    "line": 1
+                    "documentPath": "./childDoc.md",
+                    "line": 12
                   },
-                  "include": [],
-                  "type": "doculisp-section"
+                  "type": "doculisp-write",
+                  "value": "hello from the child"
                 },
-                "documentOrder": {
-                  "char": 14,
-                  "documentDepth": 2,
-                  "documentIndex": 1,
-                  "documentPath": "./childDoc.md",
-                  "line": 6
-                },
-                "path": "./grandchild.md",
-                "sectionLabel": "Chip",
-                "type": "doculisp-load"
-              }
-            ],
-            "type": "doculisp-section"
-          },
-          "documentOrder": {
-            "char": 10,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "./_main.dlisp",
-            "line": 5
-          },
-          "path": "./childDoc.md",
-          "sectionLabel": "Block",
-          "type": "doculisp-load"
-        }
-      ],
-      "type": "doculisp-section"
-    },
-    "type": "doculisp-root"
+                {
+                  "documentOrder": {
+                    "char": 11,
+                    "documentDepth": 2,
+                    "documentIndex": 1,
+                    "documentPath": "./childDoc.md",
+                    "line": 14
+                  },
+                  "type": "doculisp-content"
+                }
+              ],
+              "documentOrder": {
+                "char": 1,
+                "documentDepth": 2,
+                "documentIndex": 1,
+                "documentPath": "./childDoc.md",
+                "line": 1
+              },
+              "include": [
+                {
+                  "document": {
+                    "doculisp": [
+                      {
+                        "documentOrder": {
+                          "char": 10,
+                          "documentDepth": 3,
+                          "documentIndex": 1,
+                          "documentPath": "./grandchild.md",
+                          "line": 5
+                        },
+                        "label": "### The GRoot of all Docs ###",
+                        "ref_link": "#the-groot-of-all-docs",
+                        "title": "The GRoot of all Docs",
+                        "type": "doculisp-title"
+                      },
+                      {
+                        "documentOrder": {
+                          "char": 1,
+                          "documentDepth": 3,
+                          "documentIndex": 1,
+                          "documentPath": "./grandchild.md",
+                          "line": 10
+                        },
+                        "type": "doculisp-write",
+                        "value": "Hello from the grand child"
+                      }
+                    ],
+                    "documentOrder": {
+                      "char": 1,
+                      "documentDepth": 3,
+                      "documentIndex": 1,
+                      "documentPath": "./grandchild.md",
+                      "line": 1
+                    },
+                    "include": [],
+                    "type": "doculisp-section"
+                  },
+                  "documentOrder": {
+                    "char": 14,
+                    "documentDepth": 2,
+                    "documentIndex": 1,
+                    "documentPath": "./childDoc.md",
+                    "line": 7
+                  },
+                  "path": "./grandchild.md",
+                  "sectionLabel": "Chip",
+                  "type": "doculisp-load"
+                }
+              ],
+              "type": "doculisp-section"
+            },
+            "documentOrder": {
+              "char": 10,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "./_main.dlisp",
+              "line": 5
+            },
+            "path": "./childDoc.md",
+            "sectionLabel": "Block",
+            "type": "doculisp-load"
+          }
+        ],
+        "type": "doculisp-section"
+      },
+      "type": "doculisp-root"
+    }
   }
 }

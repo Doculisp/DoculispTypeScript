@@ -1,14 +1,17 @@
 {
-  "documentPath": "./itty.dlisp",
-  "end": {
-    "char": 12,
-    "line": 9
-  },
-  "message": "The content block at './itty.dlisp' Line: 9, Char: 2 has unknown command '#' at Line: 9, Char: 11.",
-  "start": {
-    "char": 11,
-    "line": 9
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title Sing Me a Song)\n    (include\n        (Chapter ./songs.dlisp)\n    )\n)\n\n(content (# Incorrect))\n",
+  "999_result": {
+    "documentPath": "./itty.dlisp",
+    "end": {
+      "char": 12,
+      "line": 9
+    },
+    "message": "The content block at './itty.dlisp' Line: 9, Char: 2 has unknown command '#' at Line: 9, Char: 11.",
+    "start": {
+      "char": 11,
+      "line": 9
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

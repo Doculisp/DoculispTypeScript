@@ -1,14 +1,17 @@
 {
-  "documentPath": "C:/examples/bad.md",
-  "end": {
-    "char": 2,
-    "line": 1
-  },
-  "message": "Open HTML Comment at 'C:/examples/bad.md' Line: 1, Char: 1 but does not close.",
-  "start": {
-    "char": 1,
-    "line": 1
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "<!--\n    Hello\n    World\n    Boom\n    ",
+  "999_result": {
+    "documentPath": "C:/examples/bad.md",
+    "end": {
+      "char": 2,
+      "line": 2
+    },
+    "message": "Open HTML Comment at 'C:/examples/bad.md' Line: 1, Char: 1 but does not close.",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

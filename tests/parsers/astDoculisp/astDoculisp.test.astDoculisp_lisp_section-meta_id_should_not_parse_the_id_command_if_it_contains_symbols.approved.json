@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.md",
-  "end": {
-    "char": 13,
-    "line": 4
-  },
-  "message": "Symbol(s) in section id my-✨-id' at 'main.md' Line: 4, Char: 6\n'✨' @ id char 4",
-  "start": {
-    "char": 6,
-    "line": 4
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n<!-- (dl\n(section-meta\n    (title The use of IDs)\n    (id my-✨-id)\n)\n) -->\n",
+  "999_result": {
+    "documentPath": "main.md",
+    "end": {
+      "char": 13,
+      "line": 5
+    },
+    "message": "Symbol(s) in section id my-✨-id' at 'main.md' Line: 5, Char: 6\n'✨' @ id char 4",
+    "start": {
+      "char": 6,
+      "line": 5
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

@@ -1,0 +1,1 @@
+Get-ChildItem -Path . -Recurse -File -Filter '*.received.*' | Remove-Item -Force

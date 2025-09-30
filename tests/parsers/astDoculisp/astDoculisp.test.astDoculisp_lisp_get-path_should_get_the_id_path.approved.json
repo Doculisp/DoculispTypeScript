@@ -1,70 +1,97 @@
 {
-  "success": true,
-  "value": {
-    "projectLocation": {
-      "documentDepth": 2,
-      "documentIndex": 7,
-      "documentPath": "../main.md"
-    },
-    "section": {
-      "doculisp": [
-        {
-          "documentOrder": {
-            "char": 6,
-            "documentDepth": 2,
-            "documentIndex": 7,
-            "documentPath": "../main.md",
-            "line": 2
-          },
-          "label": "## Using Dynamic Path ##",
-          "ref_link": "#using-dynamic-path",
-          "title": "Using Dynamic Path",
-          "type": "doculisp-title"
+  "001_given_": "<!-- (dl\n(section-meta\n    (title Using Dynamic Path)\n)\n) -->\n\n[back](<!-- (dl (get-path readme)) -->)\n",
+  "002_given_": {
+    "variableTable": {
+      " destination": {
+        "type": "variable-path",
+        "value": "./contrib.md"
+      },
+      " source": {
+        "type": "variable-path",
+        "value": "./src/contrib/_main.md"
+      },
+      "readme": {
+        "headerLinkText": false,
+        "source": {
+          "char": 5,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./project.dlproj",
+          "line": 3
         },
-        {
-          "documentOrder": {
-            "char": 1,
-            "documentDepth": 2,
-            "documentIndex": 7,
-            "documentPath": "../main.md",
-            "line": 7
-          },
-          "type": "doculisp-write",
-          "value": "[back]("
-        },
-        {
-          "documentOrder": {
-            "char": 14,
-            "documentDepth": 2,
-            "documentIndex": 7,
-            "documentPath": "../main.md",
-            "line": 7
-          },
-          "id": "readme",
-          "type": "doculisp-path-id"
-        },
-        {
-          "documentOrder": {
-            "char": 39,
-            "documentDepth": 2,
-            "documentIndex": 7,
-            "documentPath": "../main.md",
-            "line": 7
-          },
-          "type": "doculisp-write",
-          "value": ")"
-        }
-      ],
-      "documentOrder": {
-        "char": 1,
+        "type": "variable-id",
+        "value": "./readme.md"
+      }
+    }
+  },
+  "999_result": {
+    "success": true,
+    "value": {
+      "projectLocation": {
         "documentDepth": 2,
         "documentIndex": 7,
-        "documentPath": "../main.md",
-        "line": 1
+        "documentPath": "../main.md"
       },
-      "include": [],
-      "type": "doculisp-section"
-    },
-    "type": "doculisp-root"
+      "section": {
+        "doculisp": [
+          {
+            "documentOrder": {
+              "char": 6,
+              "documentDepth": 2,
+              "documentIndex": 7,
+              "documentPath": "../main.md",
+              "line": 3
+            },
+            "label": "## Using Dynamic Path ##",
+            "ref_link": "#using-dynamic-path",
+            "title": "Using Dynamic Path",
+            "type": "doculisp-title"
+          },
+          {
+            "documentOrder": {
+              "char": 1,
+              "documentDepth": 2,
+              "documentIndex": 7,
+              "documentPath": "../main.md",
+              "line": 7
+            },
+            "type": "doculisp-write",
+            "value": "[back]("
+          },
+          {
+            "documentOrder": {
+              "char": 18,
+              "documentDepth": 2,
+              "documentIndex": 7,
+              "documentPath": "../main.md",
+              "line": 7
+            },
+            "id": "readme",
+            "type": "doculisp-path-id"
+          },
+          {
+            "documentOrder": {
+              "char": 39,
+              "documentDepth": 2,
+              "documentIndex": 7,
+              "documentPath": "../main.md",
+              "line": 7
+            },
+            "type": "doculisp-write",
+            "value": ")"
+          }
+        ],
+        "documentOrder": {
+          "char": 1,
+          "documentDepth": 2,
+          "documentIndex": 7,
+          "documentPath": "../main.md",
+          "line": 1
+        },
+        "include": [],
+        "type": "doculisp-section"
+      },
+      "type": "doculisp-root"
+    }
   }
 }

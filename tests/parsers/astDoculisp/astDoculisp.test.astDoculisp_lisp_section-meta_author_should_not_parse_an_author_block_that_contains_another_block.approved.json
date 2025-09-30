@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.dlisp",
-  "end": {
-    "char": 15,
-    "line": 5
-  },
-  "message": "Author block at 'main.dlisp' Line: 4, Char: 6 contains unknown child block of 'title' at Line: 5, Char: 10.",
-  "start": {
-    "char": 6,
-    "line": 4
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title My Cool Document)\n    (author\n        (title MR.)\n        (name Jason Kerney)\n        (github jason-kerney)\n    )\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 15,
+      "line": 5
+    },
+    "message": "Author block at 'main.dlisp' Line: 4, Char: 6 contains unknown child block of 'title' at Line: 5, Char: 10.",
+    "start": {
+      "char": 10,
+      "line": 5
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

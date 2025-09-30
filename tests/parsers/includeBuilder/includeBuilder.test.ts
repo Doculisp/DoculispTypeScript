@@ -3,7 +3,7 @@ import { IContainer, IDictionary, ITestableContainer } from "../../../src/types/
 import { ICoordinates, IFailCode, IFailGeneral, IProjectLocation, ISuccess, IUtil, Result, ResultGeneral } from "../../../src/types/types.general";
 import { IDoculisp, IEmptyDoculisp } from "../../../src/types/types.astDoculisp";
 import { IIncludeBuilder } from "../../../src/types/types.includeBuilder";
-import { getVerifier } from "../../tools";
+import { getVerifier, verifyWithGiven } from "../../tools";
 import { configure } from "approvals/lib/config";
 import { containerPromise } from "../../../src/moduleLoader";
 import { IDirectoryHandler, IFileLoader } from "../../../src/types/types.fileHandler";
@@ -20,7 +20,19 @@ describe('includeBuilder', () => {
     let failGeneral: (message: string, documentPath?: IPath) => IFailGeneral = undefined as any;
     let failCode: (message: string, location: { documentPath: IPath, start: ICoordinates, end: ICoordinates }) => IFailCode = undefined as any;
     let addPathResult: (filePath: string, result: ResultGeneral<string>) => void = undefined as any;
+    let pathToResult: IDictionary<ResultGeneral<string>> = undefined as any;
     let variableSaver: IVariableTestable = undefined as any;
+
+    function getPathResultsAsArray() {
+        const results: any[] = [];
+        for(const key in pathToResult) {
+            let result = {} as any;
+            result[key] = pathToResult[key];
+            results.push(result);
+        }
+
+        return results;
+    }
 
     beforeAll(() => {
         verifyAsJson = getVerifier(configure);
@@ -37,7 +49,6 @@ describe('includeBuilder', () => {
         failGeneral = util.generalFailure;
         failCode = util.codeFailure;
 
-        let pathToResult: IDictionary<ResultGeneral<string>> = undefined as any;
         pathToResult = null as any;
         pathToResult = {};
         addPathResult = (filePath: string, result: ResultGeneral<string>): void => {
@@ -129,7 +140,14 @@ Hello world!
 (content (toc numbered-labeled))
 `;
 
-            verifyAsJson(toExternalResult(document, buildProjectLocation('C:/_main.dlisp', 1, 1)));
+            const mainPath = 'C:/_main.dlisp';
+            const result = toExternalResult(document, buildProjectLocation(mainPath, 1, 1));
+            const pathToResultsArray = getPathResultsAsArray();
+            let main = { } as any;
+            main[mainPath] = document;
+            verifyWithGiven(verifyAsJson, result, false, main, ...pathToResultsArray);
+
+            verifyWithGiven(verifyAsJson, result, false, main, ...pathToResultsArray);
         });
 
         it('should not an included document not a markdown or dlisp', () =>{
@@ -149,7 +167,13 @@ Hello world!
 (content (toc numbered-labeled))
 `;
 
-            verifyAsJson(toExternalResult(document, buildProjectLocation('C:/_main.dlisp', 1, 1)));
+            const mainPath = 'C:/_main.dlisp';
+            const result = toExternalResult(document, buildProjectLocation(mainPath, 1, 1));
+            const main = { } as any;
+            main[mainPath] = document;
+            const pathToResultsArray = getPathResultsAsArray();
+
+            verifyWithGiven(verifyAsJson, result, false, main, ...pathToResultsArray);
         });
 
         it('should parse two sub documents', () => {
@@ -193,8 +217,13 @@ Sub document B text.
 (content)
 `;
 
-            const result = toExternalResult(doc, buildProjectLocation('_main.dlisp', 1, 1));
-            verifyAsJson(result);
+            const mainPath = '_main.dlisp';
+            const result = toExternalResult(doc, buildProjectLocation(mainPath, 1, 1));
+
+            const pathToResultsArray = getPathResultsAsArray();
+            let main = { } as any;
+            main[`./${mainPath}`] = doc;
+            verifyWithGiven(verifyAsJson, result, false, main, ...pathToResultsArray);
         });
 
         it('should parse a sub document containing a sub document', () => {
@@ -245,15 +274,20 @@ Hello World!
 (content)
 `;
 
-            const result = toExternalResult(doc, buildProjectLocation('_main.md', 1, 1));
-            verifyAsJson(result);
+            const mainPath = '_main.md';
+            const result = toExternalResult(doc, buildProjectLocation(mainPath, 1, 1));
+            const pathToResultsArray = getPathResultsAsArray();
+            let main = { } as any;
+            main[`./${mainPath}`] = doc;
+            verifyWithGiven(verifyAsJson, result, false, main, ...pathToResultsArray);
         });
     });
 
     describe('parse', () => {
         let toResult: (filePath: string) => Result<IDoculisp | IEmptyDoculisp> = undefined as any
 
-        beforeEach(() => {
+        beforeEach(async () => {
+            container = await containerPromise;
             const builder = testable.include.resultBuilder(container, setup);
             toResult = (filePath) => builder(buildPath(filePath));
         });
@@ -329,7 +363,7 @@ hello from the child
 
             const result = toResult(docPath);
 
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, pathToResult);
         });
     });
 });

@@ -1,14 +1,17 @@
 {
-  "documentPath": "C:/examples/badInline.md",
-  "end": {
-    "char": 12,
-    "line": 1
-  },
-  "message": "Inline code block at 'C:/examples/badInline.md' Line: 1, Char: 1 contains a new line before closing.",
-  "start": {
-    "char": 1,
-    "line": 1
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "`let a = 0;\n    let b = a;\n    `",
+  "999_result": {
+    "documentPath": "C:/examples/badInline.md",
+    "end": {
+      "char": 12,
+      "line": 1
+    },
+    "message": "Inline code block at 'C:/examples/badInline.md' Line: 1, Char: 1 contains a new line before closing.",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.dlisp",
-  "end": {
-    "char": 1,
-    "line": 8
-  },
-  "message": "The section-meta block at 'main.dlisp' Line: 0, Char: 0 has more then one subtitle.",
-  "start": {
-    "char": 0,
-    "line": 0
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (subtitle This is information)\n    (title My cool title)\n    (subtitle A journey in lisp)\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 8,
+      "line": 3
+    },
+    "message": "The section-meta block at 'main.dlisp' Line: 2, Char: 2 has more then one subtitle.",
+    "start": {
+      "char": 2,
+      "line": 2
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

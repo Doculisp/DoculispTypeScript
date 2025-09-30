@@ -1,14 +1,17 @@
 {
-  "documentPath": "./two/sections.dlisp",
-  "end": {
-    "char": 11,
-    "line": 7
-  },
-  "message": "The section-meta block at './two/sections.dlisp' Line: 6, Char: 2 is a duplicate block. Only one section-meta block allowed per file.",
-  "start": {
-    "char": 2,
-    "line": 6
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title My Section)\n)\n\n(section-meta\n    (title A tale of two sections)\n)\n",
+  "999_result": {
+    "documentPath": "./two/sections.dlisp",
+    "end": {
+      "char": 11,
+      "line": 7
+    },
+    "message": "The section-meta block at './two/sections.dlisp' Line: 6, Char: 2 is a duplicate block. Only one section-meta block allowed per file.",
+    "start": {
+      "char": 2,
+      "line": 6
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

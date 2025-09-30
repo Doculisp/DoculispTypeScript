@@ -1,23 +1,26 @@
 {
-  "success": true,
-  "value": {
-    "parts": [
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 1,
-          "documentIndex": 8,
-          "documentPath": "C:/my_document.md",
-          "line": 2
-        },
-        "text": " blow fish",
-        "type": "text"
+  "001_given_": "   \r\n blow fish",
+  "999_result": {
+    "success": true,
+    "value": {
+      "parts": [
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 1,
+            "documentIndex": 8,
+            "documentPath": "C:/my_document.md",
+            "line": 2
+          },
+          "text": " blow fish",
+          "type": "text"
+        }
+      ],
+      "projectLocation": {
+        "documentDepth": 1,
+        "documentIndex": 8,
+        "documentPath": "C:/my_document.md"
       }
-    ],
-    "projectLocation": {
-      "documentDepth": 1,
-      "documentIndex": 8,
-      "documentPath": "C:/my_document.md"
     }
   }
 }

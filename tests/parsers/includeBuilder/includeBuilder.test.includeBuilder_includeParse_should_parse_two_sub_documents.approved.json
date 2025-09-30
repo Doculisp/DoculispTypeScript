@@ -1,146 +1,163 @@
 {
-  "success": true,
-  "value": {
-    "projectLocation": {
-      "documentDepth": 1,
-      "documentIndex": 1,
-      "documentPath": "_main.dlisp"
-    },
-    "section": {
-      "doculisp": [
-        {
-          "documentOrder": {
-            "char": 6,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "_main.dlisp",
-            "line": 3
-          },
-          "label": "# Main Multiple Sub Documents #",
-          "ref_link": "#main-multiple-sub-documents",
-          "title": "Main Multiple Sub Documents",
-          "type": "doculisp-title"
-        },
-        {
-          "documentOrder": {
-            "char": 2,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "_main.dlisp",
-            "line": 10
-          },
-          "type": "doculisp-content"
-        }
-      ],
-      "documentOrder": {
-        "char": 1,
+  "001_given_": {
+    "./_main.dlisp": "\n(section-meta\n    (title Main Multiple Sub Documents)\n    (include\n        (Section A:/subA.md)\n        (Section B:/subB.md)\n    )\n)\n\n(content)\n"
+  },
+  "002_given_": {
+    "A:/subA.md": {
+      "success": true,
+      "value": "<!--\n(dl\n    (section-meta\n        (title Sub A)\n    )\n)\n-->\n\nSub document A text.\n"
+    }
+  },
+  "003_given_": {
+    "B:/subB.md": {
+      "success": true,
+      "value": "<!--\n(dl\n    (section-meta\n        (title Sub B)\n    )\n)\n-->\n\nSub document B text.\n"
+    }
+  },
+  "999_result": {
+    "success": true,
+    "value": {
+      "projectLocation": {
         "documentDepth": 1,
         "documentIndex": 1,
-        "documentPath": "_main.dlisp",
-        "line": 1
+        "documentPath": "_main.dlisp"
       },
-      "include": [
-        {
-          "document": {
-            "doculisp": [
-              {
-                "documentOrder": {
-                  "char": 10,
-                  "documentDepth": 2,
-                  "documentIndex": 1,
-                  "documentPath": "A:/subA.md",
-                  "line": 3
-                },
-                "label": "## Sub A ##",
-                "ref_link": "#sub-a",
-                "title": "Sub A",
-                "type": "doculisp-title"
-              },
-              {
-                "documentOrder": {
-                  "char": 1,
-                  "documentDepth": 2,
-                  "documentIndex": 1,
-                  "documentPath": "A:/subA.md",
-                  "line": 9
-                },
-                "type": "doculisp-write",
-                "value": "Sub document A text."
-              }
-            ],
+      "section": {
+        "doculisp": [
+          {
             "documentOrder": {
-              "char": 1,
-              "documentDepth": 2,
+              "char": 6,
+              "documentDepth": 1,
               "documentIndex": 1,
-              "documentPath": "A:/subA.md",
-              "line": 1
+              "documentPath": "_main.dlisp",
+              "line": 3
             },
-            "include": [],
-            "type": "doculisp-section"
+            "label": "# Main Multiple Sub Documents #",
+            "ref_link": "#main-multiple-sub-documents",
+            "title": "Main Multiple Sub Documents",
+            "type": "doculisp-title"
           },
-          "documentOrder": {
-            "char": 10,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "_main.dlisp",
-            "line": 5
-          },
-          "path": "A:/subA.md",
-          "sectionLabel": "Section",
-          "type": "doculisp-load"
-        },
-        {
-          "document": {
-            "doculisp": [
-              {
-                "documentOrder": {
-                  "char": 10,
-                  "documentDepth": 2,
-                  "documentIndex": 2,
-                  "documentPath": "B:/subB.md",
-                  "line": 3
-                },
-                "label": "## Sub B ##",
-                "ref_link": "#sub-b",
-                "title": "Sub B",
-                "type": "doculisp-title"
-              },
-              {
-                "documentOrder": {
-                  "char": 1,
-                  "documentDepth": 2,
-                  "documentIndex": 2,
-                  "documentPath": "B:/subB.md",
-                  "line": 9
-                },
-                "type": "doculisp-write",
-                "value": "Sub document B text."
-              }
-            ],
+          {
             "documentOrder": {
-              "char": 1,
-              "documentDepth": 2,
-              "documentIndex": 2,
-              "documentPath": "B:/subB.md",
-              "line": 1
+              "char": 2,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "_main.dlisp",
+              "line": 10
             },
-            "include": [],
-            "type": "doculisp-section"
+            "type": "doculisp-content"
+          }
+        ],
+        "documentOrder": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "_main.dlisp",
+          "line": 1
+        },
+        "include": [
+          {
+            "document": {
+              "doculisp": [
+                {
+                  "documentOrder": {
+                    "char": 10,
+                    "documentDepth": 2,
+                    "documentIndex": 1,
+                    "documentPath": "A:/subA.md",
+                    "line": 4
+                  },
+                  "label": "## Sub A ##",
+                  "ref_link": "#sub-a",
+                  "title": "Sub A",
+                  "type": "doculisp-title"
+                },
+                {
+                  "documentOrder": {
+                    "char": 1,
+                    "documentDepth": 2,
+                    "documentIndex": 1,
+                    "documentPath": "A:/subA.md",
+                    "line": 9
+                  },
+                  "type": "doculisp-write",
+                  "value": "Sub document A text."
+                }
+              ],
+              "documentOrder": {
+                "char": 1,
+                "documentDepth": 2,
+                "documentIndex": 1,
+                "documentPath": "A:/subA.md",
+                "line": 1
+              },
+              "include": [],
+              "type": "doculisp-section"
+            },
+            "documentOrder": {
+              "char": 10,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "_main.dlisp",
+              "line": 5
+            },
+            "path": "A:/subA.md",
+            "sectionLabel": "Section",
+            "type": "doculisp-load"
           },
-          "documentOrder": {
-            "char": 10,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "_main.dlisp",
-            "line": 6
-          },
-          "path": "B:/subB.md",
-          "sectionLabel": "Section",
-          "type": "doculisp-load"
-        }
-      ],
-      "type": "doculisp-section"
-    },
-    "type": "doculisp-root"
+          {
+            "document": {
+              "doculisp": [
+                {
+                  "documentOrder": {
+                    "char": 10,
+                    "documentDepth": 2,
+                    "documentIndex": 2,
+                    "documentPath": "B:/subB.md",
+                    "line": 4
+                  },
+                  "label": "## Sub B ##",
+                  "ref_link": "#sub-b",
+                  "title": "Sub B",
+                  "type": "doculisp-title"
+                },
+                {
+                  "documentOrder": {
+                    "char": 1,
+                    "documentDepth": 2,
+                    "documentIndex": 2,
+                    "documentPath": "B:/subB.md",
+                    "line": 9
+                  },
+                  "type": "doculisp-write",
+                  "value": "Sub document B text."
+                }
+              ],
+              "documentOrder": {
+                "char": 1,
+                "documentDepth": 2,
+                "documentIndex": 2,
+                "documentPath": "B:/subB.md",
+                "line": 1
+              },
+              "include": [],
+              "type": "doculisp-section"
+            },
+            "documentOrder": {
+              "char": 10,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "_main.dlisp",
+              "line": 6
+            },
+            "path": "B:/subB.md",
+            "sectionLabel": "Section",
+            "type": "doculisp-load"
+          }
+        ],
+        "type": "doculisp-section"
+      },
+      "type": "doculisp-root"
+    }
   }
 }

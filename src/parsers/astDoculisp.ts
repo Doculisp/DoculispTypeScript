@@ -63,7 +63,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
     
             if(ast.type !== 'ast-command') {
-                const astLines = ast.value.split(/|\r\n|/);
+                const astLines = ast.value.split(/\r\n|\r|\n/);
                 const endLine = ast.location.line + astLines.length;
                 const endChar = astLines.at(-1)?.length || 1;
 
@@ -74,31 +74,25 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
             if(0 < id.length) {
                 let errorMsg = getSymbolErrorMessage('heading', id, current, ast, textHelper);
-                const idLines = id.split(/|\r\n|/);
+                const idStartChar = ast.location.char;
+                const idEndChar = idStartChar + id.length;
+                
                 if(errorMsg) {
-                    const endLine = ast.location.line + idLines.length;
-                    const endChar = idLines.at(-1)?.length || 1;
-
-                    return util.codeFailure(errorMsg, { documentPath: current.documentPath, start: { line: ast.location.line, char: ast.location.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(errorMsg, { documentPath: current.documentPath, start: { line: ast.location.line, char: idStartChar }, end: { line:  ast.location.line, char: idEndChar } });
                 }
 
                 if(!textHelper.isLowercase(id)) {
-                    const endLine = ast.location.line + idLines.length ;
-                    const endChar = idLines.at(-1)?.length || 1;
-
-                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: ast.location.line, char: ast.location.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${idStartChar} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: ast.location.line, char: idStartChar }, end: { line:  ast.location.line, char: idEndChar } });
                 }
 
                 if(variableTable.hasKey(id)) {
                     let orig = variableTable.getValue(id);
                     let msg = '';
-                    let endLine = ast.location.line + idLines.length ;
-                    let endChar = idLines.at(-1)?.length || 1;
 
                     if(orig && orig.type === 'variable-id') {
                         msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
                     }
-                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${ast.location.char} has already been used.${msg}`, { documentPath: current.documentPath, start: { line: ast.location.line, char: ast.location.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Heading id '${id}' at '${current.documentPath.fullName}' Line: ${ast.location.line}, Char: ${idStartChar} has already been used.${msg}`, { documentPath: current.documentPath, start: { line: ast.location.line, char: idStartChar }, end: { line: ast.location.line, char: idEndChar } });
                 }
 
                 const destinationPath = (
@@ -165,7 +159,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                     const next = title.subStructure[0] as AtomAst;
                     const endChar = next.location.char + next.value.length;
 
-                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: current.documentPath, start: { line: title.location.line, char: title.location.char }, end: { line: next.location.line, char: endChar } });
+                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: next.location.line, char: endChar } });
                 }
     
                 let linkText = getLinkText(title, refLink);
@@ -196,7 +190,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < subtitles.length) {
-                    const lastSubtitleLines = (subtitles.at(-1) as AtomAst).value.split(/|\r\n|/);
+                    const lastSubtitleLines = (subtitles.at(-1) as AtomAst).value.split(/\r\n|\r|\n/);
                     const endline = location.line + lastSubtitleLines.length ;
                     const endChar = lastSubtitleLines.at(-1)?.length || 1;
 
@@ -213,7 +207,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                 if(subtitle.type === 'ast-container') {
                     const next = subtitle.subStructure[0] as AtomAst;
-                    const nextLines = next.value.split(/|\r\n|/);
+                    const nextLines = next.value.split(/\r\n|\r|\n/);
                     const endLine = next.location.line + nextLines.length ;
                     const endChar = nextLines.at(-1)?.length || 1;
 
@@ -247,7 +241,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                 if(refLink.type === 'ast-container') {
                     const next = refLink.subStructure[0] as AtomAst;
-                    const nextLines = next.value.split(/|\r\n|/);
+                    const nextLines = next.value.split(/\r\n|\r|\n/);
                     const endLine = next.location.line + nextLines.length ;
                     const endChar = nextLines.at(-1)?.length || 1;
 
@@ -328,7 +322,7 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                         const child = author.subStructure[0] as AtomAst;
                         const endChar = child.location.char + child.value.length;
 
-                        return util.codeFailure(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, { documentPath: location.documentPath, start: { line: author.location.line, char: author.location.char }, end: { line: child.location.line, char: endChar } });
+                        return util.codeFailure(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} contains unknown child block of '${child.value}' at Line: ${child.location.line}, Char: ${child.location.char}.`, { documentPath: location.documentPath, start: { line: child.location.line, char: child.location.char }, end: { line: child.location.line, char: endChar } });
                     }
 
                     variableTable.addValueToStringList('author', { value: author.parameter.value, type: 'variable-string' });
@@ -444,26 +438,26 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
             if(0 < badSections.length) {
                 const next = badSections[0] as AtomAst;
-                const sectionLines = badSections.map(b => b.value.split(/|\r\n|/).length).reduce((a, b) => a + b, 0) - 1;
+                const sectionLines = badSections.map(b => b.value.split(/\r\n|\r|\n/).length).reduce((a, b) => a + b, 0) - 1;
                 const endLine = next.location.line + sectionLines;
                 const endChar = badSections.at(-1)!.location.char + badSections.at(-1)!.value.length;
 
                 return util.codeFailure(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: endLine, char: endChar } });
             }
     
-            const subtitle = parseSubtitle(sectionMeta.subStructure, current, sectionMeta.location.documentDepth + 2);
+            const subtitle = parseSubtitle(sectionMeta.subStructure, sectionMeta.location, sectionMeta.location.documentDepth + 2);
 
             if(!subtitle.success) {
                 return subtitle;
             }
     
-            const refLink = parseRefLink(sectionMeta.subStructure, current);
+            const refLink = parseRefLink(sectionMeta.subStructure, sectionMeta.location);
     
             if(!refLink.success) {
                 return refLink;
             }
 
-            const title = parseTitle(sectionMeta.subStructure, current, refLink.value, subtitle.value);
+            const title = parseTitle(sectionMeta.subStructure, sectionMeta.location, refLink.value, subtitle.value);
     
             if(!title.success) {
                 return title;

@@ -309,7 +309,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(opened) {
                     let [pieces, _leftover] = parsed.value;
                     let lastPiece = pieces[pieces.length ] as DocumentPart;
-                    let lastLines = (lastPiece?.text || '').split(/|\n\r|/);
+                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
                     let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
                     let lastChar = (lastLines?.at(-1)?.length || 1);
 
@@ -419,7 +419,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(opened) {
                     let [pieces, _leftover] = parsed.value;
                     let lastPiece = pieces[pieces.length ] as string;
-                    let lastLines = (lastPiece?.split(/|\n\r|/) || []);
+                    let lastLines = (lastPiece?.split(/\r\n|\r|\n/) || []);
                     let lastLine = starting.line + lastLines.length ;
                     let lastChar = starting.char + (lastLines.at(-1)?.length || 1);
 
@@ -453,7 +453,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
-                        const inputLines = input.split(/|\n\r|/);
+                        const inputLines = input.split(/\r\n|\r|\n/);
                         let endLine = inputLines.length  + current.line;
                         let endChar = (inputLines.at(-1)?.length || 1) + current.char;
                         return util.codeFailure(`Doculisp Block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} contains an embedded doculisp block at Line: ${current.line}, Char: ${current.char}.`, { documentPath: projectLocation.documentPath, start: { line: current.line, char: current.char }, end: { line: endLine, char: endChar } });
@@ -557,7 +557,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(0 < depth) {
                     let [pieces, _leftover] = parsed.value;
                     let lastPiece = pieces[pieces.length ] as DocumentPart;
-                    let lastLines = (lastPiece?.text || '').split(/|\n\r|/);
+                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
                     let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
                     let lastChar = (lastPiece?.location?.char || 1) + (lastLines.at(-1)?.length || 1);
 
@@ -580,10 +580,19 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                     }));
                 }
     
+                // Find the first non-whitespace part's location
+                let lowestLocation = leftover.location;
+                for (const part of parts) {
+                    if (part.text.trim() !== '') { // Find first non-whitespace part
+                        lowestLocation = part.location;
+                        break;
+                    }
+                }
+
                 let result = parts.map(p => p.text).join('').trim();
                 return util.ok(internals.buildStepParse(step, {
                     type: 'parse result',
-                    subResult: { location: starting, type: 'lisp', text: result },
+                    subResult: { location: lowestLocation, type: 'lisp', text: result },
                 }));
             }
             return parsed;
@@ -662,7 +671,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 if(opened) {
                     let [pieces, _leftover] = parsed.value;
                     let lastPiece = pieces[pieces.length ] as DocumentPart;
-                    let lastLines = (lastPiece?.text || '').split(/|\n\r|/);
+                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
                     let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
                     let lastChar = (lastPiece?.location?.char || 1) + (lastLines.at(-1)?.length || 1);
                     
@@ -910,7 +919,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
             if(isDoculispFile && 0 < leftover.remaining.length) {
                 const errorItem = leftover.remaining;
                 const errorStart = leftover.location.increaseChar(-1);
-                const errorLines = errorItem.split(/|\n\r|/);
+                const errorLines = errorItem.split(/\r\n|\r|\n/);
                 const endLine = errorStart.line + errorLines.length ;
                 const endChar = errorLines.at(-1)?.length || 1;
                 return util.codeFailure(`Doculisp block at '${errorStart.documentPath.fullName}' Line: 1, Char: 1 has something not contained in parenthesis at Line: ${errorStart.line}, Char: ${errorStart.char}.`, { documentPath, start: { line: errorStart.line, char: errorStart.line }, end: { line: endLine, char: endChar } });

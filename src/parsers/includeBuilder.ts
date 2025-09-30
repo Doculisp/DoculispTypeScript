@@ -62,7 +62,7 @@ function buildAstBuilder(util: IUtil, doculispParser: IDoculispParser, documentP
             }
 
             if(load.path.extension !== '.md' && load.path.extension !== '.dlisp') {
-                const pathLines = load.path.fullName.split(/|\n\r|/);
+                const pathLines = load.path.fullName.split(/\r\n|\r|\n/);
                 const lastLine = load.documentOrder.line + pathLines.length ;
                 const lastChar = pathLines.at(-1)?.length || 1;
 

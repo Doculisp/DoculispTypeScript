@@ -1,14 +1,17 @@
 {
-  "documentPath": "C:/bad/extraDl.dlisp",
-  "end": {
-    "char": 2,
-    "line": 78
-  },
-  "message": "Doculisp Block at 'C:/bad/extraDl.dlisp' Line: 1, Char: 1 contains an embedded doculisp block at Line: 1, Char: 1.",
-  "start": {
-    "char": 1,
-    "line": 1
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "(dl\n(section-meta\n    (title Doculisp)\n)\n\n(content (toc numbered-labeled)))\n",
+  "999_result": {
+    "documentPath": "C:/bad/extraDl.dlisp",
+    "end": {
+      "char": 2,
+      "line": 8
+    },
+    "message": "Doculisp Block at 'C:/bad/extraDl.dlisp' Line: 1, Char: 1 contains an embedded doculisp block at Line: 1, Char: 1.",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

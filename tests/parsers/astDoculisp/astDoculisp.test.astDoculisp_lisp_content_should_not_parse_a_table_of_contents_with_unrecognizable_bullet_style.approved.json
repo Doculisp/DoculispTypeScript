@@ -1,14 +1,17 @@
 {
-  "documentPath": "./itty.dlisp",
-  "end": {
-    "char": 17,
-    "line": 9
-  },
-  "message": "The toc block at './itty.dlisp' Line: 9, Char: 11 has unknown bullet style 'unknown'.",
-  "start": {
-    "char": 11,
-    "line": 9
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title Sing Me a Song)\n    (include\n        (Chapter ./sleep.md)\n    )\n)\n\n(content (toc unknown))\n",
+  "999_result": {
+    "documentPath": "./itty.dlisp",
+    "end": {
+      "char": 17,
+      "line": 9
+    },
+    "message": "The toc block at './itty.dlisp' Line: 9, Char: 11 has unknown bullet style 'unknown'.",
+    "start": {
+      "char": 11,
+      "line": 9
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

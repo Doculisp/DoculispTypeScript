@@ -1,56 +1,59 @@
 {
-  "success": true,
-  "value": {
-    "parts": [
-      {
-        "location": {
-          "char": 6,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./_main.md",
-          "line": 1
+  "001_given_": "<!-- (dl\n(section-meta\n    (title Using Dynamic Path)\n)\n) -->\n\n[back](<!-- (dl (get-path readme)) -->)\n                ",
+  "999_result": {
+    "success": true,
+    "value": {
+      "parts": [
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "./_main.md",
+            "line": 2
+          },
+          "text": "(section-meta\n    (title Using Dynamic Path)\n)",
+          "type": "lisp"
         },
-        "text": "(section-meta\n    (title Using Dynamic Path)\n)",
-        "type": "lisp"
-      },
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./_main.md",
-          "line": 7
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "./_main.md",
+            "line": 7
+          },
+          "text": "[back](",
+          "type": "text"
         },
-        "text": "[back](",
-        "type": "text"
-      },
-      {
-        "location": {
-          "char": 13,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./_main.md",
-          "line": 7
+        {
+          "location": {
+            "char": 17,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "./_main.md",
+            "line": 7
+          },
+          "text": "(get-path readme)",
+          "type": "lisp"
         },
-        "text": "(get-path readme)",
-        "type": "lisp"
-      },
-      {
-        "location": {
-          "char": 39,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "./_main.md",
-          "line": 7
-        },
-        "text": ")",
-        "type": "text"
+        {
+          "location": {
+            "char": 39,
+            "documentDepth": 2,
+            "documentIndex": 1,
+            "documentPath": "./_main.md",
+            "line": 7
+          },
+          "text": ")",
+          "type": "text"
+        }
+      ],
+      "projectLocation": {
+        "documentDepth": 2,
+        "documentIndex": 1,
+        "documentPath": "./_main.md"
       }
-    ],
-    "projectLocation": {
-      "documentDepth": 2,
-      "documentIndex": 1,
-      "documentPath": "./_main.md"
     }
   }
 }

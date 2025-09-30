@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.dlisp",
-  "end": {
-    "char": 12,
-    "line": 4
-  },
-  "message": "Author block at 'main.dlisp' Line: 4, Char: 6 does not contain the author's name.",
-  "start": {
-    "char": 6,
-    "line": 4
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title My Cool Document)\n    (author)\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 12,
+      "line": 4
+    },
+    "message": "Author block at 'main.dlisp' Line: 4, Char: 6 does not contain the author's name.",
+    "start": {
+      "char": 6,
+      "line": 4
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

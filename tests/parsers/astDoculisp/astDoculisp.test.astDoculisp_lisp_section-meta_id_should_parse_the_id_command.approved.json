@@ -1,38 +1,41 @@
 {
-  "success": true,
-  "value": {
-    "projectLocation": {
-      "documentDepth": 1,
-      "documentIndex": 1,
-      "documentPath": "main.md"
-    },
-    "section": {
-      "doculisp": [
-        {
-          "documentOrder": {
-            "char": 6,
-            "documentDepth": 1,
-            "documentIndex": 1,
-            "documentPath": "main.md",
-            "line": 3
-          },
-          "id": "my-id",
-          "label": "# The use of IDs #",
-          "ref_link": "#the-use-of-ids",
-          "title": "The use of IDs",
-          "type": "doculisp-title"
-        }
-      ],
-      "documentOrder": {
-        "char": 1,
+  "001_given_": "\n<!-- (dl\n(section-meta\n    (title The use of IDs)\n    (id my-id)\n)\n) -->\n",
+  "999_result": {
+    "success": true,
+    "value": {
+      "projectLocation": {
         "documentDepth": 1,
         "documentIndex": 1,
-        "documentPath": "main.md",
-        "line": 1
+        "documentPath": "main.md"
       },
-      "include": [],
-      "type": "doculisp-section"
-    },
-    "type": "doculisp-root"
+      "section": {
+        "doculisp": [
+          {
+            "documentOrder": {
+              "char": 6,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "main.md",
+              "line": 4
+            },
+            "id": "my-id",
+            "label": "# The use of IDs #",
+            "ref_link": "#the-use-of-ids",
+            "title": "The use of IDs",
+            "type": "doculisp-title"
+          }
+        ],
+        "documentOrder": {
+          "char": 1,
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "main.md",
+          "line": 1
+        },
+        "include": [],
+        "type": "doculisp-section"
+      },
+      "type": "doculisp-root"
+    }
   }
 }

@@ -1,14 +1,17 @@
 {
-  "documentPath": "S:/ome/file.md",
-  "end": {
-    "char": 1,
-    "line": 3
-  },
-  "message": "Dynamic Header at 'S:/ome/file.md' Line: 2, Char: 2 is missing the header text",
-  "start": {
-    "char": 2,
-    "line": 2
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "<!--\n(dl (#))\n-->",
+  "999_result": {
+    "documentPath": "S:/ome/file.md",
+    "end": {
+      "char": 1,
+      "line": 3
+    },
+    "message": "Dynamic Header at 'S:/ome/file.md' Line: 2, Char: 6 is missing the header text",
+    "start": {
+      "char": 6,
+      "line": 2
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

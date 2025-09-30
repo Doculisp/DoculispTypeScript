@@ -1,14 +1,30 @@
 {
-  "documentPath": "Z:/mybad.dlisp",
-  "end": {
-    "char": 1,
-    "line": 1
+  "001_given_": {
+    "documentPath": "Z:/mybad.dlisp",
+    "end": {
+      "char": 1,
+      "line": 1
+    },
+    "message": "this is a document failure",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
   },
-  "message": "this is a document failure",
-  "start": {
-    "char": 1,
-    "line": 1
-  },
-  "success": false,
-  "type": "code-fail"
+  "999_result": {
+    "documentPath": "Z:/mybad.dlisp",
+    "end": {
+      "char": 1,
+      "line": 1
+    },
+    "message": "this is a document failure",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

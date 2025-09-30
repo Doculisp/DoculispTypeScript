@@ -123,14 +123,14 @@ describe('when writing', () => {
 
         it('should return an error object', () => {
             const filePath = './_main.dlisp';
-            const doc: Result<string> = loadFile(filePath);
+            const doc: Result<string> = loadFile(filePath); //Actual load and parsing of real files from `../simpleBadLink/parsers`
 
             if(!doc.success) {
                 expect(JSON.stringify(doc, null, 4)).toBe('');
             }
 
             const result = toResult(doc.value, buildProjectLocation(filePath, 1, 1));
-            verifyMarkdownResult(result);
+            verifyAsJson(result);
         });
     });
 

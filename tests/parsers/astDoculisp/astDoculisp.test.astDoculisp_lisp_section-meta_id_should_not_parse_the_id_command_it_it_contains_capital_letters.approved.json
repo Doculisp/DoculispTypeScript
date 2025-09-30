@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.md",
-  "end": {
-    "char": 11,
-    "line": 4
-  },
-  "message": "Section id 'my-Id' at 'main.md' Line: 4, Char: 6 contains must be lowercase. Did you mean 'my-id'?",
-  "start": {
-    "char": 6,
-    "line": 4
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n<!-- (dl\n(section-meta\n    (title The use of IDs)\n    (id my-Id)\n)\n) -->\n",
+  "999_result": {
+    "documentPath": "main.md",
+    "end": {
+      "char": 11,
+      "line": 5
+    },
+    "message": "Section id 'my-Id' at 'main.md' Line: 5, Char: 6 contains must be lowercase. Did you mean 'my-id'?",
+    "start": {
+      "char": 6,
+      "line": 5
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

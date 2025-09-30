@@ -176,7 +176,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
 
     function writeGetPath(astIdPath: IPathId, table: IVariableTable): ResultCode<string> {
         if(!table.hasKey(astIdPath.id)) {
-            const idLines = astIdPath.id.split(/|\n\r|/);
+            const idLines = astIdPath.id.split(/\r\n|\r|\n/);
             const lastLine = astIdPath.documentOrder.line + idLines.length - 1;
             const lastChar = idLines.length === 1 ? 
                 astIdPath.documentOrder.char + astIdPath.id.length - 1 : 
@@ -194,7 +194,7 @@ function buildWriter(util: IUtil, stringBuilderConstructor: StringBuilderConstru
         const idPathVariable = table.getValue(astIdPath.id) as IVariableId | IVariableEmptyId | false;
 
         if(!idPathVariable) {
-            const idLines = astIdPath.id.split(/|\n\r|/);
+            const idLines = astIdPath.id.split(/\r\n|\r|\n/);
             const lastLine = astIdPath.documentOrder.line + idLines.length - 1;
             const lastChar = idLines.length === 1 ? 
                 astIdPath.documentOrder.char + astIdPath.id.length - 1 : 

@@ -1,14 +1,17 @@
 {
-  "documentPath": "S:/ome/file.md",
-  "end": {
-    "char": 1,
-    "line": 7
-  },
-  "message": "Heading id 'First' at 'S:/ome/file.md' Line: 2, Char: 2 must be lowercase. Did you mean 'first'?",
-  "start": {
-    "char": 2,
-    "line": 2
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "<!--\n(dl (#First My heading))\n-->",
+  "999_result": {
+    "documentPath": "S:/ome/file.md",
+    "end": {
+      "char": 11,
+      "line": 2
+    },
+    "message": "Heading id 'First' at 'S:/ome/file.md' Line: 2, Char: 6 must be lowercase. Did you mean 'first'?",
+    "start": {
+      "char": 6,
+      "line": 2
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

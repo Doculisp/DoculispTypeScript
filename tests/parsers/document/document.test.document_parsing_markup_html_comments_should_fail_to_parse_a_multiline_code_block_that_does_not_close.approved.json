@@ -1,14 +1,17 @@
 {
-  "documentPath": "C:/bad/examples/multiline.md",
-  "end": {
-    "char": 1,
-    "line": 1
-  },
-  "message": "Multiline code block at 'C:/bad/examples/multiline.md' Line: 1, Char: 1 does not close",
-  "start": {
-    "char": 1,
-    "line": 1
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "```\nlet a = \"hello;\nlet b = \"world\"\nconsole.log(a + \" \" + b);\n",
+  "999_result": {
+    "documentPath": "C:/bad/examples/multiline.md",
+    "end": {
+      "char": 1,
+      "line": 2
+    },
+    "message": "Multiline code block at 'C:/bad/examples/multiline.md' Line: 1, Char: 1 does not close",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

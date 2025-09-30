@@ -1,14 +1,25 @@
 {
-  "documentPath": "C:/_main.dlisp",
-  "end": {
-    "char": 1,
-    "line": 16
+  "001_given_": {
+    "C:/_main.dlisp": "\n(section-meta\n    (title Main Document)\n    (include\n        (Section C:/sub.docx)\n    )\n)\n\n(content (toc numbered-labeled))\n"
   },
-  "message": "In include block at 'C:/_main.dlisp' Line: 5, Char 10 contains invalid file type. Included files must be markdown or dlisp files. 'C:/sub.docx'",
-  "start": {
-    "char": 10,
-    "line": 5
+  "002_given_": {
+    "C:/sub.docx": {
+      "success": true,
+      "value": "<h1>Hello World</h1>"
+    }
   },
-  "success": false,
-  "type": "code-fail"
+  "999_result": {
+    "documentPath": "C:/_main.dlisp",
+    "end": {
+      "char": 11,
+      "line": 6
+    },
+    "message": "In include block at 'C:/_main.dlisp' Line: 5, Char 10 contains invalid file type. Included files must be markdown or dlisp files. 'C:/sub.docx'",
+    "start": {
+      "char": 10,
+      "line": 5
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

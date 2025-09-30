@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.dlisp",
-  "end": {
-    "char": 14,
-    "line": 4
-  },
-  "message": "The subtitle block at 'main.dlisp' Line: 4, Char: 6 is missing the subtitle text.",
-  "start": {
-    "char": 6,
-    "line": 4
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title My cool title)\n    (subtitle)\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 14,
+      "line": 4
+    },
+    "message": "The subtitle block at 'main.dlisp' Line: 4, Char: 6 is missing the subtitle text.",
+    "start": {
+      "char": 6,
+      "line": 4
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

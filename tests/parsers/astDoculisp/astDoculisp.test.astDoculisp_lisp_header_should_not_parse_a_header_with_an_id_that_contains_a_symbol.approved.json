@@ -1,14 +1,17 @@
 {
-  "documentPath": "S:/ome/file.md",
-  "end": {
-    "char": 1,
-    "line": 7
-  },
-  "message": "Symbol(s) in heading id F|rst' at 'S:/ome/file.md' Line: 2, Char: 2\n'|' @ id char 2",
-  "start": {
-    "char": 2,
-    "line": 2
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "<!--\n(dl (#f|rst My heading))\n-->",
+  "999_result": {
+    "documentPath": "S:/ome/file.md",
+    "end": {
+      "char": 11,
+      "line": 2
+    },
+    "message": "Symbol(s) in heading id f|rst' at 'S:/ome/file.md' Line: 2, Char: 6\n'|' @ id char 2",
+    "start": {
+      "char": 6,
+      "line": 2
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

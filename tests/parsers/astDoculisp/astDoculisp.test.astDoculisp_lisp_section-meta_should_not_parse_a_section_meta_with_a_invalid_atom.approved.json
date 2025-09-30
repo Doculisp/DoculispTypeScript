@@ -1,14 +1,17 @@
 {
-  "documentPath": "./_main.md",
-  "end": {
-    "char": 13,
-    "line": 6
-  },
-  "message": "The section-meta block at './_main.md' Line: 2, Char: 2 contains unknown command 'bad' at Line: 4, Char: 10.",
-  "start": {
-    "char": 10,
-    "line": 4
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "<!--\n(dl\n    (section-meta\n        (title A Bad atom)\n        (bad does stuff)\n        (include\n                (sample ./good.md)\n        )\n    )\n)\n-->\n\nA story of a misbehaving parser.\n\n",
+  "999_result": {
+    "documentPath": "./_main.md",
+    "end": {
+      "char": 13,
+      "line": 5
+    },
+    "message": "The section-meta block at './_main.md' Line: 3, Char: 6 contains unknown command 'bad' at Line: 5, Char: 10.",
+    "start": {
+      "char": 10,
+      "line": 5
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

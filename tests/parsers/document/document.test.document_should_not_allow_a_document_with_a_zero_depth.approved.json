@@ -1,14 +1,21 @@
 {
-  "documentPath": "C:/my_document.md",
-  "end": {
-    "char": 1,
-    "line": 1
+  "001_given_": {
+    "documentDepth": 0,
+    "documentIndex": 6,
+    "documentPath": "C:/my_document.md"
   },
-  "message": "Document Depth must be a value of 1 or larger.",
-  "start": {
-    "char": 1,
-    "line": 1
-  },
-  "success": false,
-  "type": "code-fail"
+  "999_result": {
+    "documentPath": "C:/my_document.md",
+    "end": {
+      "char": 1,
+      "line": 1
+    },
+    "message": "Document Depth must be a value of 1 or larger.",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

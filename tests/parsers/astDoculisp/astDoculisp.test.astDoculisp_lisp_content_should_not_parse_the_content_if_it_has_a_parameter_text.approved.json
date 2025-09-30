@@ -1,14 +1,17 @@
 {
-  "documentPath": "../main.dlisp",
-  "end": {
-    "char": 9,
-    "line": 9
-  },
-  "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown parameter 'toc'",
-  "start": {
-    "char": 2,
-    "line": 9
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title Using Content)\n    (include\n        (Section ./HelloContent.md)\n    )\n)\n\n(content toc)\n",
+  "999_result": {
+    "documentPath": "../main.dlisp",
+    "end": {
+      "char": 9,
+      "line": 9
+    },
+    "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown parameter 'toc'",
+    "start": {
+      "char": 2,
+      "line": 9
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

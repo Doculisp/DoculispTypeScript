@@ -1,6 +1,19 @@
 {
-  "success": true,
-  "value": {
-    "type": "doculisp-empty"
+  "001_given_": {
+    "success": true,
+    "value": {
+      "location": {
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "./myDoc.md"
+      },
+      "type": "ast-Empty"
+    }
+  },
+  "999_result": {
+    "success": true,
+    "value": {
+      "type": "doculisp-empty"
+    }
   }
 }

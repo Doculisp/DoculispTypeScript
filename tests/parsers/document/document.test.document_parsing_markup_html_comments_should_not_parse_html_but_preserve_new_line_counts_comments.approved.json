@@ -1,23 +1,26 @@
 {
-  "success": true,
-  "value": {
-    "parts": [
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 8,
-          "documentIndex": 3,
-          "documentPath": "C:/readme.md",
-          "line": 4
-        },
-        "text": "                     \t\thello bro",
-        "type": "text"
+  "001_given_": "<!--\n    This is a comment\n    -->\n                     \t\thello bro\n                     ",
+  "999_result": {
+    "success": true,
+    "value": {
+      "parts": [
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 8,
+            "documentIndex": 3,
+            "documentPath": "C:/readme.md",
+            "line": 4
+          },
+          "text": "                     \t\thello bro",
+          "type": "text"
+        }
+      ],
+      "projectLocation": {
+        "documentDepth": 8,
+        "documentIndex": 3,
+        "documentPath": "C:/readme.md"
       }
-    ],
-    "projectLocation": {
-      "documentDepth": 8,
-      "documentIndex": 3,
-      "documentPath": "C:/readme.md"
     }
   }
 }

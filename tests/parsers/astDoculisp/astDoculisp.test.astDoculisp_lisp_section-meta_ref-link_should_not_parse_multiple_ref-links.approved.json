@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.dlisp",
-  "end": {
-    "char": 14,
-    "line": 5
-  },
-  "message": "The section-meta block at 'main.dlisp' Line: 0, Char: 0 has more then one ref-link.",
-  "start": {
-    "char": 0,
-    "line": 0
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (ref-link my_cool_title)\n    (title My cool title✨)\n    (ref-link my-cool-title)\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 14,
+      "line": 5
+    },
+    "message": "The section-meta block at 'main.dlisp' Line: 2, Char: 2 has more then one ref-link.",
+    "start": {
+      "char": 2,
+      "line": 2
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

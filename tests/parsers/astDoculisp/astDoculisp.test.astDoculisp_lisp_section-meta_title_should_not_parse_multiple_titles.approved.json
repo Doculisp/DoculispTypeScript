@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.dlisp",
-  "end": {
-    "char": 37,
-    "line": 1
-  },
-  "message": "The section-meta block at 'main.dlisp' Line: 0, Char: 0 contains more then a single title block.",
-  "start": {
-    "char": 0,
-    "line": 0
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "(section-meta (title A Title) (title B Title))",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 37,
+      "line": 1
+    },
+    "message": "The section-meta block at 'main.dlisp' Line: 1, Char: 2 contains more then a single title block.",
+    "start": {
+      "char": 2,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

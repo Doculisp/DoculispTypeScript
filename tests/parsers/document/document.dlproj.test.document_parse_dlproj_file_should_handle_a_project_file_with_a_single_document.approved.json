@@ -1,23 +1,26 @@
 {
-  "success": true,
-  "value": {
-    "parts": [
-      {
-        "location": {
-          "char": 1,
-          "documentDepth": 7,
-          "documentIndex": 1,
-          "documentPath": "C:/build.dlisp",
-          "line": 2
-        },
-        "text": "(documents\n    (document\n        (source C:/main.dlisp)\n        (output ./project.md)\n    )\n)",
-        "type": "lisp"
+  "001_given_": "\n(documents\n    (document\n        (source C:/main.dlisp)\n        (output ./project.md)\n    )\n)\n",
+  "999_result": {
+    "success": true,
+    "value": {
+      "parts": [
+        {
+          "location": {
+            "char": 1,
+            "documentDepth": 7,
+            "documentIndex": 1,
+            "documentPath": "C:/build.dlisp",
+            "line": 2
+          },
+          "text": "(documents\n    (document\n        (source C:/main.dlisp)\n        (output ./project.md)\n    )\n)",
+          "type": "lisp"
+        }
+      ],
+      "projectLocation": {
+        "documentDepth": 7,
+        "documentIndex": 1,
+        "documentPath": "C:/build.dlisp"
       }
-    ],
-    "projectLocation": {
-      "documentDepth": 7,
-      "documentIndex": 1,
-      "documentPath": "C:/build.dlisp"
     }
   }
 }

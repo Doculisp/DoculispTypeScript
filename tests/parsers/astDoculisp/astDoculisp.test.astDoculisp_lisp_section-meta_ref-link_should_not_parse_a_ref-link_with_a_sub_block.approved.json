@@ -1,14 +1,17 @@
 {
-  "documentPath": "main.dlisp",
-  "end": {
-    "char": 1,
-    "line": 9
-  },
-  "message": "The ref-link block at 'main.dlisp' Line: 4, Char: 6 contains unknown block 'weird' at Line: 4, Char: 16.",
-  "start": {
-    "char": 6,
-    "line": 4
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(section-meta\n    (title My cool title✨)\n    (ref-link (weird block))\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 5,
+      "line": 5
+    },
+    "message": "The ref-link block at 'main.dlisp' Line: 4, Char: 6 contains unknown block 'weird' at Line: 4, Char: 16.",
+    "start": {
+      "char": 6,
+      "line": 4
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

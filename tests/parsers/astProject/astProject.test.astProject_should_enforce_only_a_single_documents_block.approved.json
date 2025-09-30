@@ -1,14 +1,17 @@
 {
-  "documentPath": "./myBad.dlproj",
-  "end": {
-    "char": 1,
-    "line": 4
-  },
-  "message": "Project file may only contain a single documents block. Duplicate documents block detected at './myBad.dlproj' Line: 3, Char: 2.",
-  "start": {
-    "char": 2,
-    "line": 3
-  },
-  "success": false,
-  "type": "code-fail"
+  "001_given_": "\n(documents)\n(documents)\n",
+  "999_result": {
+    "documentPath": "./myBad.dlproj",
+    "end": {
+      "char": 1,
+      "line": 4
+    },
+    "message": "Project file may only contain a single documents block. Duplicate documents block detected at './myBad.dlproj' Line: 3, Char: 2.",
+    "start": {
+      "char": 2,
+      "line": 3
+    },
+    "success": false,
+    "type": "code-fail"
+  }
 }

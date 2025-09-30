@@ -1,35 +1,40 @@
 {
-  "success": true,
-  "value": {
-    "ast": [
-      {
-        "location": {
-          "char": 2,
-          "documentDepth": 2,
-          "documentIndex": 1,
-          "documentPath": "S:/ome/file.md",
-          "line": 2
-        },
-        "parameter": {
+  "001_given_": {
+    "S:/ome/file.md": "<!--\n(dl (# My heading))\n-->"
+  },
+  "999_result": {
+    "success": true,
+    "value": {
+      "ast": [
+        {
           "location": {
-            "char": 4,
+            "char": 6,
             "documentDepth": 2,
             "documentIndex": 1,
             "documentPath": "S:/ome/file.md",
             "line": 2
           },
-          "type": "ast-Parameter",
-          "value": "My heading"
-        },
-        "type": "ast-command",
-        "value": "#"
-      }
-    ],
-    "location": {
-      "documentDepth": 2,
-      "documentIndex": 1,
-      "documentPath": "S:/ome/file.md"
-    },
-    "type": "RootAst"
+          "parameter": {
+            "location": {
+              "char": 8,
+              "documentDepth": 2,
+              "documentIndex": 1,
+              "documentPath": "S:/ome/file.md",
+              "line": 2
+            },
+            "type": "ast-Parameter",
+            "value": "My heading"
+          },
+          "type": "ast-command",
+          "value": "#"
+        }
+      ],
+      "location": {
+        "documentDepth": 2,
+        "documentIndex": 1,
+        "documentPath": "S:/ome/file.md"
+      },
+      "type": "RootAst"
+    }
   }
 }

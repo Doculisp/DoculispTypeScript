@@ -1,7 +1,7 @@
 import { containerPromise } from "../../../src/moduleLoader";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
-import { getVerifier } from "../../tools";
+import { getVerifier, verifyWithGiven } from "../../tools";
 import { DocumentParser } from "../../../src/types/types.document";
 import { buildProjectLocation, testable } from "../../testHelpers";
 
@@ -30,6 +30,6 @@ describe('document parse dlproj file', () => {
 
         let result = parse(dlisp, buildProjectLocation('C:/build.dlisp', 7, 1));
 
-        verifyAsJson(result);
+        verifyWithGiven(verifyAsJson, result, false, dlisp);
     });
 });

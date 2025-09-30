@@ -1,14 +1,17 @@
 {
-  "success": true,
-  "value": {
-    "documents": [],
-    "location": {
-      "char": 2,
-      "documentDepth": 1,
-      "documentIndex": 1,
-      "documentPath": "./test.dlproj",
-      "line": 1
-    },
-    "type": "project-documents"
+  "001_given_": "(documents)",
+  "999_result": {
+    "success": true,
+    "value": {
+      "documents": [],
+      "location": {
+        "char": 2,
+        "documentDepth": 1,
+        "documentIndex": 1,
+        "documentPath": "./test.dlproj",
+        "line": 1
+      },
+      "type": "project-documents"
+    }
   }
 }

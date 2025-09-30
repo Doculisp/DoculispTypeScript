@@ -1,7 +1,7 @@
 import { containerPromise } from "../../../src/moduleLoader";
 import { configure } from "approvals/lib/config";
 import { Options } from "approvals/lib/Core/Options";
-import { getVerifier } from "../../tools";
+import { getVerifier, verifyWithGiven } from "../../tools";
 import { DocumentParser } from "../../../src/types/types.document";
 import { buildProjectLocation, testable } from "../../testHelpers";
 import { IContainer } from "../../../src/types/types.containers";
@@ -21,9 +21,10 @@ describe('document', () => {
     });
 
     it('should not allow a document with a zero depth.', () => {
-        const result = parse('hello', buildProjectLocation('C:/my_document.md', 0, 6));
-        
-        verifyAsJson(result);
+        const projectLocation = buildProjectLocation('C:/my_document.md', 0, 6);
+        const result = parse('hello', projectLocation);
+
+        verifyWithGiven(verifyAsJson, result, false, projectLocation);
     });
 
     it('should not allow a document with a negative depth.', () => {
@@ -59,23 +60,27 @@ describe('document', () => {
             });
     
             it('should parse text of "blow fish"', () => {
-                const result = parse('blow fish', buildProjectLocation('C:/my_document.md', 7, 2));
-                verifyAsJson(result);
+                const content = 'blow fish';
+                const result = parse(content, buildProjectLocation('C:/my_document.md', 7, 2));
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
     
             it('should parse text of " blow fish"', () => {
-                const result = parse(' blow fish', buildProjectLocation('C:/my_document.md', 4, 6));
-                verifyAsJson(result);
+                const content = ' blow fish';
+                const result = parse(content, buildProjectLocation('C:/my_document.md', 4, 6));
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
     
             it('should parse text of " blow fish "', () => {
-                const result = parse(' blow fish ', buildProjectLocation('C:/my_document.md', 7, 1));
-                verifyAsJson(result);
+                const content = ' blow fish ';
+                const result = parse(content, buildProjectLocation('C:/my_document.md', 7, 1));
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
     
             it('should parse text of "   \\r\\n blow fish"', () => {
-                const result = parse('   \r\n blow fish', buildProjectLocation('C:/my_document.md', 1, 8));
-                verifyAsJson(result);
+                const content = '   \r\n blow fish';
+                const result = parse(content, buildProjectLocation('C:/my_document.md', 1, 8));
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
     
             it('should parse nested multiline code blocks', () => {
@@ -91,8 +96,8 @@ describe('document', () => {
     \`\`\`\`
     `;
                 const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should parse nested multiline code blocks that end with the file', () => {
@@ -107,8 +112,8 @@ describe('document', () => {
     ## Sub section title
     \`\`\`\``;
                 const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
 
             it('should not parse nested multiline code blocks when closing markers are unbalanced', () => {
@@ -124,8 +129,8 @@ describe('document', () => {
     \`\`\`\`\`
     `;
                 const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
         });
 
@@ -135,7 +140,7 @@ describe('document', () => {
     
                 const result = parse(md, buildProjectLocation('C:/readme.md', 5, 2));
     
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should not parse html but preserve new line counts comments', () => {
@@ -147,7 +152,7 @@ describe('document', () => {
     
                 const result = parse(md, buildProjectLocation('C:/readme.md', 8, 3));
     
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should not parse html comments in the middle of text.', () => {
@@ -157,24 +162,24 @@ describe('document', () => {
     world`;
     
                 const result = parse(md, buildProjectLocation('C:/comments/helloWorld.md', 1, 2));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should parse html comments inside an inline code block', () => {
                 const md = '`<!-- an example html comment -->`';
     
                 const result = parse(md, buildProjectLocation('C:/html/inline.md', 5, 3));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
 
             it('should parse an inline codeblock in middle of sentence', () => {
                 const md = 'hello `int = 5;` world';
 
                 const result = parse(md, buildProjectLocation('C:/html/inline.md', 5, 3));
-                
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             })
     
             it('should parse html comments inside a multiline code block', () => {
@@ -190,8 +195,8 @@ describe('document', () => {
     \`\`\`
     `;
                 const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should fail to parse if html comment is not closed', () => {
@@ -201,8 +206,8 @@ describe('document', () => {
     Boom
     `;
                 const result = parse(md, buildProjectLocation('C:/examples/bad.md', 5, 4));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should fail if inline code block does not close', () => {
@@ -210,7 +215,7 @@ describe('document', () => {
     
                 const result = parse(md, buildProjectLocation('C:/bad/noCloseInline.md', 8, 4));
     
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should fail to parse an inline code block with a line break', () => {
@@ -220,15 +225,15 @@ describe('document', () => {
     
                 const result = parse(md, buildProjectLocation('C:/examples/badInline.md', 6, 8));
     
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
     
             it('should fail to parse a multiline code block that does not close', () => {
                 let md = '```\nlet a = "hello;\nlet b = "world"\nconsole.log(a + " " + b);\n';
     
                 const result = parse(md, buildProjectLocation('C:/bad/examples/multiline.md', 2, 7));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
         });
     
@@ -237,16 +242,16 @@ describe('document', () => {
                 const md = '<!-- (dl (# header)) -->';
     
                 const result = parse(md, buildProjectLocation('_main.md', 3, 7));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
             
             it('should parse a doculisp block in the middle of file', () => {
             const md = '# Title\r\nsome text about title\r\n<!--\r\nSome lisp: (dl (# two)) -->\r\nMickey Mouse Hotline.';
     
                 const result = parse(md, buildProjectLocation('_main.md', 7, 5));
-    
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
 
             it('should parse lisp outside an html tag as text', () => {
@@ -254,7 +259,7 @@ describe('document', () => {
 
                 const result = parse(md, buildProjectLocation('documentExample.md', 3, 4));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
 
             it('should parse Doculisplisp outside an html tag as text', () => {
@@ -262,14 +267,15 @@ describe('document', () => {
 
                 const result = parse(md, buildProjectLocation('documentExample2.md', 8, 8));
 
-                verifyAsJson(result);
+                verifyWithGiven(verifyAsJson, result, false, md);
             });
 
             it('should allow for an escaped parentheses in a parameter', () => {
                 const content = '<!-- (dl (# My \\(really awesome header)) -->';
     
                 const result = parse(content, buildProjectLocation('./_main.md', 2, 1));
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, content);
             });
 
             it('should parse Doculisp that contains a get-path in a link', () => {
@@ -283,7 +289,8 @@ describe('document', () => {
                 `;
 
                 const result = parse(text, buildProjectLocation('./_main.md', 2, 1));
-                verifyAsJson(result);
+
+                verifyWithGiven(verifyAsJson, result, false, text);
             });
         });
     });
@@ -309,7 +316,7 @@ describe('document', () => {
 
             let result = parse(dlisp, buildProjectLocation('C:/main.dlisp', 7, 1));
 
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, dlisp);
         });
 
         it('should fail to parse a file that contains a dl atom', () => {
@@ -323,7 +330,7 @@ describe('document', () => {
 
             let result = parse(dlisp, buildProjectLocation('C:/bad/extraDl.dlisp', 5, 6));
 
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, dlisp);
         });
 
         it('should handle a file with parentheses that do not close', () => {
@@ -340,7 +347,7 @@ describe('document', () => {
 
             let result = parse(dlisp, buildProjectLocation('C:/main.dlisp', 6, 1));
 
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, dlisp);
         });
 
         it('should handle a file with to many parenthesis', () => {
@@ -348,7 +355,7 @@ describe('document', () => {
 
             let result = parse(dlisp, buildProjectLocation('C:/main.dlisp', 5, 8));
 
-            verifyAsJson(result);
+            verifyWithGiven(verifyAsJson, result, false, dlisp);
         });
     });
 });

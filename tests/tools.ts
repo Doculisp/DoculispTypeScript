@@ -77,3 +77,17 @@ export function getVerifiers(configure: (overrideOptions?: Partial<Config> | und
         verifyText
     };
 };
+
+export function verifyWithGiven<T>(verifier: (data: T, options?: Options) => void, result: T, options: Options | false, ...given: Array<any>) {
+    let verifiable: any = {};
+
+    given.forEach((g, i) => {
+        verifiable[`${(i + 1).toString().padStart(3, '0')}_given_`] = g;
+    });
+
+    verifiable['999_result'] = result;
+
+    let o = (!!options) ? options : undefined;
+
+    verifier(verifiable, o);
+}
