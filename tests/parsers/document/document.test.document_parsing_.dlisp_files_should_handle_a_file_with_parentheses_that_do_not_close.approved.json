@@ -3,8 +3,8 @@
   "999_result": {
     "documentPath": "C:/main.dlisp",
     "end": {
-      "char": 2,
-      "line": 2
+      "char": 1,
+      "line": 10
     },
     "message": "Doculisp block at 'C:/main.dlisp' Line: 2, Char: 1 is not closed.",
     "start": {

@@ -104,6 +104,43 @@ describe('ast', () => {
     
             verifyAsJson(result);
         });
+
+        it('should fail when AST parser encounters missing close parenthesis in tokens', () => {
+            const projectLocation = buildProjectLocation('./_main.dlisp', 1, 1);
+            // Create tokens that represent: section-meta (title Doculisp)
+            // This will be parsed as a container but missing the final close parenthesis
+            const tokens: Result<TokenizedDocument> = ok({
+                projectLocation: projectLocation,
+                tokens: [
+                    {
+                        type: 'token - atom',
+                        location: util.toLocation(projectLocation, 1, 1),
+                        text: 'section-meta',
+                    },
+                    {
+                        type: 'token - atom',
+                        location: util.toLocation(projectLocation, 2, 5),
+                        text: 'title',
+                    },
+                    {
+                        type: 'token - parameter',
+                        location: util.toLocation(projectLocation, 2, 11),
+                        text: 'Doculisp',
+                    },
+                    {
+                        type: 'token - close parenthesis',
+                        location: util.toLocation(projectLocation, 2, 19),
+                    }
+                    // Missing final close parenthesis for section-meta container!
+                ],
+            });
+
+            const result = parser.parse(tokens);
+            const table: any = { };
+            table['tokens'] = tokens;
+
+            verifyWithGiven(verifyAsJson, result, false, table);
+        });
     });
 
     describe('lisp', () => {

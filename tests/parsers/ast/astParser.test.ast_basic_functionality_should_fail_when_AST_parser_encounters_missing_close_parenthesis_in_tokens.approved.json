@@ -1,0 +1,73 @@
+{
+  "001_given_": {
+    "tokens": {
+      "success": true,
+      "value": {
+        "projectLocation": {
+          "documentDepth": 1,
+          "documentIndex": 1,
+          "documentPath": "./_main.dlisp"
+        },
+        "tokens": [
+          {
+            "location": {
+              "char": 1,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "./_main.dlisp",
+              "line": 1
+            },
+            "text": "section-meta",
+            "type": "token - atom"
+          },
+          {
+            "location": {
+              "char": 5,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "./_main.dlisp",
+              "line": 2
+            },
+            "text": "title",
+            "type": "token - atom"
+          },
+          {
+            "location": {
+              "char": 11,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "./_main.dlisp",
+              "line": 2
+            },
+            "text": "Doculisp",
+            "type": "token - parameter"
+          },
+          {
+            "location": {
+              "char": 19,
+              "documentDepth": 1,
+              "documentIndex": 1,
+              "documentPath": "./_main.dlisp",
+              "line": 2
+            },
+            "type": "token - close parenthesis"
+          }
+        ]
+      }
+    }
+  },
+  "999_result": {
+    "documentPath": "./_main.dlisp",
+    "end": {
+      "char": 19,
+      "line": 2
+    },
+    "message": "Malformed lisp at {\"path\":\"./_main.dlisp\",\"line\":1,\"char\":1} - missing close parenthesis",
+    "start": {
+      "char": 1,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

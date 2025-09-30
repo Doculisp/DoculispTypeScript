@@ -109,7 +109,12 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
         }
 
         if(closeCommand.type !== 'token - close parenthesis') {
-            return util.codeFailure(`Malformed lisp at ${closeCommand.location}.`, { documentPath: closeCommand.location.documentPath, start: { line: closeCommand.location.line, char: closeCommand.location.char }, end: { line: closeCommand.location.line, char: closeCommand.location.char } }); // Close parenthesis is single character, so start and end are the same
+            const valueLines = closeCommand.text.split(/\r\n|\r|\n/);
+            let endLine = valueLines.length + closeCommand.location.line - 1;
+            let endChar = valueLines.length === 1 ?
+                closeCommand.location.char + closeCommand.text.length - 1 :
+                valueLines.at(-1) ? valueLines.at(-1)!.length : closeCommand.location.char;
+            return util.codeFailure(`Malformed lisp at ${closeCommand.location}.`, { documentPath: closeCommand.location.documentPath, start: { line: closeCommand.location.line, char: closeCommand.location.char }, end: { line: endLine, char: endChar } });
         }
 
         return util.ok({
@@ -137,6 +142,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
         }
 
         const parser = internals.createArrayParser<Token, AtomAst>(parseAtom, parseCommand, parseContainer);
+        
         const parsed = parser.parse(trimArray.trim(1, input), container.location);
 
         if(!parsed.success) {
@@ -146,8 +152,13 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
         const [subAst, remaining] = parsed.value;
 
         if(remaining.remaining.length === 0) {
-            // No more tokens - report error at current location
-            return util.codeFailure(`Malformed lisp at ${remaining.location} - missing close parenthesis`, { documentPath: remaining.location.documentPath, start: { line: remaining.location.line, char: remaining.location.char }, end: { line: remaining.location.line, char: remaining.location.char } });
+            // No more tokens - find the last token in input to calculate proper end location
+            const lastToken = input[input.length - 1] as Token;
+            const lastTokenText = 'text' in lastToken ? lastToken.text : ')';
+            const endLine = lastToken.location.line;
+            const endChar = lastToken.location.char + lastTokenText.length - 1;
+            
+            return util.codeFailure(`Malformed lisp at ${remaining.location} - missing close parenthesis`, { documentPath: remaining.location.documentPath, start: { line: container.location.line, char: container.location.char }, end: { line: endLine, char: endChar } });
         }
 
         const close = remaining.remaining[0] as Token;

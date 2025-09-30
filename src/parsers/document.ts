@@ -556,10 +556,12 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             if(parsed.success) {
                 if(0 < depth) {
                     let [pieces, _leftover] = parsed.value;
-                    let lastPiece = pieces[pieces.length ] as DocumentPart;
+                    let lastPiece = pieces[pieces.length - 1] as DocumentPart;
                     let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
-                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
-                    let lastChar = (lastPiece?.location?.char || 1) + (lastLines.at(-1)?.length || 1);
+                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length - 1;
+                    let lastChar = lastLines.length === 1 ? 
+                        (lastPiece?.location?.char || 1) + (lastPiece?.text?.length || 0) - 1 : 
+                        (lastLines.at(-1)?.length || 0);
 
                     return util.codeFailure(`Doculisp block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} is not closed.`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
