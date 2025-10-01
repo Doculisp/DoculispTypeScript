@@ -3,8 +3,8 @@
   "999_result": {
     "documentPath": "C:/markdown/multiline.md",
     "end": {
-      "char": 1,
-      "line": 2
+      "char": 4,
+      "line": 11
     },
     "message": "Multiline code block at 'C:/markdown/multiline.md' Line: 2, Char: 5 does not close",
     "start": {

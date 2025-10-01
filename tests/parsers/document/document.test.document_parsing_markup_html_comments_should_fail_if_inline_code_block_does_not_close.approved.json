@@ -3,7 +3,7 @@
   "999_result": {
     "documentPath": "C:/bad/noCloseInline.md",
     "end": {
-      "char": 2,
+      "char": 10,
       "line": 1
     },
     "message": "Inline code block at 'C:/bad/noCloseInline.md' Line: 1, Char: 1 does not close",

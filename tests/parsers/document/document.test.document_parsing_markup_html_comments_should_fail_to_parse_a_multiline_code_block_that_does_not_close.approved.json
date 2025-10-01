@@ -4,7 +4,7 @@
     "documentPath": "C:/bad/examples/multiline.md",
     "end": {
       "char": 1,
-      "line": 2
+      "line": 5
     },
     "message": "Multiline code block at 'C:/bad/examples/multiline.md' Line: 1, Char: 1 does not close",
     "start": {

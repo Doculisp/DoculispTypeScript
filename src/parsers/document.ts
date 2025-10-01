@@ -307,11 +307,14 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             if(parsed.success) {
                 if(opened) {
-                    let [pieces, _leftover] = parsed.value;
-                    let lastPiece = pieces[pieces.length ] as DocumentPart;
-                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
-                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
-                    let lastChar = (lastLines?.at(-1)?.length || 1);
+                    let [_pieces, _leftover] = parsed.value;
+                    
+                    // Calculate the end of the input
+                    const inputLines = toParse.split(/\r\n|\r|\n/);
+                    const lastLine = starting.line + inputLines.length - 1;
+                    const lastChar = inputLines.length === 1 ? 
+                        starting.char + (inputLines[0]?.length || 0) : 
+                        (inputLines[inputLines.length - 1]?.length || 0);
 
                     return util.codeFailure(`Multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} does not close`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
@@ -922,7 +925,7 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
                 const errorItem = leftover.remaining;
                 const errorStart = leftover.location.increaseChar(-1);
                 const errorLines = errorItem.split(/\r\n|\r|\n/);
-                const endLine = errorStart.line + errorLines.length ;
+                const endLine = errorStart.line + errorLines.length;
                 const endChar = errorLines.at(-1)?.length || 1;
                 return util.codeFailure(`Doculisp block at '${errorStart.documentPath.fullName}' Line: 1, Char: 1 has something not contained in parenthesis at Line: ${errorStart.line}, Char: ${errorStart.char}.`, { documentPath, start: { line: errorStart.line, char: errorStart.line }, end: { line: endLine, char: endChar } });
             }
