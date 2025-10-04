@@ -1,0 +1,17 @@
+{
+  "001_given_": "\n(section-meta\n    (subtitle This is information)\n    (title My cool title)\n    (subtitle)\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 14,
+      "line": 5
+    },
+    "message": "Duplicate subtitle in section-meta block at 'main.dlisp' Line: 5, Char: 5",
+    "start": {
+      "char": 5,
+      "line": 5
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

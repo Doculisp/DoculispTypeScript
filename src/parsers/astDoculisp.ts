@@ -199,11 +199,19 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < subtitles.length) {
-                    const lastSubtitleLines = (subtitles.at(-1) as AtomAst).value.split(/\r\n|\r|\n/);
-                    const endline = location.line + lastSubtitleLines.length ;
-                    const endChar = lastSubtitleLines.at(-1)?.length || 1;
+                    const duplicateSubtitle = subtitles[1] as AtomAst;
+                    const startChar = duplicateSubtitle.location.char - 1;
+                    let endChar: number;
+                    
+                    if(duplicateSubtitle.type === 'ast-command') {
+                        // Calculate end position with 1-based indexing: opening paren + "subtitle" + space + parameter + closing paren
+                        endChar = startChar + duplicateSubtitle.value.length + 1 + duplicateSubtitle.parameter.value.length + 2;
+                    } else {
+                        // For other types (ast-atom), include opening paren + subtitle value + closing paren
+                        endChar = startChar + duplicateSubtitle.value.length + 1;
+                    }
 
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one subtitle.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endline, char: endChar } });
+                    return util.codeFailure(`Duplicate subtitle in section-meta block at '${location.documentPath.fullName}' Line: ${duplicateSubtitle.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: duplicateSubtitle.location.line, char: startChar }, end: { line: duplicateSubtitle.location.line, char: endChar } });
                 }
     
                 const subtitle = subtitles[0] as AtomAst;

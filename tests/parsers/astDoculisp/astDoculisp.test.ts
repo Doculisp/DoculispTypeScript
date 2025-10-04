@@ -540,6 +540,19 @@ A story of a misbehaving parser.
 
                     verifyWithGiven(verifyAsJson, result, false, contents);
                 });
+
+                it('should not parse multiple subtitles with atom subtitle', () => {
+                    const contents = `
+(section-meta
+    (subtitle This is information)
+    (title My cool title)
+    (subtitle)
+)
+`;
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 2, 7));
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
+                });
             });
 
             describe('include', () => {
