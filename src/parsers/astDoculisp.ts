@@ -483,8 +483,13 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                         endLine = lastSubElement.location.line + 1; // Next line after last sub-element  
                         endChar = startChar; // Same char position as start (the closing paren)
                     }
+                } else if (next.type === 'ast-command') {
+                    // For command elements, include both the command name and its parameter
+                    const parameterLength = next.parameter?.value?.length || 0;
+                    endLine = next.location.line;
+                    endChar = next.location.char + next.value.length + (parameterLength > 0 ? 1 + parameterLength : 0); // +1 for space between command and parameter
                 } else {
-                    // For non-container elements, calculate based on the value content
+                    // For other elements (ast-atom, ast-value), calculate based on the value content
                     const valueLines = next.value.split(/\r\n|\r|\n/);
                     endLine = next.location.line + valueLines.length - 1;
                     endChar = next.location.char + (valueLines.at(-1)?.length || 0);
