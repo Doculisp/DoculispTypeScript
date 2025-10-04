@@ -217,9 +217,10 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 const subtitle = subtitles[0] as AtomAst;
     
                 if(subtitle.type === 'ast-atom') {
+                    const startChar = subtitle.location.char - 1;
                     const endChar = subtitle.location.char + subtitle.value.length;
 
-                    return util.codeFailure(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} is missing the subtitle text.`, { documentPath: current.documentPath, start: { line: subtitle.location.line, char: subtitle.location.char }, end: { line: subtitle.location.line, char: endChar } });
+                    return util.codeFailure(`Missing subtitle text in subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: subtitle.location.line, char: startChar }, end: { line: subtitle.location.line, char: endChar } });
                 }
     
                 if(subtitle.type === 'ast-container') {
