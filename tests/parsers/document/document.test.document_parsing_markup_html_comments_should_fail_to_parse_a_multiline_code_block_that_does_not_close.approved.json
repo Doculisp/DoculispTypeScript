@@ -3,8 +3,8 @@
   "999_result": {
     "documentPath": "C:/bad/examples/multiline.md",
     "end": {
-      "char": 1,
-      "line": 5
+      "char": 25,
+      "line": 4
     },
     "message": "Missing close marker for multiline code block at 'C:/bad/examples/multiline.md' Line: 1, Char: 1",
     "start": {
