@@ -466,11 +466,31 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
             if(0 < badSections.length) {
                 const next = badSections[0] as AtomAst;
-                const sectionLines = badSections.map(b => b.value.split(/\r\n|\r|\n/).length).reduce((a, b) => a + b, 0) - 1;
-                const endLine = next.location.line + sectionLines;
-                const endChar = badSections.at(-1)!.location.char + badSections.at(-1)!.value.length;
+                
+                // For nested section-meta, the error should point to the opening paren and span to the closing paren
+                // The start should be at the opening parenthesis (char - 1 from the value start)
+                const startChar = next.location.char - 1;
+                
+                // The end should be calculated based on the structure of the invalid element
+                // For container elements like section-meta, we need to find where it ends
+                let endLine = next.location.line;
+                let endChar = startChar;
+                
+                if (next.type === 'ast-container') {
+                    // For container elements, find the end by looking at the substructure
+                    if (next.subStructure && next.subStructure.length > 0) {
+                        const lastSubElement = next.subStructure.at(-1)!;
+                        endLine = lastSubElement.location.line + 1; // Next line after last sub-element  
+                        endChar = startChar; // Same char position as start (the closing paren)
+                    }
+                } else {
+                    // For non-container elements, calculate based on the value content
+                    const valueLines = next.value.split(/\r\n|\r|\n/);
+                    endLine = next.location.line + valueLines.length - 1;
+                    endChar = next.location.char + (valueLines.at(-1)?.length || 0);
+                }
 
-                return util.codeFailure(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} contains unknown command '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: endLine, char: endChar } });
+                return util.codeFailure(`Unknown block '${next.value}' in section-meta block at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: next.location.line, char: startChar }, end: { line: endLine, char: endChar } });
             }
     
             const subtitle = parseSubtitle(sectionMeta.subStructure, sectionMeta.location, sectionMeta.location.documentDepth + 2);
