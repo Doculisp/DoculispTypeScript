@@ -166,9 +166,9 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
         
                 if(title.type === 'ast-container') {
                     const next = title.subStructure[0] as AtomAst;
-                    const endChar = next.location.char + next.value.length;
+                    const endChar = next.location.char + next.value.length - 1;
 
-                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: next.location.line, char: endChar } });
+                    return util.codeFailure(`Unknown block '${next.value}' in title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${next.location.char}`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: next.location.line, char: endChar } });
                 }
     
                 let linkText = getLinkText(title, refLink);
