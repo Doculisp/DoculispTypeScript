@@ -1,6 +1,6 @@
 import { containerPromise } from "../../../src/moduleLoader";
 import { configure } from "approvals/lib/config";
-import { getVerifier } from "../../tools";
+import { getVerifier, verifyWithGiven } from "../../tools";
 import { Options } from "approvals/lib/Core/Options";
 import { IContainer, ITestableContainer } from "../../../src/types/types.containers";
 import { TokenFunction } from '../../../src/types/types.tokens';
@@ -44,7 +44,7 @@ describe('tokenizer', () => {
 
         const result = tokenizer(parseResult);
 
-        verifyAsJson(result);
+        verifyWithGiven(verifyAsJson, result, false, parseResult)
     });
 
     it('should return empty if given an empty parse result', () => {

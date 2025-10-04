@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "main.dlisp",
     "end": {
-      "char": 15,
+      "char": 19,
       "line": 5
     },
-    "message": "Author block at 'main.dlisp' Line: 4, Char: 6 contains unknown child block of 'title' at Line: 5, Char: 10.",
+    "message": "Unknown block 'title' in author block at 'main.dlisp' Line: 5, Char: 9",
     "start": {
-      "char": 10,
+      "char": 9,
       "line": 5
     },
     "success": false,

@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "../main.dlisp",
     "end": {
-      "char": 20,
+      "char": 29,
       "line": 9
     },
-    "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown command 'type' at Line: 9, Char: 16.",
+    "message": "Unknown block 'type' in content block at '../main.dlisp' Line: 9, Char: 15",
     "start": {
-      "char": 16,
+      "char": 15,
       "line": 9
     },
     "success": false,

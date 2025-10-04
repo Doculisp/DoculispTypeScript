@@ -6,9 +6,9 @@
       "char": 12,
       "line": 4
     },
-    "message": "Author block at 'main.dlisp' Line: 4, Char: 6 does not contain the author's name.",
+    "message": "Missing author name in author block at 'main.dlisp' Line: 4, Char: 5",
     "start": {
-      "char": 6,
+      "char": 5,
       "line": 4
     },
     "success": false,

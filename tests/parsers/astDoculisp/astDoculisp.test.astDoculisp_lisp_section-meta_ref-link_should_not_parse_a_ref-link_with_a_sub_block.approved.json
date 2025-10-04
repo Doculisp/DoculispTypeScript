@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "main.dlisp",
     "end": {
-      "char": 5,
-      "line": 5
+      "char": 26,
+      "line": 4
     },
-    "message": "The ref-link block at 'main.dlisp' Line: 4, Char: 6 contains unknown block 'weird' at Line: 4, Char: 16.",
+    "message": "Unknown block 'weird' in ref-link block at 'main.dlisp' Line: 4, Char: 15",
     "start": {
-      "char": 6,
+      "char": 15,
       "line": 4
     },
     "success": false,

@@ -6,7 +6,7 @@
       "char": 11,
       "line": 1
     },
-    "message": "Inline code block at 'C:/examples/badInline.md' Line: 1, Char: 1 contains a new line before closing.",
+    "message": "Inline code block cannot contain line breaks at 'C:/examples/badInline.md' Line: 1, Char: 1",
     "start": {
       "char": 1,
       "line": 1

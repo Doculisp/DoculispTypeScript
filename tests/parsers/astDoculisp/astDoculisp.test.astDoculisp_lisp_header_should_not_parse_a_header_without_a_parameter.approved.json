@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "S:/ome/file.md",
     "end": {
-      "char": 1,
-      "line": 3
+      "char": 7,
+      "line": 2
     },
-    "message": "Dynamic Header at 'S:/ome/file.md' Line: 2, Char: 6 is missing the header text",
+    "message": "Missing header text in dynamic header at 'S:/ome/file.md' Line: 2, Char: 5",
     "start": {
-      "char": 6,
+      "char": 5,
       "line": 2
     },
     "success": false,

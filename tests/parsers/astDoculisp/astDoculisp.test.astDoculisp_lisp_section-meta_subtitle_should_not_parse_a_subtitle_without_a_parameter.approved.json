@@ -6,9 +6,9 @@
       "char": 14,
       "line": 4
     },
-    "message": "The subtitle block at 'main.dlisp' Line: 4, Char: 6 is missing the subtitle text.",
+    "message": "Missing subtitle text in subtitle block at 'main.dlisp' Line: 4, Char: 5",
     "start": {
-      "char": 6,
+      "char": 5,
       "line": 4
     },
     "success": false,

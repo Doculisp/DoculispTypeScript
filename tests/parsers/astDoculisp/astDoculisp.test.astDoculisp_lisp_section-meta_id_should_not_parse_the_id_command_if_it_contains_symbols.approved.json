@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "main.md",
     "end": {
-      "char": 13,
+      "char": 12,
       "line": 5
     },
-    "message": "Symbol(s) in section id my-✨-id' at 'main.md' Line: 5, Char: 6\n'✨' @ id char 4",
+    "message": "Invalid character '✨' in section id 'my-✨-id' at 'main.md' Line: 5, Char: 6",
     "start": {
-      "char": 6,
+      "char": 12,
       "line": 5
     },
     "success": false,

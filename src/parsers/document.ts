@@ -307,16 +307,9 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             if(parsed.success) {
                 if(opened) {
-                    let [_pieces, _leftover] = parsed.value;
-                    
-                    // Calculate the end of the input
-                    const inputLines = toParse.split(/\r\n|\r|\n/);
-                    const lastLine = starting.line + inputLines.length - 1;
-                    const lastChar = inputLines.length === 1 ? 
-                        starting.char + (inputLines[0]?.length || 0) : 
-                        (inputLines[inputLines.length - 1]?.length || 0);
+                    let [_, leftover] = parsed.value;
 
-                    return util.codeFailure(`Multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} does not close`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
+                    return util.codeFailure(`Missing close marker for multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: leftover.location.line, char: leftover.location.char } });
                 }
                 
                 const [pieces, leftover] = parsed.value;
@@ -368,7 +361,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                 }
                 
                 if(doesIt.startWithAnyNewline.test(input)){
-                    return util.codeFailure(`Inline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} contains a new line before closing.`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: current.line, char: current.char } });
+                    return util.codeFailure(`Inline code block cannot contain line breaks at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: current.line, char: current.char - 1 } });
                 }
 
                 return internals.noResultFound();
@@ -420,13 +413,9 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             if(parsed.success) {
                 if(opened) {
-                    let [pieces, _leftover] = parsed.value;
-                    let lastPiece = pieces[pieces.length ] as string;
-                    let lastLines = (lastPiece?.split(/\r\n|\r|\n/) || []);
-                    let lastLine = starting.line + lastLines.length ;
-                    let lastChar = starting.char + (lastLines.at(-1)?.length || 1);
+                    let [_, leftover] = parsed.value;
 
-                    return util.codeFailure(`Inline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} does not close`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
+                    return util.codeFailure(`Missing close backtick for inline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: leftover.location.line, char: leftover.location.char - 1 } });
                 }
     
                 const [parts, leftover] = parsed.value;
@@ -456,10 +445,8 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             function tryParseDoculispOpen(input: string, current: ILocation): StringStepParseResult<DocumentPart> {
                 if(doesIt.startWithDocuLisp.test(input)) {
                     if(0 < depth) {
-                        const inputLines = input.split(/\r\n|\r|\n/);
-                        let endLine = inputLines.length  + current.line;
-                        let endChar = (inputLines.at(-1)?.length || 1) + current.char;
-                        return util.codeFailure(`Doculisp Block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} contains an embedded doculisp block at Line: ${current.line}, Char: ${current.char}.`, { documentPath: projectLocation.documentPath, start: { line: current.line, char: current.char }, end: { line: endLine, char: endChar } });
+                        const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
+                        return util.codeFailure(`Embedded doculisp block not allowed at '${starting.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}`, { documentPath: projectLocation.documentPath, start: { line: current.line, char: current.char }, end: { line: current.line, char: current.char + parsed.length - 1 } });
                     }
     
                     const parsed: string = (input.match(doesIt.startWithDocuLisp) as any)[0];
@@ -566,7 +553,7 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
                         (lastPiece?.location?.char || 1) + (lastPiece?.text?.length || 0) - 1 : 
                         (lastLines.at(-1)?.length || 0);
 
-                    return util.codeFailure(`Doculisp block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} is not closed.`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
+                    return util.codeFailure(`Missing close parenthesis in doculisp block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
     
                 const [parts, leftover] = parsed.value;
@@ -674,13 +661,9 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(opened) {
-                    let [pieces, _leftover] = parsed.value;
-                    let lastPiece = pieces[pieces.length ] as DocumentPart;
-                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
-                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length ;
-                    let lastChar = (lastPiece?.location?.char || 1) + (lastLines.at(-1)?.length || 1);
+                    let [_, leftover] = parsed.value;
                     
-                    return util.codeFailure(`Open HTML Comment at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char} but does not close.`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
+                    return util.codeFailure(`Missing close tag for HTML comment at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: leftover.location.line, char: leftover.location.char - 1 } });
                 }
 
                 const [result, leftover] = parsed.value;
@@ -891,10 +874,10 @@ function lineBuilder(util: IUtil, trimArray: ITrimArray): HandleValue<DocumentPa
 function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, util: IUtil, trimArray: ITrimArray): Valid<DocumentParser> {    
     return function (documentText: string, projectLocation: IProjectLocation): ResultCode<DocumentMap> {
         if(projectLocation.documentDepth <= 0) {
-            return util.codeFailure(`Document Depth must be a value of 1 or larger.`, { documentPath: projectLocation.documentPath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
+            return util.codeFailure(`Invalid document depth at '${projectLocation.documentPath}' Line: 1, Char: 1. Depth must be 1 or larger.`, { documentPath: projectLocation.documentPath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
         }
         if(projectLocation.documentIndex <= 0) {
-            return util.codeFailure(`Document Index must be a value of 1 or larger.`, { documentPath: projectLocation.documentPath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
+            return util.codeFailure(`Invalid document index at '${projectLocation.documentPath}' Line: 1, Char: 1. Index must be 1 or larger.`, { documentPath: projectLocation.documentPath, start: { line: 1, char: 1 }, end: { line: 1, char: 1 } });
         }
 
         const partParsers = getPartParsers(projectLocation, doesIt, parserBuilder, util);
@@ -922,12 +905,13 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
         if(parsed.success) {
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
-                const errorItem = leftover.remaining;
                 const errorStart = leftover.location.increaseChar(-1);
-                const errorLines = errorItem.split(/\r\n|\r|\n/);
-                const endLine = errorStart.line + errorLines.length;
-                const endChar = errorLines.at(-1)?.length || 1;
-                return util.codeFailure(`Doculisp block at '${errorStart.documentPath.fullName}' Line: 1, Char: 1 has something not contained in parenthesis at Line: ${errorStart.line}, Char: ${errorStart.char}.`, { documentPath, start: { line: errorStart.line, char: errorStart.line }, end: { line: endLine, char: endChar } });
+                // Use the leftover location directly with adjustments
+                return util.codeFailure(`Extra content outside parenthesis in doculisp block at '${errorStart.documentPath.fullName}' Line: ${errorStart.line}, Char: ${errorStart.char}`, { 
+                    documentPath, 
+                    start: { line: errorStart.line, char: errorStart.char - 2 }, 
+                    end: { line: leftover.location.line + 1, char: errorStart.char } 
+                });
             }
 
             const lineConcat = parserBuilder.createArrayParser(lineBuilder(util, trimArray));

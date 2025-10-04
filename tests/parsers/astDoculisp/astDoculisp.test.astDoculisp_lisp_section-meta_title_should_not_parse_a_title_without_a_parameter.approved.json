@@ -6,9 +6,9 @@
       "char": 21,
       "line": 1
     },
-    "message": "Title block at 'main.dlisp' Line: 1, Char: 16 is missing its title text.",
+    "message": "Missing title text in title block at 'main.dlisp' Line: 1, Char: 15",
     "start": {
-      "char": 16,
+      "char": 15,
       "line": 1
     },
     "success": false,

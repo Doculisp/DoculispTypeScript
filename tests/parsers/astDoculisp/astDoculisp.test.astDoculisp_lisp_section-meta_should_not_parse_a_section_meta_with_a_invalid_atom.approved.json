@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "./_main.md",
     "end": {
-      "char": 13,
+      "char": 24,
       "line": 5
     },
-    "message": "The section-meta block at './_main.md' Line: 3, Char: 6 contains unknown command 'bad' at Line: 5, Char: 10.",
+    "message": "Unknown block 'bad' in section-meta block at './_main.md' Line: 5, Char: 9",
     "start": {
-      "char": 10,
+      "char": 9,
       "line": 5
     },
     "success": false,

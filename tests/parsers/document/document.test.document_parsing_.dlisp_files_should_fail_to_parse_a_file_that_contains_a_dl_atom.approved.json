@@ -6,7 +6,7 @@
       "char": 3,
       "line": 1
     },
-    "message": "Doculisp Block at 'C:/bad/extraDl.dlisp' Line: 1, Char: 1 contains an embedded doculisp block at Line: 1, Char: 1.",
+    "message": "Embedded doculisp block not allowed at 'C:/bad/extraDl.dlisp' Line: 1, Char: 1",
     "start": {
       "char": 1,
       "line": 1

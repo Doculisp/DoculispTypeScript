@@ -6,7 +6,7 @@
       "char": 1,
       "line": 10
     },
-    "message": "Doculisp block at 'C:/main.dlisp' Line: 2, Char: 1 is not closed.",
+    "message": "Missing close parenthesis in doculisp block at 'C:/main.dlisp' Line: 2, Char: 1",
     "start": {
       "char": 1,
       "line": 2

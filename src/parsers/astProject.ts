@@ -180,19 +180,19 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 if(0 === sources.length) {
                     const lastAst = ((originalAst as CoreAst[]) || []).map(a => a.value).join('\n');
                     const lastLines = lastAst.split(/\r\n|\r|\n/);
-                    const endLine = originalLocation.line + lastLines.length ;
-                    const endChar = lastLines.at(-1)?.length || 1;
+                    const endLine = originalLocation.line + lastLines.length + 1;
+                    const endChar = originalLocation.char - 1;
 
-                    return util.codeFailure(`Document identifier block at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${originalLocation.char} does not contain a source block.`, { documentPath: originalLocation.documentPath, start: { line: originalLocation.line, char: originalLocation.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Missing source block in document at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${endChar}`, { documentPath: originalLocation.documentPath, start: { line: originalLocation.line, char: endChar }, end: { line: endLine, char: endChar } });
                 }
 
                 if(0 === outputs.length) {
                     const lastAst = ((originalAst as CoreAst[]) || []).map(a => a.value).join('\n');
                     const lastLines = lastAst.split(/\r\n|\r|\n/);
-                    const endLine = originalLocation.line + lastLines.length ;
-                    const endChar = lastLines.at(-1)?.length || 1;
+                    const endLine = originalLocation.line + lastLines.length + 1;
+                    const endChar = originalLocation.char - 1;
 
-                    return util.codeFailure(`Document identifier block at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${originalLocation.char} does not contain a output block.`, { documentPath: originalLocation.documentPath, start: { line: originalLocation.line, char: originalLocation.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Missing output block in document at '${originalLocation.documentPath}' Line: ${originalLocation.line}, Char: ${endChar}`, { documentPath: originalLocation.documentPath, start: { line: originalLocation.line, char: endChar }, end: { line: endLine, char: endChar } });
                 }
 
                 if(1 < sources.length) {
@@ -217,7 +217,8 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
                 const output = outputs[0] as IOutput;
 
                 if(id){
-                    variableTable.addGlobalValue(id, { type: 'variable-id', value: output.output, source: current, headerLinkText: false });
+                    const idLocation = util.location(originalLocation.documentPath, originalLocation.documentDepth, originalLocation.documentIndex, originalLocation.line, originalLocation.char - 1);
+                    variableTable.addGlobalValue(id, { type: 'variable-id', value: output.output, source: idLocation, headerLinkText: false });
                 }
 
                 const found: IProjectDocument = {
@@ -248,32 +249,26 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
             const table = textHelper.symbolLocation(id)
             if(!!table) {
-                let bads = Object.keys(table);
-                let badMsg = bads.map(badS => `'${badS}' @ id char ${table[badS]}`).join('\n\t');
-                const badLines = id.split(/\r\n|\r|\n/);
-                let lastLine = current.line + badLines.length ;
-                let lastChar = badLines.at(-1)?.length || 1;
+                const firstBad = Object.keys(table)[0];
+                const charPosition = current.char + id.length - 1;
 
-                return util.codeFailure(`Symbol(s) in document id ${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}\n${badMsg}`, { documentPath: current.documentPath, start: { line: current.line, char: current.char }, end: { line: lastLine, char: lastChar } });
+                return util.codeFailure(`Invalid character '${firstBad}' in document id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}`, { documentPath: current.documentPath, start: { line: current.line, char: charPosition }, end: { line: current.line, char: charPosition } });
             }
 
             if(!textHelper.isLowercase(id)) {
-                const badLines = id.split(/\r\n|\r|\n/);
-                let lastLine = current.line + badLines.length ;
-                let lastChar = badLines.at(-1)?.length || 1;
+                const endChar = current.char + id.length - 1;
 
-                return util.codeFailure(`Id must be lowercase '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: current.line, char: current.char }, end: { line: lastLine, char: lastChar } });
+                return util.codeFailure(`Document id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: current.line, char: current.char }, end: { line: current.line, char: endChar } });
             }
 
             if(variableTable.hasKey(id)) {
                 let orig = variableTable.getValue(id);
                 let msg = '';
-                const badLines = id.split(/\r\n|\r|\n/);
-                let lastLine = current.line + badLines.length ;
-                let lastChar = badLines.at(-1)?.length || 1;
+                let lastLine = current.line;
+                let lastChar = current.char + id.length - 1;
 
                 if(orig && orig.type === 'variable-id') {
-                    msg = `\n\tOriginal us of Id was in '${orig.source.documentPath}' Line: ${orig.source.line}, Char: ${orig.source.char}.`;
+                    msg = ` Previously used at Line: ${orig.source.line}, Char: ${orig.source.char}.`;
                 }
 
                 return util.codeFailure(`Duplicate id '${id}' at '${current.documentPath.fullName}' Line: ${current.line}, Char: ${current.char}.${msg}`, { documentPath: current.documentPath, start: { line: current.line, char: current.char }, end: { line: lastLine, char: lastChar } });
@@ -368,13 +363,8 @@ function buildAstProject(internals: IInternals, util: IUtil, trimArray: ITrimArr
 
         if(1 < result.length) {
             const bad = result[1] as IProjectDocuments;
-            const badEnd = bad.documents.at(-1) as IProjectDocument;
-            const badLines = (badEnd?.sourcePath?.fullName?.split(/\r\n|\r|\n/) || []);
 
-            const lastLine = (badEnd?.location?.line || 1) + badLines.length + bad.location.line;
-            const lastChar = badLines.at(-1)?.length || 1;
-
-            return util.codeFailure(`Project file may only contain a single documents block. Duplicate documents block detected at '${bad.location.documentPath.fullName}' Line: ${bad.location.line}, Char: ${bad.location.char}.`, { documentPath: bad.location.documentPath, start: { line: bad.location.line, char: bad.location.char }, end: { line: lastLine, char: lastChar } });
+            return util.codeFailure(`Duplicate documents block at '${bad.location.documentPath.fullName}' Line: ${bad.location.line}, Char: 1. Only one allowed per project file.`, { documentPath: bad.location.documentPath, start: { line: bad.location.line, char: 1 }, end: { line: bad.location.line, char: 11 } });
         }
 
         return util.ok(result[0] as IProjectDocuments);

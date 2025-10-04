@@ -6,9 +6,9 @@
       "char": 11,
       "line": 2
     },
-    "message": "Heading id 'First' at 'S:/ome/file.md' Line: 2, Char: 6 must be lowercase. Did you mean 'first'?",
+    "message": "Heading id 'First' at 'S:/ome/file.md' Line: 2, Char: 7 must be lowercase. Did you mean 'first'?",
     "start": {
-      "char": 6,
+      "char": 7,
       "line": 2
     },
     "success": false,

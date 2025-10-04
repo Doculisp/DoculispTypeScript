@@ -3,10 +3,10 @@
   "999_result": {
     "documentPath": "/docs.dlproj",
     "end": {
-      "char": 6,
-      "line": 11
+      "char": 15,
+      "line": 10
     },
-    "message": "Duplicate id 'readme' at '/docs.dlproj' Line: 10, Char: 10.\n\tOriginal us of Id was in '/docs.dlproj' Line: 5, Char: 14.",
+    "message": "Duplicate id 'readme' at '/docs.dlproj' Line: 10, Char: 10. Previously used at Line: 4, Char: 9.",
     "start": {
       "char": 10,
       "line": 10

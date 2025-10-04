@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "main.md",
     "end": {
-      "char": 11,
+      "char": 13,
       "line": 5
     },
-    "message": "Section id 'my-Id' at 'main.md' Line: 5, Char: 6 contains must be lowercase. Did you mean 'my-id'?",
+    "message": "Section id 'my-Id' at 'main.md' Line: 5, Char: 9 must be lowercase. Did you mean 'my-id'?",
     "start": {
-      "char": 6,
+      "char": 9,
       "line": 5
     },
     "success": false,

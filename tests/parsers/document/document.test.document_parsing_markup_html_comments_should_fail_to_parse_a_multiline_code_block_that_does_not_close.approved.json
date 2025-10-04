@@ -6,7 +6,7 @@
       "char": 1,
       "line": 5
     },
-    "message": "Multiline code block at 'C:/bad/examples/multiline.md' Line: 1, Char: 1 does not close",
+    "message": "Missing close marker for multiline code block at 'C:/bad/examples/multiline.md' Line: 1, Char: 1",
     "start": {
       "char": 1,
       "line": 1

@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "./two/sections.dlisp",
     "end": {
-      "char": 11,
-      "line": 7
+      "char": 1,
+      "line": 8
     },
-    "message": "The section-meta block at './two/sections.dlisp' Line: 6, Char: 2 is a duplicate block. Only one section-meta block allowed per file.",
+    "message": "Duplicate section-meta block at './two/sections.dlisp' Line: 6, Char: 1. Only one allowed per file.",
     "start": {
-      "char": 2,
+      "char": 1,
       "line": 6
     },
     "success": false,

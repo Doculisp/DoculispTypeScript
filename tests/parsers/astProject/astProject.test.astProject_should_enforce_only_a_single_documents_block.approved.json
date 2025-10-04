@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "./myBad.dlproj",
     "end": {
-      "char": 1,
-      "line": 4
+      "char": 11,
+      "line": 3
     },
-    "message": "Project file may only contain a single documents block. Duplicate documents block detected at './myBad.dlproj' Line: 3, Char: 2.",
+    "message": "Duplicate documents block at './myBad.dlproj' Line: 3, Char: 1. Only one allowed per project file.",
     "start": {
-      "char": 2,
+      "char": 1,
       "line": 3
     },
     "success": false,

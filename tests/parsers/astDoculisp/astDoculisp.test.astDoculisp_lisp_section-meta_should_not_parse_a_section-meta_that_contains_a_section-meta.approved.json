@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "A:/malformed/file.dlisp",
     "end": {
-      "char": 18,
-      "line": 3
+      "char": 5,
+      "line": 5
     },
-    "message": "The section-meta block at 'A:/malformed/file.dlisp' Line: 2, Char: 2 contains unknown command 'section-meta' at Line: 3, Char: 6.",
+    "message": "Unknown block 'section-meta' in section-meta block at 'A:/malformed/file.dlisp' Line: 3, Char: 5",
     "start": {
-      "char": 6,
+      "char": 5,
       "line": 3
     },
     "success": false,

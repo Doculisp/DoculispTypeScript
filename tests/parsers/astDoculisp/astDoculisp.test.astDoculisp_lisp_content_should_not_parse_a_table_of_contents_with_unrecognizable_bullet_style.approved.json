@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "./itty.dlisp",
     "end": {
-      "char": 17,
+      "char": 21,
       "line": 9
     },
-    "message": "The toc block at './itty.dlisp' Line: 9, Char: 11 has unknown bullet style 'unknown'.",
+    "message": "Unknown bullet style 'unknown' in toc block at './itty.dlisp' Line: 9, Char: 15",
     "start": {
-      "char": 11,
+      "char": 15,
       "line": 9
     },
     "success": false,

@@ -3,13 +3,13 @@
   "999_result": {
     "documentPath": "main.dlisp",
     "end": {
-      "char": 14,
+      "char": 27,
       "line": 5
     },
-    "message": "The section-meta block at 'main.dlisp' Line: 2, Char: 2 has more then one ref-link.",
+    "message": "Duplicate ref-link in section-meta block at 'main.dlisp' Line: 5, Char: 5",
     "start": {
-      "char": 2,
-      "line": 2
+      "char": 5,
+      "line": 5
     },
     "success": false,
     "type": "code-fail"

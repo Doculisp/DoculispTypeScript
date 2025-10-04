@@ -62,7 +62,7 @@
       "char": 19,
       "line": 2
     },
-    "message": "Malformed lisp at {\"path\":\"./_main.dlisp\",\"line\":1,\"char\":1} - missing close parenthesis",
+    "message": "Missing close parenthesis in block at './_main.dlisp' Line: 1, Char: 1",
     "start": {
       "char": 1,
       "line": 1

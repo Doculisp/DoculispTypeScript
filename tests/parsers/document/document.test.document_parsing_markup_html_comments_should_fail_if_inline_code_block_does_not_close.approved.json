@@ -6,7 +6,7 @@
       "char": 10,
       "line": 1
     },
-    "message": "Inline code block at 'C:/bad/noCloseInline.md' Line: 1, Char: 1 does not close",
+    "message": "Missing close backtick for inline code block at 'C:/bad/noCloseInline.md' Line: 1, Char: 1",
     "start": {
       "char": 1,
       "line": 1

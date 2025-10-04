@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "S:/ome/file.md",
     "end": {
-      "char": 11,
+      "char": 10,
       "line": 2
     },
-    "message": "Symbol(s) in heading id f|rst' at 'S:/ome/file.md' Line: 2, Char: 6\n'|' @ id char 2",
+    "message": "Invalid character '|' in heading id 'f|rst' at 'S:/ome/file.md' Line: 2, Char: 6",
     "start": {
-      "char": 6,
+      "char": 10,
       "line": 2
     },
     "success": false,

@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "main.dlisp",
     "end": {
-      "char": 37,
+      "char": 45,
       "line": 1
     },
-    "message": "The section-meta block at 'main.dlisp' Line: 1, Char: 2 contains more then a single title block.",
+    "message": "Duplicate title in section-meta block at 'main.dlisp' Line: 1, Char: 31",
     "start": {
-      "char": 2,
+      "char": 31,
       "line": 1
     },
     "success": false,

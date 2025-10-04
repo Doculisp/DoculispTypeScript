@@ -1,12 +1,12 @@
 {
   "documentPath": "D:\\Development\\github\\Doculisp\\DoculispTypeScript\\tests\\Sample\\simpleBadLink\\parsers\\document.md",
   "end": {
-    "char": 22,
+    "char": 31,
     "line": 32
   },
-  "message": "Unknown id 'mains' at 'D:\\Development\\github\\Doculisp\\DoculispTypeScript\\tests\\Sample\\simpleBadLink\\parsers\\document.md' Line: 32, Char: 18",
+  "message": "Unknown id 'mains' at 'D:\\Development\\github\\Doculisp\\DoculispTypeScript\\tests\\Sample\\simpleBadLink\\parsers\\document.md' Line: 32, Char: 27",
   "start": {
-    "char": 18,
+    "char": 27,
     "line": 32
   },
   "success": false,

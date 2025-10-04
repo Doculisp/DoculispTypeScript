@@ -6,7 +6,7 @@
       "char": 4,
       "line": 5
     },
-    "message": "Open HTML Comment at 'C:/examples/bad.md' Line: 1, Char: 1 but does not close.",
+    "message": "Missing close tag for HTML comment at 'C:/examples/bad.md' Line: 1, Char: 1",
     "start": {
       "char": 1,
       "line": 1

@@ -6,9 +6,9 @@
       "char": 14,
       "line": 3
     },
-    "message": "The ref-link at 'main.dlisp' Line: 3, Char: 6 is missing the ref-link text.",
+    "message": "Missing ref-link text in ref-link block at 'main.dlisp' Line: 3, Char: 5",
     "start": {
-      "char": 6,
+      "char": 5,
       "line": 3
     },
     "success": false,

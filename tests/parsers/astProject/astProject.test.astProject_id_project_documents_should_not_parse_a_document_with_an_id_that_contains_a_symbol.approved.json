@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "/docs.dlproj",
     "end": {
-      "char": 7,
-      "line": 5
+      "char": 16,
+      "line": 4
     },
-    "message": "Symbol(s) in document id readmeϐ' at '/docs.dlproj' Line: 4, Char: 10\n'ϐ' @ id char 7",
+    "message": "Invalid character 'ϐ' in document id 'readmeϐ' at '/docs.dlproj' Line: 4, Char: 10",
     "start": {
-      "char": 10,
+      "char": 16,
       "line": 4
     },
     "success": false,

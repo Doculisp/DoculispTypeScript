@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "./itty.dlisp",
     "end": {
-      "char": 12,
+      "char": 21,
       "line": 9
     },
-    "message": "The content block at './itty.dlisp' Line: 9, Char: 2 has unknown command '#' at Line: 9, Char: 11.",
+    "message": "Unknown block '#' in content block at './itty.dlisp' Line: 9, Char: 10",
     "start": {
-      "char": 11,
+      "char": 10,
       "line": 9
     },
     "success": false,

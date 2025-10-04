@@ -4,7 +4,7 @@
     "char": 1,
     "line": 1
   },
-  "message": "Document Index must be a value of 1 or larger.",
+  "message": "Invalid document index at 'C:/my_document.md' Line: 1, Char: 1. Index must be 1 or larger.",
   "start": {
     "char": 1,
     "line": 1

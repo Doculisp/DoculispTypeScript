@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "../main.dlisp",
     "end": {
-      "char": 9,
+      "char": 12,
       "line": 9
     },
-    "message": "The content block at '../main.dlisp' Line: 9, Char: 2 contains unknown parameter 'toc'",
+    "message": "Unknown parameter 'toc' in content block at '../main.dlisp' Line: 9, Char: 10",
     "start": {
-      "char": 2,
+      "char": 10,
       "line": 9
     },
     "success": false,

@@ -6,9 +6,9 @@
       "char": 9,
       "line": 7
     },
-    "message": "The content block at '../noInclude.dlisp' Line: 7, Char: 2 exists without an include block that has external files.",
+    "message": "Content block requires external files in include block at '../noInclude.dlisp' Line: 7, Char: 1",
     "start": {
-      "char": 2,
+      "char": 1,
       "line": 7
     },
     "success": false,

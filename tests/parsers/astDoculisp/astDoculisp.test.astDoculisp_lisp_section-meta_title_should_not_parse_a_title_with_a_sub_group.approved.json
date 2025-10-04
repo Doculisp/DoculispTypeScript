@@ -3,10 +3,10 @@
   "999_result": {
     "documentPath": "main.dlisp",
     "end": {
-      "char": 26,
+      "char": 25,
       "line": 1
     },
-    "message": "Title block at 'main.dlisp' Line: 1, Char: 16 contains unknown block 'bad' at Line: 1, Char: 23",
+    "message": "Unknown block 'bad' in title block at 'main.dlisp' Line: 1, Char: 23",
     "start": {
       "char": 23,
       "line": 1

@@ -3,12 +3,12 @@
   "999_result": {
     "documentPath": "./project.dlproj",
     "end": {
-      "char": 1,
-      "line": 4
+      "char": 5,
+      "line": 5
     },
-    "message": "Document identifier block at './project.dlproj' Line: 3, Char: 6 does not contain a output block.",
+    "message": "Missing output block in document at './project.dlproj' Line: 3, Char: 5",
     "start": {
-      "char": 6,
+      "char": 5,
       "line": 3
     },
     "success": false,
