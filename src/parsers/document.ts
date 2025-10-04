@@ -308,8 +308,17 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             if(parsed.success) {
                 if(opened) {
                     let [_, leftover] = parsed.value;
+                    let lastLine = leftover.location.line;
 
-                    return util.codeFailure(`Missing close marker for multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: leftover.location.line, char: leftover.location.char } });
+                    let lines = leftover.remaining.split(/\r\n|\r|\n/);
+                    if (1 < lines.length) {
+                        lastLine += lines.length - 1;
+                        if (lines.at(-1) === '') {
+                            lastLine -= 1;
+                        }
+                    }
+
+                    return util.codeFailure(`Missing close marker for multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: leftover.location.line - 1, char: leftover.location.char - 1 } });
                 }
                 
                 const [pieces, leftover] = parsed.value;

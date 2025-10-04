@@ -132,6 +132,22 @@ describe('document', () => {
 
                 verifyWithGiven(verifyAsJson, result, false, md);
             });
+
+            it('should not parse nested multiline code blocks when closing markers are unbalanced not ending in a new line', () => {
+                const md = `An example of an markdown document with nested code blocks that do not close:
+    \`\`\`\`markdown
+    # A document
+    
+    \`\`\`html
+    <a href="www.google.com">Google</a>
+    \`\`\`
+    
+    ## Sub section title
+    \`\`\`\`\``;
+                const result = parse(md, buildProjectLocation('C:/markdown/multiline.md', 4, 3));
+
+                verifyWithGiven(verifyAsJson, result, false, md);
+            });
         });
 
         describe('html comments', () => {

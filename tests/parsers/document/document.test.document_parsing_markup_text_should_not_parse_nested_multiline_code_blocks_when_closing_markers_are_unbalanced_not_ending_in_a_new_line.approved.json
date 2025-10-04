@@ -1,10 +1,10 @@
 {
-  "001_given_": "An example of an markdown document with nested code blocks that do not close:\n    ````markdown\n    # A document\n    \n    ```html\n    <a href=\"www.google.com\">Google</a>\n    ```\n    \n    ## Sub section title\n    `````\n    ",
+  "001_given_": "An example of an markdown document with nested code blocks that do not close:\n    ````markdown\n    # A document\n    \n    ```html\n    <a href=\"www.google.com\">Google</a>\n    ```\n    \n    ## Sub section title\n    `````",
   "999_result": {
     "documentPath": "C:/markdown/multiline.md",
     "end": {
-      "char": 4,
-      "line": 11
+      "char": 9,
+      "line": 10
     },
     "message": "Missing close marker for multiline code block at 'C:/markdown/multiline.md' Line: 2, Char: 5",
     "start": {
