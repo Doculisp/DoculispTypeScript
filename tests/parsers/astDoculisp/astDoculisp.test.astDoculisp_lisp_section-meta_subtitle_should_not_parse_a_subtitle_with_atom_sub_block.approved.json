@@ -1,0 +1,17 @@
+{
+  "001_given_": "\n(section-meta\n    (title My cool title)\n    (subtitle (unknown))\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 23,
+      "line": 4
+    },
+    "message": "Unknown block 'unknown' in subtitle block at 'main.dlisp' Line: 4, Char: 15",
+    "start": {
+      "char": 15,
+      "line": 4
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

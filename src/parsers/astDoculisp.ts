@@ -225,11 +225,21 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                 if(subtitle.type === 'ast-container') {
                     const next = subtitle.subStructure[0] as AtomAst;
-                    const nextLines = next.value.split(/\r\n|\r|\n/);
-                    const endLine = next.location.line + nextLines.length ;
-                    const endChar = nextLines.at(-1)?.length || 1;
+                    const startChar = next.location.char - 1;
+                    let endChar: number;
+                    let endLine: number;
+                    
+                    if(next.type === 'ast-command') {
+                        // Calculate end position with 1-based indexing: opening paren + "link-ref" + space + parameter + closing paren
+                        endChar = startChar + next.value.length + 1 + next.parameter.value.length + 1;
+                        endLine = next.location.line;
+                    } else {
+                        // For other types (ast-atom), include opening paren + value + closing paren
+                        endChar = startChar + next.value.length + 1;
+                        endLine = next.location.line;
+                    }
 
-                    return util.codeFailure(`The subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${subtitle.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: subtitle.location.line, char: subtitle.location.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Unknown block '${next.value}' in subtitle block at '${subtitle.location.documentPath.fullName}' Line: ${subtitle.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: next.location.line, char: startChar }, end: { line: endLine, char: endChar } });
                 }
     
                 return util.ok(headerize(depth, subtitle.parameter.value));

@@ -528,6 +528,18 @@ A story of a misbehaving parser.
                     verifyWithGiven(verifyAsJson, result, false, contents);
                 })
 
+                it('should not parse a subtitle with atom sub block', () => {
+                    const contents = `
+(section-meta
+    (title My cool title)
+    (subtitle (unknown))
+)
+`;
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 10));
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
+                });
+
                 it('should not parse multiple subtitles', () => {
                     const contents = `
 (section-meta
