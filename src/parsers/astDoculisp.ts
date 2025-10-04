@@ -134,11 +134,19 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 const titles = ast.filter(s => s.value === 'title');
         
                 if(1 < titles.length) {
-                    const lastBad = titles.at(-1) as AtomAst;
-                    const endLine = lastBad.location.line;
-                    const endChar = lastBad.location.char + lastBad.value.length;
+                    const duplicateTitle = titles[1] as AtomAst;
+                    const startChar = duplicateTitle.location.char - 1;
+                    let endChar: number;
+                    
+                    if(duplicateTitle.type === 'ast-command') {
+                        // Calculate end position with 1-based indexing: opening paren + "title" + space + parameter + closing paren
+                        endChar = startChar + duplicateTitle.value.length + 1 + duplicateTitle.parameter.value.length + 1;
+                    } else {
+                        // For other types (ast-atom), include opening paren + title value + closing paren
+                        endChar = startChar + duplicateTitle.value.length + 1;
+                    }
 
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} contains more then a single title block.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Duplicate title in section-meta block at '${location.documentPath.fullName}' Line: ${duplicateTitle.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: duplicateTitle.location.line, char: startChar }, end: { line: duplicateTitle.location.line, char: endChar } });
                 }
     
                 if(titles.length === 0) {

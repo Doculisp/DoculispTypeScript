@@ -1,0 +1,17 @@
+{
+  "001_given_": "(section-meta (title A Title) (title))",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 37,
+      "line": 1
+    },
+    "message": "Duplicate title in section-meta block at 'main.dlisp' Line: 1, Char: 31",
+    "start": {
+      "char": 31,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

@@ -305,6 +305,13 @@ A story of a misbehaving parser.
 
                     verifyWithGiven(verifyAsJson, result, false, contents);
                 });
+
+                it('should not parse multiple titles when second title has no parameter', () => {
+                    const contents = '(section-meta (title A Title) (title))';
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
+                });
             });
 
             describe('author', () => {
