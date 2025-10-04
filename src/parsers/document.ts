@@ -307,24 +307,15 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
     
             if(parsed.success) {
                 if(opened) {
-                    // Calculate the end position by analyzing the entire remaining text
-                    const allText = toParse;
-                    const lines = allText.split(/\r\n|\r|\n/);
-                    
-                    let endLine = lines.length;
-                    let endChar = 0;
-                    
-                    // If the string ends with a newline, ignore that final empty line
-                    if (lines.length > 0 && lines[lines.length - 1] === '') {
-                        endLine -= 1;
-                        if (endLine > 0 && lines[endLine - 1] !== undefined) {
-                            endChar = lines[endLine - 1]!.length;
-                        }
-                    } else if (lines.length > 0 && lines[lines.length - 1] !== undefined) {
-                        endChar = lines[lines.length - 1]!.length;
-                    }
+                    let [pieces, _leftover] = parsed.value;
+                    let lastPiece = pieces[pieces.length - 1] as DocumentPart;
+                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
+                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length - 1;
+                    let lastChar = lastLines.length === 1 ? 
+                        (lastPiece?.location?.char || 1) + (lastPiece?.text?.length || 0) - 1 : 
+                        (lastLines.at(-1)?.length || 0);
 
-                    return util.codeFailure(`Missing close marker for multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Missing close marker for multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
                 }
                 
                 const [pieces, leftover] = parsed.value;
@@ -560,15 +551,24 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             const parsed = parser.parse(toParse, starting);
             if(parsed.success) {
                 if(0 < depth) {
-                    let [pieces, _leftover] = parsed.value;
-                    let lastPiece = pieces[pieces.length - 1] as DocumentPart;
-                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
-                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length - 1;
-                    let lastChar = lastLines.length === 1 ? 
-                        (lastPiece?.location?.char || 1) + (lastPiece?.text?.length || 0) - 1 : 
-                        (lastLines.at(-1)?.length || 0);
+                    // Calculate the end position using the entire text and accounting for trailing newlines
+                    const allText = toParse;
+                    const lines = allText.split(/\r\n|\r|\n/);
+                    
+                    let endLine = lines.length;
+                    let endChar = 0;
+                    
+                    // If the string ends with a newline, ignore that final empty line
+                    if (lines.length > 0 && lines[lines.length - 1] === '') {
+                        endLine -= 1;
+                        if (endLine > 0 && lines[endLine - 1] !== undefined) {
+                            endChar = lines[endLine - 1]!.length;
+                        }
+                    } else if (lines.length > 0 && lines[lines.length - 1] !== undefined) {
+                        endChar = lines[lines.length - 1]!.length;
+                    }
 
-                    return util.codeFailure(`Missing close parenthesis in doculisp block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
+                    return util.codeFailure(`Missing close parenthesis in doculisp block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: endLine, char: endChar } });
                 }
     
                 const [parts, leftover] = parsed.value;
@@ -921,11 +921,11 @@ function documentParse(doesIt: IDocumentSearches, parserBuilder: IInternals, uti
             const [parts, leftover] = parsed.value;
             if(isDoculispFile && 0 < leftover.remaining.length) {
                 const errorStart = leftover.location.increaseChar(-1);
-                // Use the leftover location directly with adjustments
+                // Both start and end should point to the exact position of the extra parenthesis
                 return util.codeFailure(`Extra content outside parenthesis in doculisp block at '${errorStart.documentPath.fullName}' Line: ${errorStart.line}, Char: ${errorStart.char}`, { 
                     documentPath, 
-                    start: { line: errorStart.line, char: errorStart.char - 2 }, 
-                    end: { line: leftover.location.line + 1, char: errorStart.char } 
+                    start: { line: errorStart.line, char: errorStart.char }, 
+                    end: { line: errorStart.line, char: errorStart.char } 
                 });
             }
 

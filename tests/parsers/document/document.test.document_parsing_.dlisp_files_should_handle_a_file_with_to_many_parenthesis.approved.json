@@ -8,7 +8,7 @@
     },
     "message": "Extra content outside parenthesis in doculisp block at 'C:/main.dlisp' Line: 1, Char: 34",
     "start": {
-      "char": 32,
+      "char": 34,
       "line": 1
     },
     "success": false,
