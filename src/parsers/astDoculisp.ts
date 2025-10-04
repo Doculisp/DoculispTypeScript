@@ -158,9 +158,10 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 const title = titles[0] as AtomAst;
         
                 if(title.type === 'ast-atom') {
+                    const startChar = title.location.char - 1;
                     const endChar = title.location.char + title.value.length;
 
-                    return util.codeFailure(`Title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${title.location.char} is missing its title text.`, { documentPath: current.documentPath, start: { line: title.location.line, char: title.location.char }, end: { line: title.location.line, char: endChar } });
+                    return util.codeFailure(`Missing title text in title block at '${title.location.documentPath.fullName}' Line: ${title.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: title.location.line, char: startChar }, end: { line: title.location.line, char: endChar } });
                 }
         
                 if(title.type === 'ast-container') {
