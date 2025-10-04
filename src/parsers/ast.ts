@@ -158,7 +158,7 @@ function buildAstParser(util: IUtil, internals: IInternals, trimArray: ITrimArra
             const endLine = lastToken.location.line;
             const endChar = lastToken.location.char + lastTokenText.length - 1;
             
-            return util.codeFailure(`Malformed lisp at ${remaining.location} - missing close parenthesis`, { documentPath: remaining.location.documentPath, start: { line: container.location.line, char: container.location.char }, end: { line: endLine, char: endChar } });
+            return util.codeFailure(`Missing close parenthesis in block at '${container.location.documentPath}' Line: ${container.location.line}, Char: ${container.location.char}`, { documentPath: remaining.location.documentPath, start: { line: container.location.line, char: container.location.char }, end: { line: endLine, char: endChar } });
         }
 
         const close = remaining.remaining[0] as Token;
