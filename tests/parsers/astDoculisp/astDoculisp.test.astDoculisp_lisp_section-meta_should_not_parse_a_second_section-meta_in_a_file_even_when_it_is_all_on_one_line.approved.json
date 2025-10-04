@@ -1,0 +1,17 @@
+{
+  "001_given_": "(section-meta (title My Section))(section-meta (title A tale of two sections))",
+  "999_result": {
+    "documentPath": "./two/sections.dlisp",
+    "end": {
+      "char": 77,
+      "line": 1
+    },
+    "message": "Duplicate section-meta block at './two/sections.dlisp' Line: 1, Char: 33. Only one allowed per file.",
+    "start": {
+      "char": 33,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

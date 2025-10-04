@@ -456,10 +456,57 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
             }
 
             if(hasSectionMeta) {
-                const endLine = sectionMeta.location.line + sectionMeta.subStructure.length ;
-                const endChar = sectionMeta.subStructure.at(-1)!.location.char + sectionMeta.subStructure.at(-1)!.value.length;
+                // Check if this is a multi-line section-meta block
+                const isMultiLine = sectionMeta.subStructure && sectionMeta.subStructure.length > 0 && 
+                    sectionMeta.subStructure.some(element => element.location.line > sectionMeta.location.line);
+                
+                let startChar: number;
+                let endLine: number;
+                let endChar: number;
+                
+                if (isMultiLine) {
+                    // For multi-line case: use the original simple approach
+                    // Start and end at char 1, spanning the entire vertical block
+                    startChar = 1;
+                    endLine = sectionMeta.location.line + sectionMeta.subStructure.length + 1; // +1 for closing paren line  
+                    endChar = 1;
+                } else {
+                    // For single-line case: calculate precise character positions
+                    // The parser location points to the start of "section-meta", adjust to opening paren
+                    startChar = sectionMeta.location.char - 2;
+                    endLine = sectionMeta.location.line;
+                    endChar = startChar;
+                    
+                    // Calculate the total length of the section-meta block
+                    // Start with "(section-meta"
+                    endChar += 1 + sectionMeta.value.length; // 1 for opening paren + "section-meta"
+                    
+                    // Add the lengths of all substructure elements
+                    if (sectionMeta.subStructure && sectionMeta.subStructure.length > 0) {
+                        for (const element of sectionMeta.subStructure) {
+                            // Add opening paren for each sub-element
+                            endChar += 1;
+                            // Add the element value
+                            endChar += element.value.length;
+                            
+                            // Add parameter length if it's a command
+                            if (element.type === 'ast-command') {
+                                const command = element as IAstCommand;
+                                if (command.parameter) {
+                                    endChar += 1 + command.parameter.value.length; // 1 for space + parameter
+                                }
+                            }
+                            
+                            // Add closing paren for each sub-element
+                            endChar += 1;
+                        }
+                    }
+                    
+                    // Add 1 for the final closing parenthesis of the section-meta
+                    endChar += 1;
+                }
 
-                return util.codeFailure(`The section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${sectionMeta.location.char} is a duplicate block. Only one section-meta block allowed per file.`, { documentPath: current.documentPath, start: { line: sectionMeta.location.line, char: sectionMeta.location.char }, end: { line: endLine, char: endChar } });
+                return util.codeFailure(`Duplicate section-meta block at '${sectionMeta.location.documentPath.fullName}' Line: ${sectionMeta.location.line}, Char: ${startChar}. Only one allowed per file.`, { documentPath: current.documentPath, start: { line: sectionMeta.location.line, char: startChar }, end: { line: endLine, char: endChar } });
             }
     
             const badSections = sectionMeta.subStructure.filter(a => !['title', 'subtitle', 'ref-link', 'include', 'author', 'id'].includes(a.value));

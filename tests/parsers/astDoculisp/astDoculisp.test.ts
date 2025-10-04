@@ -244,6 +244,14 @@ describe('astDoculisp', () => {
                 verifyWithGiven(verifyAsJson, result, false, content);
             });
 
+            it('should not parse a second section-meta in a file even when it is all on one line', () => {
+                const content = `(section-meta (title My Section))(section-meta (title A tale of two sections))`;
+
+                const result = toResult(content, buildProjectLocation('./two/sections.dlisp', 3, 2));
+
+                verifyWithGiven(verifyAsJson, result, false, content);
+            });
+
             it('should not parse a section meta with a invalid atom', () => {
                 const content = `<!--
 (dl
