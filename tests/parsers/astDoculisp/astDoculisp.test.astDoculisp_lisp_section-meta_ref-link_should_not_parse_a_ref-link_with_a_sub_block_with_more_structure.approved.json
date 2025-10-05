@@ -1,0 +1,17 @@
+{
+  "001_given_": "\n(section-meta\n    (title My cool title✨)\n    (ref-link\n        (weird\n            block\n        )\n    )\n)\n",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 9,
+      "line": 7
+    },
+    "message": "Unknown block 'weird' in ref-link block at 'main.dlisp' Line: 5, Char: 9",
+    "start": {
+      "char": 9,
+      "line": 5
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

@@ -468,6 +468,21 @@ A story of a misbehaving parser.
                     verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
+                it('should not parse a ref-link with a sub block with more structure', () => {
+                    const contents = `
+(section-meta
+    (title My cool title✨)
+    (ref-link
+        (weird
+            block
+        )
+    )
+)
+`;
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 11));
+                    verifyWithGiven(verifyAsJson, result, false, contents);
+                });
+
                 it('should not parse multiple ref-links', () => {
                     const contents = `
 (section-meta
