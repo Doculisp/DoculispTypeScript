@@ -1,0 +1,17 @@
+{
+  "001_given_": "(section-meta (ref-link my_cool_title)(title My cool title✨)(ref-link my-cool-title))",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 84,
+      "line": 1
+    },
+    "message": "Duplicate ref-link in section-meta block at 'main.dlisp' Line: 1, Char: 61",
+    "start": {
+      "char": 61,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

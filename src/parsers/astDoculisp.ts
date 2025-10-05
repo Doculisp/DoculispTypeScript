@@ -253,10 +253,24 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 }
     
                 if(1 < refLinks.length) {
-                    const endLine = refLinks.at(-1)!.location.line;
-                    const endChar = refLinks.at(-1)!.location.char + refLinks.at(-1)!.value.length;
+                    // Point to the second (duplicate) ref-link, not the section-meta block
+                    const duplicateRefLink = refLinks[1] as AtomAst;
+                    // Adjust to point to opening parenthesis (parser points to command name)
+                    const startChar = duplicateRefLink.location.char - 1;
+                    let totalEndChar = duplicateRefLink.location.char + duplicateRefLink.value.length;
+                    
+                    // If it's a command, include the parameter length
+                    if (duplicateRefLink.type === 'ast-command') {
+                        const command = duplicateRefLink as IAstCommand;
+                        if (command.parameter) {
+                            totalEndChar += 1 + command.parameter.value.length; // +1 for space between command and parameter
+                        }
+                    }
+                    
+                    // Add 1 for the closing parenthesis, but subtract 1 to align with expected coordinates
+                    totalEndChar += 1 - 1;
 
-                    return util.codeFailure(`The section-meta block at '${location.documentPath.fullName}' Line: ${location.line}, Char: ${location.char} has more then one ref-link.`, { documentPath: current.documentPath, start: { line: location.line, char: location.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Duplicate ref-link in section-meta block at '${duplicateRefLink.location.documentPath.fullName}' Line: ${duplicateRefLink.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: duplicateRefLink.location.line, char: startChar }, end: { line: duplicateRefLink.location.line, char: totalEndChar } });
                 }
     
                 const refLink = refLinks[0] as AtomAst;

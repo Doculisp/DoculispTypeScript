@@ -473,6 +473,18 @@ A story of a misbehaving parser.
                     verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
+                it('should not parse multiple ref-links on one line', () => {
+                    const contents = `(section-meta (ref-link my_cool_title)(title My cool title✨)(ref-link my-cool-title))`;
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
+                    verifyWithGiven(verifyAsJson, result, false, contents);
+                });
+
+                it('should not parse multiple ref-links no parameter', () => {
+                    const contents = `(section-meta\n    (ref-link my_cool_title)\n    (title My cool title✨)\n    (ref-link)\n)`;
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 1, 1));
+                    verifyWithGiven(verifyAsJson, result, false, contents);
+                });
+
                 it('should strip out some special characters from the ref-link', () => {
                     const content = `<!--
     (dl
