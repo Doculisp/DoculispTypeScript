@@ -276,9 +276,11 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 const refLink = refLinks[0] as AtomAst;
     
                 if(refLink.type === 'ast-atom') {
+                    // Adjust to point to opening parenthesis (parser points to command name)
+                    const startChar = refLink.location.char - 1;
                     const endChar = refLink.location.char + refLink.value.length;
 
-                    return util.codeFailure(`The ref-link at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} is missing the ref-link text.`, { documentPath: current.documentPath, start: { line: refLink.location.line, char: refLink.location.char }, end: { line: refLink.location.line, char: endChar } });
+                    return util.codeFailure(`Missing ref-link text in ref-link block at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${startChar}`, { documentPath: current.documentPath, start: { line: refLink.location.line, char: startChar }, end: { line: refLink.location.line, char: endChar } });
                 }
     
                 if(refLink.type === 'ast-container') {

@@ -1,0 +1,17 @@
+{
+  "001_given_": "(section-meta (ref-link)(title My cool title✨))",
+  "999_result": {
+    "documentPath": "main.dlisp",
+    "end": {
+      "char": 24,
+      "line": 1
+    },
+    "message": "Missing ref-link text in ref-link block at 'main.dlisp' Line: 1, Char: 15",
+    "start": {
+      "char": 15,
+      "line": 1
+    },
+    "success": false,
+    "type": "code-fail"
+  }
+}

@@ -447,7 +447,14 @@ A story of a misbehaving parser.
 `;
                     const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
 
-                    verifyWithGiven(verifyAsJson, result, false, contents); // [RJK] Next
+                    verifyWithGiven(verifyAsJson, result, false, contents);
+                });
+
+                it('should not parse a ref-link with no parameter single line', () => {
+                    const contents = `(section-meta (ref-link)(title My cool title✨))`;
+                    const result = toResult(contents, buildProjectLocation('main.dlisp', 3, 10));
+
+                    verifyWithGiven(verifyAsJson, result, false, contents);
                 });
 
                 it('should not parse a ref-link with a sub block', () => {
