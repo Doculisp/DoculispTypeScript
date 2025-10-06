@@ -308,14 +308,23 @@ function getPartParsers(projectLocation: IProjectLocation, doesIt: IDocumentSear
             if(parsed.success) {
                 if(opened) {
                     let [pieces, _leftover] = parsed.value;
-                    let lastPiece = pieces[pieces.length - 1] as DocumentPart;
-                    let lastLines = (lastPiece?.text || '').split(/\r\n|\r|\n/);
-                    let lastLine = (lastPiece?.location?.line || 1) + lastLines.length - 1;
-                    let lastChar = lastLines.length === 1 ? 
-                        (lastPiece?.location?.char || 1) + (lastPiece?.text?.length || 0) - 1 : 
-                        (lastLines.at(-1)?.length || 0);
+                    
+                    // Calculate end position using the full remaining string
+                    let fullProcessedText = pieces.map(p => p.text).join('');
+                    let lines = fullProcessedText.split(/\r\n|\r|\n/);
+                    let endLine = starting.line + lines.length - 1;
+                    let endChar: number;
+                    
+                    // If the last line is empty (string ends with newline), subtract 1 from line count
+                    if (lines.length > 1 && lines[lines.length - 1] === '') {
+                        endLine = starting.line + lines.length - 2;
+                        endChar = lines[lines.length - 2]?.length || 0;
+                    } else {
+                        // Last line has content, use its length
+                        endChar = lines[lines.length - 1]?.length || 0;
+                    }
 
-                    return util.codeFailure(`Missing close marker for multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: lastLine, char: lastChar } });
+                    return util.codeFailure(`Missing close marker for multiline code block at '${starting.documentPath.fullName}' Line: ${starting.line}, Char: ${starting.char}`, { documentPath: projectLocation.documentPath, start: { line: starting.line, char: starting.char }, end: { line: endLine, char: endChar } });
                 }
                 
                 const [pieces, leftover] = parsed.value;
