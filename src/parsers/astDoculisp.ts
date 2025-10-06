@@ -285,11 +285,34 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
     
                 if(refLink.type === 'ast-container') {
                     const next = refLink.subStructure[0] as AtomAst;
-                    const nextLines = next.value.split(/\r\n|\r|\n/);
-                    const endLine = next.location.line + nextLines.length ;
-                    const endChar = nextLines.at(-1)?.length || 1;
+                    let endChar: number;
+                    let endLine: number;
+                    
+                    if(next.type === 'ast-command') {
+                        const command = next as IAstCommand;
+                        if (command.parameter) {
+                            // Check if this is a multi-line parameter by looking at the actual parameter location
+                            if (command.parameter.location.line > command.location.line) {
+                                // Multi-line case: parameter is on a different line
+                                endLine = command.parameter.location.line;
+                                endChar = command.parameter.location.char + command.parameter.value.length - 1;
+                            } else {
+                                // Single-line case: same pattern as subtitle
+                                endChar = next.location.char + next.value.length + 1 + command.parameter.value.length - 1;
+                                endLine = next.location.line;
+                            }
+                        } else {
+                            // Command without parameter
+                            endChar = next.location.char + next.value.length - 1;
+                            endLine = next.location.line;
+                        }
+                    } else {
+                        // For other types (ast-atom), use the value length
+                        endChar = next.location.char + next.value.length - 1;
+                        endLine = next.location.line;
+                    }
 
-                    return util.codeFailure(`The ref-link block at '${refLink.location.documentPath.fullName}' Line: ${refLink.location.line}, Char: ${refLink.location.char} contains unknown block '${next.value}' at Line: ${next.location.line}, Char: ${next.location.char}.`, { documentPath: current.documentPath, start: { line: refLink.location.line, char: refLink.location.char }, end: { line: endLine, char: endChar } });
+                    return util.codeFailure(`Unknown block '${next.value}' in ref-link block at '${next.location.documentPath.fullName}' Line: ${next.location.line}, Char: ${next.location.char}`, { documentPath: current.documentPath, start: { line: next.location.line, char: next.location.char }, end: { line: endLine, char: endChar } });
                 }
     
                 return util.ok(refLink.parameter.value);
