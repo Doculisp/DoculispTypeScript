@@ -429,17 +429,29 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
 
                 const id = idAtom.parameter.value;
 
-                const errorMsg = getSymbolErrorMessage('section', id, current, idAtom, textHelper);
-                if(errorMsg) {
-                    const endChar = idAtom.location.char + id.length;
-
-                    return util.codeFailure(errorMsg, { documentPath: current.documentPath, start: { line: idAtom.location.line, char: idAtom.location.char }, end: { line: idAtom.location.line, char: endChar } });
+                const symbols = textHelper.symbolLocation(id);
+                if(symbols) {
+                    // Find the first invalid symbol position
+                    const symbolKeys = Object.keys(symbols);
+                    if (symbolKeys.length > 0) {
+                        const firstSymbol = symbolKeys[0];
+                        if (firstSymbol) {
+                            const symbolDict = symbols as IDictionary<number>;
+                            const symbolPosition = symbolDict[firstSymbol];
+                            
+                            if (symbolPosition !== undefined) {
+                            // Calculate symbol position in the line
+                            const symbolChar = idAtom.parameter.location.char + symbolPosition - 1;                                return util.codeFailure(`Invalid character '${firstSymbol}' in section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char}`, { documentPath: current.documentPath, start: { line: idAtom.parameter.location.line, char: symbolChar }, end: { line: idAtom.parameter.location.line, char: symbolChar } });
+                            }
+                        }
+                    }
                 }
 
                 if(!textHelper.isLowercase(id)) {
-                    const endChar = idAtom.location.char + id.length;
+                    const startChar = idAtom.parameter.location.char;
+                    const endChar = idAtom.parameter.location.char + id.length - 1;
 
-                    return util.codeFailure(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.location.line}, Char: ${idAtom.location.char} contains must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: idAtom.location.line, char: idAtom.location.char }, end: { line: idAtom.location.line, char: endChar } });
+                    return util.codeFailure(`Section id '${id}' at '${current.documentPath.fullName}' Line: ${idAtom.parameter.location.line}, Char: ${startChar} must be lowercase. Did you mean '${id.toLocaleLowerCase()}'?`, { documentPath: current.documentPath, start: { line: idAtom.parameter.location.line, char: startChar }, end: { line: idAtom.parameter.location.line, char: endChar } });
                 }
 
                 if(variableTable.hasKey(id)) {
