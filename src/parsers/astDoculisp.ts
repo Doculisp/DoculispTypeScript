@@ -380,9 +380,12 @@ function buildAstParser(internals: IInternals, util: IUtil, trimArray: ITrimArra
                 for (let index = 0; index < authors.length; index++) {
                     const author = authors[index] as AtomAst;
                     if(author.type === 'ast-atom') {
+                        // Point to the opening parenthesis (command start - 1)
+                        const startChar = author.location.char - 1;
+                        // End at closing parenthesis (command start + command length)
                         const endChar = author.location.char + author.value.length;
 
-                        return util.codeFailure(`Author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${author.location.char} does not contain the author's name.`, { documentPath: location.documentPath, start: { line: author.location.line, char: author.location.char }, end: { line: author.location.line, char: endChar } });
+                        return util.codeFailure(`Missing author name in author block at '${author.location.documentPath.fullName}' Line: ${author.location.line}, Char: ${startChar}`, { documentPath: location.documentPath, start: { line: author.location.line, char: startChar }, end: { line: author.location.line, char: endChar } });
                     }
 
                     if(author.type === 'ast-container') {
