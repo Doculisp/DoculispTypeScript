@@ -1,5 +1,0 @@
-{
-  "documentPath": "C:/examples/badInline.md",
-  "message": "Inline code block at 'C:/examples/badInline.md' Line: 1, Char: 1 contains a new line before closing.",
-  "success": false
-}

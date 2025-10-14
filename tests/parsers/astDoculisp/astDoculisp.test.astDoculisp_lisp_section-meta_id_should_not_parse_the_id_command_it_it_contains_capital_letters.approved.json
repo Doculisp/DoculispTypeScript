@@ -1,5 +1,0 @@
-{
-  "documentPath": "main.md",
-  "message": "Section id 'my-Id' at 'main.md' Line: 4, Char: 6 contains must be lowercase. Did you mean 'my-id'?",
-  "success": false
-}

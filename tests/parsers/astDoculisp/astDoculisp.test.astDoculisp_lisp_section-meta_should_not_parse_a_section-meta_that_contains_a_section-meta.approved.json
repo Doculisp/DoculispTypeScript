@@ -1,5 +1,0 @@
-{
-  "documentPath": "A:/malformed/file.dlisp",
-  "message": "The section-meta block at 'A:/malformed/file.dlisp' Line: 2, Char: 2 contains unknown command 'section-meta' at Line: 3, Char: 6.",
-  "success": false
-}

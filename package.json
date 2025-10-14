@@ -1,7 +1,7 @@
 {
   "name": "doculisp",
   "version": "3.4.12",
-  "description": "A scripting language to build markdown documents",
+  "description": "CLI tool for building markdown documents with Doculisp DSL",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -49,7 +49,7 @@
     "@slimio/npm-registry": "^0.7.0",
     "@types/figlet": "^1.7.0",
     "commander": "^12.1.0",
-    "figlet": "^1.8.0",
-    "glob": "^10.4.1"
+    "doculisp-api": "^1.0.1",
+    "figlet": "^1.8.0"
   }
 }

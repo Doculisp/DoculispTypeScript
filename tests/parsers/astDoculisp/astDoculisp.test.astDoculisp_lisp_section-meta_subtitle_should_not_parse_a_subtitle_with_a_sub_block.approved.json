@@ -1,5 +1,0 @@
-{
-  "documentPath": "main.dlisp",
-  "message": "The subtitle block at 'main.dlisp' Line: 4, Char: 6 contains unknown block 'link-ref' at Line: 4, Char: 16.",
-  "success": false
-}

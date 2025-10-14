@@ -1,19 +1,26 @@
 #! /usr/bin/env node
 
-// Export all types for API consumers
-export * from './types';
-
-import { containerPromise } from './moduleLoader';
+import { DoculispApi, Result } from 'doculisp-api';
 import { Command, OptionValues } from 'commander';
-import { Result } from './types/types.general';
-import { IController } from './types/types.controller';
-import { IVersion } from './types/types.version';
 import childProcess from 'child_process';
 import Registry from '@slimio/npm-registry';
 import figlet from 'figlet';
 import path from 'path';
-import { PathConstructor } from './types/types.filePath';
-import { IVariableTable, sourceKey } from './types/types.variableTable';
+
+// Helper function to get version from package.json
+function getVersion(): string {
+    try {
+        const packageJson = require('../package.json');
+        return packageJson.version || '?.?.?';
+    } catch {
+        return '?.?.?';
+    }
+}
+
+// Helper function to validate source file extensions
+function isValidSourceFile(filePath: string): boolean {
+    return filePath.endsWith('.md') || filePath.endsWith('.dlisp') || filePath.endsWith('.dlproj');
+}
 
 async function checkVersion(version: string, modulePath: string, isCli: boolean) {
     const npmReg = new Registry();
@@ -44,23 +51,12 @@ async function checkVersion(version: string, modulePath: string, isCli: boolean)
 
 async function main() {
     const program = new Command();
-    const container = await containerPromise;
-    const controller = container.buildAs<IController>('controller');
-    const pathConstructor = container.buildAs<PathConstructor>('pathConstructor');
-    const versionGetter = container.buildAs<IVersion>('version');
-    const versionMaybe = versionGetter.getVersion();
+    const api = await DoculispApi.create();
+    const version = getVersion();
     
     const nodePath = path.dirname(path.resolve(process.argv[0] as string));
     const modulePath = path.resolve(process.argv[1] as string);
     const isCli = modulePath.includes(nodePath);
-
-    let version = '?.?.?'
-
-    if(!versionMaybe.success) {
-        console.log('doculisp cannot determine its version')
-    } else {
-        version = versionMaybe.value;
-    }
 
     const helptext = '\n\n' + figlet.textSync('doculisp', {
         font: 'Cybermedium'
@@ -81,9 +77,6 @@ async function main() {
         .option('-t, --test', 'runs the compiler without generating the output file')
         .option('--update', 'updates doculisp')
         .action(async (sourcePathString: string | undefined, outputPathString: string | undefined, options: OptionValues) => {
-            const sourcePath = !sourcePathString ? undefined : pathConstructor(sourcePathString);
-            const outputPath = !outputPathString ? undefined : pathConstructor(outputPathString);
-
             if (options['update']){
                 try {
                     const updateCommand = isCli ? 'npm update doculisp -g' : 'npm update doculisp';
@@ -98,40 +91,34 @@ async function main() {
                 return;
             }
             else if (options['test']) {
-                if(!sourcePath) {
+                if(!sourcePathString) {
                     console.error('Error: The `--test` option requires a source path.');
                     process.exit(1);
                 }
-                else if(sourcePath.extension !== '.md' && sourcePath.extension !== '.dlisp' && sourcePath.extension !== '.dlproj') {
-                    console.error(`Error: The source file must be either a markdown, dlisp, or a dlproj file.\n\t'${sourcePath.fullName}'`)
+                else if(!isValidSourceFile(sourcePathString)) {
+                    console.error(`Error: The source file must be either a markdown, dlisp, or a dlproj file.\n\t'${sourcePathString}'`)
                     process.exit(1);
                 }
                 else {
-                    const variableTable = container.buildAs<IVariableTable>('variableTable').createChild();
-                    variableTable.addValue(sourceKey, { type: 'variable-path', value: sourcePath });
-                    const result = controller.test(variableTable);
+                    const result = await api.testFile(sourcePathString);
                     reportResult(...result);
                 }
             }
             else {
-                if(!sourcePath) {
+                if(!sourcePathString) {
                     console.error('Error: The source path is required.');
                     process.exit(1);
                 }
-                else if(sourcePath.extension !== '.md' && sourcePath.extension !== '.dlisp' && sourcePath.extension !== '.dlproj') {
-                    console.error(`Error: The source file must be either a markdown, dlisp, or a dlproj file.\n\t'${sourcePath.fullName}`)
+                else if(!isValidSourceFile(sourcePathString)) {
+                    console.error(`Error: The source file must be either a markdown, dlisp, or a dlproj file.\n\t'${sourcePathString}'`);
                     process.exit(1);
                 }
-                else if(outputPath && outputPath.extension !== '.md') {
-                    console.error(`Error: THe output file must be a markdown file.\n\t'${outputPath.fullName}'`);
+                else if(outputPathString && !outputPathString.endsWith('.md')) {
+                    console.error(`Error: The output file must be a markdown file.\n\t'${outputPathString}'`);
                     process.exit(1);
-                }
-                else if(outputPath) {
-                    const result = controller.compile(sourcePath, outputPath);
-                    reportResult(...result);
                 }
                 else {
-                    const result = controller.compile(sourcePath);
+                    const result = await api.compileFile(sourcePathString, outputPathString);
                     reportResult(...result);
                 }
             }
@@ -139,7 +126,6 @@ async function main() {
             await checkVersion(version, modulePath, isCli);
         })
         .parseAsync(process.argv);
-
 
     function reportResult(...results: Result<string | false>[]) {
         let failed = false;
@@ -165,7 +151,6 @@ async function main() {
             process.exit(1);
         }
     }
-    
 }
 
 main().catch(console.error);

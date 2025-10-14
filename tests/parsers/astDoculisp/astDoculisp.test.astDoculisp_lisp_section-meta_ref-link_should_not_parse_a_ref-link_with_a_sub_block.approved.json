@@ -1,5 +1,0 @@
-{
-  "documentPath": "main.dlisp",
-  "message": "The ref-link block at 'main.dlisp' Line: 4, Char: 6 contains unknown block 'weird' at Line: 4, Char: 16.",
-  "success": false
-}
