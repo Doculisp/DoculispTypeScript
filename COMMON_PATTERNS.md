@@ -115,7 +115,7 @@ function convertToLanguageServerError(result: IFail): Diagnostic {
 }
 
 function determineSeverity(message: string): 'error' | 'warning' | 'info' {
-    if (message.includes('Unknown atom') || message.includes('Circular dependencies')) return 'error';
+    if (message.includes('Unknown identifier') || message.includes('Circular dependencies')) return 'error';
     if (message.includes('file') || message.includes('path')) return 'warning';
     return 'info';
 }

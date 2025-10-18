@@ -26,7 +26,7 @@ A language for Readme.
 7. Language: [Comment Block](#comment-block)
 8. Language: [Path Ids](#path-ids)
 9. Language: [Dynamic Document Linking](#dynamic-document-linking)
-10. Language: [Key Atoms by Depth](#key-atoms-by-depth)
+10. Language: [Key Identifiers by Depth](#key-identifiers-by-depth)
 11. Structure: [Native Doculisp Files](#native-doculisp-files)
 12. Version: [Language Specification Version](#language-specification-version)
 13. Recognition: [Contributors ✨](#contributors-)
@@ -120,7 +120,7 @@ Every section and header can have a unique ID that enables dynamic linking withi
 
 ## Syntax Overview ##
 
-The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses `(` followed by a sting of non-whitespace characters. This is called an atom. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses `)`.
+The basic structure of Doculisp is all code is contained within blocks. A block is constructed within an HTML comment region. It starts with an open parentheses `(` followed by a sting of non-whitespace characters. This is called an identifier. It then has 1 of three possibilities. It can have a parameter, a new block, or nothing. All blocks must close with a close parentheses `)`.
 
 Even the Doculisp main block follows this.
 
@@ -136,7 +136,7 @@ Example
 -->
 ```
 
-The first block is the `dl` block. In it `dl` is the atom. It contains the `section-meta` sub-block.  That block has the atom `section-meta` followed by a further sub block. The last sub block is the `title` sub block. In it `title` is the atom and `Basic Structure` is the parameter.
+The first block is the `dl` block. In it `dl` is the identifier. It contains the `section-meta` sub-block.  That block has the identifier `section-meta` followed by a further sub block. The last sub block is the `title` sub block. In it `title` is the identifier and `Basic Structure` is the parameter.
 
 ### Parameter ###
 
@@ -145,37 +145,37 @@ A parameter is a string of characters that contains no line advancement (`\r` or
 Example:
 
 ```doculisp
-(atom parameter)
+(identifier parameter)
 ```
 
 To include parentheses within a parameter, escape them with a backslash:
 
 ```doculisp
-(atom parameter\))
+(identifier parameter\))
 ```
 
 ### More Visual Explanations ###
 
 ```doculisp
-(atom)
-(atom parameter)
-(atom (atom2))
-(atom (atom2 second parameter))
+(identifier)
+(identifier parameter)
+(identifier (identifier2))
+(identifier (identifier2 second parameter))
 ```
 
 ```mermaid
 graph TD
-    subgraph Basic Atom
-        A(atom)
+    subgraph Basic Identifier
+        A(identifier)
     end
-    subgraph Atom with Parameter
-        B(atom) -->|parameter| C
+    subgraph Identifier with Parameter
+        B(identifier) -->|parameter| C
     end
-    subgraph Atom contains Atom
-        D(atom) --> E(atom2)
+    subgraph Identifier contains Identifier
+        D(identifier) --> E(identifier2)
     end
     subgraph Nested
-        F(atom) --> G(atom2)
+        F(identifier) --> G(identifier2)
         G -->H(Parameter)
     end
 ```
@@ -237,7 +237,7 @@ The `section-meta` block is a crucial part of the Doculisp DSL. It provides meta
     * The `id` block provides a unique identifier for the section, facilitating easy linking and navigation. See [get-path](#dynamic-document-linking) for more details.
 7. Comment (*):
     * Optional
-    * The comment block breaks the rule slightly. The asterisk character is a special character that causes all atoms that start with it to be treated as a comment, and all parameters and sub-blocks to be ignored.
+    * The comment block breaks the rule slightly. The asterisk character is a special character that causes all identifiers that start with it to be treated as a comment, and all parameters and sub-blocks to be ignored.
 
 ### Section-Meta Examples ###
 
@@ -607,9 +607,9 @@ This will return the path needed to get to the document / header combination. Th
 
 In the above example you will have link to correct document and the correct heading.
 
-## Key Atoms by Depth ##
+## Key Identifiers by Depth ##
 
-Here is a list of all the key atoms by depth:
+Here is a list of all the key identifiers by depth:
 
 * markdown
 * `dl`
@@ -684,7 +684,7 @@ Can be simplified to:
 
 ## Language Specification Version ##
 
-Doculisp version 1.2.1
+Doculisp version 2.0.0
 
 ## Contributors ✨ ##
 

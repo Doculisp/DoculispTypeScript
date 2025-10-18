@@ -5,7 +5,6 @@
         (author jason-kerney)
         (include
             (CLI ./cli.md)
-            (Language ./lang/_main.md)
         )
         (id main)
     )

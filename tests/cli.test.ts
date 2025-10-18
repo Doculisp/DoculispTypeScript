@@ -19,11 +19,11 @@ describe('CLI', () => {
     }
 
     describe('test flag (-t)', () => {
-        it('should handle .dlproj files without throwing Unknown atom errors', async () => {
+        it('should handle .dlproj files without throwing Unknown identifier errors', async () => {
             const result = await runCLI(['-t', testProjectFile]);
             
-            // The test should not fail with "Unknown atom 'documents'" error
-            expect(result.stderr).not.toContain('Unknown atom');
+            // The test should not fail with "Unknown identifier 'documents'" error
+            expect(result.stderr).not.toContain('Unknown identifier');
             expect(result.stderr).not.toContain('documents');
             
             // For now, we expect it to succeed (this test will fail initially - TDD red phase)

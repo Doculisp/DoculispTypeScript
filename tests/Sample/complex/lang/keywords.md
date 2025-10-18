@@ -1,6 +1,6 @@
-<!-- (dl (section-meta Key Atoms by Depth)) -->
+<!-- (dl (section-meta Key Identifiers by Depth)) -->
   
-Here is a list of all the key atoms by depth:  
+Here is a list of all the key identifiers by depth:  
   
 * markdown  
 * `dl`  

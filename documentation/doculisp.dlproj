@@ -12,12 +12,6 @@
         )
     )
     (document
-        (lang
-            (source ../../lang/docs/readme/_main.md)
-            (output ../LANG.md)
-        )
-    )
-    (document
         (project
             (source ../../lang/docs/prj/_main.dlisp)
             (output ../PROJECT.md)
@@ -33,6 +27,12 @@
         (changelog-old
             (source ./changelog/_previousMain.dlisp)
             (output ../PREVIOUS-CHANGELOG.md)
+        )
+    )
+    (document
+        (language-spec
+            (source ../../lang/docs/readme/_main.md)
+            (output ../LANGUAGE-SPEC.md)
         )
     )
 )

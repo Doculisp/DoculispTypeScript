@@ -74,7 +74,7 @@ Source File → Document Parser → Tokenizer → AST Parser → Doculisp Parser
 
 #### Pipeline Components
 1. **Document Parser**: Extracts text and Doculisp blocks
-2. **Tokenizer**: Converts text to tokens (atoms, parameters, parentheses)
+2. **Tokenizer**: Converts text to tokens (identifiers, parameters, parentheses)
 3. **AST Parser**: Builds abstract syntax tree
 4. **Doculisp Parser**: Converts AST to semantic structures
 5. **String Writer**: Generates final markdown output
@@ -128,7 +128,7 @@ Every parsed element maintains location information for precise error reporting.
 Files named `main` (like `_main.dlisp`, `_main.md`) indicate entry points - this is the user's personal convention, not a requirement.
 
 ### Include Labels
-Within include blocks, the first atom is a user-defined label for ToC grouping:
+Within include blocks, the first identifier is a user-defined label for ToC grouping:
 ```doculisp
 (include
     (Section ./file1.md)    # "Section" groups similar content
