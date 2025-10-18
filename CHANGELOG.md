@@ -7,21 +7,25 @@
 
 # Changelog #
 
-1. Release: [[4.0.0] - 2025-10-18](#400---2025-10-18)
-2. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
-3. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
-4. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+1. Release: [[5.0.0] - TBD](#500---tbd)
+2. Release: [[4.0.0] - 2025-10-13](#400---2025-10-13)
+3. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
+4. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
 5. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-6. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-7. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-8. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-9. Older: [Previous Releases](#previous-releases)
+6. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+7. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
+8. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+9. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+10. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+11. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
+12. Release: [[3.4.2] - 2025-09-09](#342---2025-09-09)
+13. Older: [Previous Releases](#previous-releases)
 
-## [4.0.0] - 2025-10-18 ##
+## [5.0.0] - TBD ##
 
 ### Breaking Changes ###
 
-- **API Terminology Update**: Updated all language terminology from "atom" to "identifier" throughout the DoculispAPI 2.0.0 integration
+- **API Terminology Update**: Updated all language terminology from "atom" to "identifier" throughout the DoculispAPI integration
   - **Token Types**: `AtomToken` → `IdentifierToken`
   - **AST Types**: `IAstAtom` → `IAstIdentifier`, `AtomAst` → `IdentifierAst`
   - **Parser Functions**: `parseAtom()` → `parseIdentifier()`, `tokenizeAtom()` → `tokenizeIdentifier()`
@@ -57,6 +61,11 @@
   - More intuitive for developers familiar with programming language terminology
   - Better alignment with standard compiler and parser terminology
 
+- **Documentation Quality**: Enhanced project documentation structure and AI assistant integration
+  - Added comprehensive GitHub Copilot instructions (.copilot-instructions.md) with Arlo's Risk-Aware Commit Notation guidelines
+  - Added AI Assistant Codex (.github/AI-Assistant-Codex.md) for improved AI assistant interactions with Doculisp DSL
+  - Improved documentation clarity and development workflow guidance
+
 ### Documentation ###
 
 - **Documentation Restructure**: Major reorganization of project documentation
@@ -82,6 +91,17 @@
   - Improved error message consistency and readability
   - Enhanced error propagation through the processing pipeline
 
+## [4.0.0] - 2025-10-13 ##
+
+### Breaking Changes ###
+
+- **Pure CLI Architecture**: Converted from library + CLI to pure CLI application
+  - **Removed Library API**: All internal TypeScript APIs, containers, parsers, and type interfaces have been removed from the public API surface
+  - **CLI Only**: The package now functions exclusively as a command-line tool, no longer exposable as a library
+  - **Massive Codebase Reduction**: Removed over 15,000 lines of internal implementation code that was previously part of the public API
+  - **Package Simplification**: Dramatically reduced package complexity and installation footprint
+  - This is a breaking change for any projects that were importing DoculispTypeScript as a library rather than using it as a CLI tool
+
 ## [3.4.12] - 2025-09-23 ##
 
 ### Improved ###
@@ -100,6 +120,12 @@
   - Closing markers no longer require trailing whitespace and can end at line boundaries
   - Prevents compilation failures for valid markdown documents containing extended code blocks
 
+## [3.4.9] - 2025-09-15 ##
+
+### Fixed ###
+
+- Fixed an issue in `quickStart.md` where there was an attempt to nest multiline code blocks, which caused formatting problems. The code blocks are now properly formatted for clarity and compatibility.
+
 ## [3.4.8] - 2025-09-15 ##
 
 ### Improved ###
@@ -110,11 +136,11 @@
   - Improves installation performance
   - Only includes essential runtime files in published package
 
-## [3.4.9] - 2025-09-15 ##
+## [3.4.7] - 2025-09-14 ##
 
-### Fixed ###
+### Improved ###
 
-- Fixed an issue in `quickStart.md` where there was an attempt to nest multiline code blocks, which caused formatting problems. The code blocks are now properly formatted for clarity and compatibility.
+- **Documentation**: Updated documentation and improved project structure
 
 ## [3.4.6] - 2025-09-13 ##
 
@@ -139,6 +165,23 @@
 - **Path Resolution**: Fixed issue where path was not always complete in cross-document linking using `get-path` function
   - Improved path resolution accuracy for cross-document references
   - Enhanced reliability of document linking across complex project structures
+
+## [3.4.3] - 2025-09-10 ##
+
+### Fixed ###
+
+- **Cross-Document Linking**: Fixed bug with cross-document linking using the `get-path` function
+  - Improved stability and accuracy of document path resolution
+  - Enhanced error handling for invalid path references
+
+## [3.4.2] - 2025-09-09 ##
+
+### Fixed ###
+
+- **Error Handling**: Fixed bug where `get-path` throws exception if path id does not exist
+  - Added proper validation for path IDs before resolution
+  - Improved error messages for missing path references
+  - Enhanced stability when processing malformed documents
 
 ## Previous Releases ##
 

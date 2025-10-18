@@ -1,14 +1,25 @@
+(*comment
+    CHANGELOG MAINTENANCE:
+    Keep the 12 most recent releases in this main changelog.
+    When adding new releases, move the oldest entries to _previousMain.dlisp
+    to maintain exactly 12 releases before "Previous Releases".
+)
+
 (section-meta
     (title Changelog)
     (include
+        (Release ./5_0_0.md)
         (Release ./4_0_0.md)
         (Release ./3_4_12.md)
         (Release ./3_4_10.md)
-        (Release ./3_4_8.md)
         (Release ./3_4_9.md)
+        (Release ./3_4_8.md)
+        (Release ./3_4_7.md)
         (Release ./3_4_6.md)
         (Release ./3_4_5.md)
         (Release ./3_4_4.md)
+        (Release ./3_4_3.md)
+        (Release ./3_4_2.md)
         (Older ./previous.md)
     )
     (author Jason Kerney)

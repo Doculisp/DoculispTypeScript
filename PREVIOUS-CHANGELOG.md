@@ -8,32 +8,13 @@
 
 ## Table of Contents ##
 
-1. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
-2. Release: [[3.4.2] - 2025-09-09](#342---2025-09-09)
-3. Release: [[3.4.0] - 2025-09-08](#340---2025-09-08)
-4. Release: [[3.3.0] - 2025-09-07](#330---2025-09-07)
-5. Release: [[3.2.0] - 2025-09-06](#320---2025-09-06)
-6. Release: [[3.1.0] - 2025-09-05](#310---2025-09-05)
-7. Release: [[3.0.0] - 2025-09-04](#300---2025-09-04)
-8. Release: [[2.9.1] - 2025-09-03](#291---2025-09-03)
-9. Release: [[2.9.0] - 2025-09-02](#290---2025-09-02)
-
-## [3.4.3] - 2025-09-10 ##
-
-### Fixed ###
-
-- **Cross-Document Linking**: Fixed bug with cross-document linking using the `get-path` function
-  - Improved stability and accuracy of document path resolution
-  - Enhanced error handling for invalid path references
-
-## [3.4.2] - 2025-09-09 ##
-
-### Fixed ###
-
-- **Error Handling**: Fixed bug where `get-path` throws exception if path id does not exist
-  - Added proper validation for path IDs before resolution
-  - Improved error messages for missing path references
-  - Enhanced stability when processing malformed documents
+1. Release: [[3.4.0] - 2025-09-08](#340---2025-09-08)
+2. Release: [[3.3.0] - 2025-09-07](#330---2025-09-07)
+3. Release: [[3.2.0] - 2025-09-06](#320---2025-09-06)
+4. Release: [[3.1.0] - 2025-09-05](#310---2025-09-05)
+5. Release: [[3.0.0] - 2025-09-04](#300---2025-09-04)
+6. Release: [[2.9.1] - 2025-09-03](#291---2025-09-03)
+7. Release: [[2.9.0] - 2025-09-02](#290---2025-09-02)
 
 ## [3.4.0] - 2025-09-08 ##
 
