@@ -226,7 +226,7 @@ When compiling both the source and destination are mandatory.
 ## Learn More ##
 
 * [User Guide](./USER_GUIDE.md) - Complete guide with tutorials and best practices
-* [Language Documentation](./LANG.md) - Language syntax reference
+* [Language Documentation](./LANGUAGE-SPEC.md) - Language syntax reference
 * [Project File Format](./PROJECT.md) - Multi-document compilation
 
 <!-- Written By: jason-kerney -->
