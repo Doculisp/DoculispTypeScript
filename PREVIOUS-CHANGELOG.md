@@ -8,13 +8,23 @@
 
 ## Table of Contents ##
 
-1. Release: [[3.4.0] - 2025-09-08](#340---2025-09-08)
-2. Release: [[3.3.0] - 2025-09-07](#330---2025-09-07)
-3. Release: [[3.2.0] - 2025-09-06](#320---2025-09-06)
-4. Release: [[3.1.0] - 2025-09-05](#310---2025-09-05)
-5. Release: [[3.0.0] - 2025-09-04](#300---2025-09-04)
-6. Release: [[2.9.1] - 2025-09-03](#291---2025-09-03)
-7. Release: [[2.9.0] - 2025-09-02](#290---2025-09-02)
+1. Release: [[3.4.2] - 2025-09-09](#342---2025-09-09)
+2. Release: [[3.4.0] - 2025-09-08](#340---2025-09-08)
+3. Release: [[3.3.0] - 2025-09-07](#330---2025-09-07)
+4. Release: [[3.2.0] - 2025-09-06](#320---2025-09-06)
+5. Release: [[3.1.0] - 2025-09-05](#310---2025-09-05)
+6. Release: [[3.0.0] - 2025-09-04](#300---2025-09-04)
+7. Release: [[2.9.1] - 2025-09-03](#291---2025-09-03)
+8. Release: [[2.9.0] - 2025-09-02](#290---2025-09-02)
+
+## [3.4.2] - 2025-09-09 ##
+
+### Fixed ###
+
+- **Error Handling**: Fixed bug where `get-path` throws exception if path id does not exist
+  - Added proper validation for path IDs before resolution
+  - Improved error messages for missing path references
+  - Enhanced stability when processing malformed documents
 
 ## [3.4.0] - 2025-09-08 ##
 

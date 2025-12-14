@@ -7,19 +7,32 @@
 
 # Changelog #
 
-1. Release: [[5.0.0] - TBD](#500---tbd)
-2. Release: [[4.0.0] - 2025-10-13](#400---2025-10-13)
-3. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
-4. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
-5. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-6. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-7. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
-8. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-9. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-10. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-11. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
-12. Release: [[3.4.2] - 2025-09-09](#342---2025-09-09)
+1. Release: [[5.0.1] - 2025-12-14](#501---2025-12-14)
+2. Release: [[5.0.0] - TBD](#500---tbd)
+3. Release: [[4.0.0] - 2025-10-13](#400---2025-10-13)
+4. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
+5. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
+6. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+7. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+8. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
+9. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+10. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+11. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+12. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
 13. Older: [Previous Releases](#previous-releases)
+
+## [5.0.1] - 2025-12-14 ##
+
+### Improved ###
+
+- **Dependency Update**: Updated doculisp-api from 1.0.1 to 3.0.0 for enhanced performance and reliability
+  - **Enhanced Error Handling**: Improved error reporting with structured error categorization and processing step tracking
+  - **Better Location Tracking**: More precise error location tracking for improved debugging experience
+  - **AST Block Range Support**: Foundation for future advanced editing features (transparent to CLI users)
+  - **Tokenizer Improvements**: Enhanced whitespace validation and syntax error detection
+  - **Performance Optimizations**: Improved parser performance and memory efficiency
+  - **No Breaking Changes**: All existing CLI functionality remains identical
+  - **Backward Compatible**: Same command-line interface, arguments, and output format
 
 ## [5.0.0] - TBD ##
 
@@ -173,15 +186,6 @@
 - **Cross-Document Linking**: Fixed bug with cross-document linking using the `get-path` function
   - Improved stability and accuracy of document path resolution
   - Enhanced error handling for invalid path references
-
-## [3.4.2] - 2025-09-09 ##
-
-### Fixed ###
-
-- **Error Handling**: Fixed bug where `get-path` throws exception if path id does not exist
-  - Added proper validation for path IDs before resolution
-  - Improved error messages for missing path references
-  - Enhanced stability when processing malformed documents
 
 ## Previous Releases ##
 
