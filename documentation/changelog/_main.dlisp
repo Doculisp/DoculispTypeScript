@@ -11,6 +11,7 @@
 (section-meta
     (title Changelog)
     (include
+        (Release ./6_0_1.md)
         (Release ./6_0_0.md)
         (Release ./5_0_1.md)
         (Release ./5_0_0.md)
@@ -22,7 +23,6 @@
         (Release ./3_4_7.md)
         (Release ./3_4_6.md)
         (Release ./3_4_5.md)
-        (Release ./3_4_4.md)
         (Older ./previous.md)
     )
     (author Jason Kerney)
