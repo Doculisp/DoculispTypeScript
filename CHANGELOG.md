@@ -7,19 +7,52 @@
 
 # Changelog #
 
-1. Release: [[5.0.1] - 2025-12-14](#501---2025-12-14)
-2. Release: [[5.0.0] - TBD](#500---tbd)
-3. Release: [[4.0.0] - 2025-10-13](#400---2025-10-13)
-4. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
-5. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
-6. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-7. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-8. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
-9. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-10. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-11. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
-12. Release: [[3.4.3] - 2025-09-10](#343---2025-09-10)
+1. Release: [[6.0.0] - 2026-03-28](#600---2026-03-28)
+2. Release: [[5.0.1] - 2025-12-14](#501---2025-12-14)
+3. Release: [[5.0.0] - TBD](#500---tbd)
+4. Release: [[4.0.0] - 2025-10-13](#400---2025-10-13)
+5. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
+6. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
+7. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+8. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+9. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
+10. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+11. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
+12. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
 13. Older: [Previous Releases](#previous-releases)
+
+## [6.0.0] - 2026-03-28 ##
+
+### Breaking Changes ###
+
+- **Doculisp API Upgrade**: Updated doculisp-api from 3.1.0 to 4.0.0
+  - **Include Validation Enforcement**: The API now enforces the documented rule that include blocks with external files must have a content block
+  - **Breaking Change Impact**: Doculisp files using include blocks with external files but no content block will now fail validation
+  - **Migration Required**: All include blocks containing external file references must have a corresponding `(content)` block
+  - **Error Messages**: Clear validation error when include has external files but no content block
+    - Error format: `"Validation Error: The section-meta block at '[path]' has an include block with external files but no content block. A content block is required when including external files."`
+    - Includes precise location information (line and character positions) for easy debugging
+  - **Empty Include Support**: Empty include blocks (without external files) continue to work without requiring content blocks
+
+### Improved ###
+
+- **Error Reporting**: Enhanced error message consistency and precision throughout the parsing pipeline
+  - **Standardized Error Format**: All error messages follow consistent formatting with proper prefixes and punctuation
+    - Parse errors use `"Parse Error:"` prefix with clear descriptions
+    - Validation errors use `"Validation Error:"` prefix with specific context
+    - File system errors include full path information and operation details
+  - **Enhanced Location Tracking**: Error messages include precise range information with start and end positions
+    - Range objects provide exact character positions for error highlighting
+    - Line and character details included in error messages for better debugging
+  - **Improved Error Context**: Better contextual information for troubleshooting
+    - Detailed failure messages with line and character information
+    - Consistent error formatting across all parsers and components
+
+- **Documentation**: Access to comprehensive API documentation
+  - **Complete API Guide**: Detailed documentation for all major pipeline components
+  - **Type System Documentation**: Complete interface and type documentation
+  - **Design Philosophy**: Documentation of core API design principles and patterns
+  - **Usage Examples**: Integration patterns and best practices
 
 ## [5.0.1] - 2025-12-14 ##
 
@@ -178,14 +211,6 @@
 - **Path Resolution**: Fixed issue where path was not always complete in cross-document linking using `get-path` function
   - Improved path resolution accuracy for cross-document references
   - Enhanced reliability of document linking across complex project structures
-
-## [3.4.3] - 2025-09-10 ##
-
-### Fixed ###
-
-- **Cross-Document Linking**: Fixed bug with cross-document linking using the `get-path` function
-  - Improved stability and accuracy of document path resolution
-  - Enhanced error handling for invalid path references
 
 ## Previous Releases ##
 
