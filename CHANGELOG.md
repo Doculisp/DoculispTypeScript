@@ -7,19 +7,30 @@
 
 # Changelog #
 
-1. Release: [[6.0.0] - 2026-03-28](#600---2026-03-28)
-2. Release: [[5.0.1] - 2025-12-14](#501---2025-12-14)
-3. Release: [[5.0.0] - TBD](#500---tbd)
-4. Release: [[4.0.0] - 2025-10-13](#400---2025-10-13)
-5. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
-6. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
-7. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
-8. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
-9. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
-10. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
-11. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
-12. Release: [[3.4.4] - 2025-09-11](#344---2025-09-11)
+1. Release: [[6.0.1] - 2026-03-28](#601---2026-03-28)
+2. Release: [[6.0.0] - 2026-03-28](#600---2026-03-28)
+3. Release: [[5.0.1] - 2025-12-14](#501---2025-12-14)
+4. Release: [[5.0.0] - TBD](#500---tbd)
+5. Release: [[4.0.0] - 2025-10-13](#400---2025-10-13)
+6. Release: [[3.4.12] - 2025-09-23](#3412---2025-09-23)
+7. Release: [[3.4.10] - 2025-09-16](#3410---2025-09-16)
+8. Release: [[3.4.9] - 2025-09-15](#349---2025-09-15)
+9. Release: [[3.4.8] - 2025-09-15](#348---2025-09-15)
+10. Release: [[3.4.7] - 2025-09-14](#347---2025-09-14)
+11. Release: [[3.4.6] - 2025-09-13](#346---2025-09-13)
+12. Release: [[3.4.5] - 2025-09-12](#345---2025-09-12)
 13. Older: [Previous Releases](#previous-releases)
+
+## [6.0.1] - 2026-03-28 ##
+
+### Fixed ###
+
+- **Security Update**: Updated doculisp-api from 4.0.0 to 4.0.1
+  - **Security Patch**: Addressed widely publicized security vulnerabilities in the `glob` dependency (updated from v10.4.1 to v13.0.6)
+  - **No Breaking Changes**: API-compatible upgrade with no code changes required
+  - **Performance Improvements**: Inherits performance improvements from glob v11-13
+  - **Enhanced Reliability**: All tests passing with updated dependency
+  - **Node Compatibility**: Continues to support Node v20+ (already required by project)
 
 ## [6.0.0] - 2026-03-28 ##
 
@@ -203,14 +214,6 @@
 - **Cross-Document Linking**: Fixed inter-document linking to headers
   - Improved reliability of header references across multiple documents
   - Enhanced anchor generation and resolution
-
-## [3.4.4] - 2025-09-11 ##
-
-### Fixed ###
-
-- **Path Resolution**: Fixed issue where path was not always complete in cross-document linking using `get-path` function
-  - Improved path resolution accuracy for cross-document references
-  - Enhanced reliability of document linking across complex project structures
 
 ## Previous Releases ##
 
